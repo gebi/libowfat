@@ -47,6 +47,11 @@ extern void buffer_seek(buffer* b,unsigned int len);
 
 extern int buffer_copy(buffer* out,buffer* in);
 
+int buffer_putulong(buffer *b,unsigned long l);
+int buffer_put8long(buffer *b,unsigned long l);
+int buffer_putxlong(buffer *b,unsigned long l);
+int buffer_putlong(buffer *b,unsigned long l);
+
 extern buffer *buffer_0;
 extern buffer *buffer_0small;
 extern buffer *buffer_1;
