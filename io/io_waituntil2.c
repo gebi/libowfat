@@ -37,6 +37,8 @@ int64 io_waituntil2(int64 milliseconds) {
 	  e->next_write=first_writeable;
 	  first_writeable=y[i].data.fd;
 	}
+      } else {
+	epoll_ctl(io_master,EPOLL_CTL_DEL,y[i].data.fd,y+i);
       }
     }
     return n;

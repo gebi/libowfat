@@ -2,6 +2,7 @@
 #define extern
 #include "io_internal.h"
 #undef extern
+#include "byte.h"
 #ifdef HAVE_SIGIO
 #include <sys/poll.h>
 #include <signal.h>
@@ -23,9 +24,10 @@
 int io_fd(int64 d) {
   long r;
   io_entry* e;
-  if ((r=fcntl(d,F_GETFL,0) & O_NDELAY) == -1)
+  if ((r=fcntl(d,F_GETFL,0)) == -1)
     return 0;	/* file descriptor not open */
   if (!(e=array_allocate(&io_fds,sizeof(io_entry),d))) return 0;
+  byte_zero(e,sizeof(io_entry));
   e->inuse=1;
   if (r&O_NDELAY) e->nonblock=1;
   e->next_read=e->next_write=-1;
