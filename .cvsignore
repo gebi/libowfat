@@ -7,3 +7,6 @@ unurl
 urlencode
 iopause.h
 select.h
+haveepoll.h
+havekqueue.h
+libepoll

@@ -108,7 +108,7 @@ t: t.o libowfat.a
 .PHONY: all clean tar install rename
 clean:
 	rm -f *.o *.a *.da *.bbg *.bb core t haveip6.h haven2i.h havesl.h haveinline.h \
-iopause.h select.h Makefile
+iopause.h select.h havekqueue.h haveepoll.h libepoll Makefile
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
 uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h \
