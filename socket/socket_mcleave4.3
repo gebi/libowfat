@@ -4,9 +4,9 @@ socket_mcleave4 \- leave a multicast group
 .SH SYNTAX
 .B #include <socket.h>
 
-int \fBsocket_mcleave4\fP(int \fIs\fR, const char \fIgroupip\fR[4], const char \fIinterface\fR[4]);
+int \fBsocket_mcleave4\fP(int \fIs\fR, const char \fIgroupip\fR[4]);
 .SH DESCRIPTION
-socket_mcleave4 leaves the IPv4 multicast group \fIgroupip\fR on \fIinterface\fR.
+socket_mcleave4 leaves the IPv4 multicast group \fIgroupip\fR.
 
 If something goes wrong, socket_mcleave4 returns -1, setting errno
 appropriately.

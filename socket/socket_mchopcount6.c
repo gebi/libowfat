@@ -11,7 +11,7 @@
 #undef LIBC_HAS_IP6
 #endif
 
-int socket_mcttl6(int s,char TTL)
+int socket_mchopcount6(int s,char TTL)
 {
 #ifdef LIBC_HAS_IP6
   return setsockopt(s,IPPROTO_IPV6,IPV6_MULTICAST_HOPS,&TTL,sizeof TTL);

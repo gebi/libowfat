@@ -41,7 +41,7 @@ extern int socket_mcleave4(int s,const char *groupip);
 extern int socket_mcleave6(int s,const char *groupip);
 /* set multicast TTL/hop count for outgoing packets */
 extern int socket_mcttl4(int s,char hops);
-extern int socket_mcttl6(int s,char hops);
+extern int socket_mchopcount6(int s,char hops);
 /* enable multicast loopback */
 extern int socket_mcloop4(int s,char hops);
 extern int socket_mcloop6(int s,char hops);
