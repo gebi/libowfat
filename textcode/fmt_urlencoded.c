@@ -8,7 +8,7 @@ static inline int tohex(char c) {
 }
 
 unsigned int fmt_urlencoded(char* dest,const char* src,unsigned int len) {
-  const char unsafe[]=" %<>\"#{}|\\^~[]`;/?:@=&";
+  const char unsafe[]=" +%<>\"#{}|\\^~[]`;/?:@=&";
   register const unsigned char* s=(const unsigned char*) src;
   unsigned long written=0,i;
   for (i=0; i<len; ++i) {
