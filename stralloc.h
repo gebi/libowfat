@@ -56,11 +56,11 @@ extern int stralloc_cats(stralloc* sa,const char* in);
 /* stralloc_cat is analogous to stralloc_copy */
 extern int stralloc_cat(stralloc* sa,stralloc* in);
 
-/* stralloc_append adds one byte in[0] to the end of the string stored                                            
- * in sa. It is the same as stralloc_catb(&sa,in,1). */                                                           
+/* stralloc_append adds one byte in[0] to the end of the string stored
+ * in sa. It is the same as stralloc_catb(&sa,in,1). */
 extern int stralloc_append(stralloc* sa,const char* in); /* beware: this takes a pointer to 1 char */
 
-/* stralloc_starts returns 1 if the \0-terminated string in "in", without                                         
+/* stralloc_starts returns 1 if the \0-terminated string in "in", without
  * the terminating \0, is a prefix of the string stored in sa. Otherwise
  * it returns 0. sa must already be allocated. */
 extern int stralloc_starts(stralloc* sa,const char* in);
