@@ -1,4 +1,10 @@
-prefix=/usr/local
+# Warning!  There is no real "make install" support.
+# The include files are named after the djb, i.e. pretty generic.  They
+# will probably conflict with other headers.  That's why I install them
+# in /opt/diet, where they are in the default search path for my diet libc
+# work but don't conflict with anything there.  YMMV.
+
+prefix=/opt/diet
 LIBDIR=${prefix}/lib
 INCLUDEDIR=${prefix}/include
 MAN3DIR=${prefix}/man/man3
