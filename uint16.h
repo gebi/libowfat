@@ -8,17 +8,17 @@ typedef   signed short  int16;
 #define uint16_pack(out,in) (*(uint16*)(out)=(in))
 #define uint16_unpack(in,out) (*(out)=*(uint16*)(in))
 #define uint16_read(in) (*(uint16*)(in))
-extern void uint16_pack_big(char *out,uint16 in);
-extern void uint16_unpack_big(const char *in,uint16* out);
-extern uint16 uint16_read_big(const char *in);
+void uint16_pack_big(char *out,uint16 in);
+void uint16_unpack_big(const char *in,uint16* out);
+uint16 uint16_read_big(const char *in);
 #else
 
-extern void uint16_pack(char *out,uint16 in);
-extern void uint16_pack_big(char *out,uint16 in);
-extern void uint16_unpack(const char *in,uint16* out);
-extern void uint16_unpack_big(const char *in,uint16* out);
-extern uint16 uint16_read(const char *in);
-extern uint16 uint16_read_big(const char *in);
+void uint16_pack(char *out,uint16 in);
+void uint16_pack_big(char *out,uint16 in);
+void uint16_unpack(const char *in,uint16* out);
+void uint16_unpack_big(const char *in,uint16* out);
+uint16 uint16_read(const char *in);
+uint16 uint16_read_big(const char *in);
 
 #endif
 

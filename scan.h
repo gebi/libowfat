@@ -13,57 +13,57 @@
 
 /* interpret src as ASCII decimal number, write number to dest and
  * return the number of bytes that were parsed */
-extern unsigned int scan_ulong(const char *src,unsigned long *dest);
+unsigned int scan_ulong(const char *src,unsigned long *dest);
 
 /* interpret src as ASCII hexadecimal number, write number to dest and
  * return the number of bytes that were parsed */
-extern unsigned int scan_xlong(const char *src,unsigned long *dest);
+unsigned int scan_xlong(const char *src,unsigned long *dest);
 
 /* interpret src as ASCII octal number, write number to dest and
  * return the number of bytes that were parsed */
-extern unsigned int scan_8long(const char *src,unsigned long *dest);
+unsigned int scan_8long(const char *src,unsigned long *dest);
 
 /* interpret src as signed ASCII decimal number, write number to dest
  * and return the number of bytes that were parsed */
-extern unsigned int scan_long(const char *src,signed long *dest);
+unsigned int scan_long(const char *src,signed long *dest);
 
-extern unsigned int scan_longlong(const char *src,signed long long *dest);
-extern unsigned int scan_ulonglong(const char *src,unsigned long long *dest);
-extern unsigned int scan_xlonglong(const char *src,unsigned long long *dest);
-extern unsigned int scan_8longlong(const char *src,unsigned long long *dest);
+unsigned int scan_longlong(const char *src,signed long long *dest);
+unsigned int scan_ulonglong(const char *src,unsigned long long *dest);
+unsigned int scan_xlonglong(const char *src,unsigned long long *dest);
+unsigned int scan_8longlong(const char *src,unsigned long long *dest);
 
-extern unsigned int scan_uint(const char *src,unsigned int *dest);
-extern unsigned int scan_xint(const char *src,unsigned int *dest);
-extern unsigned int scan_8int(const char *src,unsigned int *dest);
-extern unsigned int scan_int(const char *src,signed int *dest);
+unsigned int scan_uint(const char *src,unsigned int *dest);
+unsigned int scan_xint(const char *src,unsigned int *dest);
+unsigned int scan_8int(const char *src,unsigned int *dest);
+unsigned int scan_int(const char *src,signed int *dest);
 
-extern unsigned int scan_ushort(const char *src,unsigned short *dest);
-extern unsigned int scan_xshort(const char *src,unsigned short *dest);
-extern unsigned int scan_8short(const char *src,unsigned short *dest);
-extern unsigned int scan_short(const char *src,signed short *dest);
+unsigned int scan_ushort(const char *src,unsigned short *dest);
+unsigned int scan_xshort(const char *src,unsigned short *dest);
+unsigned int scan_8short(const char *src,unsigned short *dest);
+unsigned int scan_short(const char *src,signed short *dest);
 
 /* interpret src as double precision floating point number,
  * write number to dest and return the number of bytes that were parsed */
-extern unsigned int scan_double(const char *in, double *dest);
+unsigned int scan_double(const char *in, double *dest);
 
 /* if *src=='-', set *dest to -1 and return 1.
  * if *src=='+', set *dest to 1 and return 1.
  * otherwise set *dest to 1 return 0. */
-extern unsigned int scan_plusminus(const char *src,signed int *dest);
+unsigned int scan_plusminus(const char *src,signed int *dest);
 
 /* return the highest integer n<=limit so that isspace(in[i]) for all 0<=i<=n */
-extern unsigned long scan_whitenskip(const char *in,unsigned long limit) __pure__;
+unsigned long scan_whitenskip(const char *in,unsigned long limit) __pure__;
 
 /* return the highest integer n<=limit so that !isspace(in[i]) for all 0<=i<=n */
-extern unsigned long scan_nonwhitenskip(const char *in,unsigned long limit) __pure__;
+unsigned long scan_nonwhitenskip(const char *in,unsigned long limit) __pure__;
 
 /* return the highest integer n<=limit so that in[i] is element of
  * charset (ASCIIZ string) for all 0<=i<=n */
-extern unsigned long scan_charsetnskip(const char *in,const char *charset,unsigned long limit) __pure__;
+unsigned long scan_charsetnskip(const char *in,const char *charset,unsigned long limit) __pure__;
 
 /* return the highest integer n<=limit so that in[i] is not element of
  * charset (ASCIIZ string) for all 0<=i<=n */
-extern unsigned long scan_noncharsetnskip(const char *in,const char *charset,unsigned long limit) __pure__;
+unsigned long scan_noncharsetnskip(const char *in,const char *charset,unsigned long limit) __pure__;
 
 /* try to parse ASCII GMT date; does not understand time zones. */
 /* example dates:
@@ -71,6 +71,6 @@ extern unsigned long scan_noncharsetnskip(const char *in,const char *charset,uns
  *   "Sunday, 06-Nov-94 08:49:37 GMT"
  *   "Sun Nov  6 08:49:37 1994"
  */
-extern unsigned int scan_httpdate(const char *in,time_t *t) __pure__;
+unsigned int scan_httpdate(const char *in,time_t *t) __pure__;
 
 #endif

@@ -32,7 +32,7 @@ typedef struct tai {
  * the time function represents the number of TAI seconds since
  * 1970-01-01 00:00:10 TAI. This matches the convention used by the
  * Olson tz library in ``right'' mode. */
-extern void tai_now(struct tai *);
+void tai_now(struct tai *);
 
 /* tai_approx returns a double-precision approximation to t. The result
  * of tai_approx is always nonnegative. */
@@ -40,21 +40,21 @@ extern void tai_now(struct tai *);
 
 /* tai_add adds a to b modulo 2^64 and puts the result into t. The
  * inputs and output may overlap. */
-extern void tai_add(struct tai *,const struct tai *,const struct tai *);
+void tai_add(struct tai *,const struct tai *,const struct tai *);
 /* tai_sub subtracts b from a modulo 2^64 and puts the result into t.
  * The inputs and output may overlap. */
-extern void tai_sub(struct tai *,const struct tai *,const struct tai *);
+void tai_sub(struct tai *,const struct tai *,const struct tai *);
 /* tai_less returns 1 if a is less than b, 0 otherwise. */
 #define tai_less(t,u) ((t)->x < (u)->x)
 
 #define TAI_PACK 8
 /* tai_pack converts a TAI64 label from internal format in t to external
  * TAI64 format in buf. */
-extern void tai_pack(char *,const struct tai *);
+void tai_pack(char *,const struct tai *);
 /* tai_unpack converts a TAI64 label from external TAI64 format in buf
  * to internal format in t. */
-extern void tai_unpack(const char *,struct tai *);
+void tai_unpack(const char *,struct tai *);
 
-extern void tai_uint(struct tai *,unsigned int);
+void tai_uint(struct tai *,unsigned int);
 
 #endif

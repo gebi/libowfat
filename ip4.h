@@ -1,8 +1,8 @@
 #ifndef IP4_H
 #define IP4_H
 
-extern unsigned int scan_ip4(const char *src,char *ip);
-extern unsigned int fmt_ip4(char *dest,const char *ip);
+unsigned int scan_ip4(const char *src,char *ip);
+unsigned int fmt_ip4(char *dest,const char *ip);
 
 /* for djb backwards compatibility */
 #define ip4_scan scan_ip4

@@ -3,11 +3,11 @@
 
 #include "byte.h"
 
-extern unsigned int scan_ip6(const char *src,char *ip);
-extern unsigned int fmt_ip6(char *dest,const char *ip);
+unsigned int scan_ip6(const char *src,char *ip);
+unsigned int fmt_ip6(char *dest,const char *ip);
 
-extern unsigned int scan_ip6_flat(const char *src,char *);
-extern unsigned int fmt_ip6_flat(char *dest,const char *);
+unsigned int scan_ip6_flat(const char *src,char *);
+unsigned int fmt_ip6_flat(char *dest,const char *);
 
 /*
  ip6 address syntax: (h = hex digit), no leading '0' required

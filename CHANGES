@@ -7,6 +7,7 @@
     function itself
   add buffer functions to write strerror(errno)
   add io API supporting poll, epoll and kqueue
+  remove obsolete "extern" from header files
 
 0.15:
   man page update (document stralloc return values)

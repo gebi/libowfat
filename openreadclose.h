@@ -3,6 +3,6 @@
 
 #include "stralloc.h"
 
-extern int openreadclose(const char *filename,stralloc *buf,unsigned int initiallength);
+int openreadclose(const char *filename,stralloc *buf,unsigned int initiallength);
 
 #endif
