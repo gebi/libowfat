@@ -6,16 +6,16 @@
  * one[len-1]. When the strings are different, byte_diff does not read
  * bytes past the first difference. */
 int byte_diff(const void* a, unsigned long len, const void* b) {
-  register const char* s=a;
-  register const char* t=b;
-  register const char* u=t+len;
+  register const unsigned char* s=a;
+  register const unsigned char* t=b;
+  register const unsigned char* u=t+len;
   register int j;
   j=0;
   for (;;) {
-    if (t==u) break; if ((j=(*s-*t))) break; ++s; ++t;
-    if (t==u) break; if ((j=(*s-*t))) break; ++s; ++t;
-    if (t==u) break; if ((j=(*s-*t))) break; ++s; ++t;
-    if (t==u) break; if ((j=(*s-*t))) break; ++s; ++t;
+    if (t==u) break; if ((j=((unsigned int)*s-*t))) break; ++s; ++t;
+    if (t==u) break; if ((j=((unsigned int)*s-*t))) break; ++s; ++t;
+    if (t==u) break; if ((j=((unsigned int)*s-*t))) break; ++s; ++t;
+    if (t==u) break; if ((j=((unsigned int)*s-*t))) break; ++s; ++t;
   }
   return j;
 }
