@@ -8,6 +8,7 @@ typedef struct {
   unsigned int canwrite:1;
   unsigned int nonblock:1;
   unsigned int inuse:1;
+  tai6464 timeout;
 } io_entry;
 
 array io_fds;

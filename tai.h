@@ -17,9 +17,9 @@
  * difference between two TAI64 labels.
  * See http://cr.yp.to/libtai/tai64.html */
 
-struct tai {
+typedef struct tai {
   uint64 x;
-} ;
+} tai64;
 
 
 #define tai_unix(t,u) ((void) ((t)->x = 4611686018427387914ULL + (uint64) (u)))

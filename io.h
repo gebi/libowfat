@@ -26,7 +26,7 @@ int64 io_trywrite(int64 d,const char* buf,int64 len);
 int64 io_waitwrite(int64 d,const char* buf,int64 len);
 
 /* modify timeout attribute of file descriptor */
-void io_timeout(int64 d,struct taia t);
+void io_timeout(int64 d,tai6464 t);
 
 /* like io_tryread but will return -2,errno=ETIMEDOUT if d has a timeout
  * associated and it is passed without input being there */
@@ -42,7 +42,7 @@ void io_dontwantread(int64 d);
 void io_dontwantwrite(int64 d);
 
 void io_wait();
-void io_waituntil(struct taia t);
+void io_waituntil(tai6464 t);
 void io_check();
 
 /* return next descriptor from io_wait that can be read from */

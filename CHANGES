@@ -3,6 +3,9 @@
   add API for integer multiply with overflow detection
   change length counters from int to long for 64-bit platforms
   add array API from http://cr.yp.to/lib/array.html
+  oops, had a declaration and man page for taia_addsec but not the
+    function itself
+  add buffer functions to write strerror(errno)
 
 0.15:
   man page update (document stralloc return values)
