@@ -2,8 +2,6 @@
 #include "io_internal.h"
 #include "havebsdsf.h"
 
-#undef __linux__
-
 #if defined(HAVE_BSDSENDFILE)
 #include <sys/types.h>
 #include <sys/socket.h>
