@@ -20,7 +20,8 @@ int main(int argc,char* argv[]) {
   buffer_flush(buffer_1small);
 #endif
 
-  buf[fmt_xlong(buf,0)]=0;
+  buf[0]=0;
+  buf[fmt_8long(buf,0)]=0;
   puts(buf);
   rdtscl(a);
   c=str_len(buf);

@@ -5,11 +5,13 @@ typedef struct buffer {
   char *x;
   unsigned int p;
   unsigned int n;
+  unsigned int a;
   int fd;
   int (*op)();
 } buffer;
 
-#define BUFFER_INIT(op,fd,buf,len) { (buf), 0, (len), (fd), (op) }
+#define BUFFER_INIT(op,fd,buf,len) { (buf), 0, (len), 0, (fd), (op) }
+#define BUFFER_INIT_READ(op,fd,buf,len) { (buf), 0, 0, (len), (fd), (op) }
 #define BUFFER_INSIZE 8192
 #define BUFFER_OUTSIZE 8192
 

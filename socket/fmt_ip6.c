@@ -16,7 +16,6 @@ unsigned int fmt_ip6(char *s,const char ip[16])
     if (j==12 && ip6_isv4mapped(ip)) {
       temp=ip4_fmt(s,ip+12);
       len+=temp;
-      if (s) s+=temp;
       break;
     }
     temp = ((unsigned long) (unsigned char) ip[j] << 8) +
