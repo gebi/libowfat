@@ -1,0 +1,59 @@
+#include "scan.h"
+#include "byte.h"
+#include "case.h"
+#include <time.h>
+
+static int parsetime(const char*c,struct tm* x) {
+  unsigned long tmp;
+  c+=scan_ulong(c,&tmp); x->tm_hour=tmp;
+  if (*c!=':') return -1; ++c;
+  c+=scan_ulong(c,&tmp); x->tm_min=tmp;
+  if (*c!=':') return -1; ++c;
+  c+=scan_ulong(c,&tmp); x->tm_sec=tmp;
+  if (*c!=' ') return -1;
+  return 0;
+}
+
+unsigned int scan_httpdate(const char *in,time_t *t) {
+  struct tm x;
+  int i;
+  unsigned long tmp;
+  const char* c;
+  static const char months[] = "JanFebMarAprMayJunJulAugSepOctNovDec";
+  if (!(c=in)) return 0;
+  if (c[3]==',') c+=5; else
+  if (c[6]==',') c+=8; else {
+    c+=4;
+    for (i=0; i<12; ++i) {
+      if (case_equalb(c,3,months+i*3)) {
+	x.tm_mon=i; break;
+      }
+    }
+    c+=4; if (*c==' ') ++c;
+    c+=scan_ulong(c,&tmp); x.tm_mday=tmp;
+    ++c;
+    if (parsetime(c,&x)) return 0;
+    c+=9;
+    c+=scan_ulong(c,&tmp); x.tm_year=tmp-1900;
+    goto done;
+  }
+  c+=scan_ulong(c,&tmp); x.tm_mday=tmp;
+  ++c;
+  for (i=0; i<12; ++i)
+    if (case_equalb(c,3,months+i*3)) {
+      x.tm_mon=i; break;
+    }
+  c+=4;
+  c+=scan_ulong(c,&tmp);
+  if (tmp>1000) x.tm_year=tmp-1900; else
+    if (tmp<70) x.tm_year=tmp+100; else
+                x.tm_year=tmp;
+  ++c;
+  if (parsetime(c,&x)) return 0;
+  c+=9;
+  if (byte_equal(c,3,"GMT")) c+=3;
+done:
+  x.tm_wday=x.tm_yday=x.tm_isdst=0;
+  *t=mktime(&x);
+  return c-in;
+}

@@ -1,6 +1,8 @@
 #ifndef SCAN_H
 #define SCAN_H
 
+#include <sys/types.h>
+
 #ifdef __dietlibc__
 #include <sys/cdefs.h>
 #endif
@@ -57,5 +59,13 @@ extern unsigned int scan_charsetnskip(const char *in,const char *charset,unsigne
 /* return the highest integer n<=limit so that in[i] is not element of
  * charset (ASCIIZ string) for all 0<=i<=n */
 extern unsigned int scan_noncharsetnskip(const char *in,const char *charset,unsigned int limit) __pure__;
+
+/* try to parse ASCII GMT date; does not understand time zones. */
+/* example dates:
+ *   "Sun, 06 Nov 1994 08:49:37 GMT"
+ *   "Sunday, 06-Nov-94 08:49:37 GMT"
+ *   "Sun Nov  6 08:49:37 1994"
+ */
+extern unsigned int scan_httpdate(const char *in,time_t *t) __pure__;
 
 #endif
