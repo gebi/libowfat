@@ -25,6 +25,8 @@ extern int buffer_puts(buffer* b,const char* x);
 extern int buffer_putsalign(buffer* b,const char* x);
 extern int buffer_putsflush(buffer* b,const char* x);
 
+extern int buffer_putspace(buffer* b);
+
 #define buffer_PUTC(s,c) \
   ( ((s)->n != (s)->p) \
     ? ( (s)->x[(s)->p++] = (c), 0 ) \

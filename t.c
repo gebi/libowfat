@@ -14,6 +14,22 @@
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
+  buffer_putspace(buffer_1);
+  buffer_flush(buffer_1);
+#if 0
+  long a,b,c;
+  char buf[4096];
+  char buf2[4096];
+  memcpy(buf,buf2,4096);
+  byte_copy(buf,4096,buf2);
+  rdtscl(a);
+  memcpy(buf,buf2,4096);
+  rdtscl(b);
+  byte_copy(buf,4096,buf2);
+  rdtscl(c);
+  printf("memcpy: %d - byte_copy: %d\n",b-a,c-b);
+#endif
+#if 0
   char ip[16];
   int i;
   if ((i=scan_ip6(argv[1],ip))) {
@@ -21,6 +37,7 @@ int main(int argc,char* argv[]) {
     buf[fmt_ip6(buf,ip)]=0;
     puts(buf);
   }
+#endif
 #if 0
   char buf[100];
   strcpy(buf,"foobarbaz");
