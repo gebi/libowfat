@@ -51,7 +51,7 @@ int64 iob_send(int64 s,io_batch* b) {
     }
     hdr.headers=v; hdr.hdr_cnt=headers;
     hdr.trailers=v+headers; hdr.trl_cnt=trailers;
-    r=sendfile(e[headers].fd,s,e[headers].offset,e[headers].bytes,&hdr,&sbytes,0);
+    r=sendfile(e[headers].fd,s,e[headers].offset,e[headers].n,&hdr,&sbytes,0);
     if (r==0)
       sent=b->bytesleft;
     else if (r==-1 && errno==EAGAIN)
