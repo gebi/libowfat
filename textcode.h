@@ -6,13 +6,16 @@
 unsigned long fmt_uuencoded(char* dest,const char* src,unsigned long len);
 unsigned long fmt_base64(char* dest,const char* src,unsigned long len);
 unsigned long fmt_quotedprintable(char* dest,const char* src,unsigned long len);
+unsigned long fmt_quotedprintable2(char* dest,const char* src,unsigned long len,const char* escapeme);
 unsigned long fmt_urlencoded(char* dest,const char* src,unsigned long len);
+unsigned long fmt_urlencoded2(char* dest,const char* src,unsigned long len,const char* escapeme);
 unsigned long fmt_yenc(char* dest,const char* src,unsigned long len);
 unsigned long fmt_hexdump(char* dest,const char* src,unsigned long len);
 /* this changes '<' to '&lt;' and '&' to '&amp;' */
 unsigned long fmt_html(char* dest,const char* src,unsigned long len);
 /* change '\' to "\\", '\n' to "\n", ^A to "\x01" etc */
 unsigned long fmt_cescape(char* dest,const char* src,unsigned long len);
+unsigned long fmt_cescape2(char* dest,const char* src,unsigned long len,const char* escapeme);
 /* fold awk whitespace to '_'; this is great for writing fields with
  * white spaces to a log file and still allow awk to do log analysis */
 unsigned long fmt_foldwhitespace(char* dest,const char* src,unsigned long len);
@@ -37,6 +40,9 @@ unsigned long scan_cescape(const char *src,char *dest,unsigned long *destlen);
 int fmt_to_sa(unsigned long (*func)(char*,const char*,unsigned long),
 	      stralloc* sa,const char* src,unsigned long len);
 
+int fmt_to_sa2(unsigned long (*func)(char*,const char*,unsigned long,const char*),
+	      stralloc* sa,const char* src,unsigned long len,const char* escapeme);
+
 /* arg 1 is one of the scan_* functions from above */
 /* return number of bytes scanned */
 unsigned long scan_to_sa(unsigned long (*func)(const char*,char*,unsigned long*),
@@ -50,6 +56,10 @@ unsigned long scan_to_sa(unsigned long (*func)(const char*,char*,unsigned long*)
 #define fmt_hexdump_sa(sa,src,len) fmt_to_sa(fmt_hexdump,sa,src,len)
 #define fmt_html_sa(sa,src,len) fmt_to_sa(fmt_html,sa,src,len)
 #define fmt_cescape_sa(sa,src,len) fmt_to_sa(fmt_cescape,sa,src,len)
+
+#define fmt_quotedprintable2_sa(sa,src,len,escapeme) fmt_to_sa2(fmt_quotedprintable2,sa,src,len,escapeme)
+#define fmt_urlencoded2_sa(sa,src,len,escapeme) fmt_to_sa2(fmt_urlencoded2,sa,src,len,escapeme)
+#define fmt_cescape2_sa(sa,src,len,escapeme) fmt_to_sa2(fmt_cescape2,sa,src,len,escapeme)
 
 #define scan_uuencoded_sa(src,sa) scan_to_sa(scan_uuencoded,src,sa)
 #define scan_base64_sa(src,sa) scan_to_sa(scan_base64,src,sa)
@@ -67,6 +77,12 @@ void fmt_to_array(unsigned long (*func)(char*,const char*,unsigned long),
 
 void fmt_tofrom_array(unsigned long (*func)(char*,const char*,unsigned long),
 		      array* dest,array* src);
+
+void fmt_to_array2(unsigned long (*func)(char*,const char*,unsigned long,const char*),
+		  array* a,const char* src,unsigned long len,const char* escapeme);
+
+void fmt_tofrom_array2(unsigned long (*func)(char*,const char*,unsigned long,const char*),
+		      array* dest,array* src,const char* escapeme);
 
 unsigned long scan_to_array(unsigned long (*func)(const char*,char*,unsigned long*),
 			    const char* src,array* dest);

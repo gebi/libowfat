@@ -3,7 +3,7 @@
 #include "str.h"
 #include "haveinline.h"
 
-unsigned long fmt_cescape(char* dest,const char* src,unsigned long len) {
+unsigned long fmt_cescape2(char* dest,const char* src,unsigned long len,const char* escapeme) {
   register const unsigned char* s=(const unsigned char*) src;
   unsigned long written=0,i;
   char c;
@@ -27,7 +27,7 @@ unsigned long fmt_cescape(char* dest,const char* src,unsigned long len) {
 	written+=2;
 	break;
     default:
-	if (s[i]<' ') {
+	if (s[i]<' ' || escapeme[str_chr(escapeme,s[i])]==s[i]) {
 	  if (dest) {
 	    dest[written]='\\';
 	    dest[written+1]='x';
@@ -43,4 +43,8 @@ unsigned long fmt_cescape(char* dest,const char* src,unsigned long len) {
     }
   }
   return written;
+}
+
+unsigned long fmt_cescape(char* dest,const char* src,unsigned long len) {
+  return fmt_cescape2(dest,src,len,"");
 }

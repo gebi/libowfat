@@ -37,11 +37,13 @@ int64 writecb(int64 fd,const void* buf,uint64 n) {
 }
 
 int main(int argc,char* argv[]) {
+#if 0
   io_batch* b=iob_new(1234);
   int64 fd=open("t.c",0);
   iob_addbuf(b,"fnord",5);
   iob_addfile_close(b,fd,0,7365);
   iob_write(1,b,writecb);
+#endif
 #if 0
   char dest[1024];
   unsigned long len;
@@ -309,6 +311,17 @@ int main(int argc,char* argv[]) {
   /*byte_zero_djb(buf,j); */
   rdtscl(c);
   printf("%lu %lu\n",b-a,c-b);
+#endif
+#if 1
+  unsigned long size;
+  char* buf=mmap_read(argv[1],&size);
+  if (buf) {
+    unsigned int x=fmt_urlencoded2(0,buf,size,"x");
+    unsigned int y;
+    char* tmp=malloc(x+1);
+    y=fmt_urlencoded2(tmp,buf,size,"x");
+    write(1,tmp,x);
+  }
 #endif
 }
 
