@@ -5,7 +5,9 @@ unsigned int fmt_human(char* dest,unsigned long long l) {
   int i;
   if (l<1000) return fmt_ulong(dest,l);
   if (l>1000000000000ull) {
-    l=(l+50000000000ull)/100000000000ull;
+    /* dang!  overflow! */
+    l/=1000;
+    l=(l+50000000)/100000000;
     unit='T';
   } else if (l>1000000000) {
     l=(l+50000000)/100000000;
@@ -13,7 +15,7 @@ unsigned int fmt_human(char* dest,unsigned long long l) {
   } else if (l>1000000) {
     l=(l+50000)/100000;
     unit='M';
-  } else if (l>1000) {
+  } else {
     l=(l+50)/100;
     unit='k';
   }

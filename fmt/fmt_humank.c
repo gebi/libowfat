@@ -13,7 +13,7 @@ unsigned int fmt_humank(char* dest,unsigned long long l) {
   } else if (l>1024*1024) {
     l=(l+(1024*1024/20))/(1024*1024/10);
     unit='M';
-  } else if (l>1024) {
+  } else {
     l=(l+(1024/20))/(1024/10);
     unit='k';
   }

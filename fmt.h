@@ -1,6 +1,9 @@
 #ifndef FMT_H
 #define FMT_H
 
+/* for time_t: */
+#include <sys/types.h>
+
 #define FMT_LONG  41 /* enough space to hold -2^127 in decimal, plus \0 */
 #define FMT_ULONG 40 /* enough space to hold 2^128 - 1 in decimal, plus \0 */
 #define FMT_8LONG 44 /* enough space to hold 2^128 - 1 in octal, plus \0 */
@@ -74,5 +77,8 @@ unsigned int fmt_human(char* dest,unsigned long long l);
 
 /* 1 -> "1", 4900 -> "4.8k", 2300000 -> "2.2M" */
 unsigned int fmt_humank(char* dest,unsigned long long l);
+
+/* "Sun, 06 Nov 1994 08:49:37 GMT" */
+unsigned int fmt_httpdate(char* dest,time_t t);
 
 #endif
