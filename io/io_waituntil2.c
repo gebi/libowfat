@@ -43,9 +43,9 @@ int64 io_waituntil2(int64 milliseconds) {
     int n;
     struct timespec ts;
     ts.tv_sec=milliseconds/1000; ts.tv_nsec=(milliseconds%1000)*1000000;
-    if ((n=kevent(io_master,0,0,y,100,&ts))==-1) return;
-    while (n>0) {
-      io_entry* e=array_get(&io_fds,sizeof io_entry,y[--n].ident);
+    if ((n=kevent(io_master,0,0,y,100,&ts))==-1) return -1;
+    for (i=n-1; i>=0; --i) {
+      io_entry* e=array_get(&io_fds,sizeof(io_entry),y[--n].ident);
       if (e) {
 	if (y[n].filter==EVFILT_READ) {
 	  e->canread=1;
@@ -59,6 +59,7 @@ int64 io_waituntil2(int64 milliseconds) {
 	}
       }
     }
+    return n;
   }
 #endif
   for (i=r=0; i<array_length(&io_fds,sizeof(io_entry)); ++i) {
