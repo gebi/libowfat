@@ -198,8 +198,8 @@ havekqueue.h: trykqueue.c
 
 havebsdsf.h: trybsdsf.c
 	-rm -f $@
-	if $(DIET) $(CC) $(CFLAGS) -c trybsdsf.c >/dev/null 2>&1; then echo "#define HAVE_BSDSENDFILE"; fi > $@
-	-rm -f trybsdsf.o
+	if $(DIET) $(CC) $(CFLAGS) -o trybsdsf trybsdsf.c >/dev/null 2>&1; then echo "#define HAVE_BSDSENDFILE"; fi > $@
+	-rm -f trybsdsf.o trybsdsf
 
 havesendfile.h: trysendfile.c
 	-rm -f $@
