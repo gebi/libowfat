@@ -1,5 +1,4 @@
 #include "textcode.h"
-#include "haveinline.h"
 
 unsigned int scan_uuencoded(const char *src,char *dest,unsigned int *destlen) {
   unsigned int len;

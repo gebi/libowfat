@@ -17,30 +17,18 @@
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
-  unsigned long size;
-  char* buf=mmap_read(argv[1],&size);
-  if (buf) {
-    const char* c=buf;
-    const char* max=buf+size;
-    while (c<max) {
-      char tmp[100];
-      unsigned int scanned;
-      unsigned int x=scan_uuencoded(c,tmp,&scanned);
-      if (!x) {
-	if (!strncmp(c,"end\n",4))
-	  return 0;
-	else {
-parseerror:
-	  buffer_putsflush(buffer_2,"parse error!\n");
-	  exit(1);
-	}
-      }
-      write(1,tmp,scanned);
-      c+=x;
-      if (*c!='\n') goto parseerror;
-      ++c;
-    }
+  char buf[100];
+  char buf2[100];
+  unsigned int len,len2;
+  buf[fmt_base64(buf,"foo:bar",7)]=0;
+  buffer_puts(buffer_1,buf);
+  buffer_putsflush(buffer_1,"\n");
+  if ((buf[len2=scan_base64(buf,buf2,&len)])!=0) {
+    buffer_putsflush(buffer_2,"parse error!\n");
+    return 1;
   }
+  buffer_put(buffer_1,buf2,len2);
+  buffer_putsflush(buffer_1,"\n");
   return 0;
 #if 0
   unsigned long size;

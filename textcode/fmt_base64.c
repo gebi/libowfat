@@ -2,10 +2,6 @@
 #include "textcode.h"
 #include "haveinline.h"
 
-static inline unsigned int enc(unsigned char x) {
-  return ((x-1)&077)+'!';
-}
-
 unsigned int fmt_base64(char* dest,const char* src,unsigned int len) {
   register const unsigned char* s=(const unsigned char*) src;
   unsigned short bits=0,temp=0;
