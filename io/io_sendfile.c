@@ -1,3 +1,4 @@
+/* http://delegate.uec.ac.jp:8081/club/mma/~shimiz98/misc/sendfile.html */
 #define _FILE_OFFSET_BITS 64
 #include "io_internal.h"
 #include "havebsdsf.h"
