@@ -494,54 +494,6 @@ taia_sub.o: taia/taia_sub.c taia.h tai.h uint64.h
 taia_tai.o: taia/taia_tai.c taia.h tai.h uint64.h
 taia_uint.o: taia/taia_uint.c taia.h tai.h uint64.h
 taia_unpack.o: taia/taia_unpack.c taia.h tai.h uint64.h
-array.o: test/array.c array.h uint64.h byte.h
-b64decode.o: test/b64decode.c buffer.h textcode.h havealloca.h
-b64encode.o: test/b64encode.c buffer.h textcode.h havealloca.h
-buffer_1.o: test/buffer_1.c buffer.h
-buffer_fromsa.o: test/buffer_fromsa.c stralloc.h buffer.h
-buffer_getline.o: test/buffer_getline.c stralloc.h buffer.h io.h \
-  uint64.h taia.h tai.h errmsg.h
-byte_copy.o: test/byte_copy.c byte.h errmsg.h
-cescape.o: test/cescape.c buffer.h textcode.h havealloca.h
-client.o: test/client.c scan.h ip6.h byte.h uint32.h str.h \
-  socket.h uint16.h
-dllink.o: test/dllink.c socket.h uint16.h uint32.h buffer.h \
-  case.h
-dnsip.o: test/dnsip.c dns.h stralloc.h iopause.h taia.h tai.h \
-  uint64.h ip4.h buffer.h errmsg.h
-fdpassing.o: test/fdpassing.c io.h uint64.h taia.h tai.h \
-  buffer.h
-fmt_httpdate.o: test/fmt_httpdate.c scan.h buffer.h fmt.h
-fmt_human.o: test/fmt_human.c fmt.h buffer.h
-fmt_long.o: test/fmt_long.c fmt.h str.h
-fmt_longlong.o: test/fmt_longlong.c fmt.h str.h scan.h
-httpd.o: test/httpd.c socket.h uint16.h uint32.h io.h uint64.h \
-  taia.h tai.h buffer.h ip6.h byte.h array.h case.h fmt.h \
-  iob.h io.h array.h str.h
-io.o: test/io.c io.h uint64.h taia.h tai.h
-io2.o: test/io2.c io.h uint64.h taia.h tai.h
-io3.o: test/io3.c buffer.h io.h uint64.h taia.h tai.h
-io4.o: test/io4.c io.h uint64.h taia.h tai.h buffer.h
-io5.o: test/io5.c socket.h uint16.h uint32.h io.h uint64.h \
-  taia.h tai.h buffer.h ip6.h byte.h
-iob.o: test/iob.c iob.h io.h uint64.h taia.h tai.h array.h \
-  buffer.h
-proxy.o: test/proxy.c socket.h uint16.h uint32.h io.h uint64.h \
-  taia.h tai.h buffer.h ip6.h byte.h str.h dns.h \
-  stralloc.h iopause.h scan.h
-readhttp.o: test/readhttp.c stralloc.h buffer.h byte.h
-scan.o: test/scan.c scan.h
-scan_long.o: test/scan_long.c scan.h fmt.h buffer.h
-server.o: test/server.c scan.h ip6.h byte.h uint32.h str.h \
-  socket.h uint16.h
-stralloc_buffer.o: test/stralloc_buffer.c stralloc.h buffer.h
-stralloc_chomp.o: test/stralloc_chomp.c stralloc.h buffer.h
-textcode.o: test/textcode.c array.h uint64.h textcode.h
-unurl.o: test/unurl.c buffer.h textcode.h havealloca.h
-urlencode.o: test/urlencode.c buffer.h textcode.h havealloca.h
-uudecode.o: test/uudecode.c textcode.h str.h buffer.h open.h \
-  stralloc.h scan.h case.h
-vd.o: test/vd.c socket.h uint16.h uint32.h buffer.h
 base64.o: textcode/base64.c
 fmt_base64.o: textcode/fmt_base64.c fmt.h textcode.h haveinline.h
 fmt_cescape.o: textcode/fmt_cescape.c fmt.h textcode.h str.h \
@@ -796,7 +748,7 @@ dns_nd6.o fmt_xlong.o scan_xlong.o fmt_ip6_flat.o $(TEXTCODE_OBJS): haveinline.h
 iob_send.o scan_ip6if.o: havealloca.h
 
 dep: haveip6.h haven2i.h havesl.h haveinline.h iopause.h select.h haveepoll.h havekqueue.h havedevpoll.h havescope.h havesigio.h havebsdsf.h havesendfile.h
-	gcc -I. -MM */*.c t.c | sed -e 's@ \./@ @g' > dep
+	gcc -I. -MM `ls */*.c | grep -v test` t.c | sed -e 's@ \./@ @g' > dep
 
 libdep:
 	for i in $(LIBS); do (echo -n $$i|tr a-z A-Z|sed 's/.A$$/_OBJS=/'; echo $${i%.a}/*.c|sed -e 's@[^/]*/\([^.]*\)\.c@\1.o @g'); done > libdep
