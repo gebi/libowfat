@@ -2,6 +2,7 @@
 #define _FILE_OFFSET_BITS 64
 #include "io_internal.h"
 #include "havebsdsf.h"
+#include "havesendfile.h"
 
 #if defined(HAVE_BSDSENDFILE)
 #include <sys/types.h>
@@ -39,6 +40,19 @@ int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
   }
   return i;
 }
+
+#elif defined(HAVE_SENDFILE)
+
+#ifdef __hpux__
+
+#include <sys/types.h>
+#include <sys/uio.h>
+#include <sys/socket.h>
+
+int64 io_sendfile(int64 out,int64 in,uint64 off,uint64 bytes) {
+  return sendfile64(out,in,off,bytes,0,0);
+}
+#endif
 
 #else
 

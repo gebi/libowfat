@@ -80,7 +80,7 @@ $(DNS_OBJS): dns.h stralloc.h taia.h tai.h uint64.h iopause.h
 $(CASE_OBJS): case.h
 $(ARRAY_OBJS): uint64.h array.h
 $(MULT_OBJS): uint64.h uint32.h uint16.h safemult.h
-$(IO_OBJS): uint64.h array.h io.h io_internal.h taia.h tai.h haveepoll.h havekqueue.h havesigio.h havebsdsf.h havedevpoll.h
+$(IO_OBJS): uint64.h array.h io.h io_internal.h taia.h tai.h haveepoll.h havekqueue.h havesigio.h havebsdsf.h havedevpoll.h havesendfile.h
 
 
 iob_addbuf.o iob_addfile.o iob_new.o iob_reset.o iob_send.o: iob_internal.h iob.h
@@ -137,11 +137,12 @@ t: t.o libowfat.a
 clean:
 	rm -f *.o *.a *.da *.bbg *.bb core t haveip6.h haven2i.h \
 havesl.h haveinline.h iopause.h select.h havekqueue.h haveepoll.h \
-libepoll havesigio.h havebsdsf.h havescope.h havedevpoll.h Makefile dep
+libepoll havesigio.h havebsdsf.h havesendfile.h havescope.h havedevpoll.h \
+Makefile dep
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
 uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h \
-openreadclose.h readclose.h ndelay.h array.h io.h safemult.h iob.h
+openreadclose.h readclose.h ndelay.h array.h io.h safemult.h iob.h havealloca.h
 
 install: libowfat.a
 	install -d $(INCLUDEDIR) $(MAN3DIR) $(LIBDIR)
@@ -198,6 +199,11 @@ havebsdsf.h: trybsdsf.c
 	-rm -f $@
 	if $(DIET) $(CC) $(CFLAGS) -c trybsdsf.c >/dev/null 2>&1; then echo "#define HAVE_BSDSENDFILE"; fi > $@
 	-rm -f trybsdsf.o
+
+havesendfile.h: trysendfile.c
+	-rm -f $@
+	if $(DIET) $(CC) $(CFLAGS) -c trysendfile.c >/dev/null 2>&1; then echo "#define HAVE_SENDFILE"; fi > $@
+	-rm -f trysendfile.o
 
 haveepoll.h: tryepoll.c
 	-rm -f $@
