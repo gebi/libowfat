@@ -2,9 +2,7 @@
 #include "byte.h"
 #include <ctype.h>
 #include "socket.h"
-#if defined(__linux__) || defined(_SGI_SOURCE)
-#include <alloca.h>
-#endif
+#include "havealloca.h"
 
 unsigned int scan_ip6if(const char* src,char* ip,uint32* scope_id) {
   int i=scan_ip6(src,ip);

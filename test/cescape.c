@@ -1,7 +1,7 @@
-
 #include <string.h>
 #include "buffer.h"
 #include "textcode.h"
+#include "havealloca.h"
 
 void cescape(const char* c) {
   char* buf=alloca(strlen(c)*5+1);

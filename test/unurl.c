@@ -1,6 +1,7 @@
 #include <string.h>
 #include "buffer.h"
 #include "textcode.h"
+#include "havealloca.h"
 
 void unurl(const char* s) {
   char* buf;

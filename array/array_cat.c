@@ -6,5 +6,5 @@ void array_cat(array* to,const array* const from) {
     array_fail(to);
     return;
   }
-  return array_catb(to,from->p,from->initialized);
+  array_catb(to,from->p,from->initialized);
 }

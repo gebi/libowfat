@@ -1,6 +1,7 @@
 #include <string.h>
 #include "buffer.h"
 #include "textcode.h"
+#include "havealloca.h"
 
 void b64encode(const char* c) {
   char* buf=alloca(strlen(c)*2+4);

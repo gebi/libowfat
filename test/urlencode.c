@@ -1,6 +1,7 @@
 #include <string.h>
 #include "buffer.h"
 #include "textcode.h"
+#include "havealloca.h"
 
 void urlencode(const char* c) {
   char* buf=alloca(strlen(c)*3+1);

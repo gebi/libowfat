@@ -10,7 +10,7 @@ unsigned long scan_tofrom_array(unsigned long (*func)(const char*,char*,unsigned
   array_cat0(src);
   if (array_failed(src) || array_failed(dest)) return 0;
   needed=array_bytes(src);
-  x=array_start(dest)+array_bytes(dest);
+  x=((char*)array_start(dest))+array_bytes(dest);
   if (!array_allocate(dest,1,array_bytes(dest)+needed-1)) return 0;
   needed=func(array_start(src),x,&scanned);
   array_truncate(src,1,array_bytes(src)-1);
