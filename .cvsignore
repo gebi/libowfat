@@ -5,3 +5,5 @@ havesl.h
 haveinline.h
 unurl
 urlencode
+iopause.h
+select.h
