@@ -71,4 +71,6 @@ extern long alt_firstwrite;
 
 int64 io_waituntil2(int64 milliseconds);
 
+void io_sigpipe(void);
+
 #define debug_printf(x)

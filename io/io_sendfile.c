@@ -28,7 +28,9 @@ int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
 #include <sys/socket.h>
 
 int64 io_sendfile(int64 out,int64 in,uint64 off,uint64 bytes) {
-  return sendfile64(out,in,off,bytes,0,0);
+  long long r=sendfile64(out,in,off,bytes,0,0);
+  if (r==-1 && errno!=EAGAIN) r=-3;
+  return r;
 }
 
 #elif defined (__sun__) && defined(__svr4__)
@@ -40,7 +42,9 @@ int64 io_sendfile(int64 out,int64 in,uint64 off,uint64 bytes) {
 
 int64 io_sendfile(int64 out,int64 in,uint64 off,uint64 bytes) {
   off64_t o=off;
-  return sendfile64(out,in,&o,bytes);
+  long long r=sendfile64(out,in,&o,bytes);
+  if (r==-1 && errno!=EAGAIN) r=-3;
+  return r;
 }
 
 #elif defined(_AIX)

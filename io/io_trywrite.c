@@ -9,6 +9,7 @@ int64 io_trywrite(int64 d,const char* buf,int64 len) {
   struct itimerval old,new;
   struct pollfd p;
   io_entry* e=array_get(&io_fds,sizeof(io_entry),d);
+  io_sigpipe();
   if (!e) { errno=EBADF; return -3; }
   if (!e->nonblock) {
     p.fd=d;

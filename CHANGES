@@ -1,6 +1,7 @@
 0.19:
   add io_socketpair
   add io_passfd and io_receivefd (and test/fdpassing.c)
+  io_trywrite and io_waitwrite not ignore SIGPIPE
 
 0.18:
   make libowfat compile on BSD again (sorry, and thanks to everyone who
