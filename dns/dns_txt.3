@@ -6,7 +6,7 @@ dns_txt \- look up TXT records
 
 int \fBdns_txt\fP(stralloc* \fIout\fR,stralloc* \fIfqdn\fR);
 .SH DESCRIPTION
-dns_ip4 looks up TXT records for the fully-qualified domain name in
+dns_txt looks up TXT records for the fully-qualified domain name in
 \fIfqdn\fR. It puts the concatenation of the TXT records into \fIout\fR
 and returns 0.  If the domain does not exist in DNS, or has no TXT
 records, \fIout\fR will be empty.

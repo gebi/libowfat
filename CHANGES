@@ -8,7 +8,7 @@
   scan_ip6 returned 1 for "::" (Uwe Ohse)
   add el-cheapo MIME decoding to test/uudecode
   make install forgot to install ndelay.h
-  fix typo in dns_mx man page (Hynek Schlawack)
+  fix typos in several man pages (Hynek Schlawack)
 
 0.14:
   avoid bus errors in byte_copy
