@@ -1,10 +1,13 @@
 #include "fmt.h"
 
 unsigned int fmt_double(char *dest, double d,int maxlen,int prec) {
-  unsigned long long *x=(unsigned long long *)&d;
+  union {
+    double d;
+    unsigned long long x;
+  } __u = { .d=d, };
   /* step 1: extract sign, mantissa and exponent */
-  signed int s=*x>>63;
-  signed long e=((*x>>52)&((1<<11)-1))-1023;
+  signed int s=__u.x>>63;
+  signed long e=((__u.x>>52)&((1<<11)-1))-1023;
 /*  unsigned long long m=*x & ((1ull<<52)-1); */
   /* step 2: exponent is base 2, compute exponent for base 10 */
   signed long e10=1+(long)(e*0.30102999566398119802); /* log10(2) */
