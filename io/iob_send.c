@@ -59,11 +59,13 @@ int64 iob_send(int64 s,io_batch* b) {
       if (r==0)
 	sent=b->bytesleft;
       else if (r==-1 && errno==EAGAIN)
-	sent=sbytes;
+	if ((sent=sbytes)) sent=-1;
       else
-	sent=-1;
-    } else
+	sent=-3;
+    } else {
       sent=writev(s,v,headers);
+      if (sent==-1 && errno!=EAGAIN) sent=-3;
+    }
 #else
 #ifdef TCP_CORK
     if (b->bufs && b->files && !b->next) {
@@ -71,18 +73,16 @@ int64 iob_send(int64 s,io_batch* b) {
       setsockopt(s,IPPROTO_TCP,TCP_CORK,&one,sizeof(one));
     }
 #endif
-    if (headers)
+    if (headers) {
       sent=writev(s,v,headers);
-    else
+      if (sent==-1 && errno==EAGAIN) sent=-3;
+    } else
       sent=io_sendfile(s,e->fd,e->offset,e->n);
 #endif
     if (sent>0)
       total+=sent;
     else
-      if (!total) {
-	if (errno!=EAGAIN) return -3;
-	return -1;
-      }
+      return total?total:sent;
     if (sent==b->bytesleft) {
       b->bytesleft=0;
 #ifdef TCP_CORK

@@ -275,7 +275,7 @@ emerge:
       struct http_data* h=io_getcookie(i);
       int64 r=iob_send(i,&h->iob);
 /*      printf("iob_send returned %lld\n",r); */
-      if (r==-1) io_eagain(i);
+      if (r==-1) io_eagain(i); else
       if (r<=0) {
 	array_trunc(&h->r);
 	iob_reset(&h->iob);

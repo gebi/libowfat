@@ -2,6 +2,9 @@
   add Linux SIGIO support to IO
   expand IO api to be able to cope with edge triggered event
     notification: introduce io_eagain
+  the integer scan routines should only write *dest if they actually
+    scanned something
+  io_sendfile and iob_send should return -1 to -3 just like io_trywrite
 
 0.16:
   add buffer_fromsa (make buffer from stralloc)

@@ -11,7 +11,7 @@ int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
   int r=sendfile(fd,s,off,n,0,&sbytes,0);
   if (r==0) return n;
   if (r==-1)
-    return (errno==EAGAIN?sbytes:-1);
+    return (errno==EAGAIN?(sbytes?sbytes:-1):-3);
 }
 #elif defined(__linux__)
 
@@ -26,7 +26,16 @@ _syscall4(int,sendfile,int,out,int,in,long *,offset,unsigned long,count)
 
 int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
   off_t o=off;
-  return sendfile(s,fd,&o,n);
+  io_entry* e=array_get(&io_fds,sizeof(io_entry),s);
+  off_t i=sendfile(s,fd,&o,n);
+  if (i==-1) {
+    if (e) {
+      e->canwrite=0;
+      e->next_write=-1;
+    }
+    if (errno!=EAGAIN) i=-3;
+  }
+  return i;
 }
 
 #else
@@ -37,6 +46,7 @@ int64 io_sendfile(int64 out,int64 in,uint64 off,uint64 bytes) {
   char buf[BUFSIZE];
   int n,m;
   uint64 sent=0;
+  io_entry* e=array_get(&io_fds,sizeof(io_entry),out);
   if (lseek(in,off,SEEK_SET) != off)
     return -1;
   while (bytes>0) {
@@ -44,8 +54,16 @@ int64 io_sendfile(int64 out,int64 in,uint64 off,uint64 bytes) {
     if ((n=read(in,tmp,(bytes<BUFSIZE)?bytes:BUFSIZE))<=0)
       return (sent?sent:-1);
     while (n>0) {
-      if ((m=write(out,tmp,n))<0)
+      if ((m=write(out,tmp,n))<0) {
+	if (m==-1) {
+	  if (e) {
+	    e->canwrite=0;
+	    e->next_write=-1;
+	  }
+	  return errno==EAGAIN?(sent?sent:-1):-3;
+	}
 	goto abort;
+      }
       sent+=m;
       n-=m;
       tmp+=m;
