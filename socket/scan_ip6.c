@@ -20,12 +20,11 @@ unsigned int scan_ip6(const char *s,char ip[16])
   int prefixlen=0;
   int suffixlen=0;
 
-  for (i=0; i<16; i++) ip[i]=0;
-
   if ((i=scan_ip4(s,ip+12))) {
     for (len=0; len<12; ++len) ip[len]=V4mappedprefix[len];
     return i;
   }
+  for (i=0; i<16; i++) ip[i]=0;
   for (;;) {
     if (*s == ':') {
       len++;
