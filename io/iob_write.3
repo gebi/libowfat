@@ -4,6 +4,8 @@ iob_write \- send I/O batch through callback
 .SH SYNTAX
 .B #include <iob.h>
 
+typedef int64 (*io_write_callback)(int64 s,const void* buf,uint64 n);
+
 int64 \fBiob_write\fR(int64 s,io_batch* b,io_write_callback cb);
 .SH DESCRIPTION
 iob_write sends the (rest of) \fIb\fR through the callback \fIcb\fR,
