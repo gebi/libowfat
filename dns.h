@@ -66,7 +66,7 @@ int dns_transmit_get(struct dns_transmit *,const iopause_fd *,const struct taia 
 
 int dns_resolvconfip(char *);
 int dns_resolve(const char *,const char *);
-struct dns_transmit dns_resolve_tx;
+extern struct dns_transmit dns_resolve_tx;
 
 int dns_ip4_packet(stralloc *,const char *,unsigned int);
 int dns_ip4(stralloc *,const stralloc *);
