@@ -1,4 +1,7 @@
 0.18:
+  make libowfat compile on BSD again (sorry, and thanks to everyone who
+    sent me a patch :-D)
+  add iob_addfile_close, needed for gatling 0.5+
 
 0.17:
   add Linux SIGIO support to IO
