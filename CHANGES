@@ -1,3 +1,6 @@
+0.19.2:
+  for some reason, a botched dependency slipped in the the Makefile
+
 0.19.1:
   oops, I botched havealloca.h, which was not generated but static
     Now it is generated.
