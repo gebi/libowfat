@@ -1,6 +1,8 @@
 0.9:
   fmt_str did not check for out==NULL!  Thanks, Uwe Ohse.
   Updated to buffer to fix read buffers.  Thanks, David Lichteblau.
+  Oops!  byte_copy had a trivial and dumb typo in it that I'm unsure how
+    I could have missed it.
 
 0.8:
   BSD compatibility.
