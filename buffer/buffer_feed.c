@@ -10,5 +10,5 @@ int buffer_feed(buffer* b) {
     b->n=w;
     b->p=0;
   }
-  return b->n;
+  return (b->n-b->p);
 }
