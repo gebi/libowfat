@@ -1,5 +1,7 @@
 0.14:
   avoid bus errors in byte_copy
+  byte_rchr was completely broken
+  add case, iopause, tai, taia, openreadclose and ipv6-enhanced dns
 
 0.13:
   fixed several bugs in test/uudecode.c

@@ -80,6 +80,8 @@ $(TAIA_OBJS) $(TAI_OBJS) $(CASE_OBJS)
 	ar cr $@ $^
 	-ranlib $@
 
+t.o: iopause.h
+
 t: t.o libowfat.a
 	$(DIET) $(CC) -g -o $@ $^
 
