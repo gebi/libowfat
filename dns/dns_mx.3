@@ -6,7 +6,7 @@ dns_mx \- look up Mail eXchanger
 
 int \fBdns_mx\fP(stralloc* \fIout\fR,stralloc* \fIfqdn\fR);
 .SH DESCRIPTION
-dns_ip4 looks up MX records for the fully-qualified domain name in
+dns_mx looks up MX records for the fully-qualified domain name in
 \fIfqdn\fR. It puts the MX records into \fIout\fR and returns 0. Each MX
 record is a two-byte MX distance (big endian) followed by a
 \\0-terminated dot-encoded domain name. If the domain does not exist in
