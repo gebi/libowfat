@@ -8,8 +8,8 @@ buffer_getline_sa \- read line from buffer
 
 int \fBbuffer_getline_sa\fP(buffer* \fIb\fR,stralloc* \fIsa\fR);
 .SH DESCRIPTION
-buffer_getline_sa copies data from the \fIb\fR to \fIsa\fR until a '\\n'
-is found, overwriting the previous content of \fIsa\fR.  The new-line
+buffer_getline_sa appends data from the \fIb\fR to \fIsa\fR until a '\\n'
+is found, NOT overwriting the previous content of \fIsa\fR.  The new-line
 is also appended to \fIsa\fR.
 
 If reading from the buffer or allocating memory fails,
@@ -18,5 +18,10 @@ that point \fIsa\fR may be empty or it may already contain a partial
 token.
 
 On success, buffer_getline_sa returns 0.
+.SH RATIONALE
+buffer_getline_sa appends instead of overwriting so it can be used on
+non-blocking sockets (these signal error and set \fIerrno\fR to EAGAIN;
+in this case you can simply call buffer_getline_sa again when
+\fBselect\fR or \fBpoll\fR indicate more data is available).
 .SH "SEE ALSO"
 buffer_get_token_sa(3), buffer(3)

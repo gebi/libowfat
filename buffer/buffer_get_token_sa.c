@@ -4,7 +4,6 @@
 #include <errno.h>
 
 int buffer_get_token_sa(buffer* b,stralloc* sa,const char* charset,unsigned int setlen) {
-  sa->len=0;
   for (;;) {
     char x;
     if (!stralloc_readyplus(sa,1)) goto nomem;

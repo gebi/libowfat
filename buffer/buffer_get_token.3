@@ -7,21 +7,10 @@ buffer_get_token \- read token from buffer
 int \fBbuffer_get_token\fP(buffer* \fIb\fR,char* \fIx\fR,unsigned int \fIlen\fR,
                  const char* \fIcharset\fR,unsigned int \fIsetlen\fR);
 .SH DESCRIPTION
-Normally buffer_get_token copies data to \fIx\fR[0], \fIx\fR[1], ...,
-\fIx\fR[\fIlen\fR-1] from the beginning of a string stored in
-preallocated space; removes these \fIlen\fR bytes from the string; and
-returns \fIlen\fR.
-
-If, however, the string has fewer than \fIlen\fR (but more than 0)
-bytes, buffer_get_token copies only that many bytes, and returns that number.
-
-If the string is empty, buffer_get_token first uses a \fBread operation\fR to
-feed data into the string. The \fBread operation\fR may indicate end of
-input, in which case buffer_get_token returns 0; or a read error, in which
-case buffer_get_token returns -1, setting \fIerrno\fR approporiately.
-
-The preallocated space and the \fBread operation\fR are specified by
-\fIb\fR. You must initialize \fBb\fR using buffer_init before calling
-buffer_get_token (or use the pre-initialized buffer_0).
+buffer_get_token copies data from \fIb\fR to \fIx\fR[0], \fIx\fR[1], ...,
+\fIx\fR[\fIlen\fR-1] until \fIlen\fR bytes have been copied or one of
+\fIcharset\fR[0], \fIcharset\fR[1], ..., \fIcharset\fR[\fIsetlen\fR]
+equals the last byte that was read.  buffer_get_token returns the number
+of bytes read or -1 on error (setting \fIerrno\fR appropriately).
 .SH "SEE ALSO"
 buffer_init(3), buffer_feed(3), buffer_peek(3), buffer_seek(3), buffer(3)

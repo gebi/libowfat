@@ -9,15 +9,20 @@ buffer_get_token_sa \- read token from buffer
 int \fBbuffer_get_token_sa\fP(buffer* \fIb\fR,stralloc* \fIsa\fR,
                     const char* \fIcharset\fR,unsigned int \fIsetlen\fR);
 .SH DESCRIPTION
-buffer_get_token_sa copies data from the \fIb\fR to \fIsa\fR until one
-of the delimiters in \fIcharset\fR is found, overwriting the previous
-content of \fIsa\fR.  That delimiter is also appended to \fIsa\fR.
+buffer_get_token_sa appends data from the \fIb\fR to \fIsa\fR until one
+of the delimiters in \fIcharset\fR is found, NOT overwriting the
+previous content of \fIsa\fR.  That delimiter is also appended to
+\fIsa\fR.
 
 If reading from the buffer or allocating memory fails,
 buffer_get_token_sa returns -1 and sets \fIerrno\fR appropriately.  At
-that point \fIsa\fR may be empty or it may already contain a partial
-token.
+that point \fIsa\fR may already contain a partial token.
 
 On success, buffer_get_token_sa returns 0.
+.SH RATIONALE
+buffer_get_token_sa appends instead of overwriting so it can be used on
+non-blocking sockets (these signal error and set \fIerrno\fR to EAGAIN;
+in this case you can simply call buffer_get_token_sa again when
+\fBselect\fR or \fBpoll\fR indicate more data is available).
 .SH "SEE ALSO"
 buffer_getline_sa(3), buffer_get_token(3), buffer(3)

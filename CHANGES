@@ -20,6 +20,7 @@
     scan_ushort
   extended socket API; you can now pass NULL for results you don't want
   rename Makefile to GNUmakefile; create Makefile target
+  add buffer_get_token_pred and buffer_get_token_sa_pred
 
 0.14:
   avoid bus errors in byte_copy

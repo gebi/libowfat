@@ -114,10 +114,26 @@ extern int stralloc_chomp(stralloc* sa);
 #ifdef BUFFER_H
 /* write stralloc to buffer */
 extern int buffer_putsa(buffer* b,stralloc* sa);
+/* these "read token" functions return 0 if the token was complete or
+ * EOF was hit or -1 on error.  In contrast to the non-stralloc token
+ * functions, the separator is also put in the stralloc; use
+ * stralloc_chop or stralloc_chomp to get rid of it. */
+
+/* WARNING!  These token reading functions will not clear the stralloc!
+ * They _append_ the token to the contents of the stralloc.  The idea is
+ * that this way these functions can be used on non-blocking sockets;
+ * when you get signalled EAGAIN, just call the functions again when new
+ * data is available. */
+
 /* read token from buffer to stralloc */
 extern int buffer_get_token_sa(buffer* b,stralloc* sa,const char* charset,unsigned int setlen);
 /* read line from buffer to stralloc */
 extern int buffer_getline_sa(buffer* b,stralloc* sa);
+
+typedef int (*sa_predicate)(stralloc* sa);
+
+/* like buffer_get_token_sa but the token ends when your predicate says so */
+extern int buffer_get_token_sa_pred(buffer* b,stralloc* sa,sa_predicate p);
 #endif
 
 #endif
