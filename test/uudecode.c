@@ -265,7 +265,7 @@ invalidpart:
       ofd=-1;
       if (endoffset==totalsize && reconstructed) {
 	buffer_puts(buffer_2,"warning: had to reconstruct ");
-	buffer_putulong(buffer_2,reconstruct);
+	buffer_putulong(buffer_2,reconstructed);
 	buffer_puts(buffer_2," parts!\n");
       }
 #if 0
