@@ -69,4 +69,10 @@ unsigned int fmt_pad(char* dest,const char* src,unsigned int srclen,unsigned int
  * characters written. */
 unsigned int fmt_fill(char* dest,unsigned int srclen,unsigned int padlen,unsigned int maxlen);
 
+/* 1 -> "1", 4900 -> "4.9k", 2300000 -> "2.3M" */
+unsigned int fmt_human(char* dest,unsigned long long l);
+
+/* 1 -> "1", 4900 -> "4.8k", 2300000 -> "2.2M" */
+unsigned int fmt_humank(char* dest,unsigned long long l);
+
 #endif

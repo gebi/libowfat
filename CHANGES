@@ -11,6 +11,7 @@
   fix typos in several man pages (Hynek Schlawack)
   add stralloc versions of textcode API (Kai Ruemmler)
   add html to textcode ('<' to '&lt;' etc)
+  add fmt_human and fmt_humank (format numbers ala ls -H/-h)
 
 0.14:
   avoid bus errors in byte_copy
