@@ -3,6 +3,7 @@
   add uninstall target
   add uint16_read API like the uint32_read one
   add buffer_putnlflush
+  lots of general clean-ups from Jukka Zitting
 
 0.12:
   add textcode api for uuencode/uudecode, base64, quoted printable,
