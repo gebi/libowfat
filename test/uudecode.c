@@ -320,6 +320,7 @@ invalidpart:
 	i+=x+1; out.len+=scanned;
       }
       i=crc32(0,out.s,out.len);
+      if (endoffset == offset+out.len-1) ++endoffset;
       if (out.len == endoffset-offset && i == wantedcrc) {
 	/* ok, save block */
 	buffer_put(&fileout,out.s,out.len);
