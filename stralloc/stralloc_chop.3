@@ -9,5 +9,7 @@ int \fBstralloc_chop\fP(stralloc* \fIsa\fR);
 stralloc_chop removes the last char in the stralloc (if it is empty,
 stralloc_chop does nothing and returns -1).  This character is cast to
 unsigned char and returned.
+.SH "RETURN VALUE"
+chopped character, or -1 if string was empty.
 .SH "SEE ALSO"
 stralloc_chomp(3)

@@ -1,9 +1,9 @@
 #include "byte.h"
 #include "buffer.h"
 
-extern int buffer_stubborn(int (*op)(),int fd,const char* buf, unsigned int len);
+extern int buffer_stubborn(int (*op)(),int fd,const unsigned char* buf, unsigned long int len);
 
-int buffer_put(buffer* b,const char* buf,unsigned int len) {
+int buffer_put(buffer* b,const unsigned char* buf,unsigned long int len) {
   if (len>b->a-b->p) {	/* doesn't fit */
     if (buffer_flush(b)==-1) return -1;
     if (len>b->a) {

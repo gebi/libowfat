@@ -4,7 +4,7 @@ stralloc_readyplus \- provide space in a stralloc
 .SH SYNTAX
 .B #include <stralloc.h>
 
-int \fBstralloc_readyplus\fP(stralloc* \fIsa\fR,unsigned int \fIlen\fR);
+int \fBstralloc_readyplus\fP(stralloc* \fIsa\fR,unsigned long int \fIlen\fR);
 .SH DESCRIPTION
 stralloc_readyplus makes sure that \fIsa\fR has enough space allocated
 to hold an additional \fIlen\fR bytes: If \fIsa\fR is not allocated,
@@ -17,5 +17,7 @@ new space, frees the old space, and returns 1. Note that this changes
 
 If stralloc_readyplus runs out of memory, it leaves \fIsa\fR alone and
 returns 0.
+.SH "RETURN VALUE"
+1 for success, 0 on memory allocation failure.
 .SH "SEE ALSO"
 stralloc_ready(3)

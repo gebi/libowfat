@@ -7,6 +7,9 @@
   add buffer_putsflush
   add stralloc_catm and stralloc_copym
   add buffer_putm and buffer_putmflush
+  cleanups in stralloc and buffer:
+    int -> long for sizes
+    char -> unsigned char for strings
 
 0.20:
   add errmsg API

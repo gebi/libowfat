@@ -2,7 +2,8 @@
 #include "buffer.h"
 #include "scan.h"
 
-int buffer_get_token_pred(buffer* b,char* x,unsigned int len,string_predicate p) {
+int buffer_get_token_pred(buffer* b,unsigned char* x,unsigned long int len,
+			  string_predicate p) {
   int blen;
 
   for (blen=0;blen<len;++blen) {
