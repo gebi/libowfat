@@ -20,7 +20,8 @@ typedef struct stralloc {
  * len bytes of space, and returns 1. If sa is already allocated, but
  * not enough to hold len bytes, stralloc_ready allocates at least len
  * bytes of space, copies the old string into the new space, frees the
- * old space, and returns 1. Note that this changes sa.s. */
+ * old space, and returns 1. Note that this changes sa.s.  If the
+ * allocation fails, stralloc_ready leaves sa alone and returns 0. */
 extern int stralloc_ready(stralloc* sa,unsigned int len);
 
 /* stralloc_readyplus is like stralloc_ready except that, if sa is
