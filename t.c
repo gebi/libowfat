@@ -14,8 +14,13 @@
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
+  char buf[100];
+  buf[fmt_ulong(buf,0)]=0;
+  puts(buf);
+#if 0
   buffer_putspace(buffer_1);
   buffer_flush(buffer_1);
+#endif
 #if 0
   long a,b,c;
   char buf[4096];

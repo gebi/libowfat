@@ -1,3 +1,10 @@
+0.7:
+  add buffer_putspace
+  fix b0read prototype in buffer/buffer_0*
+  scan_ip6 will not transparently scan IPv4 addresses and save them as
+    v4-mapped addresses (::ffff:127.0.0.1).
+  byte_copy was sped up (but made larger in the process)
+
 0.6:
   changed name to libowfat.
   fixed fmt_ulong (did not output 0 correctly).
