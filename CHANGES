@@ -13,6 +13,7 @@
   add html to textcode ('<' to '&lt;' etc)
   add fmt_human and fmt_humank (format numbers ala ls -H/-h)
   add fmt_httpdate and scan_httpdate
+  fix typo breaking buffer_GETC in buffer (Marcus Winkler)
 
 0.14:
   avoid bus errors in byte_copy

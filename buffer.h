@@ -53,7 +53,7 @@ extern void buffer_seek(buffer* b,unsigned int len);
 #define buffer_SEEK(s,len) ( (s)->p += (len) )
 
 #define buffer_GETC(s,c) \
-  ( ((s)->p < (s>->n) \
+  ( ((s)->p < (s)->n) \
     ? ( *(c) = *buffer_PEEK(s), buffer_SEEK((s),1), 1 ) \
     : buffer_get((s),(c),1) \
   )
