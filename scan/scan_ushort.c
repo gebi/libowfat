@@ -24,7 +24,7 @@ unsigned int scan_ushort(const char* src,unsigned short* dest) {
       l=n+c;
       ++tmp;
     }
-    *dest=l;
+    if (tmp-src) *dest=l;
     return tmp-src;
   }
 }

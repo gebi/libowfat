@@ -14,6 +14,6 @@ unsigned int scan_ulong(const char* src,unsigned long int* dest) {
     l=n+c;
     ++tmp;
   }
-  *dest=l;
+  if (tmp-src) *dest=l;
   return tmp-src;
 }

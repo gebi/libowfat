@@ -24,7 +24,7 @@ unsigned int scan_uint(const char* src,unsigned int* dest) {
       l=n+c;
       ++tmp;
     }
-    *dest=l;
+    if (tmp-src) *dest=l;
     return tmp-src;
   }
 }
