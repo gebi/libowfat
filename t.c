@@ -20,6 +20,20 @@ int main(int argc,char* argv[]) {
   char buf[100];
   char buf2[100];
   unsigned int len,len2;
+  buf[fmt_quotedprintable(buf,"zunächst einmal vielen Dank für die MUTT FAQ",44)]=0;
+  buffer_puts(buffer_1,buf);
+  buffer_putsflush(buffer_1,"\n");
+  if ((buf[len2=scan_quotedprintable(buf,buf2,&len)])!=0) {
+    buffer_putsflush(buffer_2,"parse error!\n");
+    return 1;
+  }
+  buffer_put(buffer_1,buf2,len2);
+  buffer_putsflush(buffer_1,"\n");
+  return 0;
+#if 0
+  char buf[100];
+  char buf2[100];
+  unsigned int len,len2;
   buf[fmt_base64(buf,"foo:bar",7)]=0;
   buffer_puts(buffer_1,buf);
   buffer_putsflush(buffer_1,"\n");
@@ -30,6 +44,7 @@ int main(int argc,char* argv[]) {
   buffer_put(buffer_1,buf2,len2);
   buffer_putsflush(buffer_1,"\n");
   return 0;
+#endif
 #if 0
   unsigned long size;
   char* buf=mmap_read(argv[1],&size);

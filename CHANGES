@@ -2,6 +2,8 @@
   add textcode api for uuencode/uudecode, base64, quoted printable,
     url-encoding and yenc.
   implement fmt_uuencoded and scan_uuencoded.
+  implement fmt_base64, scan_base64.
+  implement fmt_quotedprintable, scan_quotedprintable
 
 0.11:
   fix fmt_long (didn't count the '-'), which in turn broke
