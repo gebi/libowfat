@@ -2,7 +2,7 @@
   add io_socketpair
   add io_passfd and io_receivefd (and test/fdpassing.c)
   io_trywrite and io_waitwrite not ignore SIGPIPE
-  add man pages for libio
+  add man pages for libio, safemult
 
 0.18:
   make libowfat compile on BSD again (sorry, and thanks to everyone who
