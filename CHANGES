@@ -11,6 +11,7 @@
     int -> long for sizes
     char -> unsigned char for strings
   buffer_getline is now a function, not a macro
+  add iob_write (send io batch through callback, e.g. for SSL)
 
 0.20:
   add errmsg API
