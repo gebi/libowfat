@@ -90,7 +90,7 @@ int main(int argc,char* argv[]) {
   enum { BEFOREBEGIN, AFTERBEGIN, SKIPHEADER } state=BEFOREBEGIN;
   enum { UUDECODE, YENC } mode=UUDECODE;
   unsigned long fmode=0,lineno=0;
-  unsigned long offset,endoffset,totalsize,linelen,part,warned; /* used only for yenc */
+  unsigned long offset,endoffset,totalsize,linelen,part; /* used only for yenc */
   static stralloc yencpart;
   unsigned int crc;
 
@@ -165,7 +165,6 @@ foundfilename:
 	      buffer_puts(buffer_2,"decoding file \"");
 	      buffer_puts(buffer_2,line+l);
 	      buffer_putsflush(buffer_2,"\"\n");
-	      warned=0;
 	    }
 	    state=AFTERBEGIN;
 	    buffer_init(&fileout,write,ofd,obuf,sizeof obuf);
@@ -243,13 +242,9 @@ invalidpart:
 	/* ok, save block */
 	buffer_put(&fileout,out.s,out.len);
       } else {
-	if (warned==0) {
-	  buffer_puts(buffer_2,"warning: corrupt yenc part; expected crc ");
-	  buffer_putxlong(buffer_2,wantedcrc);
-	  buffer_puts(buffer_2,", got crc ");
-	  buffer_putxlong(buffer_2,i);
-	  buffer_putsflush(buffer_2,"; attempting reconstruction... ");
-	}
+	buffer_puts(buffer_2,"warning: part ");
+	buffer_putulong(buffer_2,part);
+	buffer_puts(buffer_2," corrupt; attempting reconstruction... ");
 	out.len=0;
 	for (i=0; i<yencpart.len; ) {
 	  unsigned int x,scanned;
@@ -259,11 +254,10 @@ invalidpart:
 	}
 	i=crc32(0,out.s,out.len);
 	if (out.len == endoffset-offset && i == wantedcrc) {
-	  if (!warned) buffer_putsflush(buffer_2,"success!\n");
+	  buffer_putsflush(buffer_2,"success!\n");
 	  buffer_put(&fileout,out.s,out.len);
 	} else
-	  buffer_putsflush(buffer_2,"\nerror: unable to compensate for broken yenc part!\n");
-	warned=1;
+	  buffer_putsflush(buffer_2,"failed!\n");
       }
       stralloc_free(&out);
       buffer_flush(&fileout);
