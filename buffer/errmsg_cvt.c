@@ -1,6 +1,15 @@
 #include <stdarg.h>
 #include <sys/types.h>
+#ifdef __MINGW32__
+#include "windows.h"
+
+struct iovec {
+  LPCVOID iov_base;
+  DWORD iov_len;
+};
+#else
 #include <sys/uio.h>
+#endif
 #include "errmsg.h"
 #include "str.h"
 

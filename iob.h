@@ -31,6 +31,7 @@ int iob_addfile_close(io_batch* b,int64 fd,uint64 off,uint64 n);
 int64 iob_send(int64 s,io_batch* b);
 int64 iob_write(int64 s,io_batch* b,io_write_callback cb);
 void iob_reset(io_batch* b);
+void iob_free(io_batch* b);
 void iob_prefetch(io_batch* b,uint64 bytes);
 
 #endif

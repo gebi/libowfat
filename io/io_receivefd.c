@@ -1,3 +1,12 @@
+#ifdef __MINGW32__
+#include <errno.h>
+#include "io_internal.h"
+int64 io_receivefd(int64 sock) {
+  errno=EINVAL;
+  return -1;
+}
+#else
+
 #include <stddef.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -60,3 +69,4 @@ int64 io_receivefd(int64 sock) {
   return fd;
 #endif
 }
+#endif

@@ -54,7 +54,9 @@ int io_fd(int64 d) {
   if (!(e=array_allocate(&io_fds,sizeof(io_entry),d))) return 0;
   byte_zero(e,sizeof(io_entry));
   e->inuse=1;
-#ifndef __MINGW32__
+#ifdef __MINGW32__
+  e->mh=0;
+#else
   if (r&O_NDELAY) e->nonblock=1;
 #endif
   e->next_read=e->next_write=-1;

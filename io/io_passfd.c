@@ -1,3 +1,12 @@
+#ifdef __MINGW32__
+#include "io_internal.h"
+#include <errno.h>
+int io_passfd(int64 sock,int64 fd) {
+  errno=EINVAL;
+  return -1;
+}
+#else
+
 #include <stddef.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -40,3 +49,4 @@ int io_passfd(int64 sock,int64 fd) {
 #endif
   return sendmsg(sock,&msg,0)>=0?0:-1;
 }
+#endif

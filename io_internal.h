@@ -30,7 +30,7 @@ typedef struct {
   uint64 mapofs;
 #ifdef __MINGW32__
   OVERLAPPED o;
-  HANDLE fd;
+  HANDLE /* fd, */ mh;
 #endif
 } io_entry;
 
