@@ -14,12 +14,23 @@ buffer.a mmap.a taia.a tai.a dns.a case.a mult.a array.a io.a
 
 all: t $(LIBS) libowfat.a
 
-# comment out the following line if you don't want to build with the
-# diet libc (http://www.fefe.de/dietlibc/).
-DIET=/opt/diet/bin/diet -Os
 CC=gcc
 CFLAGS=-pipe -Wall -O2 -fomit-frame-pointer
 #CFLAGS=-pipe -Os -march=pentiumpro -mcpu=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
+
+path = $(subst :, ,$(PATH))
+diet_path = $(foreach dir,$(path),$(wildcard $(dir)/diet))
+ifneq ($(strip $(diet_path)),)
+ifeq ($(wildcard /opt/diet/bin/diet),/opt/diet/bin/diet)
+DIET=/opt/diet/bin/diet
+else
+DIET=
+endif
+else
+DIET:=$(diet_path)
+endif
+# to build without diet libc support, use $ make DIET=
+# see http://www.fefe.de/dietlibc/ for details about the diet libc
 
 # startrip
 VPATH=str:byte:fmt:scan:uint:open:stralloc:unix:socket:buffer:mmap:textcode:taia:tai:dns:case:array:mult:io
