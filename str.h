@@ -31,10 +31,10 @@ extern int str_diffn(const char *a,const char *b,unsigned int limit) __THROW __p
 /* str_len returns the index of \0 in s */
 extern unsigned int str_len(const char *s) __THROW __pure__;
 
-/* str_chr returns the index of the first occurance of needle or \0 in s */
+/* str_chr returns the index of the first occurance of needle or \0 in haystack */
 extern unsigned int str_chr(const char *haystack,char needle) __THROW __pure__;
 
-/* str_rchr returns the index of the last occurance of needle or \0 in s */
+/* str_rchr returns the index of the last occurance of needle or \0 in haystack */
 extern unsigned int str_rchr(const char *haystack,char needle) __THROW __pure__;
 
 /* str_start returns 1 if the b is a prefix of a, 0 otherwise */
