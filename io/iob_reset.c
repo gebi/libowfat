@@ -4,5 +4,5 @@
 
 void iob_reset(io_batch* b) {
   array_reset(&b->b);
-  byte_zero(&b,sizeof(*b));
+  byte_zero(b,sizeof(*b));
 }
