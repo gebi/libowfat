@@ -18,4 +18,6 @@ unsigned int scan_quotedprintable(const char *src,char *dest,unsigned int *destl
 unsigned int scan_urlencode(const char *src,char *dest,unsigned int *destlen);
 unsigned int scan_yenc(const char *src,char *dest,unsigned int *destlen);
 
+extern const char base64[64];
+
 #endif
