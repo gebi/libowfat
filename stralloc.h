@@ -3,6 +3,12 @@
 
 #include <sys/cdefs.h>
 
+/* stralloc is the internal data structure all functions are working on.
+ * s is the string.
+ * len is the used length of the string.
+ * a is the allocated length of the string.
+ */
+
 typedef struct stralloc {
   char* s;
   unsigned int len;

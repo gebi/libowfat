@@ -1,3 +1,6 @@
+0.10:
+  add comment to stralloc.h that explains the structure (Markus Brischke)
+
 0.9:
   fmt_str did not check for out==NULL!  Thanks, Uwe Ohse.
   Updated to buffer to fix read buffers.  Thanks, David Lichteblau.
@@ -6,6 +9,7 @@
   add mmap man pages.
   update and add socket man pages.
   don't include str.h from fmt.h
+  document error signalling for the mmap functions.
 
 0.8:
   BSD compatibility.
