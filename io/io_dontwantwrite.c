@@ -47,6 +47,7 @@ void io_dontwantwrite(int64 d) {
     x.fd=d;
     x.events=0;
     if (e->wantread) x.events|=POLLIN;
+    if (!x.events) x.events=POLLREMOVE;
     write(io_master,&x,sizeof(x));
   }
 #endif

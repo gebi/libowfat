@@ -103,13 +103,17 @@ int64 io_waituntil2(int64 milliseconds) {
 	}
 	if (!e->canread && (y[n].revents&POLLIN)) {
 	  e->canread=1;
-	  e->next_read=first_readable;
-	  first_readable=y[n].fd;
+	  if (e->next_read==-1) {
+	    e->next_read=first_readable;
+	    first_readable=y[n].fd;
+	  }
 	}
 	if (!e->canwrite && (y[n].revents&POLLOUT)) {
 	  e->canwrite=1;
-	  e->next_write=first_writeable;
-	  first_writeable=y[i].fd;
+	  if (e->next_write==-1) {
+	    e->next_write=first_writeable;
+	    first_writeable=y[i].fd;
+	  }
 	}
       }
     }
