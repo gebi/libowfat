@@ -24,6 +24,24 @@
 #include <sys/devpoll.h>
 #endif
 
+#ifdef __MINGW32__
+extern HANDLE io_comport;
+#endif
+array io_fds;
+uint64 io_wanted_fds;
+array io_pollfds;
+enum __io_waitmode io_waitmode;
+#if defined(HAVE_KQUEUE) || defined(HAVE_EPOLL) || defined(HAVE_DEVPOLL)
+int io_master;
+#endif
+#if defined(HAVE_SIGIO)
+int io_signum;
+sigset_t io_ss;
+
+long alt_firstread;
+long alt_firstwrite;
+#endif
+
 /* put d on internal data structure, return 1 on success, 0 on error */
 int io_fd(int64 d) {
   io_entry* e;
