@@ -47,4 +47,4 @@ clean:
 	rm -f *.o *.a core t
 
 tar:
-	cd .. && tar cIf libowfat.tar.bz2 libowfat
+	cd .. && tar cf libowfat.tar.bz2 libowfat --use=bzip2 --exclude CVS
