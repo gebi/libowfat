@@ -27,6 +27,11 @@ int64 io_waituntil2(int64 milliseconds) {
     for (i=n-1; i>=0; --i) {
       io_entry* e=array_get(&io_fds,sizeof(io_entry),y[i].data.fd);
       if (e) {
+	if (y[i].events&(EPOLLERR|EPOLLHUP)) {
+	  /* error; signal whatever app is looking for */
+	  if (e->wantread) y[i].events|=EPOLLIN;
+	  if (e->wantwrite) y[i].events|=EPOLLOUT;
+	}
 	if (!e->canread && (y[i].events&EPOLLIN)) {
 	  e->canread=1;
 	  e->next_read=first_readable;
