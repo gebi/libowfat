@@ -31,5 +31,5 @@ int io_passfd(int64 sock,int64 fd) {
   cmsg->cmsg_len = CMSG_LEN(sizeof(int));
   *((int*)CMSG_DATA(cmsg))=fd;
   msg.msg_controllen = cmsg->cmsg_len;
-  return sendmsg(sock,&msg,0);
+  return sendmsg(sock,&msg,0)>=0?0:-1;
 }
