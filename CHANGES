@@ -1,4 +1,5 @@
 0.21:
+  errno cleanup and man page updates (Rolf Eike Beer)
 
 0.20:
   add errmsg API

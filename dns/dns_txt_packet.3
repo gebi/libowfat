@@ -7,9 +7,9 @@ dns_txt_packet \- extract TXT records from DNS answer packet
 int \fBdns_txt_packet\fP(stralloc* \fIout\fR,const char* \fIbuf\fR,
                   unsigned int \fIlen\fR);
 .SH DESCRIPTION
-dns_txt_packet is a low-level component of dns_mx, designed to support
+dns_txt_packet is a low-level component of dns_txt, designed to support
 asynchronous DNS lookups. It reads a DNS packet of length \fIlen\fR from \fIbuf\fR,
 extracts the TXT records from the answer section of the packet, puts the
-result into \fIout\fR, and returns 0 or -1 the same way as dns_mx.
+result into \fIout\fR, and returns 0 or -1 the same way as dns_txt.
 .SH "SEE ALSO"
-dns_mx(3)
+dns_txt(3)
