@@ -108,8 +108,8 @@ eagain:
       int64 rest=sent;
       b->bytesleft-=rest;
       for (i=0; e+i<last; ++i) {
-	if (e[i].n-e[i].offset<=rest) {
-	  rest-=e[i].n-e[i].offset;
+	if (e[i].n<=rest) {
+	  rest-=e[i].n;
 	  ++b->next;
 	  if (!rest) break;
 	} else {
