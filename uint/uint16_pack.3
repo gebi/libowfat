@@ -11,8 +11,8 @@ void \fBuint16_pack\fP(char \fIs\fR[2],uint16 \fIu\fR);
 uint16 is a 16-bit unsigned integer type, normally either unsigned int
 or unsigned long.
 
-uint16_unpack portably reads a uint16 as stored on a little-endian
-architecture from \fIs\fR and writes it info \fIr\fR in the native byte order.
+uint16_pack portably writes a uint16 \fIu\fR to \fIs\fR in
+little-endian byte order.
 
 .SH "SEE ALSO"
 uint16_unpack(3), uint16_pack_big(3)

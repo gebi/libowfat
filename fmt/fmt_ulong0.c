@@ -8,7 +8,7 @@ unsigned int fmt_ulong0(char *dest,unsigned long i,unsigned int pad) {
   /* now see if we need to pad */
   if (dest) {
     while (len<pad) { *dest='0'; ++dest; ++len; }
-    fmt_uint(dest,i);
+    fmt_ulong(dest,i);
     return len;
   } else
     return (len<pad?pad:len);

@@ -11,8 +11,8 @@ socket_send6 sends \fIlen\fR bytes starting at \fIbuf\fR in a UDP
 datagram over the socket \fIs\fR to UDP port \fIport\fR on IP address
 \fIip\fR.
 
-You can call socket_send6 without calling socket_bind4.  This has the
-effect as first calling socket_bind4 with IP address :: and port 0.
+You can call socket_send6 without calling socket_bind6.  This has the
+effect as first calling socket_bind6 with IP address :: and port 0.
 
 The meaning of \fIscope_id\fR is dependent on the implementation and
 IPv6 IP.  On link-local IPv6 addresses it specifies the outgoing

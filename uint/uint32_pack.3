@@ -11,8 +11,8 @@ void \fBuint32_pack\fP(char \fIs\fR[4],uint32 \fIu\fR);
 uint32 is a 32-bit unsigned integer type, normally either unsigned int
 or unsigned long.
 
-uint32_unpack portably reads a uint32 as stored on a little-endian
-architecture from \fIs\fR and writes it info \fIr\fR in the native byte order.
+uint32_pack portably writes a uint32 \fIu\fR to \fIs\fR in
+little-endian byte order.
 
 .SH "SEE ALSO"
 uint32_unpack(3), uint32_pack_big(3)

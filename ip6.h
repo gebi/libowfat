@@ -1,6 +1,8 @@
 #ifndef IP6_H
 #define IP6_H
 
+#include "byte.h"
+
 extern unsigned int scan_ip6(const char *src,char *ip);
 extern unsigned int fmt_ip6(char *dest,const char *ip);
 

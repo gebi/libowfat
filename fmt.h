@@ -1,6 +1,7 @@
 #ifndef FMT_H
 #define FMT_H
 
+#define FMT_LONG  41 /* enough space to hold -2^127 in decimal, plus \0 */
 #define FMT_ULONG 40 /* enough space to hold 2^128 - 1 in decimal, plus \0 */
 #define FMT_8LONG 44 /* enough space to hold 2^128 - 1 in octal, plus \0 */
 #define FMT_XLONG 33 /* enough space to hold 2^128 - 1 in hexadecimal, plus \0 */

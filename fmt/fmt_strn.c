@@ -3,12 +3,12 @@
 unsigned int fmt_strn(char *out,const char *in,unsigned int limit) {
   register char* s=out;
   register const char* t=in;
-  register const char* u=out+limit;
+  register const char* u=in+limit;
   for (;;) {
-    if (!*t) break; *s=*t; if (s==u) break; ++s; ++t;
-    if (!*t) break; *s=*t; if (s==u) break; ++s; ++t;
-    if (!*t) break; *s=*t; if (s==u) break; ++s; ++t;
-    if (!*t) break; *s=*t; if (s==u) break; ++s; ++t;
+    if (!*t) break; if (s) { *s=*t; ++s; } if (t==u) break; ++t;
+    if (!*t) break; if (s) { *s=*t; ++s; } if (t==u) break; ++t;
+    if (!*t) break; if (s) { *s=*t; ++s; } if (t==u) break; ++t;
+    if (!*t) break; if (s) { *s=*t; ++s; } if (t==u) break; ++t;
   }
-  return s-out;
+  return t-in;
 }

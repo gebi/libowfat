@@ -1,8 +1,6 @@
 #ifndef UINT16_H
 #define UINT16_H
 
-#include <sys/cdefs.h>
-
 typedef unsigned short uint16;
 
 #if defined(__i386__) && !defined(NO_UINT16_MACROS)

@@ -11,9 +11,8 @@ void \fBuint16_pack_big\fP(char \fIs\fR[2],uint16 \fIu\fR);
 uint16 is a 16-bit unsigned integer type, normally either unsigned int
 or unsigned long.
 
-uint16_unpack_big portably reads a uint16 as stored on a big-endian
-architecture (i.e. in network byte order) from \fIs\fR and writes it
-info \fIr\fR in the native byte order.
+uint16_pack_big portably writes a uint16 \fIu\fR to \fIs\fR in
+big-endian (i.e. network) byte order.
 
 .SH "SEE ALSO"
 uint16_unpack_big(3), uint16_pack(3)
