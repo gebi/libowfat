@@ -2,20 +2,32 @@
 #include "buffer.h"
 #include <unistd.h>
 #include <stdio.h>
+#include <sys/uio.h>
 
-main() {
+main(int argc,char* argv[]) {
   int s=socket_tcp4();
   char line[1024];
   char buf[4096];
   int l;
   int header=1;
+  struct iovec x[2];
   buffer filein;
   buffer_init(&filein,read,s,buf,sizeof buf);
   if (socket_connect4(s,"\x7f\x00\x00\x01",4000)) {
     perror("connect");
     return 1;
   }
-  write(s,"vd\nq\n",5);
+  {
+    char* c;
+    if (c=strrchr(argv[0],'/'))
+      x[0].iov_base=c+1;
+    else
+      x[0].iov_base=argv[0];
+  }
+  x[0].iov_len=strlen(x[0].iov_base);
+  x[1].iov_base="\nq\n";
+  x[1].iov_len=3;
+  writev(s,x,2);
   for (;;) {
     line[0]=0;
     if ((l=buffer_getline(&filein,line,(sizeof line)-1))==0 && line[l]!='\n')
