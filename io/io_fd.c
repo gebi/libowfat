@@ -1,10 +1,11 @@
+#define _GNU_SOURCE
 #define extern
 #include "io_internal.h"
 #undef extern
 #ifdef HAVE_SIGIO
-#define _GNU_SOURCE
 #include <sys/poll.h>
 #include <signal.h>
+#include <fcntl.h>
 #endif
 #include <sys/types.h>
 #include <fcntl.h>
@@ -13,8 +14,10 @@
 #include <sys/event.h>
 #endif
 #ifdef HAVE_EPOLL
+#include <inttypes.h>
 #include <sys/epoll.h>
 #endif
+#include <unistd.h>
 
 /* put d on internal data structure, return 1 on success, 0 on error */
 int io_fd(int64 d) {

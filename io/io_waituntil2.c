@@ -11,6 +11,7 @@
 #include <sys/event.h>
 #endif
 #ifdef HAVE_EPOLL
+#include <inttypes.h>
 #include <sys/epoll.h>
 #endif
 
