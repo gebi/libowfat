@@ -23,12 +23,19 @@
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
+  char buf[100];
+  int i;
+  printf("%d\n",i=fmt_pad(buf,"fnord",5,7,10));
+  buf[i]=0;
+  puts(buf);
+#if 0
   char ip[16];
   char buf[32];
   printf("%d (expect 2)\n",scan_ip6("::",ip));
   printf("%d (expect 3)\n",scan_ip6("::1",ip));
   printf("%d (expect 16)\n",scan_ip6("fec0:0:0:ffff::1/0",ip));
   printf("%.*s\n",fmt_ip6(buf,ip),buf);
+#endif
 #if 0
   static stralloc s,t;
   stralloc_copys(&s,"fnord");

@@ -60,13 +60,12 @@ int64 io_sendfile(int64 out,int64 in,uint64 off,uint64 bytes) {
 	if (off>=e->mapofs && off<e->mapofs+e->maplen)
 	  goto mapok;	/* ok; mmapped the right chunk*/
 	munmap(e->mmapped,e->maplen);
-	e->mmapped=0;
       }
       e->mapofs=off&0xffffffffffff0000ull;
-      if (e->mapofs+0xffff>off+bytes)
+      if (e->mapofs+0x10000>off+bytes)
 	e->maplen=off+bytes-e->mapofs;
       else
-	e->maplen=0xffff;
+	e->maplen=0x10000;
       if ((e->mmapped=mmap(0,e->maplen,PROT_READ,MAP_SHARED,in,e->mapofs))==MAP_FAILED) {
 	e->mmapped=0;
 	goto readwrite;
