@@ -15,7 +15,8 @@ _syscall4(int,sendfile,int,out,int,in,long *,offset,unsigned long,count)
 #endif
 
 int socket_sendfile(int out,int in,uint32 offset,uint32 bytes) {
-  return sendfile(out,in,&offset,bytes);
+  off_t tmp=offset;
+  return sendfile(out,in,&tmp,bytes);
 }
 
 #else
