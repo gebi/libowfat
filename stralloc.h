@@ -85,6 +85,9 @@ extern int stralloc_diff(const stralloc* a,const stralloc* b) __pure__;
  * string b[0], b[1], ..., b[n]=='\0'. */
 extern int stralloc_diffs(const stralloc* a,const char* b) __pure__;
 
+#define stralloc_equal(a,b) (!stralloc_diff((a),(b)))
+#define stralloc_equals(a,b) (!stralloc_diffs((a),(b)))
+
 /* stralloc_0 appends \0 */
 #define stralloc_0(sa) stralloc_append(sa,"")
 
