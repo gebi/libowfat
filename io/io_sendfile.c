@@ -17,30 +17,6 @@ int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
     return (errno==EAGAIN?(sbytes?sbytes:-1):-3);
   return n;
 }
-#elif defined(__linux__)
-
-#if defined(__GLIBC__)
-#include <sys/sendfile.h>
-#elif defined(__dietlibc__)
-#include <sys/sendfile.h>
-#else
-#include <linux/unistd.h>
-_syscall4(int,sendfile,int,out,int,in,long *,offset,unsigned long,count)
-#endif
-
-int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
-  off_t o=off;
-  io_entry* e=array_get(&io_fds,sizeof(io_entry),s);
-  off_t i=sendfile(s,fd,&o,n);
-  if (i==-1) {
-    if (e) {
-      e->canwrite=0;
-      e->next_write=-1;
-    }
-    if (errno!=EAGAIN) i=-3;
-  }
-  return i;
-}
 
 #elif defined(HAVE_SENDFILE)
 
@@ -67,6 +43,30 @@ int64 io_sendfile(int64 out,int64 in,uint64 off,uint64 bytes) {
   return sendfile64(out,in,&o,bytes);
 }
 
+#elif defined(__linux__)
+
+#if defined(__GLIBC__)
+#include <sys/sendfile.h>
+#elif defined(__dietlibc__)
+#include <sys/sendfile.h>
+#else
+#include <linux/unistd.h>
+_syscall4(int,sendfile,int,out,int,in,long *,offset,unsigned long,count)
+#endif
+
+int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
+  off_t o=off;
+  io_entry* e=array_get(&io_fds,sizeof(io_entry),s);
+  off_t i=sendfile(s,fd,&o,n);
+  if (i==-1) {
+    if (e) {
+      e->canwrite=0;
+      e->next_write=-1;
+    }
+    if (errno!=EAGAIN) i=-3;
+  }
+  return i;
+}
 #endif
 
 #else
