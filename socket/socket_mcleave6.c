@@ -25,11 +25,7 @@ int socket_mcleave6(int s,const char ip[16])
     return socket_mcleave4(s,ip+12);
 #ifdef LIBC_HAS_IP6
   byte_copy(&opt.ipv6mr_multiaddr,16,ip);
-#ifdef __GLIBC__
   opt.ipv6mr_interface=0;
-#else
-  opt.ipv6mr_ifindex=0;
-#endif
   return setsockopt(s,IPPROTO_IPV6,IPV6_DROP_MEMBERSHIP,&opt,sizeof opt);
 #else
   errno=EPROTO;

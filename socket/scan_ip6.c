@@ -22,6 +22,10 @@ unsigned int scan_ip6(const char *s,char ip[16])
 
   for (i=0; i<16; i++) ip[i]=0;
 
+  if ((i=scan_ip4(s,ip+12))) {
+    for (len=0; len<12; ++len) ip[len]=V4mappedprefix[len];
+    return i;
+  }
   for (;;) {
     if (*s == ':') {
       len++;
@@ -36,7 +40,7 @@ unsigned int scan_ip6(const char *s,char ip[16])
     if (!i) return 0;
     if (prefixlen==12 && s[i]=='.') {
       /* the last 4 bytes may be written as IPv4 address */
-      i=ip4_scan(s,ip+12);
+      i=scan_ip4(s,ip+12);
       if (i)
 	return i+len;
       else
@@ -64,7 +68,7 @@ unsigned int scan_ip6(const char *s,char ip[16])
       break;
     }
     if (suffixlen+prefixlen<=12 && s[i]=='.') {
-      int j=ip4_scan(s,suffix+suffixlen);
+      int j=scan_ip4(s,suffix+suffixlen);
       if (j) {
 	suffixlen+=4;
 	len+=j;

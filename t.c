@@ -14,10 +14,19 @@
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
+  char ip[16];
+  int i;
+  if ((i=scan_ip6(argv[1],ip))) {
+    char buf[128];
+    buf[fmt_ip6(buf,ip)]=0;
+    puts(buf);
+  }
+#if 0
   char buf[100];
   strcpy(buf,"foobarbaz");
   buf[fmt_fill(buf,3,5,100)]=0;
   printf("\"%s\"\n",buf);
+#endif
 #if 0
   unsigned long len;
   char *c=mmap_read("/etc/passwd",&len);

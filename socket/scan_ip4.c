@@ -13,7 +13,7 @@ unsigned int scan_ip4(const char *s,char ip[4])
     len+=(j=scan_ulong(s,&u))+1;
     if (!j) return 0;
     ip[i]=u; s+=j;
-    if (*s!='.') return 0; ++s;
+    if (i<3 && *s!='.') return 0; ++s;
   }
   return len-1;
 }
