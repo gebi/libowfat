@@ -1,4 +1,5 @@
 #include <stdarg.h>
+#include <sys/types.h>
 #include <sys/uio.h>
 #include "errmsg.h"
 #include "str.h"
