@@ -41,11 +41,16 @@ unsigned int scan_double(const char *in, double *dest) {
     }
     while (isdigit(*++c))
       exp=exp*10+(*c-'0');
-    while (exp) {	/* XXX: this introduces rounding errors */
-      d*=10; --exp;
-    }
+    if (neg)
+      while (exp) {	/* XXX: this introduces rounding errors */
+	d/=10; --exp;
+      }
+    else 
+      while (exp) {	/* XXX: this introduces rounding errors */
+	d*=10; --exp;
+      }
   }
 done:
-  *dest=d;
+  *dest=(neg?-d:d);
   return c-in;
 }
