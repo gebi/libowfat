@@ -15,3 +15,5 @@ havebsdsf.h
 Makefile
 libdep
 dep
+havescope.h
+havedevpoll.h
