@@ -45,6 +45,7 @@ int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
 
 #ifdef __hpux__
 
+#define _LARGEFILE64_SOURCE
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <sys/socket.h>
