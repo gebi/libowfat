@@ -2,12 +2,12 @@ all: t byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a buffer
 
 VPATH=str:byte:fmt:scan:uint:open:stralloc:unix:socket:buffer:mmap
 
+# comment out the following line if you don't want to build with the
+# diet libc (http://www.fefe.de/dietlibc/).
+DIET=diet -Os
 CC=gcc
 CFLAGS=-I. -pipe -Wall -O2 -pipe -fomit-frame-pointer
-#CFLAGS=-I. -pipe -Wall -Os -march=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
-#CFLAGS=-I. -I../dietlibc/include -pipe -Wall -Os -malign-functions=2 -fschedule-insns2 -g
-#CFLAGS=-I../dietlibc/include -I. -pipe -Wall -Os -march=pentiumpro -mcpu=athlon -fomit-frame-pointer -fschedule-insns2 -Wall
-#CFLAGS=-I../dietlibc/include -pipe -Os -march=pentiumpro -mcpu=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
+#CFLAGS=-pipe -Os -march=pentiumpro -mcpu=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
 
 BYTE_OBJS=$(patsubst byte/%.c,%.o,$(wildcard byte/*.c))
 FMT_OBJS=$(patsubst fmt/%.c,%.o,$(wildcard fmt/*.c))
@@ -49,14 +49,40 @@ $(BUFFER_OBJS) $(MMAP_OBJS)
 
 %.a:
 	ar cr $@ $^
+	-ranlib $@
 
 t: t.o socket.a stralloc.a buffer.a scan.a uint.a mmap.a open.a fmt.a \
 str.a byte.a
-	$(DIET)$(CC) -g -o $@ $^
+	$(DIET) $(CC) -g -o $@ $^
 
 .PHONY: clean tar
 clean:
-	rm -f *.o *.a core t
+	rm -f *.o *.a core t haveip6.h haven2i.h
 
-tar:
-	cd .. && tar cf libowfat.tar.bz2 libowfat --use=bzip2 --exclude CVS
+VERSION=libowfat-$(shell head -1 CHANGES|sed 's/://')
+CURNAME=$(notdir $(shell pwd))
+
+tar: clean rename
+	cd ..; tar cvvf $(VERSION).tar.bz2 $(VERSION) --use=bzip2 --exclude CVS
+
+rename:
+	if test $(CURNAME) != $(VERSION); then cd .. && mv $(CURNAME) $(VERSION); fi
+
+haveip6.h:
+	-rm -f $@
+	if $(DIET) $(CC) -c tryip6.c >/dev/null 2>&1; then echo "#define LIBC_HAS_IP6"; fi > $@
+
+haven2i.h:
+	-rm -f $@
+	if $(DIET) $(CC) -o t tryn2i.c >/dev/null 2>&1; then echo "#define HAVE_N2I"; fi > $@
+
+havesl.h:
+	-rm -f $@
+	if $(DIET) $(CC) -o t trysl.c >/dev/null 2>&1; then echo "#define HAVE_SOCKLEN_T"; fi > $@
+
+socket_accept6.o socket_connect6.o socket_local6.o socket_mchopcount6.o \
+socket_mcjoin6.o socket_mcleave6.o socket_mcloop6.o socket_recv6.o \
+socket_remote6.o socket_send6.o socket_tcp6.o socket_udp6.o: haveip6.h
+
+socket_getifidx.o socket_getifname.o: haven2i.h
+
