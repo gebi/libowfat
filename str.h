@@ -1,7 +1,9 @@
 #ifndef STR_H
 #define STR_H
 
+#ifdef __dietlibc__
 #include <sys/cdefs.h>
+#endif
 #ifndef __pure__
 #define __pure__
 #endif

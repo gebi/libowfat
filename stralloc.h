@@ -1,8 +1,6 @@
 #ifndef STRALLOC_H
 #define STRALLOC_H
 
-#include <sys/cdefs.h>
-
 /* stralloc is the internal data structure all functions are working on.
  * s is the string.
  * len is the used length of the string.
@@ -41,7 +39,7 @@ extern int stralloc_copys(stralloc* sa,const char* buf);
 
 /* stralloc_copy copies the string stored in sa2 into sa. It is the same
  * as stralloc_copyb(&sa,sa2.s,sa2.len). sa2 must already be allocated. */
-extern int stralloc_copy(stralloc* sa,stralloc* sa2);
+extern int stralloc_copy(stralloc* sa,const stralloc* sa2);
 
 /* stralloc_catb adds the string buf[0], buf[1], ... buf[len-1] to the
  * end of the string stored in sa, allocating space if necessary, and

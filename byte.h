@@ -1,7 +1,9 @@
 #ifndef BYTE_H
 #define BYTE_H
 
+#ifdef __dietlibc__
 #include <sys/cdefs.h>
+#endif
 
 #ifndef __pure__
 #define __pure__
