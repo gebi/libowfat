@@ -4,7 +4,7 @@ stralloc_copy \- copy data into a stralloc
 .SH SYNTAX
 .B #include <stralloc.h>
 
-extern int \fBstralloc_copy\fP(stralloc* \fIsato\fR,stralloc* \fIsafrom\fR);
+int \fBstralloc_copy\fP(stralloc* \fIsato\fR,stralloc* \fIsafrom\fR);
 .SH DESCRIPTION
 stralloc_copy copies the string stored in \fIsafrom\fR into \fIsa\fR. It
 is the same as

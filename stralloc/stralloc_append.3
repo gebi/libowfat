@@ -4,7 +4,7 @@ stralloc_append \- append a character to a stralloc
 .SH SYNTAX
 .B #include <stralloc.h>
 
-extern int \fBstralloc_append\fP(stralloc* \fIsa\fR,const char* \fIin\fR);
+int \fBstralloc_append\fP(stralloc* \fIsa\fR,const char* \fIin\fR);
 .SH DESCRIPTION
 stralloc_append appends the byte from *\fIbuf\fR to the
 string stored in \fIsa\fR, allocating space if necessary, and
