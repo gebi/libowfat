@@ -10,7 +10,7 @@ INCLUDEDIR=${prefix}/include
 MAN3DIR=${prefix}/man/man3
 
 LIBS=byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a \
-buffer.a mmap.a taia.a tai.a dns.a case.a mult.a
+buffer.a mmap.a taia.a tai.a dns.a case.a mult.a array.a io.a
 
 all: t $(LIBS) libowfat.a
 
@@ -18,11 +18,11 @@ all: t $(LIBS) libowfat.a
 # diet libc (http://www.fefe.de/dietlibc/).
 DIET=/opt/diet/bin/diet -Os
 CC=gcc
-CFLAGS=-I. -pipe -Wall -O2 -fomit-frame-pointer
+CFLAGS=-pipe -Wall -O2 -fomit-frame-pointer
 #CFLAGS=-pipe -Os -march=pentiumpro -mcpu=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
 
 # startrip
-VPATH=str:byte:fmt:scan:uint:open:stralloc:unix:socket:buffer:mmap:textcode:taia:tai:dns:case:array:mult
+VPATH=str:byte:fmt:scan:uint:open:stralloc:unix:socket:buffer:mmap:textcode:taia:tai:dns:case:array:mult:io
 
 BYTE_OBJS=$(patsubst byte/%.c,%.o,$(wildcard byte/*.c))
 FMT_OBJS=$(patsubst fmt/%.c,%.o,$(wildcard fmt/*.c))
@@ -42,6 +42,7 @@ DNS_OBJS=$(patsubst dns/%.c,%.o,$(wildcard dns/*.c))
 CASE_OBJS=$(patsubst case/%.c,%.o,$(wildcard case/*.c))
 ARRAY_OBJS=$(patsubst array/%.c,%.o,$(wildcard array/*.c))
 MULT_OBJS=$(patsubst mult/%.c,%.o,$(wildcard mult/*.c))
+IO_OBJS=$(patsubst io/%.c,%.o,$(wildcard io/*.c))
 
 $(BYTE_OBJS): byte.h
 $(FMT_OBJS): fmt.h
@@ -59,6 +60,7 @@ $(DNS_OBJS): dns.h stralloc.h taia.h tai.h uint64.h iopause.h
 $(CASE_OBJS): case.h
 $(ARRAY_OBJS): uint64.h array.h
 $(MULT_OBJS): uint64.h uint32.h uint16.h safemult.h
+$(IO_OBJS): uint64.h array.h io.h
 
 iopause.o: select.h
 openreadclose.o readclose.o: readclose.h
@@ -83,14 +85,16 @@ dns.a: $(DNS_OBJS)
 case.a: $(CASE_OBJS)
 array.a: $(ARRAY_OBJS)
 mult.a: $(MULT_OBJS)
+io.a: $(IO_OBJS)
 
 libowfat.a: $(DNS_OBJS) $(BYTE_OBJS) $(FMT_OBJS) $(SCAN_OBJS) \
 $(STR_OBJS) $(UINT_OBJS) $(OPEN_OBJS) $(STRA_OBJS) $(UNIX_OBJS) \
 $(SOCKET_OBJS) $(BUFFER_OBJS) $(MMAP_OBJS) $(TEXTCODE_OBJS) \
-$(TAIA_OBJS) $(TAI_OBJS) $(CASE_OBJS) $(ARRAY_OBJS) $(MULT_OBJS)
+$(TAIA_OBJS) $(TAI_OBJS) $(CASE_OBJS) $(ARRAY_OBJS) $(MULT_OBJS) \
+$(IO_OBJS)
 
 %.o: %.c
-	$(DIET) $(CC) -c $< -o $@ $(CFLAGS)
+	$(DIET) $(CC) -c $< -o $@ -I. $(CFLAGS)
 
 %.a:
 	ar cr $@ $^

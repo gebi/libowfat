@@ -31,4 +31,7 @@ void array_cats0(array* to,const char* from);
 void array_cat0(array* to);
 void array_cate(array* to,const array* const from,int64 pos,int64 stop);
 
+#define array_failed(x) (array_bytes(x)==-1)
+#define array_allocated(x) (array_bytes(x)==0)
+
 #endif

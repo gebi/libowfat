@@ -4,7 +4,7 @@
 /* http://cr.yp.to/lib/io.html */
 
 #include "uint64.h"
-#include "tai.h"
+#include "taia.h"
 
 /* like open(s,O_RDONLY) */
 int io_readfile(int64* d,const char* s);
@@ -57,5 +57,7 @@ int io_fd(int64 d);
 void io_nonblock(int64 d);
 /* put descriptor in close-on-exec mode */
 void io_closeonexec(int64 d);
+
+void io_close(int64 d);
 
 #endif
