@@ -54,7 +54,7 @@ void* array_allocate(array* x,uint64 membersize,int64 pos) {
   if (__unlikely(x->allocated<0)) return 0; /* array is failed */
   if (__unlikely(pos+1<1)) return 0;
   /* second case of overflow: pos*membersize too large */
-  if (__unlikely(umult64(membersize,pos+1,&wanted))) return 0;
+  if (__unlikely(!umult64(membersize,pos+1,&wanted))) return 0;
 
   if (__unlikely(wanted > x->allocated)) {
     /* round up a little */

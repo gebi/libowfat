@@ -5,7 +5,7 @@
 #include "uint32.h"
 #include "uint64.h"
 
-/* return 1 for overflow, 0 for ok */
+/* return 0 for overflow, 1 for ok */
 int umult16(uint16 a,uint16 b,uint16* c);
 int imult16( int16 a, int16 b, int16* c);
 

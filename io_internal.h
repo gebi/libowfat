@@ -14,3 +14,5 @@ typedef struct {
 array io_fds;
 uint64 io_wanted_fds;
 array io_pollfds;
+
+int64 io_waituntil2(int64 milliseconds);

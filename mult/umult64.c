@@ -12,11 +12,11 @@ int umult64(uint64 a,uint64 b,uint64* c) {
   //     = ahi*x*bhi*x + ahi*x*blo + alo*bhi*x + alo*blo
 
   // -> overflow if ahi*bhi != zero */
-  if (ahi && bhi) return 1;
+  if (ahi && bhi) return 0;
 
   a=(uint64)(ahi)*blo+(uint64)(alo)*bhi;
-  if (a>0xffffffff) return 1;
+  if (a>0xffffffff) return 0;
   *c=(a<<32)+(uint64)(alo)*blo;
-  return 0;
+  return 1;
 }
 

@@ -60,7 +60,7 @@ $(DNS_OBJS): dns.h stralloc.h taia.h tai.h uint64.h iopause.h
 $(CASE_OBJS): case.h
 $(ARRAY_OBJS): uint64.h array.h
 $(MULT_OBJS): uint64.h uint32.h uint16.h safemult.h
-$(IO_OBJS): uint64.h array.h io.h
+$(IO_OBJS): uint64.h array.h io.h io_internal.h taia.h tai.h
 
 iopause.o: select.h
 openreadclose.o readclose.o: readclose.h
