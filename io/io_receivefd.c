@@ -1,3 +1,4 @@
+#include <stddef.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/uio.h>
@@ -6,7 +7,7 @@
 
 union fdmsg {
   struct cmsghdr h;
-  char buf[CMSG_SPACE(sizeof(int))];
+  char buf[1000];
 };
 
 int64 io_receivefd(int64 sock) {

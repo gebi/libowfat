@@ -6,7 +6,9 @@
 
 union fdmsg {
   struct cmsghdr h;
-  char buf[CMSG_SPACE(sizeof(int))];
+  /* on NetBSD, CMSG_SPACE is not constant */
+/*  char buf[CMSG_SPACE(sizeof(int))]; */
+  char buf[1000];
 };
 
 int io_passfd(int64 sock,int64 fd) {
