@@ -32,7 +32,7 @@ int64 io_canread() {
       alt_firstread=r;
       debug_printf(("io_canread: enqueue %ld in alt read queue (next is %ld)\n",alt_firstread,e->next_read));
 #endif
-      if (io_waitmode!=SIGIO)
+      if (io_waitmode!=_SIGIO)
 	e->canread=0;
       return r;
     }
