@@ -27,12 +27,12 @@ int64 io_waituntil2(int64 milliseconds) {
     for (i=n-1; i>=0; --i) {
       io_entry* e=array_get(&io_fds,sizeof(io_entry),y[i].data.fd);
       if (e) {
-	if (y[i].events&EPOLLIN) {
+	if (!e->canread && (y[i].events&EPOLLIN)) {
 	  e->canread=1;
 	  e->next_read=first_readable;
 	  first_readable=y[i].data.fd;
 	}
-	if (y[i].events&EPOLLOUT) {
+	if (!e->canwrite && (y[i].events&EPOLLOUT)) {
 	  e->canwrite=1;
 	  e->next_write=first_writeable;
 	  first_writeable=y[i].data.fd;
@@ -54,12 +54,12 @@ int64 io_waituntil2(int64 milliseconds) {
     for (i=n-1; i>=0; --i) {
       io_entry* e=array_get(&io_fds,sizeof(io_entry),y[--n].ident);
       if (e) {
-	if (y[n].filter==EVFILT_READ) {
+	if (!e->canread && (y[n].filter==EVFILT_READ)) {
 	  e->canread=1;
 	  e->next_read=first_readable;
 	  first_readable=y[n].ident;
 	}
-	if (y[n].filter==EVFILT_WRITE) {
+	if (!e->canwrite && (y[n].filter==EVFILT_WRITE)) {
 	  e->canwrite=1;
 	  e->next_write=first_writeable;
 	  first_writeable=y[i].ident;
@@ -134,12 +134,12 @@ again:
   }
   for (j=r-1; j>=0; --j) {
     io_entry* e=array_get(&io_fds,sizeof(io_entry),p->fd);
-    if (p->revents&POLLIN) {
+    if (!e->canread && (p->revents&POLLIN)) {
       e->canread=1;
       e->next_read=first_readable;
       first_readable=p->fd;
     }
-    if (p->revents&POLLOUT) {
+    if (!e->canwrite && (p->revents&POLLOUT)) {
       e->canwrite=1;
       e->next_write=first_writeable;
       first_writeable=p->fd;

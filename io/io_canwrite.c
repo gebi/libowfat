@@ -32,6 +32,7 @@ int64 io_canwrite() {
       alt_firstwrite=r;
       debug_printf(("io_canwrite: enqueue %ld in alt write queue (next is %ld)\n",alt_firstwrite,e->next_write));
 #endif
+      e->canwrite=0;
       return r;
     }
   }
