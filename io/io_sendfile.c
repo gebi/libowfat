@@ -97,6 +97,7 @@ int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
 #else
 
 #include <unistd.h>
+#include <sys/types.h>
 #include <sys/mman.h>
 
 #define BUFSIZE 16384

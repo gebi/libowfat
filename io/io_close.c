@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include <sys/types.h>
 #include <sys/mman.h>
 #include "io_internal.h"
 
