@@ -15,7 +15,11 @@ buffer.a mmap.a taia.a tai.a dns.a case.a mult.a array.a io.a textcode.a
 all: t $(LIBS) libowfat.a
 
 CC=gcc
+ifneq ($(DEBUG),)
+CFLAGS=-pipe -Wall -g
+else
 CFLAGS=-pipe -Wall -O2 -fomit-frame-pointer
+endif
 #CFLAGS=-pipe -Os -march=pentiumpro -mcpu=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
 
 # startrip
