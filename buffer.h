@@ -78,11 +78,11 @@ int buffer_putulonglong(buffer* b,unsigned long long l);
 int buffer_puterror(buffer* b);
 int buffer_puterror2(buffer* b, int errnum);
 
-buffer *buffer_0;
-buffer *buffer_0small;
-buffer *buffer_1;
-buffer *buffer_1small;
-buffer *buffer_2;
+extern buffer *buffer_0;
+extern buffer *buffer_0small;
+extern buffer *buffer_1;
+extern buffer *buffer_1small;
+extern buffer *buffer_2;
 
 #ifdef STRALLOC_H
 /* write stralloc to buffer */
