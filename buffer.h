@@ -35,6 +35,7 @@ extern int buffer_feed(buffer* b);
 extern int buffer_getc(buffer* b,char* x);
 extern int buffer_getn(buffer* b,char* x,unsigned int len);
 extern int buffer_get_token(buffer* b,char* x,unsigned int len,const char* charset,unsigned int setlen);
+#define buffer_getline(b,x,len) buffer_get_token((b),(x),(len),"\n",1)
 
 extern char *buffer_peek(buffer* b);
 extern void buffer_seek(buffer* b,unsigned int len);
