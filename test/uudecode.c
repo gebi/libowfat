@@ -110,6 +110,7 @@ int main(int argc,char* argv[]) {
   /* skip to "^begin " */
   for (;;) {
     if ((l=buffer_getline(&filein,line,(sizeof line)-1))==0 && line[l]!='\n') {
+hiteof:
       if (state!=BEFOREBEGIN) {
 	if (mode!=MIME) {
 	  buffer_puts(buffer_1,"premature end of file in line ");
@@ -190,6 +191,10 @@ foundfilename:
       continue;
     } else if (str_start(line,"Content-Disposition: ")) {
       char* c=strstr(line,"filename=");
+      if (!c) {
+	if ((l=buffer_getline(&filein,line,(sizeof line)-1))==0 && line[l]!='\n') goto hiteof;
+	c=strstr(line,"filename=");
+      }
       if (c) {
 	mode=MIME;
 	filename[0]=0;
@@ -351,15 +356,14 @@ invalidpart:
       continue;
     } else {
       unsigned long scanned,x;
-      char tmp[300];
+      char tmp[1000];
       switch (mode) {
       case MIME:
 	switch (mimeenc) {
 	case BASE64: x=scan_base64(line,tmp,&scanned); break;
 	case QP: x=scan_quotedprintable(line,tmp,&scanned); break;
 	default:
-		 buffer_putsflush(buffer_2,"MIME encoding NONE?!\n");
-		 exit(0);
+		 break;
 	}
 	if (line[x]) x=0;
 	break;
