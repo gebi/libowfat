@@ -585,7 +585,7 @@ uninstall:
 	rm -f $(patsubst %.3,$(MAN3DIR)/%.3,$(notdir $(wildcard */*.3)))
 	rm -f $(LIBDIR)/libowfat.a
 
-VERSION=libowfat-0.19
+VERSION=libowfat-0.20
 CURNAME=libowfat-0.19
 
 tar: clean rename
@@ -653,6 +653,12 @@ havesigio.h: trysigio.c
 	-rm -f $@
 	if $(DIET) $(CC) $(CFLAGS) -c trysigio.c >/dev/null 2>&1; then echo "#define HAVE_SIGIO"; fi > $@
 	-rm -f trysigio.o
+
+havealloca.h: tryalloca.c
+	-rm -f $@
+	echo "#include <stdlib.h>" > $@
+	if $(DIET) $(CC) $(CFLAGS) -c tryalloca.c >/dev/null 2>&1; then echo "#include <alloca.h>"; fi >> $@
+	-rm -f tryalloca.o
 
 iopause.h: iopause.h1 iopause.h2 trypoll.c
 	-rm -f $@
