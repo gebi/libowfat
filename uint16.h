@@ -5,40 +5,21 @@
 
 typedef unsigned short uint16;
 
-#ifndef __linux__
-#define NO_UINT16_MACROS
-#endif
+#if defined(__i386__) && !defined(NO_UINT16_MACROS)
+#define uint16_pack(out,in) (*(uint16*)(out)=(in))
+#define uint16_unpack(in,out) (*(out)=*(uint16*)(in))
+#define uint16_read(in) (*(uint16*)(in))
+extern void uint16_pack_big(char *out,uint16 in);
+extern void uint16_unpack_big(const char *in,uint16* out);
+extern uint16 uint16_read_big(const char *in);
+#else
 
-#ifdef NO_UINT16_MACROS
 extern void uint16_pack(char *out,uint16 in);
 extern void uint16_pack_big(char *out,uint16 in);
 extern void uint16_unpack(const char *in,uint16* out);
 extern void uint16_unpack_big(const char *in,uint16* out);
-#else
-
-#include <endian.h>
-
-#if __BYTE_ORDER == __LITTLE_ENDIAN
-
-#define uint16_pack(out,in) (*(short*)(out)=(in))
-
-extern void uint16_pack_big(char *out,uint16 in);
-
-#define uint16_unpack(in,out) (*(out)=*(short*)(in))
-
-extern void uint16_unpack_big(const char *in,uint16* out);
-
-#else
-
-extern void uint16_pack(char *out,uint16 in);
-
-#define uint16_pack_big(out,in) (*(short*)(out)=(in))
-
-extern void uint16_unpack(const char *in,uint16* out);
-
-#define uint16_unpack_big(in,out) (*(out)=*(short*)(in))
-
-#endif
+extern uint16 uint16_read(const char *in);
+extern uint16 uint16_read_big(const char *in);
 
 #endif
 
