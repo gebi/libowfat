@@ -35,13 +35,12 @@ int socket_sendfile(int out,int in,uint32 offset,uint32 bytes) {
 
 int socket_sendfile(int out,int in,uint32 offset,uint32 bytes) {
   char buf[BUFSIZE];
-  uint32 n,m;
+  int n,m;
   uint32 sent=0;
   if (lseek(in,offset,SEEK_SET) != offset)
     return -1;
   while (bytes>0) {
     char* tmp=buf;
-    uint32 tobedone;
     if ((n=read(in,tmp,(bytes<BUFSIZE)?bytes:BUFSIZE))<=0)
       return (sent?sent:-1);
     while (n>0) {
