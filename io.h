@@ -70,8 +70,18 @@ void io_closeonexec(int64 d);
 
 void io_close(int64 d);
 
+/* Free the internal data structures from libio.
+ * This only makes sense if you run your program in a malloc checker and
+ * these produce false alarms.  Your OS will free these automatically on
+ * process termination. */
+void io_finishandshutdown(void);
+
 /* send n bytes from file fd starting at offset off to socket s */
 /* return number of bytes written */
 int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n);
+
+#ifdef __MINGW32__
+#include_next <io.h>
+#endif
 
 #endif
