@@ -97,6 +97,11 @@ int64 io_waituntil2(int64 milliseconds) {
       if (r==io_signum) {
 	io_entry* e=array_get(&io_fds,sizeof(io_entry),info.si_fd);
 	if (e) {
+	  if (info.si_band&(POLLERR|POLLHUP)) {
+	    /* error; signal whatever app is looking for */
+	    if (e->wantread) info.si_band|=POLLIN;
+	    if (e->wantwrite) info.si_band|=POLLOUT;
+	  }
 	  if (info.si_band&POLLIN && !e->canread) {
 	    debug_printf(("io_waituntil2: enqueueing %ld in normal read queue before %ld\n",info.si_fd,first_readable));
 	    e->canread=1;
@@ -139,6 +144,11 @@ again:
   }
   for (j=r-1; j>=0; --j) {
     io_entry* e=array_get(&io_fds,sizeof(io_entry),p->fd);
+    if (p->revents&(POLLERR|POLLHUP)) {
+      /* error; signal whatever app is looking for */
+      if (e->wantread) p->revents|=POLLIN;
+      if (e->wantwrite) p->revents|=POLLOUT;
+    }
     if (!e->canread && (p->revents&POLLIN)) {
       e->canread=1;
       e->next_read=first_readable;
