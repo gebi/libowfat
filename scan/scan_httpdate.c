@@ -1,7 +1,9 @@
 #include "scan.h"
 #include "byte.h"
 #include "case.h"
+#define _GNU_SOURCE
 #include <time.h>
+#include <stdlib.h>
 
 static int parsetime(const char*c,struct tm* x) {
   unsigned long tmp;
@@ -54,6 +56,15 @@ unsigned int scan_httpdate(const char *in,time_t *t) {
   if (byte_equal(c,3,"GMT")) c+=3;
 done:
   x.tm_wday=x.tm_yday=x.tm_isdst=0;
-  *t=mktime(&x);
+#if defined(__dietlibc__) || defined(__GLIBC__)
+  *t=timegm(&x);
+#else
+  {
+    char* old=getenv("TZ");
+    unsetenv("TZ");
+    *t=mktime(&x);
+    if (old) setenv("TZ",old,1);
+  }
+#endif
   return c-in;
 }
