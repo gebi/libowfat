@@ -1,12 +1,10 @@
-0.7:
-  oops, the read buffering was completely broken!
-  add mmap library (idea from Ingo Oeser)
-
 0.6:
   changed name to libowfat.
   fixed fmt_ulong (did not output 0 correctly).
   added buffer.
   extended buffer API to include buffer_putulong() and friends.
+  oops, the read buffering was completely broken!
+  add mmap library (idea from Ingo Oeser)
 
 0.5:
   made subdirectories for the different libraries.
