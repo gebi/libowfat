@@ -12,6 +12,9 @@ int main(int argc,char* argv[]) {
   int fd=0;
   int ofd=-1;
   int found=0;
+  char line[1000];	/* uuencoded lines can never be longer than 64 characters */
+  int l;
+  enum { BEFOREBEGIN, AFTERBEGIN, SKIPHEADER } state=BEFOREBEGIN;
   unsigned long mode=0,lineno=0;
   if (argc>1) {
     fd=open_read(argv[1]);
@@ -26,9 +29,18 @@ int main(int argc,char* argv[]) {
 again:
   /* skip to "^begin " */
   for (;;) {
-    char line[1000];	/* uuencoded lines can never be longer than 64 characters */
-    int l;
     if ((l=buffer_getline(&filein,line,(sizeof line)-1))==0 && line[l]!='\n') {
+      if (state!=BEFOREBEGIN) {
+	buffer_puts(buffer_1,"premature end of file in line ");
+	buffer_putulong(buffer_1,lineno);
+	buffer_putsflush(buffer_1,"!\n");
+	if (ofd>=0) {
+	  buffer_flush(&fileout);
+	  fchmod(ofd,mode);
+	  close(ofd);
+	}
+	++found;
+      }
       if (!found)
 	buffer_putsflush(buffer_2,"warning: hit end of file without finding any uuencoded data!\n");
       return 0;
@@ -36,7 +48,19 @@ again:
     ++lineno;
     if (l>0 && line[l-1]=='\r') --l;	/* kill DOS line endings */
     line[l]=0;
-    if (!str_diffn(line,"begin ",6)) {
+    if (str_start(line,"begin ")) {
+      if (state!=BEFOREBEGIN) {
+	buffer_puts(buffer_1,"new begin without previous end in line ");
+	buffer_putulong(buffer_1,lineno);
+	buffer_putsflush(buffer_1,"!\n");
+	if (ofd>=0) {
+	  buffer_flush(&fileout);
+	  fchmod(ofd,mode);
+	  close(ofd);
+	}
+	++found;
+      }
+      state=BEFOREBEGIN;
       if (line[l=6+scan_8long(line+6,&mode)]==' ' && mode) {
 	int i;
 	++l;
@@ -57,44 +81,42 @@ again:
 	    buffer_puts(buffer_2,"decoding file \"");
 	    buffer_puts(buffer_2,line+l);
 	    buffer_putsflush(buffer_2,"\"\n");
-	    break;
+	    state=AFTERBEGIN;
+	    buffer_init(&fileout,write,ofd,obuf,sizeof obuf);
+	    continue;
 	  }
 	}
       }
-    }
-  }
-  buffer_init(&fileout,write,ofd,obuf,sizeof obuf);
-  /* read uuencoded lines */
-  for (;;) {
-    char line[1000];	/* uuencoded lines can never be longer than 64 characters */
-    unsigned int scanned,x;
-    char tmp[100];
-    int l;
-    if ((l=buffer_getline(&filein,line,(sizeof line)-1))==0) {
-      buffer_putsflush(buffer_2,"warning: hit end of file without finding \"end\"!\n");
-      return 0;
-    }
-    ++lineno;
-    if (l>0 && line[l-1]=='\r') --l;	/* kill DOS line endings */
-    line[l]=0;
-    x=scan_uuencoded(line,tmp,&scanned);
-    if (!x) {
-      if (str_equal(line,"end")) {
+    } else if (str_equal(line,"end")) {
+      if (ofd>=0) {
 	buffer_flush(&fileout);
 	fchmod(ofd,mode);
 	close(ofd);
-	++found;
-	goto again;
-      } else {
-parseerror:
+	ofd=-1;
+      }
+      ++found;
+      state=BEFOREBEGIN;
+      continue;
+    } else if (!line[0]) {
+      if (state==AFTERBEGIN)
+	state=SKIPHEADER;
+    } else {
+      unsigned int scanned,x;
+      char tmp[100];
+      x=scan_uuencoded(line,tmp,&scanned);
+      if (!x) {
+	if (state==AFTERBEGIN) {
 	  buffer_puts(buffer_1,"parse error in line ");
 	  buffer_putulong(buffer_1,lineno);
 	  buffer_puts(buffer_1,": \"");
 	  buffer_puts(buffer_1,line);
 	  buffer_putsflush(buffer_1,"\"\n");
-	  exit(1);
+	  return 1;
+	}
+      } else {
+	if (ofd>=0)
+	  buffer_put(&fileout,tmp,scanned);
       }
     }
-    buffer_put(&fileout,tmp,scanned);
   }
 }
