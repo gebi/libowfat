@@ -27,8 +27,13 @@ extern int str_diff(const char *a,const char *b) __pure__;
  * limit characters match. */
 extern int str_diffn(const char *a,const char *b,unsigned int limit) __pure__;
 
+#ifdef __dietlibc__
+#include <string.h>
+#define str_len(foo) strlen(foo)
+#else
 /* str_len returns the index of \0 in s */
 extern unsigned int str_len(const char *s) __pure__;
+#endif
 
 /* str_chr returns the index of the first occurance of needle or \0 in haystack */
 extern unsigned int str_chr(const char *haystack,char needle) __pure__;

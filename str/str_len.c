@@ -1,6 +1,7 @@
 #include "str.h"
 
 #ifdef __dietlibc__
+#undef str_len
 unsigned int str_len(const char* in) __attribute__((alias("strlen")));
 #else
 unsigned int str_len(const char* in) {
