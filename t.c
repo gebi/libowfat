@@ -29,6 +29,7 @@ int main(int argc,char* argv[]) {
   assert(byte_rchr(buf,len,'/')==8);
   assert(byte_rchr(buf,len,'@')==len);
   assert(byte_rchr(buf,len,'h')==len-1);
+  printf("%d\n",byte_rchr("x",1,'x'));
 #if 0
   char buf[IP6_FMT+100];
   int i;
