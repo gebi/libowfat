@@ -11,6 +11,6 @@ int main() {
   int r,fd=1;
   off_t sbytes;
   hdr.headers=v; hdr.hdr_cnt=17;
-  hdr.trailers=v+headers; hdr.trl_cnt=23;
+  hdr.trailers=v+17; hdr.trl_cnt=23;
   r=sendfile(0,1,37,42,&hdr,&sbytes,0);
 }
