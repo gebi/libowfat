@@ -2,6 +2,7 @@
 #define UINT16_H
 
 typedef unsigned short uint16;
+typedef   signed short  int16;
 
 #if defined(__i386__) && !defined(NO_UINT16_MACROS)
 #define uint16_pack(out,in) (*(uint16*)(out)=(in))

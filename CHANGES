@@ -1,5 +1,6 @@
 0.16:
   add buffer_fromsa (make buffer from stralloc)
+  add API for integer multiply with overflow detection
 
 0.15:
   man page update (document stralloc return values)

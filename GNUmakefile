@@ -10,7 +10,7 @@ INCLUDEDIR=${prefix}/include
 MAN3DIR=${prefix}/man/man3
 
 LIBS=byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a \
-buffer.a mmap.a taia.a tai.a dns.a case.a
+buffer.a mmap.a taia.a tai.a dns.a case.a mult.a
 
 all: t $(LIBS) libowfat.a
 
@@ -22,7 +22,7 @@ CFLAGS=-I. -pipe -Wall -O2 -fomit-frame-pointer
 #CFLAGS=-pipe -Os -march=pentiumpro -mcpu=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
 
 # startrip
-VPATH=str:byte:fmt:scan:uint:open:stralloc:unix:socket:buffer:mmap:textcode:taia:tai:dns:case
+VPATH=str:byte:fmt:scan:uint:open:stralloc:unix:socket:buffer:mmap:textcode:taia:tai:dns:case:array:mult
 
 BYTE_OBJS=$(patsubst byte/%.c,%.o,$(wildcard byte/*.c))
 FMT_OBJS=$(patsubst fmt/%.c,%.o,$(wildcard fmt/*.c))
@@ -40,6 +40,8 @@ TAI_OBJS=$(patsubst tai/%.c,%.o,$(wildcard tai/*.c))
 TAIA_OBJS=$(patsubst taia/%.c,%.o,$(wildcard taia/*.c))
 DNS_OBJS=$(patsubst dns/%.c,%.o,$(wildcard dns/*.c))
 CASE_OBJS=$(patsubst case/%.c,%.o,$(wildcard case/*.c))
+ARRAY_OBJS=$(patsubst array/%.c,%.o,$(wildcard array/*.c))
+MULT_OBJS=$(patsubst mult/%.c,%.o,$(wildcard mult/*.c))
 
 $(BYTE_OBJS): byte.h
 $(FMT_OBJS): fmt.h
@@ -55,6 +57,8 @@ $(TAI_OBJS): tai.h uint64.h
 $(TAIA_OBJS): taia.h tai.h uint64.h
 $(DNS_OBJS): dns.h stralloc.h taia.h tai.h uint64.h iopause.h
 $(CASE_OBJS): case.h
+$(ARRAY_OBJS): uint64.h array.h
+$(MULT_OBJS): uint64.h uint32.h uint16.h safemult.h
 
 iopause.o: select.h
 openreadclose.o readclose.o: readclose.h
@@ -77,11 +81,13 @@ taia.a: $(TAIA_OBJS)
 tai.a: $(TAI_OBJS)
 dns.a: $(DNS_OBJS)
 case.a: $(CASE_OBJS)
+array.a: $(ARRAY_OBJS)
+mult.a: $(MULT_OBJS)
 
 libowfat.a: $(DNS_OBJS) $(BYTE_OBJS) $(FMT_OBJS) $(SCAN_OBJS) \
 $(STR_OBJS) $(UINT_OBJS) $(OPEN_OBJS) $(STRA_OBJS) $(UNIX_OBJS) \
 $(SOCKET_OBJS) $(BUFFER_OBJS) $(MMAP_OBJS) $(TEXTCODE_OBJS) \
-$(TAIA_OBJS) $(TAI_OBJS) $(CASE_OBJS)
+$(TAIA_OBJS) $(TAI_OBJS) $(CASE_OBJS) $(ARRAY_OBJS) $(MULT_OBJS)
 
 %.o: %.c
 	$(DIET) $(CC) -c $< -o $@ $(CFLAGS)
@@ -102,7 +108,7 @@ iopause.h select.h Makefile
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
 uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h \
-openreadclose.h readclose.h ndelay.h
+openreadclose.h readclose.h ndelay.h array.h io.h safemult.h
 
 install: libowfat.a
 	install -d $(INCLUDEDIR) $(MAN3DIR) $(LIBDIR)

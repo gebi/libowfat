@@ -2,6 +2,7 @@
 #define UINT32_H
 
 typedef unsigned int uint32;
+typedef   signed int  int32;
 
 #if defined(__i386__) && !defined(NO_UINT32_MACROS)
 #define uint32_pack(out,in) (*(uint32*)(out)=(in))
