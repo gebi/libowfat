@@ -5,6 +5,7 @@
     I could have missed it.
   add mmap man pages.
   update and add socket man pages.
+  don't include str.h from fmt.h
 
 0.8:
   BSD compatibility.
