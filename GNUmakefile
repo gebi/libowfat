@@ -239,7 +239,7 @@ socket_accept4.o socket_accept6.o socket_connected.o socket_local4.o \
 socket_local6.o socket_recv4.o socket_recv6.o socket_remote4.o \
 socket_remote6.o: havesl.h
 
-fmt_xlong.o scan_xlong.o fmt_ip6_flat.o $(TEXTCODE_OBJS): haveinline.h
+dns_nd6.o fmt_xlong.o scan_xlong.o fmt_ip6_flat.o $(TEXTCODE_OBJS): haveinline.h
 
 dep: haveip6.h haven2i.h havesl.h haveinline.h iopause.h select.h haveepoll.h havekqueue.h havedevpoll.h
 	gcc -I. -MM */*.c t.c > dep

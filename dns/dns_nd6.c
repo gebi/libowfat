@@ -1,6 +1,7 @@
 #include "byte.h"
 #include "fmt.h"
 #include "dns.h"
+#include "haveinline.h"
 
 /* RFC1886:
  *   4321:0:1:2:3:4:567:89ab
