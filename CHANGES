@@ -1,3 +1,6 @@
+0.16:
+  add buffer_fromsa (make buffer from stralloc)
+
 0.15:
   man page update (document stralloc return values)
   add stralloc_chop and stralloc_chomp

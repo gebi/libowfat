@@ -102,6 +102,10 @@ typedef int (*sa_predicate)(stralloc* sa);
 
 /* like buffer_get_token_sa but the token ends when your predicate says so */
 extern int buffer_get_token_sa_pred(buffer* b,stralloc* sa,sa_predicate p);
+
+/* make a buffer from a stralloc.
+ * Do not change the stralloc after this! */
+void buffer_fromsa(buffer* b,stralloc* sa);
 #endif
 
 #endif
