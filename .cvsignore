@@ -11,3 +11,4 @@ haveepoll.h
 havekqueue.h
 libepoll
 havesigio.h
+havebsdsf.h
