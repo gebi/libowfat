@@ -139,15 +139,25 @@ int64 io_sendfile(int64 out,int64 in,uint64 off,uint64 bytes) {
 	if (m==-1) {
 	  e->canwrite=0;
 	  e->next_write=-1;
-	  return errno==EAGAIN?(sent?sent:-1):-3;
+	  if (errno!=EAGAIN) {
+	    munmap(e->mmapped,e->maplen);
+	    e->mmapped=0;
+	    return -3;
+	  }
+	  return sent?sent:-1;
 	}
 	if (m==0) return sent;
 	sent+=m;
 	left-=m;
 	bytes-=m;
 	off+=m;
+	c+=m;
       }
     } while (bytes);
+    if (e->mmapped) {
+      munmap(e->mmapped,e->maplen);
+      e->mmapped=0;
+    }
     return sent;
   }
 readwrite:

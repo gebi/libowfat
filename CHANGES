@@ -5,6 +5,7 @@
   add man pages for libio, safemult
   fix possible signal race in io_tryread and io_trywrite (Scott Lamb)
   fix byte_rchr return value (Marcus Winkler)
+  fix bug in mmap code path of io_sendfile (David Leadbeater)
 
 0.18:
   make libowfat compile on BSD again (sorry, and thanks to everyone who
