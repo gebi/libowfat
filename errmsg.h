@@ -6,6 +6,8 @@
 #else
 #define __attribute__(x)
 #endif
+/* for exit(): */
+#include <unistd.h>
 
 /* These use file descriptor 2, not buffer_2!
  * Call buffer_flush(buffer_2) before calling these! */
