@@ -2,6 +2,8 @@
 #include <sys/types.h>
 #include <signal.h>
 
+/* this is an internal function, called by io_trywrite and io_waitwrite */
+
 void io_sigpipe(void) {
   static int isitdone;
   if (!isitdone) {
