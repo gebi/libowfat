@@ -6,7 +6,9 @@
 #include <sys/socket.h>
 #include <sys/uio.h>
 #include <errno.h>
+#ifdef __linux__
 #include <alloca.h>
+#endif
 
 #include "iob_internal.h"
 
