@@ -20,10 +20,10 @@ int main(int argc,char* argv[]) {
   char buf[100];
   char buf2[100];
   unsigned int len,len2;
-  buf[fmt_quotedprintable(buf,"zunächst einmal vielen Dank für die MUTT FAQ",44)]=0;
+  buf[fmt_urlencoded(buf,"http://localhost/~fefe",22)]=0;
   buffer_puts(buffer_1,buf);
   buffer_putsflush(buffer_1,"\n");
-  if ((buf[len2=scan_quotedprintable(buf,buf2,&len)])!=0) {
+  if ((buf[len2=scan_urlencoded(buf,buf2,&len)])!=0) {
     buffer_putsflush(buffer_2,"parse error!\n");
     return 1;
   }

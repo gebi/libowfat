@@ -62,8 +62,7 @@ $(BUFFER_OBJS) $(MMAP_OBJS) $(TEXTCODE_OBJS)
 	ar cr $@ $^
 	-ranlib $@
 
-t: t.o socket.a stralloc.a buffer.a scan.a uint.a mmap.a open.a fmt.a \
-str.a byte.a textcode.a
+t: t.o libowfat.a
 	$(DIET) $(CC) -g -o $@ $^
 
 .PHONY: clean tar install rename

@@ -4,6 +4,7 @@
   implement fmt_uuencoded and scan_uuencoded.
   implement fmt_base64, scan_base64.
   implement fmt_quotedprintable, scan_quotedprintable
+  implement fmt_urlencoded, scan_urlencoded
 
 0.11:
   fix fmt_long (didn't count the '-'), which in turn broke

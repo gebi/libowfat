@@ -6,7 +6,7 @@
 unsigned int fmt_uuencoded(char* dest,const char* src,unsigned int len);
 unsigned int fmt_base64(char* dest,const char* src,unsigned int len);
 unsigned int fmt_quotedprintable(char* dest,const char* src,unsigned int len);
-unsigned int fmt_urlencode(char* dest,const char* src,unsigned int len);
+unsigned int fmt_urlencoded(char* dest,const char* src,unsigned int len);
 unsigned int fmt_yenc(char* dest,const char* src,unsigned int len);
 
 /* These read one line from src, decoded it, and write the result to
@@ -15,7 +15,7 @@ unsigned int fmt_yenc(char* dest,const char* src,unsigned int len);
 unsigned int scan_uuencoded(const char *src,char *dest,unsigned int *destlen);
 unsigned int scan_base64(const char *src,char *dest,unsigned int *destlen);
 unsigned int scan_quotedprintable(const char *src,char *dest,unsigned int *destlen);
-unsigned int scan_urlencode(const char *src,char *dest,unsigned int *destlen);
+unsigned int scan_urlencoded(const char *src,char *dest,unsigned int *destlen);
 unsigned int scan_yenc(const char *src,char *dest,unsigned int *destlen);
 
 extern const char base64[64];
