@@ -4,7 +4,6 @@
 #undef extern
 #include "byte.h"
 #ifdef HAVE_SIGIO
-#include <sys/poll.h>
 #include <signal.h>
 #include <fcntl.h>
 #endif
