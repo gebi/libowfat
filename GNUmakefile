@@ -117,7 +117,8 @@ $(TAIA_OBJS) $(TAI_OBJS) $(CASE_OBJS) $(ARRAY_OBJS) $(MULT_OBJS) \
 $(IO_OBJS)
 
 libowfat.a: $(ALL_OBJS)
-	ar cr libowfat.a $(ALL_OBJS)
+	ar cr $@ $(ALL_OBJS)
+	-ranlib $@
 
 CFLAGS+=-I.
 
