@@ -8,7 +8,7 @@
 
 /* like open(s,O_RDONLY) */
 int io_readfile(int64* d,const char* s);
-/* like open(s,O_WRONLY|O_TRUNC,0600) */
+/* like open(s,O_WRONLY|O_CREAT|O_TRUNC,0600) */
 int io_createfile(int64* d,const char* s);
 /* like pipe(d) */
 int io_pipe(int64* d);
