@@ -1,14 +1,14 @@
 #include "byte.h"
-#include <write12.h>
+#include "errmsg.h"
 
 int main() {
   char buf[4096];
-  __write1("both aligned\n");
+  carp("both aligned");
   byte_copy(buf,16,"this is a test!\n");
-  __write1("destination aligned, source unaligned\n");
+  carp("destination aligned, source unaligned");
   byte_copy(buf,1000,buf+1);
-  __write1("destination unaligned, source aligned\n");
+  carp("destination unaligned, source aligned");
   byte_copy(buf+1,1000,buf);
-  __write1("both unaligned\n");
+  carp("both unaligned");
   byte_copy(buf+1,1000,buf+3);
 }
