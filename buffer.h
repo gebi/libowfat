@@ -8,14 +8,19 @@ typedef struct buffer {
   unsigned long int a;	/* allocated buffer size */
   int fd;		/* passed as first argument to op */
   int (*op)();		/* use read(2) or write(2) */
+  enum { NOTHING, FREE, MUNMAP } todo;
 } buffer;
 
-#define BUFFER_INIT(op,fd,buf,len) { (buf), 0, 0, (len), (fd), (op) }
+#define BUFFER_INIT(op,fd,buf,len) { (buf), 0, 0, (len), (fd), (op), NOTHING }
+#define BUFFER_INIT_FREE(op,fd,buf,len) { (buf), 0, 0, (len), (fd), (op), FREE }
 #define BUFFER_INIT_READ(op,fd,buf,len) BUFFER_INIT(op,fd,buf,len) /*obsolete*/
 #define BUFFER_INSIZE 8192
 #define BUFFER_OUTSIZE 8192
 
 void buffer_init(buffer* b,int (*op)(),int fd,unsigned char* y,unsigned long int ylen);
+void buffer_init_free(buffer* b,int (*op)(),int fd,unsigned char* y,unsigned long int ylen);
+int buffer_mmapread(buffer* b,const char* filename);
+void buffer_close(buffer* b);
 
 int buffer_flush(buffer* b);
 int buffer_put(buffer* b,const unsigned char* x,unsigned long int len);

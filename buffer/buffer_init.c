@@ -8,4 +8,5 @@ void buffer_init(buffer* b,int (*op)(),int fd,
   b->a=ylen;
   b->p=0;
   b->n=0;
+  b->todo=NOTHING;
 }
