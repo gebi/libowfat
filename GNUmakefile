@@ -27,12 +27,18 @@ path = $(subst :, ,$(PATH))
 diet_path = $(foreach dir,$(path),$(wildcard $(dir)/diet))
 ifeq ($(strip $(diet_path)),)
 ifneq ($(wildcard /opt/diet/bin/diet),)
-DIET=/opt/diet/bin/diet -Os
+DIET=/opt/diet/bin/diet
 else
 DIET=
 endif
 else
-DIET:=$(strip $(diet_path)) -Os
+DIET:=$(strip $(diet_path))
+endif
+
+ifneq ($(DIET),)
+ifneq ($(DEBUG),1)
+DIET+=-Os
+endif
 endif
 # to build without diet libc support, use $ make DIET=
 # see http://www.fefe.de/dietlibc/ for details about the diet libc
