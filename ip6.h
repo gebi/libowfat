@@ -17,12 +17,12 @@ extern unsigned int ip6_fmt_flat(char *dest,const char *);
 
 #define IP6_FMT 40
 
-static const unsigned char V4mappedprefix[12]={0,0,0,0,0,0,0,0,0,0,0xff,0xff};
-static const unsigned char V6loopback[16]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1};
-static const unsigned char V6any[16]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+extern const unsigned char V4mappedprefix[12]; /*={0,0,0,0,0,0,0,0,0,0,0xff,0xff}; */
+extern const unsigned char V6loopback[16]; /*={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1}; */
+extern const unsigned char V6any[16]; /*={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; */
 
 #define ip6_isv4mapped(ip) (byte_equal(ip,12,V4mappedprefix))
 
-static const char ip4loopback[4] = {127,0,0,1};
+extern const char ip4loopback[4]; /* = {127,0,0,1};*/
 
 #endif

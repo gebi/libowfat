@@ -12,13 +12,13 @@ extern int socket_udp6(void);
 #define socket_tcp() socket_tcp4()
 #define socket_udp() socket_udp4()
 
-extern int socket_connect4(int s,const char *ip,uint16);
-extern int socket_connect6(int s,const char *ip,uint16,uint32 scope_id);
+extern int socket_connect4(int s,const char *ip,uint16 port);
+extern int socket_connect6(int s,const char *ip,uint16 port,uint32 scope_id);
 extern int socket_connected(int s);
-extern int socket_bind4(int s,const char *ip,uint16);
-extern int socket_bind4_reuse(int s,const char *ip,uint16);
-extern int socket_bind6(int s,const char *ip,uint16,uint32 scope_id);
-extern int socket_bind6_reuse(int s,const char *ip,uint16,uint32 scope_id);
+extern int socket_bind4(int s,const char *ip,uint16 port);
+extern int socket_bind4_reuse(int s,const char *ip,uint16 port);
+extern int socket_bind6(int s,const char *ip,uint16 port,uint32 scope_id);
+extern int socket_bind6_reuse(int s,const char *ip,uint16 port,uint32 scope_id);
 extern int socket_listen(int s,unsigned int backlog);
 extern int socket_accept4(int s,char *ip,uint16 *);
 extern int socket_accept6(int s,char *ip,uint16 *,uint32 *scope_id);
@@ -35,7 +35,7 @@ extern int socket_remote6(int s,char *ip,uint16 *port,uint32 *scope_id);
 extern int socket_broadcast(int s);
 /* join a multicast group on the given interface */
 extern int socket_mcjoin4(int s,const char *groupip,const char *interface);
-extern int socket_mcjoin6(int s,const char *groupip,int);
+extern int socket_mcjoin6(int s,const char *groupip,int interface);
 /* leave a multicast group on the given interface */
 extern int socket_mcleave4(int s,const char *groupip);
 extern int socket_mcleave6(int s,const char *groupip);
