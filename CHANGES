@@ -1,3 +1,7 @@
+0.11:
+  fix fmt_long (didn't count the '-'), which in turn broke
+    buffer_putlong
+
 0.10:
   add comment to stralloc.h that explains the structure (Markus Brischke)
   fix socket routines (two cut-and-paste errors)
