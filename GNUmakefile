@@ -18,6 +18,7 @@ CC=gcc
 CFLAGS=-pipe -Wall -O2 -fomit-frame-pointer
 #CFLAGS=-pipe -Os -march=pentiumpro -mcpu=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
 
+# startrip
 path = $(subst :, ,$(PATH))
 diet_path = $(foreach dir,$(path),$(wildcard $(dir)/diet))
 ifeq ($(strip $(diet_path)),)
@@ -32,7 +33,6 @@ endif
 # to build without diet libc support, use $ make DIET=
 # see http://www.fefe.de/dietlibc/ for details about the diet libc
 
-# startrip
 VPATH=str:byte:fmt:scan:uint:open:stralloc:unix:socket:buffer:mmap:textcode:taia:tai:dns:case:array:mult:io
 
 BYTE_OBJS=$(patsubst byte/%.c,%.o,$(wildcard byte/*.c))
@@ -227,5 +227,7 @@ Makefile: GNUmakefile dep libdep
 	echo "# do not edit!  edit GNUmakefile instead" > $@
 	sed '/startrip/,$$d' < GNUmakefile >> $@
 	cat dep libdep >> $@
-	sed -e '1,/stoprip/d' -e 's/ %.c$$//' < GNUmakefile >> $@
+	sed -e '1,/stoprip/d' -e 's/ %.c$$//' \
+	    -e 's/^VERSION=.*/'VERSION=$(VERSION)/ \
+	    -e 's/^CURNAME=.*/'CURNAME=$(CURNAME)/ < GNUmakefile >> $@
 
