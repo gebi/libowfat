@@ -25,6 +25,9 @@ typedef struct {
   long next_read;
   long next_write;
   void* cookie;
+  void* mmapped;
+  long maplen;
+  uint64 mapofs;
 #ifdef __MINGW32__
   OVERLAPPED o;
   HANDLE fd;
