@@ -59,6 +59,8 @@ int main() {
 #elif defined(__linux__)
 
 #define _FILE_OFFSET_BITS 64
+#include <sys/types.h>
+#include <unistd.h>
 #if defined(__GLIBC__)
 #include <sys/sendfile.h>
 #elif defined(__dietlibc__)
@@ -67,6 +69,7 @@ int main() {
 #include <linux/unistd.h>
 _syscall4(int,sendfile,int,out,int,in,long *,offset,unsigned long,count)
 #endif
+#include <stdio.h>
 
 int main() {
   int fd=open("havesendfile.c",0);
