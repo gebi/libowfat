@@ -38,7 +38,7 @@ int socket_accept6(int s,char* ip,uint16* port,uint32* scope_id)
   }
   if (ip) byte_copy(ip,16,(char *) &sa.sin6_addr);
   if (port) uint16_unpack_big((char *) &sa.sin6_port,port);
-#ifdef HAVE_SCOPE_ID
+#ifdef LIBC_HAS_SCOPE_ID
   if (scope_id) *scope_id=sa.sin6_scope_id;
 #else
   if (scope_id) *scope_id=0;

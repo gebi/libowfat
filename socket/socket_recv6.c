@@ -37,7 +37,7 @@ int socket_recv6(int s,char *buf,unsigned int len,char ip[16],uint16 *port,uint3
   }
   if (ip) byte_copy(ip,16,(char *) &si.sin6_addr);
   if (port) uint16_unpack_big((char *) &si.sin6_port,port);
-#ifdef HAVE_SCOPE_ID
+#ifdef LIBC_HAS_SCOPE_ID
   if (scope_id) *scope_id=si.sin6_scope_id;
 #else
   if (scope_id) *scope_id=0;

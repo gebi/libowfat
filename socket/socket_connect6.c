@@ -31,7 +31,7 @@ int socket_connect6(int s,const char ip[16],uint16 port,uint32 scope_id)
   sa.sin6_family = PF_INET6;
   uint16_pack_big((char *) &sa.sin6_port,port);
   sa.sin6_flowinfo = 0;
-#ifdef HAVE_SCOPE_ID
+#ifdef LIBC_HAS_SCOPE_ID
   sa.sin6_scope_id = scope_id;
 #endif
   byte_copy((char *) &sa.sin6_addr,16,ip);

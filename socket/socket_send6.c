@@ -36,7 +36,7 @@ int socket_send6(int s,const char *buf,unsigned int len,const char ip[16],uint16
   si.sin6_family = AF_INET6;
   uint16_pack_big((char *) &si.sin6_port,port);
   byte_copy((char *) &si.sin6_addr,16,ip);
-#ifdef HAVE_SCOPE_ID
+#ifdef LIBC_HAS_SCOPE_ID
   si.sin6_scope_id=scope_id;
 #else
   si.sin6_scope_id=0;
