@@ -15,7 +15,7 @@
 int64 iob_send(int64 s,io_batch* b) {
   io_entry* e,* last;
   struct iovec* v;
-  int64 sent;
+  int64 total,sent;
   long i;
   long headers;
 #ifdef BSD_SENDFILE
@@ -25,6 +25,7 @@ int64 iob_send(int64 s,io_batch* b) {
   if (b->bytesleft==0) return 0;
   last=array_start(&b->b)+array_bytes(&b->b);
   v=alloca(b->bufs*sizeof(struct iovec));
+  total=0;
   for (;;) {
     if (!(e=array_get(&b->b,sizeof(io_entry),b->next)))
       return -1;		/* can't happen error */
@@ -67,6 +68,10 @@ int64 iob_send(int64 s,io_batch* b) {
     else
       sent=io_sendfile(s,e->fd,e->offset,e->n);
 #endif
+    if (sent>0)
+      total+=sent;
+    else
+      if (!total) return -1;
     if (sent==b->bytesleft) {
       b->bytesleft=0;
       break;
@@ -86,5 +91,5 @@ int64 iob_send(int64 s,io_batch* b) {
     } else break;
   }
 abort:
-  return sent;
+  return total;
 }
