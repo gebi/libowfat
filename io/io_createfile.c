@@ -1,3 +1,4 @@
+#define _FILE_OFFSET_BITS 64
 #include <unistd.h>
 #include <fcntl.h>
 #include "io_internal.h"
