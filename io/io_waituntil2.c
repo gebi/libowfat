@@ -62,7 +62,7 @@ int64 io_waituntil2(int64 milliseconds) {
 	if (y[n].flags&EV_ERROR) {
 	  /* error; signal whatever app is looking for */
 	  if (e->wantread) y[n].filter=EVFILT_READ; else
-	  if (e->wantwrite) y[n].filter=EVFILE_WRITE;
+	  if (e->wantwrite) y[n].filter=EVFILT_WRITE;
 	}
 	if (!e->canread && (y[n].filter==EVFILT_READ)) {
 	  e->canread=1;
