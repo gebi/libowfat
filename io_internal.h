@@ -41,7 +41,7 @@ extern array io_pollfds;
 extern long first_readable;
 extern long first_writeable;
 
-enum {
+extern enum {
   UNDECIDED,
   POLL
 #ifdef HAVE_KQUEUE
