@@ -4,7 +4,7 @@ dns_name6_domain \- construct host name for reverse lookup
 .SH SYNTAX
 .B #include <dns.h>
 
-int \fBdns_name6_domain\fP(char \fIq\fR[DNS_NAME6_DOMAIN],
+void \fBdns_name6_domain\fP(char \fIq\fR[DNS_NAME6_DOMAIN],
                      const char* \fIip\fR[16],int \fItype\fR);
 .SH DESCRIPTION
 dns_name6_domain is a low-level component of dns_name6.  It converts an
@@ -15,5 +15,9 @@ and places the packet-encoded domain name into \fIq\fR.
 \fItype\fR can be DNS_IP6_INT or DNS_IP6_ARPA.  The "ip6.int" domain for
 IPv6 reverse lookups is now deprecated and "ip6.arpa" is the standard
 way.
+
+q is zero terminated.
+
+q must have space for DNS_NAME4_DOMAIN bytes.
 .SH "SEE ALSO"
 dns_name6(3), dns_name4_domain(3)

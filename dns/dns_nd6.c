@@ -14,7 +14,7 @@ static char tohex(char c) {
   return c>=10?c-10+'a':c+'0';
 }
 
-int dns_name6_domain(char name[DNS_NAME6_DOMAIN],const char ip[16],int t)
+void dns_name6_domain(char name[DNS_NAME6_DOMAIN],const char ip[16],int t)
 {
   unsigned int j;
 
@@ -28,7 +28,5 @@ int dns_name6_domain(char name[DNS_NAME6_DOMAIN],const char ip[16],int t)
     byte_copy(name + 4*16,9,"\3ip6\3int\0");
   else if (t==DNS_IP6_ARPA)
     byte_copy(name + 4*16,10,"\3ip6\4arpa\0");
-  else return 0;
-  return 4*16+9+t;
 }
 
