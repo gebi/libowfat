@@ -267,26 +267,8 @@ invalidpart:
       if (endoffset==totalsize && reconstructed) {
 	buffer_puts(buffer_2,"warning: had to reconstruct ");
 	buffer_putulong(buffer_2,reconstructed);
-	buffer_puts(buffer_2," parts!\n");
+	buffer_putsflush(buffer_2," parts!\n");
       }
-#if 0
-      unsigned long cur;
-      if (ofd>=0) {
-	off_t rlen;
-	buffer_flush(&fileout);
-	rlen=lseek(ofd,0,SEEK_CUR)-offset;
-	if (rlen != endoffset-offset) {
-	  int toomuch=rlen-(endoffset-offset);
-	  buffer_puts(buffer_2,"warning: part size ");
-	  buffer_putulong(buffer_2,rlen);
-	  buffer_puts(buffer_2,", expected ");
-	  buffer_putulong(buffer_2,endoffset-offset);
-	  buffer_putsflush(buffer_2,"!\n");
-	}
-	close(ofd);
-	ofd=-1;
-      }
-#endif
       ++found;
       state=BEFOREBEGIN;
       continue;
@@ -302,22 +284,6 @@ invalidpart:
 	stralloc_cats(&yencpart,line);
 	stralloc_cats(&yencpart,"\n");
 	continue;
-#if 0
-	/* work around broken yenc encoders */
-	if ((line[0]=='.' && line[1]=='.') ||
-	    (line[0]=='>' && line[1]=='.')) {
-	  if (l>linelen && line[l-2]!='=') {
-	    if (!broken_encoder) {
-	      broken_encoder=1;
-	      buffer_putsflush(buffer_2,"compensating for broken encoder...\n");
-	    }
-	    x=scan_yenc(line+1,tmp,&scanned);
-	    break;
-	  }
-	}
-	x=scan_yenc(line,tmp,&scanned);
-	break;
-#endif
       }
       if (!x) {
 	if (state==AFTERBEGIN) {
