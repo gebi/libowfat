@@ -12,6 +12,12 @@ int io_readfile(int64* d,const char* s);
 /* like open(s,O_WRONLY|O_CREAT|O_TRUNC,0600) */
 /* return 1 if ok, 0 on error */
 int io_createfile(int64* d,const char* s);
+/* like open(s,O_RDWR) */
+/* return 1 if ok, 0 on error */
+int io_readwritefile(int64* d,const char* s);
+/* like open(s,O_WRONLY|O_APPEND|O_CREAT,0600) */
+/* return 1 if ok, 0 on error */
+int io_appendfile(int64* d,const char* s);
 /* like pipe(d) */
 /* return 1 if ok, 0 on error */
 int io_pipe(int64* d);
