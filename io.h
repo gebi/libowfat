@@ -7,12 +7,16 @@
 #include "taia.h"
 
 /* like open(s,O_RDONLY) */
+/* return 1 if ok, 0 on error */
 int io_readfile(int64* d,const char* s);
 /* like open(s,O_WRONLY|O_CREAT|O_TRUNC,0600) */
+/* return 1 if ok, 0 on error */
 int io_createfile(int64* d,const char* s);
 /* like pipe(d) */
+/* return 1 if ok, 0 on error */
 int io_pipe(int64* d);
 /* like socketpair() */
+/* return 1 if ok, 0 on error */
 int io_socketpair(int64* d);
 
 /* non-blocking read(), -1 for EAGAIN and -3+errno for other errors */
@@ -81,6 +85,14 @@ void io_finishandshutdown(void);
 /* send n bytes from file fd starting at offset off to socket s */
 /* return number of bytes written */
 int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n);
+
+/* Pass fd over sock (must be a unix domain socket) to other process.
+ * Return 0 if ok, -1 on error, setting errno. */
+int io_passfd(int64 sock,int64 fd);
+
+/* Receive fd over sock (must be a unix domain socket) from other
+ * process.  Return sock if ok, -1 on error, setting errno. */
+int64 io_receivefd(int64 sock);
 
 #ifdef __MINGW32__
 #include_next <io.h>
