@@ -311,7 +311,7 @@ invalidpart:
       stralloc_0(&yencpart);
       stralloc_ready(&out,yencpart.len);
       for (i=0; i<yencpart.len; ) {
-	unsigned int x,scanned;
+	unsigned long x,scanned;
 	x=scan_yenc(yencpart.s+i,out.s+out.len,&scanned);
 	i+=x+1; out.len+=scanned;
       }
@@ -322,7 +322,7 @@ invalidpart:
       } else {
 	out.len=0;
 	for (i=0; i<yencpart.len; ) {
-	  unsigned int x,scanned;
+	  unsigned long x,scanned;
 	  if (yencpart.s[i]=='.' && yencpart.s[i+1]=='.') ++i;
 	  x=scan_yenc(yencpart.s+i,out.s+out.len,&scanned);
 	  i+=x+1; out.len+=scanned;
@@ -351,7 +351,7 @@ invalidpart:
       state=BEFOREBEGIN;
       continue;
     } else {
-      unsigned int scanned,x;
+      unsigned long scanned,x;
       char tmp[300];
       switch (mode) {
       case MIME:
