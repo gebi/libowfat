@@ -71,7 +71,7 @@ clean:
 
 install: libowfat.a
 	install -d $(INCLUDEDIR) $(MAN3DIR) $(LIBDIR)
-	install -m 644 buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h uint16.h uint32.h uint64.h open.h $(INCLUDEDIR)
+	install -m 644 buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h uint16.h uint32.h uint64.h open.h textcode.h $(INCLUDEDIR)
 	install -m 644 $(wildcard */*.3) $(MAN3DIR)
 	install -m 644 libowfat.a $(LIBDIR)
 
