@@ -7,19 +7,26 @@
 #include "socket.h"
 #include "buffer.h"
 #include "ip4.h"
+#include <stdio.h>
 
 #define rdtscl(low) \
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
+  char c;
+  printf("%d\n",buffer_getc(buffer_0,&c));
+  printf("%c\n",c);
+#if 0
   char buf[100]="01234567890123456789012345678901234567890123456789";
   long a,b,c;
+#endif
 #if 0
   buf[ip4_fmt(buf,ip4loopback)]=0;
   buffer_puts(buffer_1small,buf);
   buffer_flush(buffer_1small);
 #endif
 
+#if 0
   buf[0]=0;
   buf[fmt_8long(buf,0)]=0;
   puts(buf);
@@ -28,6 +35,7 @@ int main(int argc,char* argv[]) {
   rdtscl(b);
   /*byte_zero_djb(buf,j); */
 //  printf("\n%lu %d\n",b-a,c);
+#endif
 #if 0
   buffer_puts(buffer_1small,"hello, world\n");
   buffer_flush(buffer_1small);
