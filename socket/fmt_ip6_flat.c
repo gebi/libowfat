@@ -1,12 +1,7 @@
 #include "ip6.h"
 
-static char tohex(char num) {
-  if (num<10)
-    return num+'0';
-  else if (num<16)
-    return num-10+'a';
-  else
-    return -1;
+static inline char tohex(char c) {
+  return c>=10?c-10+'a':c+'0';
 }
 
 unsigned int fmt_ip6_flat(char *s,const char ip[16])

@@ -20,11 +20,13 @@ int main(int argc,char* argv[]) {
   buffer_flush(buffer_1small);
 #endif
 
+  buf[fmt_xlong(buf,0)]=0;
+  puts(buf);
   rdtscl(a);
   c=str_len(buf);
   rdtscl(b);
   /*byte_zero_djb(buf,j); */
-  printf("\n%lu %d\n",b-a,c);
+//  printf("\n%lu %d\n",b-a,c);
 #if 0
   buffer_puts(buffer_1small,"hello, world\n");
   buffer_flush(buffer_1small);
