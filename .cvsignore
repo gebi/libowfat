@@ -17,3 +17,5 @@ libdep
 dep
 havescope.h
 havedevpoll.h
+libsocket
+havesendfile.h
