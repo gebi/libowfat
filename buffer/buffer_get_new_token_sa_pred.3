@@ -1,15 +1,15 @@
-.TH buffer_get_token_sa_pred 3
+.TH buffer_get_new_token_sa_pred 3
 .SH NAME
-buffer_get_token_sa_pred \- read token from buffer
+buffer_get_new_token_sa_pred \- read token from buffer
 .SH SYNTAX
 .nf
 .B #include <stralloc.h>
 .B #include <buffer.h>
 
-int \fBbuffer_get_token_sa_pred\fP(buffer* \fIb\fR,stralloc* \fIsa\fR,
+int \fBbuffer_get_new_token_sa_pred\fP(buffer* \fIb\fR,stralloc* \fIsa\fR,
                  int (*\fIpredicate\fR)(stralloc* * \fIsa\fR));
 .SH DESCRIPTION
-buffer_get_token_sa_pred appends data from \fIb\fR to \fIsa\fR until
+buffer_get_token_sa_pred copies data from \fIb\fR to \fIsa\fR until
 \fIpredicate\fR(\fIsa\fR) returns 1 or -1.
 
 If \fIpredicate\fR returns 1 once a '\\n' was read, that new-line
@@ -21,14 +21,13 @@ maximum message size or does timeout handling or detects a malformed
 message).
 
 If reading from the buffer or allocating memory fails,
-buffer_get_token_sa_pred returns -1 and sets \fIerrno\fR appropriately.  At
-that point \fIsa\fR may already contain a partial token.
+buffer_get_new_token_sa_pred returns -1 and sets \fIerrno\fR
+appropriately.  At that point \fIsa\fR may already contain a partial
+token.
 
-On success, buffer_get_token_sa_pred returns 0.
-.SH RATIONALE
-buffer_get_token_sa_pred appends instead of overwriting so it can be
-used on non-blocking sockets (these signal error and set \fIerrno\fR to
-EAGAIN; in this case you can simply call buffer_get_token_sa again when
-\fBselect\fR or \fBpoll\fR indicate more data is available).
+On success, buffer_get_new_token_sa_pred returns 0.
+
+If you want to read from a non-blocking socket, use
+buffer_get_token_sa_pred instead.
 .SH "SEE ALSO"
 buffer_getline_sa(3), buffer_get_token(3), buffer(3)

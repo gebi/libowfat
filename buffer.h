@@ -104,10 +104,17 @@ int buffer_get_token_sa(buffer* b,stralloc* sa,const char* charset,unsigned int 
 /* read line from buffer to stralloc */
 int buffer_getline_sa(buffer* b,stralloc* sa);
 
+/* same as buffer_get_token_sa but empty sa first */
+int buffer_get_new_token_sa(buffer* b,stralloc* sa,const char* charset,unsigned int setlen);
+/* same as buffer_getline_sa but empty sa first */
+int buffer_getnewline_sa(buffer* b,stralloc* sa);
+
 typedef int (*sa_predicate)(stralloc* sa);
 
 /* like buffer_get_token_sa but the token ends when your predicate says so */
 int buffer_get_token_sa_pred(buffer* b,stralloc* sa,sa_predicate p);
+/* same, but clear sa first */
+int buffer_get_new_token_sa_pred(buffer* b,stralloc* sa,sa_predicate p);
 
 /* make a buffer from a stralloc.
  * Do not change the stralloc after this! */

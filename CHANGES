@@ -1,6 +1,9 @@
 0.21:
   errno cleanup and man page updates (Rolf Eike Beer)
   implement iob_prefetch with madvise MADV_WILLNEED if it's defined
+  extend API To read line/token to stralloc to allow clearing the
+    stralloc first.
+  add stralloc_zero to clear a stralloc
 
 0.20:
   add errmsg API
