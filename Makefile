@@ -79,10 +79,6 @@ buffer_putxlong.o: buffer/buffer_putxlong.c buffer.h fmt.h
 buffer_seek.o: buffer/buffer_seek.c buffer.h
 buffer_stubborn.o: buffer/buffer_stubborn.c buffer.h
 buffer_stubborn2.o: buffer/buffer_stubborn2.c buffer.h
-errmsg_cvt.o: buffer/errmsg_cvt.c errmsg.h str.h
-errmsg_iam.o: buffer/errmsg_iam.c errmsg.h
-errmsg_warn.o: buffer/errmsg_warn.c errmsg.h str.h
-errmsg_warnsys.o: buffer/errmsg_warnsys.c errmsg.h str.h
 byte_chr.o: byte/byte_chr.c byte.h
 byte_copy.o: byte/byte_copy.c byte.h
 byte_copyr.o: byte/byte_copyr.c byte.h
@@ -134,6 +130,8 @@ dns_transmit.o: dns/dns_transmit.c socket.h uint16.h uint32.h byte.h \
   dns.h stralloc.h iopause.h taia.h tai.h uint64.h ip6.h
 dns_txt.o: dns/dns_txt.c stralloc.h uint16.h byte.h dns.h iopause.h \
   taia.h tai.h uint64.h
+byte.o: examples/byte.c byte.h buffer.h
+str.o: examples/str.c str.h buffer.h
 fmt_8long.o: fmt/fmt_8long.c fmt.h
 fmt_8longlong.o: fmt/fmt_8longlong.c fmt.h
 fmt_double.o: fmt/fmt_double.c fmt.h
@@ -500,7 +498,7 @@ ndelay_on.o: unix/ndelay_on.c ndelay.h
 winsock2errno.o: unix/winsock2errno.c
 t.o: t.c fmt.h scan.h str.h uint16.h uint32.h stralloc.h socket.h \
   buffer.h ip4.h ip6.h byte.h mmap.h open.h textcode.h dns.h iopause.h \
-  taia.h tai.h uint64.h case.h errmsg.h
+  taia.h tai.h uint64.h case.h
 BYTE_OBJS=byte_chr.o byte_copy.o byte_copyr.o byte_diff.o byte_rchr.o byte_zero.o 
 FMT_OBJS=fmt_8long.o fmt_8longlong.o fmt_double.o fmt_fill.o fmt_httpdate.o fmt_human.o fmt_humank.o fmt_long.o fmt_longlong.o fmt_minus.o fmt_pad.o fmt_plusminus.o fmt_str.o fmt_strn.o fmt_tohex.o fmt_ulong.o fmt_ulong0.o fmt_ulonglong.o fmt_xlong.o fmt_xlonglong.o 
 SCAN_OBJS=scan_8int.o scan_8long.o scan_8short.o scan_charsetnskip.o scan_double.o scan_fromhex.o scan_httpdate.o scan_int.o scan_long.o scan_longlong.o scan_noncharsetnskip.o scan_nonwhitenskip.o scan_plusminus.o scan_short.o scan_uint.o scan_ulong.o scan_ulonglong.o scan_ushort.o scan_whitenskip.o scan_xint.o scan_xlong.o scan_xlonglong.o scan_xshort.o 
@@ -510,7 +508,7 @@ OPEN_OBJS=open_append.o open_excl.o open_read.o open_rw.o open_trunc.o open_writ
 STRALLOC_OBJS=stralloc_append.o stralloc_cat.o stralloc_catb.o stralloc_catlong0.o stralloc_cats.o stralloc_catulong0.o stralloc_chomp.o stralloc_chop.o stralloc_copy.o stralloc_copyb.o stralloc_copys.o stralloc_diff.o stralloc_diffs.o stralloc_free.o stralloc_init.o stralloc_ready.o stralloc_readyplus.o stralloc_starts.o 
 UNIX_OBJS=iopause.o ndelay_off.o ndelay_on.o winsock2errno.o 
 SOCKET_OBJS=fmt_ip4.o fmt_ip6.o fmt_ip6_flat.o fmt_ip6c.o fmt_ip6if.o fmt_ip6ifc.o init.o scan_ip4.o scan_ip6.o scan_ip6_flat.o scan_ip6if.o socket_accept4.o socket_accept6.o socket_bind4.o socket_bind4_reuse.o socket_bind6.o socket_bind6_reuse.o socket_broadcast.o socket_connect4.o socket_connect6.o socket_connected.o socket_getifidx.o socket_getifname.o socket_ip4loopback.o socket_listen.o socket_local4.o socket_local6.o socket_mchopcount6.o socket_mcjoin4.o socket_mcjoin6.o socket_mcleave4.o socket_mcleave6.o socket_mcloop4.o socket_mcloop6.o socket_mcttl4.o socket_noipv6.o socket_recv4.o socket_recv6.o socket_remote4.o socket_remote6.o socket_send4.o socket_send6.o socket_tcp4.o socket_tcp6.o socket_tryreservein.o socket_udp4.o socket_udp6.o socket_v4mappedprefix.o socket_v6any.o socket_v6loopback.o 
-BUFFER_OBJS=buffer_0.o buffer_0small.o buffer_1.o buffer_1small.o buffer_2.o buffer_feed.o buffer_flush.o buffer_fromsa.o buffer_get.o buffer_get_token.o buffer_get_token_pred.o buffer_get_token_sa.o buffer_get_token_sa_pred.o buffer_getc.o buffer_getline_sa.o buffer_getn.o buffer_init.o buffer_peek.o buffer_put.o buffer_put8long.o buffer_putalign.o buffer_puterror.o buffer_puterror2.o buffer_putflush.o buffer_putlong.o buffer_putlonglong.o buffer_putnlflush.o buffer_puts.o buffer_putsa.o buffer_putsalign.o buffer_putsflush.o buffer_putspace.o buffer_putulong.o buffer_putulonglong.o buffer_putxlong.o buffer_seek.o buffer_stubborn.o buffer_stubborn2.o errmsg_cvt.o errmsg_iam.o errmsg_warn.o errmsg_warnsys.o 
+BUFFER_OBJS=buffer_0.o buffer_0small.o buffer_1.o buffer_1small.o buffer_2.o buffer_feed.o buffer_flush.o buffer_fromsa.o buffer_get.o buffer_get_token.o buffer_get_token_pred.o buffer_get_token_sa.o buffer_get_token_sa_pred.o buffer_getc.o buffer_getline_sa.o buffer_getn.o buffer_init.o buffer_peek.o buffer_put.o buffer_put8long.o buffer_putalign.o buffer_puterror.o buffer_puterror2.o buffer_putflush.o buffer_putlong.o buffer_putlonglong.o buffer_putnlflush.o buffer_puts.o buffer_putsa.o buffer_putsalign.o buffer_putsflush.o buffer_putspace.o buffer_putulong.o buffer_putulonglong.o buffer_putxlong.o buffer_seek.o buffer_stubborn.o buffer_stubborn2.o 
 MMAP_OBJS=mmap_private.o mmap_read.o mmap_shared.o 
 TAIA_OBJS=taia_add.o taia_addsec.o taia_approx.o taia_frac.o taia_less.o taia_now.o taia_pack.o taia_sub.o taia_tai.o taia_uint.o taia_unpack.o 
 TAI_OBJS=tai_add.o tai_now.o tai_pack.o tai_sub.o tai_uint.o tai_unpack.o 
@@ -574,7 +572,8 @@ dep libsocket havealloca.h
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
 uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h \
-openreadclose.h readclose.h ndelay.h array.h io.h safemult.h iob.h havealloca.h
+openreadclose.h readclose.h ndelay.h array.h io.h safemult.h iob.h havealloca.h \
+errmsg.h
 
 install: libowfat.a
 	install -d $(INCLUDEDIR) $(MAN3DIR) $(LIBDIR)
@@ -588,7 +587,7 @@ uninstall:
 	rm -f $(LIBDIR)/libowfat.a
 
 VERSION=libowfat-0.20
-CURNAME=libowfat
+CURNAME=libowfat-0.19
 
 tar: clean rename
 	rm -f dep libdep
