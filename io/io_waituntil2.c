@@ -101,12 +101,12 @@ int64 io_waituntil2(int64 milliseconds) {
 	  if (e->wantread) y[n].revents=POLLIN; else
 	  if (e->wantwrite) y[n].revents=POLLOUT;
 	}
-	if (!e->canread && (y[n].revents==POLLIN)) {
+	if (!e->canread && (y[n].revents&POLLIN)) {
 	  e->canread=1;
 	  e->next_read=first_readable;
 	  first_readable=y[n].fd;
 	}
-	if (!e->canwrite && (y[n].revents==POLLOUT)) {
+	if (!e->canwrite && (y[n].revents&POLLOUT)) {
 	  e->canwrite=1;
 	  e->next_write=first_writeable;
 	  first_writeable=y[i].fd;
