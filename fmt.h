@@ -29,6 +29,10 @@ unsigned int fmt_xlong(char *dest,unsigned long src);
  * If dest is not NULL, write result to dest */
 unsigned int fmt_8long(char *dest,unsigned long src);
 
+unsigned int fmt_longlong(char *dest,signed long long src);
+unsigned int fmt_ulonglong(char *dest,unsigned long long src);
+unsigned int fmt_xlonglong(char *dest,unsigned long long src);
+
 #define fmt_uint(dest,src) fmt_ulong(dest,src)
 #define fmt_int(dest,src) fmt_long(dest,src)
 #define fmt_xint(dest,src) fmt_xlong(dest,src)
