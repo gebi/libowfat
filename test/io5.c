@@ -9,10 +9,25 @@ main() {
   uint32 scope_id;
   char ip[16];
   uint16 port;
-  if (socket_bind6_reuse(s,V6any,1234,0)==-1) return 111;
-  if (socket_listen(s,16)==-1) return 111;
+  if (socket_bind6_reuse(s,V6any,1234,0)==-1) {
+    buffer_puts(buffer_2,"socket_bind6_reuse: ");
+    buffer_puterror(buffer_2);
+    buffer_putnlflush(buffer_2);
+    return 111;
+  }
+  if (socket_listen(s,16)==-1) {
+    buffer_puts(buffer_2,"socket_listen: ");
+    buffer_puterror(buffer_2);
+    buffer_putnlflush(buffer_2);
+    return 111;
+  }
   io_nonblock(s);
-  if (!io_fd(s)) return 111;
+  if (!io_fd(s)) {
+    buffer_puts(buffer_2,"io_fd: ");
+    buffer_puterror(buffer_2);
+    buffer_putnlflush(buffer_2);
+    return 111;
+  }
   io_wantread(s);
   buffer_puts(buffer_2,"listening on port 1234 (fd #");
   buffer_putulong(buffer_2,s);
