@@ -47,7 +47,7 @@ int64 io_waituntil2(int64 milliseconds) {
     int n;
     struct timespec ts;
     ts.tv_sec=milliseconds/1000; ts.tv_nsec=(milliseconds%1000)*1000000;
-    if ((n=kevent(io_master,0,0,y,100,&ts))==-1) return -1;
+    if ((n=kevent(io_master,0,0,y,100,timeout?&ts:0))==-1) return -1;
     for (i=n-1; i>=0; --i) {
       io_entry* e=array_get(&io_fds,sizeof(io_entry),y[--n].ident);
       if (e) {
