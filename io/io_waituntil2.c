@@ -182,12 +182,7 @@ dopoll:
     }
   }
   p=array_start(&io_pollfds);
-again:
-  while ((i=poll(array_start(&io_pollfds),r,milliseconds))==0);
-  if (i==-1) {
-    if (errno==EINTR) goto again;
-    return -1;
-  }
+  if ((i=poll(array_start(&io_pollfds),r,milliseconds))<1) return -1;
   for (j=r-1; j>=0; --j) {
     io_entry* e=array_get(&io_fds,sizeof(io_entry),p->fd);
     if (p->revents&(POLLERR|POLLHUP)) {
