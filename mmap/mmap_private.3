@@ -1,0 +1,20 @@
+.TH mmap_private 3
+.SH NAME
+mmap_private \- memory map a file for reading and writing
+.SH SYNTAX
+.B #include <mmap.h>
+
+extern char* \fBmmap_private\fP(const char* \fIfilename\fR,unsigned long* \fIfilesize\fR);
+.SH DESCRIPTION
+mmap_private opens \fIfilename\fR for reading and writing, maps the
+whole file into memory, closes the file, writes the length of the file
+to \fIfilesize\fR and returns a pointer to the mapped file.
+
+The file is mapped copy-on-write.  Changes done to the mapped region
+will not be written to disk.
+
+The file is unmapped by the operating system if the process terminates.
+It can also be manually unmapped by calling \fBmunmap\fR from
+<sys/mman.h>.
+.SH "SEE ALSO"
+munmap(2)

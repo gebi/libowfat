@@ -8,15 +8,32 @@
 #include "buffer.h"
 #include "ip4.h"
 #include "mmap.h"
+#include "open.h"
 #include <stdio.h>
+#include <unistd.h>
 
 #define rdtscl(low) \
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
-  char buf[100];
-  printf("%d\n",fmt_str(buf,"fnord"));
-  printf("%d\n",fmt_str(0,"fnord"));
+  char buf[]="00000000000000000000000000000001";
+  char ip[16];
+  if (scan_ip6_flat(buf,ip) != str_len(buf))
+    buffer_putsflush(buffer_2,"parse error!\n");
+#if 0
+  int fd=open_read("t.c");
+  buffer b;
+  char buf[1024];
+  char line[20];
+  int i;
+  buffer_init(&b,read,fd,buf,1024);
+  i=buffer_getline(&b,line,19);
+  buffer_puts(buffer_1,"getline returned ");
+  buffer_putulong(buffer_1,i);
+  buffer_puts(buffer_1,"\n");
+  buffer_puts(buffer_1,line);
+  buffer_flush(buffer_1);
+#endif
 #if 0
   buffer_putulong(buffer_1,23);
 //  buffer_putspace(buffer_1);

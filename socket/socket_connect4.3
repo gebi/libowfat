@@ -4,7 +4,7 @@ socket_connect4 \- attempt to make a TCP connection
 .SH SYNTAX
 .B #include <socket.h>
 
-int \fBsocket_connect4\fP(int \fIs\fR,char \fIip\fR[4],uint16 \fIport\fR);
+int \fBsocket_connect4\fP(int \fIs\fR,const char \fIip\fR[4],uint16 \fIport\fR);
 .SH DESCRIPTION
 socket_connect4 attempts to make a connection from TCP socket \fIs\fR to
 TCP port \fIport\fR on IP address \fIip\fR.
