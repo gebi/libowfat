@@ -3,6 +3,7 @@
 #include <sys/mman.h>
 
 void iob_prefetch(io_batch* b,uint64 bytes) {
+  volatile char x;
   iob_entry* e,* last;
   if (b->bytesleft==0) return;
   last=(iob_entry*)(((char*)array_start(&b->b))+array_bytes(&b->b));
@@ -13,13 +14,12 @@ void iob_prefetch(io_batch* b,uint64 bytes) {
       char* c,* d;
       uint64 before=bytes;
       if (e->n>=1000000) {
-	d=c=mmap(0,bytes,PROT_READ,MAP_SHARED,e->fd,(e->offset|4095)+1);
+	d=c=mmap(0,bytes+4095,PROT_READ,MAP_SHARED,e->fd,(e->offset|4095)+1);
 	if (c!=MAP_FAILED) {
 	  while (bytes>4096) {
-	    volatile char x=*d;
+	    x=*d;
 	    bytes-=4096;
 	    d+=4096;
-	    (void)x;
 	  }
 	}
 	munmap(c,before);
@@ -27,4 +27,5 @@ void iob_prefetch(io_batch* b,uint64 bytes) {
       return;
     }
   }
+  (void)x;
 }
