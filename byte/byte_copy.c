@@ -6,23 +6,18 @@ void byte_copy(void* out, unsigned int len, const void* in) {
   register char* s=out;
   register const char* t=in;
   register const char* u=t+len;
-#ifdef __i386__
   if (len>127) {
-    if (sizeof(unsigned long)>4) {	/* a good compiler should optimize this check away */
-      for (;(unsigned long)t&7;) {
-	if (t==u) break; *s=*t; ++s; ++t;
-      }
-    } else {
-      for (;(unsigned long)t&3;) {
-	if (t==u) break; *s=*t; ++s; ++t;
-      }
+    while ((unsigned long)s&(sizeof(unsigned long)-1))
+      if (t==u) break; *s=*t; ++s; ++t;
     }
-    while (t+sizeof(long)<=u) {
-      *(unsigned long*)s=*(unsigned long*)t;
-      s+=sizeof(long); t+=sizeof(long);
-    }
-  }
+    /* s (destination) is now unsigned long aligned */
+#ifndef __i386__
+  if (!((unsigned long)t&(sizeof(unsigned long)-1)))
 #endif
+    while (t+sizeof(unsigned long)<=u) {
+      *(unsigned long*)s=*(unsigned long*)t;
+      s+=sizeof(unsigned long); t+=sizeof(unsigned long);
+    }
   for (;;) {
     if (t==u) break; *s=*t; ++s; ++t;
     if (t==u) break; *s=*t; ++s; ++t;
