@@ -21,9 +21,10 @@ unsigned int scan_urlencoded(const char *src,char *dest,unsigned int *destlen) {
       if (j<0) break;
       dest[written]|=j;
       i+=2;
-    } else {
+    } if (s[i]=='+')
+      dest[written]=' ';
+    else
       dest[written]=s[i];
-    }
     ++written;
   }
   *destlen=written;

@@ -7,6 +7,7 @@
     add FMT_LONG to fmt.h (FMT_ULONG plus 1 for sign)
     fmt_strn did not work for out==NULL
     fix inconsistencies in man pages
+  make scan_urlencode do the '+' -> ' ' transformation
 
 0.12:
   add textcode api for uuencode/uudecode, base64, quoted printable,
