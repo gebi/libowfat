@@ -1,9 +1,10 @@
+#include <stdlib.h>
 #include "iob_internal.h"
 
 int iob_addbuf_internal(io_batch* b,const void* buf,uint64 n,int _free) {
   iob_entry* e;
   if (!n) {
-    if (_free) free(buf);
+    if (_free) free((char*)buf);
     return 1;
   }
   e=array_allocate(&b->b,sizeof(iob_entry),array_length(&b->b,sizeof(iob_entry)));
