@@ -51,8 +51,6 @@ void socket_tryreservein(int s,int size);
 const char* socket_getifname(uint32 _interface);
 uint32 socket_getifidx(const char* ifname);
 
-int socket_sendfile(int out,int in,uint32 offset,uint32 bytes);
-
 int noipv6;
 
 #ifdef __MINGW32__

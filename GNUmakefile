@@ -242,7 +242,7 @@ socket_remote6.o: havesl.h
 fmt_xlong.o scan_xlong.o fmt_ip6_flat.o $(TEXTCODE_OBJS): haveinline.h
 
 dep: haveip6.h haven2i.h havesl.h haveinline.h iopause.h select.h haveepoll.h havekqueue.h havedevpoll.h
-	gcc -I. -MM $(wildcard */*.c) t.c > dep
+	gcc -I. -MM */*.c t.c > dep
 
 libdep:
 	for i in $(LIBS); do (echo -n $$i|tr a-z A-Z|sed 's/.A$$/_OBJS=/'; echo $${i%.a}/*.c|sed -e 's@[^/]*/\([^.]*\)\.c@\1.o @g'); done > libdep

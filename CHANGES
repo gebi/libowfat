@@ -18,6 +18,7 @@
   add lose32 support (broken, please don't use!)
   head -1 -> head -n 1
   apending 0 bytes to an empty array would fail it
+  remove socket_sendfile now that we have io_sendfile
 
 0.16:
   add buffer_fromsa (make buffer from stralloc)
