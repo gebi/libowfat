@@ -1,6 +1,13 @@
 #ifndef STRALLOC_H
 #define STRALLOC_H
 
+#ifdef __dietlibc__
+#include <sys/cdefs.h>
+#endif
+#ifndef __pure__
+#define __pure__
+#endif
+
 /* stralloc is the internal data structure all functions are working on.
  * s is the string.
  * len is the used length of the string.
@@ -66,7 +73,17 @@ extern int stralloc_append(stralloc* sa,const char* in); /* beware: this takes a
 /* stralloc_starts returns 1 if the \0-terminated string in "in", without
  * the terminating \0, is a prefix of the string stored in sa. Otherwise
  * it returns 0. sa must already be allocated. */
-extern int stralloc_starts(stralloc* sa,const char* in);
+extern int stralloc_starts(stralloc* sa,const char* in) __pure__;
+
+/* stralloc_diff returns negative, 0, or positive, depending on whether
+ * a is lexicographically smaller than, equal to, or greater than the
+ * string b. */
+extern int stralloc_diff(const stralloc* a,const stralloc* b) __pure__;
+
+/* stralloc_diffs returns negative, 0, or positive, depending on whether
+ * a is lexicographically smaller than, equal to, or greater than the
+ * string b[0], b[1], ..., b[n]=='\0'. */
+extern int stralloc_diffs(const stralloc* a,const char* b) __pure__;
 
 /* stralloc_0 appends \0 */
 #define stralloc_0(sa) stralloc_append(sa,"")

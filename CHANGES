@@ -4,6 +4,7 @@
   add buffer_putsa, buffer_get_token_sa and buffer_getline_sa
   extended uudecode test.  See comment at top for details.
   fix #include in ndelay*.3 (Hynek Schlawack)
+  add stralloc_diff and stralloc_diffs (my invention)
 
 0.14:
   avoid bus errors in byte_copy

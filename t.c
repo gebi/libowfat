@@ -22,8 +22,26 @@
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
+#if 0
+  static stralloc s,t;
+  stralloc_copys(&s,"fnord");
+  stralloc_copys(&t,"abc"); printf("%d\n",stralloc_diff(&s,&t));
+  stralloc_copys(&t,"fnor"); printf("%d\n",stralloc_diff(&s,&t));
+  stralloc_copys(&t,"fnord"); printf("%d\n",stralloc_diff(&s,&t));
+  stralloc_copys(&t,"fnordh"); printf("%d\n",stralloc_diff(&s,&t));
+  stralloc_copys(&t,"hausen"); printf("%d\n",stralloc_diff(&s,&t));
+#endif
+  static stralloc s;
+  stralloc_copys(&s,"fnord");
+  printf("%d\n",stralloc_diffs(&s,"abc"));
+  printf("%d\n",stralloc_diffs(&s,"fnor"));
+  printf("%d\n",stralloc_diffs(&s,"fnord"));
+  printf("%d\n",stralloc_diffs(&s,"fnordh"));
+  printf("%d\n",stralloc_diffs(&s,"hausen"));
+#if 0
   printf("%d\n",case_starts("fnordhausen","FnOrD"));
   printf("%d\n",case_starts("fnordhausen","blah"));
+#endif
 #if 0
   char buf[]="FnOrD";
   case_lowers(buf);
