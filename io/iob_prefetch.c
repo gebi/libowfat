@@ -11,6 +11,7 @@ void iob_prefetch(io_batch* b,uint64 bytes) {
   for (; e<last; ++e) {
     if (e->type==FROMFILE) {
       char* c,* d;
+      uint64 before=bytes;
       if (e->n>=1000000) {
 	d=c=mmap(0,bytes,PROT_READ,MAP_SHARED,e->fd,(e->offset|4095)+1);
 	if (c!=MAP_FAILED) {
@@ -21,7 +22,7 @@ void iob_prefetch(io_batch* b,uint64 bytes) {
 	    (void)x;
 	  }
 	}
-	munmap(c,bytes);
+	munmap(c,before);
       }
       return;
     }
