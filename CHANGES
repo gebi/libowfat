@@ -2,6 +2,7 @@
   make libowfat compile on BSD again (sorry, and thanks to everyone who
     sent me a patch :-D)
   add iob_addfile_close, needed for gatling 0.5+
+  add test/client and test/server, two simple TCP shell interfaces
 
 0.17:
   add Linux SIGIO support to IO
