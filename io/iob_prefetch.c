@@ -13,6 +13,7 @@ void iob_prefetch(io_batch* b,uint64 bytes) {
     if (e->type==FROMFILE) {
       char* c,* d;
       uint64 before=bytes;
+      if (e->n<bytes) bytes=e->n;
       if (e->n>=1000000) {
 	long l=e->offset&4095;
 	d=c=mmap(0,bytes,PROT_READ,MAP_SHARED,e->fd,(e->offset|4095)+1);
