@@ -59,6 +59,11 @@ int64 io_waituntil2(int64 milliseconds) {
     for (i=n-1; i>=0; --i) {
       io_entry* e=array_get(&io_fds,sizeof(io_entry),y[--n].ident);
       if (e) {
+	if (y[n].flags&EV_ERROR) {
+	  /* error; signal whatever app is looking for */
+	  if (e->wantread) y[n].filter=EVFILT_READ; else
+	  if (e->wantwrite) y[n].filter=EVFILE_WRITE;
+	}
 	if (!e->canread && (y[n].filter==EVFILT_READ)) {
 	  e->canread=1;
 	  e->next_read=first_readable;
