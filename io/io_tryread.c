@@ -29,11 +29,7 @@ int64 io_tryread(int64 d,char* buf,int64 len) {
   }
   r=read(d,buf,len);
   if (!e->nonblock) {
-    new.it_interval.tv_usec=0;
-    new.it_interval.tv_sec=0;
-    new.it_value.tv_usec=0;
-    new.it_value.tv_sec=0;
-    setitimer(ITIMER_REAL,&new,&old);
+    setitimer(ITIMER_REAL,&old,0);
   }
   if (r==-1) {
     if (errno==EINTR) errno=EAGAIN;
