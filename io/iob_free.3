@@ -8,6 +8,5 @@ void \fBiob_free\fP(io_batch* b);
 .SH DESCRIPTION
 iob_free frees all resources associated with \fIb\fR.  Calling iob_free
 is equivalent to calling iob_reset and free.
-avoiding unnecessary copying (using writev).
 .SH "SEE ALSO"
 iob_new(3), iob_reset(3)
