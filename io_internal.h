@@ -1,5 +1,7 @@
 #include "io.h"
 #include "array.h"
+#include "haveepoll.h"
+#include "havekqueue.h"
 
 typedef struct {
   unsigned int wantread:1;
@@ -19,5 +21,20 @@ array io_pollfds;
 
 unsigned long first_readable;
 unsigned long first_writeable;
+
+enum {
+  UNDECIDED,
+  POLL
+#ifdef HAVE_KQUEUE
+  ,KQUEUE
+#endif
+#ifdef HAVE_EPOLL
+  ,EPOLL
+#endif
+} io_waitmode;
+
+#if defined(HAVE_KQUEUE) || defined(HAVE_EPOLL)
+int io_master;
+#endif
 
 int64 io_waituntil2(int64 milliseconds);
