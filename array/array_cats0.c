@@ -2,5 +2,5 @@
 #include "str.h"
 
 void array_cats0(array* to,const char* from) {
-  array_catb(to,from,strlen(from)+1);
+  array_catb(to,from,str_len(from)+1);
 }

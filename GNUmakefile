@@ -107,8 +107,10 @@ $(SOCKET_OBJS) $(BUFFER_OBJS) $(MMAP_OBJS) $(TEXTCODE_OBJS) \
 $(TAIA_OBJS) $(TAI_OBJS) $(CASE_OBJS) $(ARRAY_OBJS) $(MULT_OBJS) \
 $(IO_OBJS)
 
+CFLAGS+=-I.
+
 %.o: %.c
-	$(DIET) $(CC) -c $< -o $@ -I. $(CFLAGS)
+	$(DIET) $(CC) -c $< $(CFLAGS)
 
 %.a:
 	ar cr $@ $^
@@ -117,7 +119,7 @@ $(IO_OBJS)
 t.o: iopause.h
 
 t: t.o libowfat.a
-	$(DIET) $(CC) -g -o $@ $^
+	$(DIET) $(CC) -g -o $@ t.o libowfat.a
 
 .PHONY: all clean tar install rename
 clean:
