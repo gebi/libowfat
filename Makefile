@@ -110,4 +110,4 @@ socket_getifidx.o socket_getifname.o: haven2i.h
 
 socket_connected.o: havesl.h
 
-fmt_xlong.o scan_double.o scan_xlong.o fmt_ip6_flat.o: haveinline.h
+fmt_xlong.o scan_xlong.o fmt_ip6_flat.o: haveinline.h

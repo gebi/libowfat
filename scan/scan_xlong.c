@@ -1,4 +1,5 @@
 #include "scan.h"
+#include "haveinline.h"
 
 static inline int fromhex(unsigned char c) {
   if (c>='0' && c<='9')
