@@ -376,7 +376,7 @@ invalidpart:
 	  buffer_puts(buffer_1,": \"");
 	  buffer_puts(buffer_1,line);
 	  buffer_putsflush(buffer_1,"\"\n");
-	  return 1;
+	  state=SKIPHEADER;
 	}
       } else {
 	if (ofd>=0)
