@@ -24,6 +24,7 @@ int64 io_canwrite() {
     if (!e) break;
     r=first_writeable;
     first_writeable=e->next_write;
+    e->next_write=-1;
     debug_printf(("io_canwrite: dequeue %lld from normal write queue (next is %ld)\n",r,first_writeable));
     if (e->wantwrite && e->canwrite) {
 #ifdef HAVE_SIGIO

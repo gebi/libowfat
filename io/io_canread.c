@@ -24,6 +24,7 @@ int64 io_canread() {
     if (!e) break;
     r=first_readable;
     first_readable=e->next_read;
+    e->next_read=-1;
     debug_printf(("io_canread: dequeue %lld from normal read queue (next is %ld)\n",r,first_readable));
     if (e->wantread && e->canread) {
 #ifdef HAVE_SIGIO
