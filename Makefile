@@ -5,7 +5,7 @@ MAN3DIR=${prefix}/man/man3
 
 all: t byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a buffer.a mmap.a libowfat.a
 
-VPATH=str:byte:fmt:scan:uint:open:stralloc:unix:socket:buffer:mmap
+VPATH=str:byte:fmt:scan:uint:open:stralloc:unix:socket:buffer:mmap:textcode
 
 # comment out the following line if you don't want to build with the
 # diet libc (http://www.fefe.de/dietlibc/).
@@ -25,6 +25,7 @@ UNIX_OBJS=$(patsubst unix/%.c,%.o,$(wildcard unix/*.c))
 SOCKET_OBJS=$(patsubst socket/%.c,%.o,$(wildcard socket/*.c))
 BUFFER_OBJS=$(patsubst buffer/%.c,%.o,$(wildcard buffer/*.c))
 MMAP_OBJS=$(patsubst mmap/%.c,%.o,$(wildcard mmap/*.c))
+TEXTCODE_OBJS=$(patsubst textcode/%.c,%.o,$(wildcard textcode/*.c))
 
 $(BYTE_OBJS): byte.h
 $(FMT_OBJS): fmt.h
@@ -35,6 +36,7 @@ $(STRA_OBJS): stralloc.h
 $(SOCKET_OBJS): socket.h
 $(BUFFER_OBJS): buffer.h
 $(MMAP_OBJS): mmap.h
+$(TEXTCODE_OBJS): textcode.h
 
 byte.a: $(BYTE_OBJS)
 fmt.a: $(FMT_OBJS)
@@ -47,10 +49,11 @@ unix.a: $(UNIX_OBJS)
 socket.a: $(SOCKET_OBJS)
 buffer.a: $(BUFFER_OBJS)
 mmap.a: $(MMAP_OBJS)
+textcode.a: $(TEXTCODE_OBJS)
 
 libowfat.a: $(BYTE_OBJS) $(FMT_OBJS) $(SCAN_OBJS) $(STR_OBJS) \
 $(UINT_OBJS) $(OPEN_OBJS) $(STRA_OBJS) $(UNIX_OBJS) $(SOCKET_OBJS) \
-$(BUFFER_OBJS) $(MMAP_OBJS)
+$(BUFFER_OBJS) $(MMAP_OBJS) $(TEXTCODE_OBJS)
 
 %.o: %.c
 	$(DIET) $(CC) -c $< -o $@ $(CFLAGS)
@@ -60,7 +63,7 @@ $(BUFFER_OBJS) $(MMAP_OBJS)
 	-ranlib $@
 
 t: t.o socket.a stralloc.a buffer.a scan.a uint.a mmap.a open.a fmt.a \
-str.a byte.a
+str.a byte.a textcode.a
 	$(DIET) $(CC) -g -o $@ $^
 
 .PHONY: clean tar install rename
@@ -112,4 +115,4 @@ socket_accept4.o socket_accept6.o socket_connected.o socket_local4.o \
 socket_local6.o socket_recv4.o socket_recv6.o socket_remote4.o \
 socket_remote6.o: havesl.h
 
-fmt_xlong.o scan_xlong.o fmt_ip6_flat.o: haveinline.h
+fmt_xlong.o scan_xlong.o fmt_ip6_flat.o $(TEXTCODE_OBJS): haveinline.h

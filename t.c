@@ -9,6 +9,7 @@
 #include "ip4.h"
 #include "mmap.h"
 #include "open.h"
+#include "textcode.h"
 #include <stdio.h>
 #include <unistd.h>
 
@@ -16,10 +17,48 @@
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
+  unsigned long size;
+  char* buf=mmap_read(argv[1],&size);
+  if (buf) {
+    const char* c=buf;
+    const char* max=buf+size;
+    while (c<max) {
+      char tmp[100];
+      unsigned int scanned;
+      unsigned int x=scan_uuencoded(c,tmp,&scanned);
+      if (!x) {
+	if (!strncmp(c,"end\n",4))
+	  return 0;
+	else {
+parseerror:
+	  buffer_putsflush(buffer_2,"parse error!\n");
+	  exit(1);
+	}
+      }
+      write(1,tmp,scanned);
+      c+=x;
+      if (*c!='\n') goto parseerror;
+      ++c;
+    }
+  }
+  return 0;
+#if 0
+  unsigned long size;
+  char* buf=mmap_read(argv[1],&size);
+  if (buf) {
+    unsigned int x=fmt_uuencoded(0,buf,size);
+    unsigned int y;
+    char* tmp=malloc(x+1);
+    y=fmt_uuencoded(tmp,buf,size);
+    write(1,tmp,x);
+  }
+#endif
+#if 0
   char buf[]="00000000000000000000000000000001";
   char ip[16];
   if (scan_ip6_flat(buf,ip) != str_len(buf))
     buffer_putsflush(buffer_2,"parse error!\n");
+#endif
 #if 0
   int fd=open_read("t.c");
   buffer b;
