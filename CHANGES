@@ -25,6 +25,7 @@
   support MacOS X sendfile (and comment it out again, the headers
     declare it but it's not actually there) (thanks to Bernhard Schmidt)
   support AIX 5 (thanks to Lutz Chwala and Arthur Erhardt)
+  fix ip6_fmt (martin paljak)
 
 0.16:
   add buffer_fromsa (make buffer from stralloc)
