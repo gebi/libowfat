@@ -12,13 +12,13 @@ int socket_bind6(int s,const char ip[16],uint16 port,uint32 scope_id)
 #ifdef LIBC_HAS_IP6
   struct sockaddr_in6 sa;
 #endif
+  int i;
 
   if (!ip) ip=V6any;
 
 #ifdef LIBC_HAS_IP6
   if (noipv6) {
 #endif
-    int i;
     for (i=0; i<16; i++)
       if (ip[i]!=0) break;
     if (i==16 || ip6_isv4mapped(ip))
