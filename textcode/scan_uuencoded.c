@@ -6,7 +6,7 @@ unsigned int scan_uuencoded(const char *src,char *dest,unsigned int *destlen) {
   unsigned long tmp;
   register const unsigned char* s=(const unsigned char*) src;
   const char* orig=dest;
-  if ((len=*s-' ')>64) return 0;
+  if ((len=*s-' ')>64) return 0; len&=63;
   ++s;
   while (len>0) {
     if (s[0]-' '>64 || s[1]-' '>64 || s[2]-' '>64 || s[3]-' '>64) return 0;
