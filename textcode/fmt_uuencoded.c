@@ -6,7 +6,7 @@ static inline unsigned int enc(unsigned char x) {
   return ((x-1)&077)+'!';
 }
 
-unsigned int fmt_uuencoded(char* dest,const char* src,unsigned int len) {
+unsigned long fmt_uuencoded(char* dest,const char* src,unsigned long len) {
   unsigned int i;
   register const unsigned char* s=(const unsigned char*) src;
   const char* orig=dest;

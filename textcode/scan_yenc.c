@@ -1,7 +1,7 @@
 #include "fmt.h"
 #include "textcode.h"
 
-unsigned int scan_yenc(const char *src,char *dest,unsigned int *destlen) {
+unsigned long scan_yenc(const char *src,char *dest,unsigned long *destlen) {
   register const unsigned char* s=(const unsigned char*) src;
   unsigned long written=0,i;
   for (i=0; s[i]; ++i) {

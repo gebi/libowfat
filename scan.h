@@ -73,4 +73,8 @@ unsigned long scan_noncharsetnskip(const char *in,const char *charset,unsigned l
  */
 unsigned int scan_httpdate(const char *in,time_t *t) __pure__;
 
+/* a few internal function that might be useful independently */
+/* convert from hex ASCII, return 0 to 15 for success or -1 for failure */
+int scan_fromhex(unsigned char c);
+
 #endif

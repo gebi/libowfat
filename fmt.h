@@ -85,4 +85,7 @@ unsigned int fmt_humank(char* dest,unsigned long long l);
 /* "Sun, 06 Nov 1994 08:49:37 GMT" */
 unsigned int fmt_httpdate(char* dest,time_t t);
 
+/* internal functions, may be independently useful */
+char fmt_tohex(char c);
+
 #endif

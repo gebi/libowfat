@@ -1,7 +1,7 @@
 #include "fmt.h"
 #include "textcode.h"
 
-unsigned int fmt_yenc(char* dest,const char* src,unsigned int len) {
+unsigned long fmt_yenc(char* dest,const char* src,unsigned long len) {
   register const unsigned char* s=(const unsigned char*) src;
   unsigned long written=0,i;
   int linelen=0;

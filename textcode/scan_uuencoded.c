@@ -1,6 +1,6 @@
 #include "textcode.h"
 
-unsigned int scan_uuencoded(const char *src,char *dest,unsigned int *destlen) {
+unsigned long scan_uuencoded(const char *src,char *dest,unsigned long *destlen) {
   unsigned int len;
   unsigned long tmp;
   register const unsigned char* s=(const unsigned char*) src;

@@ -3,7 +3,7 @@
 #include "haveinline.h"
 #include "case.h"
 
-unsigned int scan_html(const char *src,char *dest,unsigned int *destlen) {
+unsigned long scan_html(const char *src,char *dest,unsigned long *destlen) {
   register const unsigned char* s=(const unsigned char*) src;
   unsigned long written=0,i;
   for (i=0; s[i]; ++i) {
