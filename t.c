@@ -19,22 +19,43 @@
 #include <errno.h>
 #include <string.h>
 #include <assert.h>
-#include <errmsg.h>
+#include "errmsg.h"
+#include "iob.h"
 
 #define rdtscl(low) \
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
+int64 writecb(int64 fd,const void* buf,uint64 n) {
+#if 0
+  int r;
+  int todo=n>=65536?65536:n;
+  r=write(fd,buf,todo);
+  if (r==-1 && r!=EAGAIN) r=-3;
+  return r;
+#endif
+  return -1;
+}
+
 int main(int argc,char* argv[]) {
+  static io_batch b;
+  int64 fd=open("t.c",0);
+  iob_addbuf(&b,"fnord",5);
+  iob_addfile_close(&b,fd,0,7365);
+  iob_write(1,&b,writecb);
+#if 0
   char dest[1024];
   unsigned long len;
   scan_urlencoded2("libstdc++.tar.gz",dest,&len);
   buffer_putmflush(buffer_1,dest,"\n");
+#endif
 #if 0
   static stralloc sa;
   stralloc_copym(&sa,"foo ","bar ","baz.\n");
   write(1,sa.s,sa.len);
 #endif
+#if 0
   buffer_putmflush(buffer_1,"foo ","bar ","baz.\n");
+#endif
 #if 0
   char* c="fnord";
   int fd=open_read(c);

@@ -4,6 +4,8 @@
   #include <unistd.h> in io/io_sendfile.c (broken OpenBSD, thx Rob)
   add scan_urlencoded2 (like scan_urlencoded but will not convert '+' to
     ' '; needed for web servers, so they can serve libstdc++.tar.gz)
+  fix iob_write to handle failure properly
+  document that the iob_write callback should limit itself
 
 0.21:
   errno cleanup and man page updates (Rolf Eike Beer)

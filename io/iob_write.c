@@ -18,16 +18,14 @@ int64 iob_write(int64 s,io_batch* b,io_write_callback cb) {
       sent=io_mmapwritefile(s,e[i].fd,e[i].offset,e[i].n,cb);
     else
       sent=cb(s,e[i].buf+e[i].offset,e[i].n);
-    if (sent > e[i].n) sent=e[i].n; /* can't happen */
+    if (sent>0 && sent>e[i].n) sent=e[i].n; /* can't happen */
     thatsit=(sent != e[i].n);
-    if (sent==-1 && errno!=EAGAIN)
-      sent=-3;
-    if (sent>0) {
-      e[i].offset+=sent;
-      e[i].n-=sent;
-      total+=sent;
-    } else
+    if (sent<=0)
       return total?total:sent;
+    e[i].offset+=sent;
+    e[i].n-=sent;
+    total+=sent;
+    b->bytesleft-=sent;
     if (thatsit) break;
   }
   if (total == b->bytesleft)
