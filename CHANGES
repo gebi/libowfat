@@ -1,3 +1,8 @@
+0.17:
+  add Linux SIGIO support to IO
+  expand IO api to be able to cope with edge triggered event
+    notification: introduce io_eagain
+
 0.16:
   add buffer_fromsa (make buffer from stralloc)
   add API for integer multiply with overflow detection

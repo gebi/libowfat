@@ -79,7 +79,10 @@ int64 iob_send(int64 s,io_batch* b) {
     if (sent>0)
       total+=sent;
     else
-      if (!total) return -1;
+      if (!total) {
+	if (errno!=EAGAIN) return -3;
+	return -1;
+      }
     if (sent==b->bytesleft) {
       b->bytesleft=0;
 #ifdef TCP_CORK

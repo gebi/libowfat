@@ -42,6 +42,12 @@ int64 io_tryread(int64 d,char* buf,int64 len) {
   }
   if (r==-1 || r==0) {
     e->canread=0;
+#ifdef HAVE_SIGIO
+    if (d==alt_firstread) {
+      debug_printf(("io_tryread: dequeueing %ld from alt read queue (next is %ld)\n",d,e->next_read));
+      alt_firstread=e->next_read;
+    }
+#endif
     e->next_read=-1;
   }
   return r;

@@ -45,6 +45,10 @@ void io_wait();
 void io_waituntil(tai6464 t);
 void io_check();
 
+/* signal that read/accept/whatever returned EAGAIN */
+/* needed for SIGIO */
+void io_eagain(int64 d);
+
 /* return next descriptor from io_wait that can be read from */
 int64 io_canread();
 /* return next descriptor from io_wait that can be written to */

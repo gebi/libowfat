@@ -60,7 +60,7 @@ $(DNS_OBJS): dns.h stralloc.h taia.h tai.h uint64.h iopause.h
 $(CASE_OBJS): case.h
 $(ARRAY_OBJS): uint64.h array.h
 $(MULT_OBJS): uint64.h uint32.h uint16.h safemult.h
-$(IO_OBJS): uint64.h array.h io.h io_internal.h taia.h tai.h haveepoll.h havekqueue.h
+$(IO_OBJS): uint64.h array.h io.h io_internal.h taia.h tai.h haveepoll.h havekqueue.h havesigio.h
 
 
 iob_addbuf.o iob_addfile.o iob_new.o iob_reset.o iob_send.o: iob_internal.h iob.h
@@ -111,7 +111,7 @@ t: t.o libowfat.a
 .PHONY: all clean tar install rename
 clean:
 	rm -f *.o *.a *.da *.bbg *.bb core t haveip6.h haven2i.h havesl.h haveinline.h \
-iopause.h select.h havekqueue.h haveepoll.h libepoll Makefile
+iopause.h select.h havekqueue.h haveepoll.h libepoll havesigio.h Makefile dep
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
 uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h \
@@ -172,6 +172,11 @@ haveepoll.h: tryepoll.c
 libepoll: haveepoll.h
 	if test "z`cat haveepoll.h`" = "z#define HAVE_EPOLL 2"; then echo -lepoll; fi > $@
 
+havesigio.h: trysigio.c
+	-rm -f $@
+	if $(DIET) $(CC) $(CFLAGS) -c trysigio.c >/dev/null 2>&1; then echo "#define HAVE_SIGIO"; fi > $@
+	-rm -f trysigio.o
+
 iopause.h: iopause.h1 iopause.h2 trypoll.c
 	-rm -f $@
 	if $(DIET) $(CC) $(CFLAGS) -o t trypoll.c >/dev/null 2>&1; then cp iopause.h2 iopause.h; else cp iopause.h1 iopause.h; fi
@@ -195,7 +200,7 @@ socket_remote6.o: havesl.h
 
 fmt_xlong.o scan_xlong.o fmt_ip6_flat.o $(TEXTCODE_OBJS): haveinline.h
 
-dep: haveip6.h haven2i.h havesl.h haveinline.h iopause.h select.h
+dep: haveip6.h haven2i.h havesl.h haveinline.h iopause.h select.h haveepoll.h havekqueue.h
 	gcc -I. -MM $(wildcard */*.c) t.c > dep
 
 libdep:

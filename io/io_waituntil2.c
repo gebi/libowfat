@@ -1,8 +1,12 @@
+#include "io_internal.h"
+#ifdef HAVE_SIGIO
+#define _GNU_SOURCE
+#include <signal.h>
+#endif
 #include <unistd.h>
 #include <sys/time.h>
 #include <poll.h>
 #include <errno.h>
-#include "io_internal.h"
 #ifdef HAVE_KQUEUE
 #include <sys/event.h>
 #endif
@@ -61,6 +65,48 @@ int64 io_waituntil2(int64 milliseconds) {
     }
     return n;
   }
+#endif
+#ifdef HAVE_SIGIO
+  if (io_waitmode==_SIGIO) {
+    siginfo_t info;
+    struct timespec ts;
+    int r;
+    io_entry* e;
+    if (alt_firstread>=0 && (e=array_get(&io_fds,sizeof(io_entry),alt_firstread)) && e->canread) return 1;
+    if (alt_firstwrite>=0 && (e=array_get(&io_fds,sizeof(io_entry),alt_firstwrite)) && e->canwrite) return 1;
+    if (milliseconds==-1)
+      r=sigwaitinfo(&io_ss,&info);
+    else {
+      ts.tv_sec=milliseconds/1000; ts.tv_nsec=(milliseconds%1000)*1000000;
+      r=sigtimedwait(&io_ss,&info,&ts);
+    }
+    switch (r) {
+    case SIGIO:
+      /* signal queue overflow */
+      signal(io_signum,SIG_DFL);
+      goto dopoll;
+    default:
+      if (r==io_signum) {
+	io_entry* e=array_get(&io_fds,sizeof(io_entry),info.si_fd);
+	if (e) {
+	  if (info.si_band&POLLIN && !e->canread) {
+	    debug_printf(("io_waituntil2: enqueueing %ld in normal read queue before %ld\n",info.si_fd,first_readable));
+	    e->canread=1;
+	    e->next_read=first_readable;
+	    first_readable=info.si_fd;
+	  }
+	  if (info.si_band&POLLOUT && !e->canwrite) {
+	    debug_printf(("io_waituntil2: enqueueing %ld in normal write queue before %ld\n",info.si_fd,first_writeable));
+	    e->canwrite=1;
+	    e->next_write=first_writeable;
+	    first_writeable=info.si_fd;
+	  }
+	}
+      }
+    }
+    return 1;
+  }
+dopoll:
 #endif
   for (i=r=0; i<array_length(&io_fds,sizeof(io_entry)); ++i) {
     io_entry* e=array_get(&io_fds,sizeof(io_entry),i);

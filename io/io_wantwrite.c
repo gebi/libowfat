@@ -10,11 +10,14 @@
 #ifdef HAVE_EPOLL
 #include <sys/epoll.h>
 #endif
+#ifdef HAVE_SIGIO
+#include <sys/poll.h>
+#endif
 
 void io_wantwrite(int64 d) {
   int newfd;
   io_entry* e=array_get(&io_fds,sizeof(io_entry),d);
-  if (!e) return;
+  if (!e || e->wantwrite) return;
   newfd=(!e->wantread && !e->wantwrite);
   io_wanted_fds+=newfd;
 #ifdef HAVE_EPOLL
@@ -33,6 +36,23 @@ void io_wantwrite(int64 d) {
     EV_SET(&kev, d, EVFILT_WRITE, EV_ADD|EV_ENABLE, 0, 0, 0);
     ts.tv_sec=0; ts.tv_nsec=0;
     kevent(io_master,&kev,1,0,0,&ts);
+  }
+#endif
+#ifdef HAVE_SIGIO
+  if (io_waitmode==_SIGIO) {
+    struct pollfd p;
+    p.fd=d;
+    p.events=POLLOUT;
+    switch (poll(&p,1,0)) {
+    case 1: e->canwrite=1; break;
+    case 0: e->canwrite=0; break;
+    case -1: return;
+    }
+    if (e->canwrite) {
+      debug_printf(("io_wantwrite: enqueueing %lld in normal write queue before %ld\n",d,first_readable));
+      e->next_write=first_writeable;
+      first_writeable=d;
+    }
   }
 #endif
   e->wantwrite=1;

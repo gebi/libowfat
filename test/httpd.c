@@ -123,6 +123,7 @@ const char* http_header(struct http_data* r,const char* h) {
       if (*c==' ' || *c=='\t') ++c;
       return c;
     }
+  return 0;
 }
 
 void httpresponse(struct http_data* h,int64 s) {
@@ -225,17 +226,19 @@ main() {
 	  }
 	  buffer_putnlflush(buffer_2);
 	}
-	if (errno!=EAGAIN)
+	if (errno==EAGAIN)
+	  io_eagain(s);
+	else
 	  carp("socket_accept6");
       } else {
 	char buf[8192];
 	struct http_data* h=io_getcookie(i);
 	int l=io_tryread(i,buf,sizeof buf);
-	if (l==-1) {
+	if (l==-3) {
 	  if (h) {
 	    array_reset(&h->r);
 	    iob_reset(&h->iob);
-	    free(h->hdrbuf);
+	    free(h->hdrbuf); h->hdrbuf=0;
 	  }
 	  buffer_puts(buffer_2,"io_tryread(");
 	  buffer_putulong(buffer_2,i);
@@ -247,13 +250,13 @@ main() {
 	  if (h) {
 	    array_reset(&h->r);
 	    iob_reset(&h->iob);
-	    free(h->hdrbuf);
+	    free(h->hdrbuf); h->hdrbuf=0;
 	  }
 	  buffer_puts(buffer_2,"eof on fd #");
 	  buffer_putulong(buffer_2,i);
 	  buffer_putnlflush(buffer_2);
 	  io_close(i);
-	} else {
+	} else if (l>0) {
 	  array_catb(&h->r,buf,l);
 	  if (array_failed(&h->r)) {
 	    httperror(h,"500 Server Error","request too long.");
@@ -270,10 +273,13 @@ emerge:
     }
     while ((i=io_canwrite())!=-1) {
       struct http_data* h=io_getcookie(i);
-      if (iob_send(i,&h->iob)<=0) {
+      int64 r=iob_send(i,&h->iob);
+/*      printf("iob_send returned %lld\n",r); */
+      if (r==-1) io_eagain(i);
+      if (r<=0) {
 	array_trunc(&h->r);
 	iob_reset(&h->iob);
-	free(h->hdrbuf);
+	free(h->hdrbuf); h->hdrbuf=0;
 	if (h->keepalive) {
 	  io_dontwantwrite(i);
 	  io_wantread(i);

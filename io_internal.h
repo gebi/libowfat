@@ -2,6 +2,11 @@
 #include "array.h"
 #include "haveepoll.h"
 #include "havekqueue.h"
+#include "havesigio.h"
+#ifdef HAVE_SIGIO
+#define _GNU_SOURCE
+#include <signal.h>
+#endif
 
 typedef struct {
   unsigned int wantread:1;
@@ -16,12 +21,12 @@ typedef struct {
   void* cookie;
 } io_entry;
 
-array io_fds;
-uint64 io_wanted_fds;
-array io_pollfds;
+extern array io_fds;
+extern uint64 io_wanted_fds;
+extern array io_pollfds;
 
-unsigned long first_readable;
-unsigned long first_writeable;
+extern long first_readable;
+extern long first_writeable;
 
 enum {
   UNDECIDED,
@@ -32,10 +37,22 @@ enum {
 #ifdef HAVE_EPOLL
   ,EPOLL
 #endif
+#ifdef HAVE_SIGIO
+  ,_SIGIO
+#endif
 } io_waitmode;
 
 #if defined(HAVE_KQUEUE) || defined(HAVE_EPOLL)
-int io_master;
+extern int io_master;
+#endif
+#if defined(HAVE_SIGIO)
+extern int io_signum;
+extern sigset_t io_ss;
+
+extern long alt_firstread;
+extern long alt_firstwrite;
 #endif
 
 int64 io_waituntil2(int64 milliseconds);
+
+#define debug_printf(x)
