@@ -6,6 +6,7 @@
 #include "socket.h"
 #include "ip6.h"
 #include "haveip6.h"
+#include "havesl.h"
 
 int socket_recv6(int s,char *buf,unsigned int len,char ip[16],uint16 *port,uint32 *scope_id)
 {
@@ -14,7 +15,7 @@ int socket_recv6(int s,char *buf,unsigned int len,char ip[16],uint16 *port,uint3
 #else
   struct sockaddr_in si;
 #endif
-  unsigned int Len = sizeof si;
+  socklen_t Len = sizeof si;
   int r;
 
   byte_zero(&si,Len);

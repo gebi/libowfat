@@ -7,6 +7,7 @@
 #include "ip6.h"
 #include "haveip6.h"
 #include "uint32.h"
+#include "havesl.h"
 
 int socket_remote6(int s,char ip[16],uint16 *port,uint32 *scope_id)
 {
@@ -15,7 +16,7 @@ int socket_remote6(int s,char ip[16],uint16 *port,uint32 *scope_id)
 #else
   struct sockaddr_in si;
 #endif
-  unsigned int len = sizeof si;
+  socklen_t len = sizeof si;
 
   if (getpeername(s,(struct sockaddr *) &si,&len) == -1) return -1;
 #ifdef LIBC_HAS_IP6

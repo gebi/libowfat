@@ -94,7 +94,7 @@ haven2i.h:
 
 havesl.h:
 	-rm -f $@
-	if $(DIET) $(CC) -o t trysl.c >/dev/null 2>&1; then echo "#define HAVE_SOCKLEN_T"; fi > $@
+	if ! $(DIET) $(CC) -o t trysl.c >/dev/null 2>&1; then echo "typedef int socklen_t;"; fi > $@
 	-rm -f t
 
 haveinline.h:
@@ -108,6 +108,8 @@ socket_remote6.o socket_send6.o socket_tcp6.o socket_udp6.o: haveip6.h
 
 socket_getifidx.o socket_getifname.o: haven2i.h
 
-socket_connected.o: havesl.h
+socket_accept4.o socket_accept6.o socket_connected.o socket_local4.o \
+socket_local6.o socket_recv4.o socket_recv6.o socket_remote4.o \
+socket_remote6.o: havesl.h
 
 fmt_xlong.o scan_xlong.o fmt_ip6_flat.o: haveinline.h

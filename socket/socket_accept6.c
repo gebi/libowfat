@@ -6,6 +6,7 @@
 #include "socket.h"
 #include "ip6.h"
 #include "haveip6.h"
+#include "havesl.h"
 
 int socket_accept6(int s,char ip[16],uint16 *port,uint32 *scope_id)
 {
@@ -14,7 +15,7 @@ int socket_accept6(int s,char ip[16],uint16 *port,uint32 *scope_id)
 #else
   struct sockaddr_in sa;
 #endif
-  unsigned int dummy = sizeof sa;
+  socklen_t dummy = sizeof sa;
   int fd;
 
   fd = accept(s,(struct sockaddr *) &sa,&dummy);

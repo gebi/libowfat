@@ -4,11 +4,12 @@
 #include <netinet/in.h>
 #include "byte.h"
 #include "socket.h"
+#include "havesl.h"
 
 int socket_local4(int s,char ip[4],uint16 *port)
 {
   struct sockaddr_in si;
-  unsigned int len = sizeof si;
+  socklen_t len = sizeof si;
 
   if (getsockname(s,(struct sockaddr *) &si,&len) == -1) return -1;
   *(uint32*)ip = *(uint32*)&si.sin_addr;
