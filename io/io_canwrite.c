@@ -31,8 +31,8 @@ int64 io_canwrite() {
       e->next_write=alt_firstwrite;
       alt_firstwrite=r;
       debug_printf(("io_canwrite: enqueue %ld in alt write queue (next is %ld)\n",alt_firstwrite,e->next_write));
-#endif
       if (io_waitmode!=_SIGIO)
+#endif
 	e->canwrite=0;
       return r;
     }
