@@ -8,7 +8,12 @@ unsigned int fmt_pad(char* dest,const char* src,unsigned int srclen,unsigned int
   int todo;
   char* olddest=dest;
   char* max=dest+maxlen;
-  for (todo=padlen-srclen; todo>0; --todo) {
+  todo=padlen-srclen;
+  if (dest==0) {
+    int sum=srclen>padlen?srclen:padlen;
+    return sum>maxlen?maxlen:sum;
+  }
+  for (; todo>0; --todo) {
     if (dest>max) break;
     *dest=' '; ++dest;
   }

@@ -15,7 +15,8 @@
 
 int main(int argc,char* argv[]) {
   char buf[100];
-  buf[fmt_fill(buf,"foobarbaz",3,5,100)]=0;
+  strcpy(buf,"foobarbaz");
+  buf[fmt_fill(buf,3,5,100)]=0;
   printf("\"%s\"\n",buf);
 #if 0
   unsigned long len;

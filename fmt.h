@@ -65,9 +65,9 @@ unsigned int fmt_strn(char *dest,const char *src,unsigned int limit) __THROW;
 unsigned int fmt_pad(char* dest,const char* src,unsigned int srclen,unsigned int padlen,unsigned int maxlen) __THROW;
 
 /* "foo" -> "foo  "
- * write padlen-srclen spaces, if that is >= 0.  Then copy srclen
- * characters from src.  Truncate only if total length is larger than
- * maxlen.  Return number of characters written. */
-unsigned int fmt_fill(char* dest,const char* src,unsigned int srclen,unsigned int padlen,unsigned int maxlen) __THROW;
+ * append padlen-srclen spaces after dest, if that is >= 0.  Truncate
+ * only if total length is larger than maxlen.  Return number of
+ * characters written. */
+unsigned int fmt_fill(char* dest,unsigned int srclen,unsigned int padlen,unsigned int maxlen) __THROW;
 
 #endif
