@@ -32,6 +32,9 @@ extern int buffer_putsflush(buffer* b,const char* x);
 extern int buffer_get(buffer* b,char* x,unsigned int len);
 extern int buffer_bget(buffer* b,char* x,unsigned int len);
 extern int buffer_feed(buffer* b);
+extern int buffer_getc(buffer* b,char* x);
+extern int buffer_getn(buffer* b,char* x,unsigned int len);
+extern int buffer_get_token(buffer* b,char* x,unsigned int len,const char* charset,unsigned int setlen);
 
 extern char *buffer_peek(buffer* b);
 extern void buffer_seek(buffer* b,unsigned int len);
