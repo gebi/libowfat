@@ -17,6 +17,7 @@ main() {
   taia_addsec(&t,&t,1);
   if (!io_fd(pfd[0])) return 111;
   io_timeout(pfd[0],t);
+  sleep(2);
   if ((r=io_tryreadtimeout(pfd[0],buf,sizeof buf))!=-2) {
     buffer_puts(buffer_2,"io_tryreadtimeout returned ");
     buffer_putlonglong(buffer_2,r);
