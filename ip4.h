@@ -1,9 +1,15 @@
 #ifndef IP4_H
 #define IP4_H
 
-extern unsigned int ip4_scan(const char *src,char *ip);
-extern unsigned int ip4_fmt(char *dest,const char *ip);
+extern unsigned int scan_ip4(const char *src,char *ip);
+extern unsigned int fmt_ip4(char *dest,const char *ip);
+
+/* for djb backwards compatibility */
+#define ip4_scan scan_ip4
+#define ip4_fmt fmt_ip4
 
 #define IP4_FMT 20
+
+extern const char ip4loopback[4]; /* = {127,0,0,1};*/
 
 #endif

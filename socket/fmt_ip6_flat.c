@@ -9,7 +9,7 @@ static char tohex(char num) {
     return -1;
 }
 
-unsigned int ip6_fmt_flat(char *s,const char ip[16])
+unsigned int fmt_ip6_flat(char *s,const char ip[16])
 {
   int i;
   if (!s) return 32;

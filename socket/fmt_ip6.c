@@ -3,7 +3,7 @@
 #include "ip4.h"
 #include "ip6.h"
 
-unsigned int ip6_fmt(char *s,const char ip[16])
+unsigned int fmt_ip6(char *s,const char ip[16])
 {
   unsigned int len;
   unsigned int i;

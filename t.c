@@ -6,13 +6,20 @@
 #include "stralloc.h"
 #include "socket.h"
 #include "buffer.h"
+#include "ip4.h"
 
 #define rdtscl(low) \
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
+  char buf[100];
+  buf[ip4_fmt(buf,ip4loopback)]=0;
+  buffer_puts(buffer_1small,buf);
+  buffer_flush(buffer_1small);
+#if 0
   buffer_puts(buffer_1small,"hello, world\n");
   buffer_flush(buffer_1small);
+#endif
 #if 0
   int s=socket_tcp4();
   char ip[4]={127,0,0,1};

@@ -7,6 +7,7 @@
 #include "socket.h"
 #include "ip6.h"
 #include "haveip6.h"
+#include "ip4.h"
 
 int socket_send6(int s,const char *buf,unsigned int len,const char ip[16],uint16 port,uint32 scope_id)
 {
