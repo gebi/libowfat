@@ -1,0 +1,16 @@
+.TH stralloc_copy 3
+.SH NAME
+stralloc_copy \- copy data into a stralloc
+.SH SYNTAX
+.B #include <stralloc.h>
+
+extern int \fBstralloc_copy\fP(stralloc* \fIsato\fR,stralloc* \fIsafrom\fR);
+.SH DESCRIPTION
+stralloc_copy copies the string stored in \fIsafrom\fR into \fIsa\fR. It
+is the same as
+\fBstralloc_copyb\fR(&\fIsato\fR, \fIsafrom\fR.s, \fIsafrom\fR.len).
+\fIsafrom\fR must already be allocated.
+
+The data that \fIsa\fR previously contained is overwritten and truncated.
+.SH "SEE ALSO"
+stralloc_copyb(3)

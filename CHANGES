@@ -1,0 +1,30 @@
+0.6:
+  changed name to libowfat
+
+0.5:
+  made subdirectories for the different libraries.
+  moved the sources into the corresponding subdirectory.
+  imported my man pages from libdjb.
+  removed fmt_int.c and fmt_uint.c (they are macros in fmt.h).
+  corrected comment in open.h for open_excl.
+  wrote new man pages for fmt_double, scan_double, the sign fmt_ and
+    scan_ routines, the whitespace and charset scan_ routines, and the
+    str and stralloc routines.
+
+0.4:
+  implemented stralloc.
+
+0.3:
+  implemented uint16, uint32 and uint64.  The header files try to
+    define shortcut endianness conversion routines that do not convert
+    anything.
+  implemented open (I hope I got open_excl right, I couldn't find an
+    implementationen).
+
+0.2:
+  implemented the scan, fmt and str interfaces.
+  added adapted fmt_double and scan_double from diet libc.
+
+0.1:
+  initial release.
+  implemented the byte interface.

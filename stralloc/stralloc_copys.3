@@ -1,0 +1,15 @@
+.TH stralloc_copys 3
+.SH NAME
+stralloc_copys \- copy data into a stralloc
+.SH SYNTAX
+.B #include <stralloc.h>
+
+extern int \fBstralloc_copys\fP(stralloc* \fIsa\fR,const char* \fIbuf\fR);
+.SH DESCRIPTION
+stralloc_copys copies a \\0-terminated string from \fIbuf\fR into
+\fIsa\fR, without the \\0. It is the same as
+\fBstralloc_copyb\fR(&\fIsa\fR, \fIbuf\fR, str_len(\fIbuf\fR)).
+
+The data that \fIsa\fR previously contained is overwritten and truncated.
+.SH "SEE ALSO"
+stralloc_copyb(3)
