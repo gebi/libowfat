@@ -1,8 +1,4 @@
 #include "havebsdsf.h"
-#ifdef HAVE_BSDSENDFILE
-/* for MacOS X.  Yep, they blew it again. */
-#define SENDFILE 1
-#endif
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/uio.h>

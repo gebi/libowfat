@@ -10,6 +10,7 @@
   cleanups in stralloc and buffer:
     int -> long for sizes
     char -> unsigned char for strings
+  buffer_getline is now a function, not a macro
 
 0.20:
   add errmsg API

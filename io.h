@@ -100,6 +100,11 @@ int io_passfd(int64 sock,int64 fd);
  * process.  Return sock if ok, -1 on error, setting errno. */
 int64 io_receivefd(int64 sock);
 
+typedef int64 (*io_write_callback)(int64 s,const void* buf,uint64 n);
+
+/* used internally, but hey, who knows */
+int64 io_mmapwritefile(int64 out,int64 in,uint64 off,uint64 bytes,io_write_callback writecb);
+
 #ifdef __MINGW32__
 #include_next <io.h>
 #endif
