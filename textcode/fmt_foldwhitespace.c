@@ -11,7 +11,7 @@ unsigned long fmt_foldwhitespace(char* dest,const char* src,unsigned long len) {
     switch (c=s[i]) {
     case ' ': case '\t': case '\n': c='_'; break;
     }
-    if (dest) dest[i]=s[i];
+    if (dest) dest[i]=c;
   }
   return len;
 }
