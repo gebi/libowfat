@@ -167,7 +167,7 @@ haveepoll.h: tryepoll.c
 	-rm -f tryepoll
 
 libepoll: haveepoll.h
-	test "`cat haveepoll.h`" = "#define HAVE_EPOLL 2" && echo -lepoll > $@
+	test "z`cat haveepoll.h`" = "z#define HAVE_EPOLL 2" && echo -lepoll > $@
 
 iopause.h: iopause.h1 iopause.h2 trypoll.c
 	-rm -f $@
