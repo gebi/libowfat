@@ -1,6 +1,7 @@
 #include <time.h>
 #include <scan.h>
 #include <buffer.h>
+#include <fmt.h>
 
 main() {
   char buf[100];
