@@ -36,18 +36,18 @@ int64 iob_send(int64 s,io_batch* b) {
     headers=trailers=0;
 #endif
     for (i=0; e+i<last; ++i) {
-      if (e[i].type==FROMFILE) break;
+      if (e[i].type==FROMFILE || e[i].type==FROMFILE_CLOSE) break;
       v[i].iov_base=(char*)(e[i].buf+e[i].offset);
       v[i].iov_len=e[i].n;
     }
     headers=i;
 #ifdef HAVE_BSDSENDFILE
-    if (e[i].type==FROMFILE) {
+    if (e[i].type==FROMFILE || e[i].type==FROMFILE_CLOSE) {
       off_t sbytes;
       struct sf_hdtr hdr;
       int r;
       for (++i; e+i<last; ++i) {
-	if (e[i].type==FROMFILE) break;
+	if (e[i].type==FROMFILE || e[i].type==FROMFILE_CLOSE) break;
 	v[i-1].iov_base=(char*)(e[i].buf+e[i].offset);
 	v[i-1].iov_len=e[i].n;
 	++trailers;

@@ -11,7 +11,7 @@ void iob_prefetch(io_batch* b,uint64 bytes) {
   e=(iob_entry*)array_start(&b->b);
   if (!e) return;
   for (; e<last; ++e) {
-    if (e->type==FROMFILE) {
+    if (e->type==FROMFILE || e->type==FROMFILE_CLOSE) {
       char* c,* d;
       uint64 before=bytes;
       if (e->n<bytes) bytes=e->n;

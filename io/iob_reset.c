@@ -9,6 +9,8 @@ void iob_reset(io_batch* b) {
   for (i=0; i<l; ++i) {
     if (x[i].type==FROMBUF_FREE)
       free((char*)x[i].buf);
+    if (x[i].type==FROMFILE_CLOSE)
+      io_close(x[i].fd);
   }
   array_reset(&b->b);
   byte_zero(b,sizeof(*b));

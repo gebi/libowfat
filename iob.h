@@ -27,6 +27,7 @@ int iob_addbuf_free(io_batch* b,const void* buf,uint64 n);
 int iob_adds(io_batch* b,const char* s);
 int iob_adds_free(io_batch* b,const char* s);
 int iob_addfile(io_batch* b,int64 fd,uint64 off,uint64 n);
+int iob_addfile_close(io_batch* b,int64 fd,uint64 off,uint64 n);
 int64 iob_send(int64 s,io_batch* b);
 void iob_reset(io_batch* b);
 void iob_prefetch(io_batch* b,uint64 bytes);
