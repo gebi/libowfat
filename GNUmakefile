@@ -141,7 +141,7 @@ libepoll havesigio.h havebsdsf.h havescope.h havedevpoll.h Makefile dep
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
 uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h \
-openreadclose.h readclose.h ndelay.h array.h io.h safemult.h iob.h
+openreadclose.h readclose.h ndelay.h array.h io.h safemult.h iob.h havealloca.h
 
 install: libowfat.a
 	install -d $(INCLUDEDIR) $(MAN3DIR) $(LIBDIR)
@@ -240,6 +240,8 @@ socket_local6.o socket_recv4.o socket_recv6.o socket_remote4.o \
 socket_remote6.o: havesl.h
 
 dns_nd6.o fmt_xlong.o scan_xlong.o fmt_ip6_flat.o $(TEXTCODE_OBJS): haveinline.h
+
+iob_send.o scan_ip6if.c: havealloca.h
 
 dep: haveip6.h haven2i.h havesl.h haveinline.h iopause.h select.h haveepoll.h havekqueue.h havedevpoll.h
 	gcc -I. -MM */*.c t.c > dep
