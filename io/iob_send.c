@@ -10,6 +10,7 @@
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "havealloca.h"
 #include "iob_internal.h"
 
@@ -65,7 +66,10 @@ int64 iob_send(int64 s,io_batch* b) {
       } else
 	sent=-3;
     } else {
-      sent=writev(s,v,headers);
+      if (headers==1)	/* cosmetics for strace */
+	sent=write(s,v[0].iov_base,v[0].iov_len);
+      else
+	sent=writev(s,v,headers);
       if (sent==-1) {
 	if (errno!=EAGAIN)
 	  sent=-3;
@@ -84,7 +88,10 @@ eagain:
     }
 #endif
     if (headers) {
-      sent=writev(s,v,headers);
+      if (headers==1)	/* cosmetics for strace */
+	sent=write(s,v[0].iov_base,v[0].iov_len);
+      else
+	sent=writev(s,v,headers);
       if (sent==-1) {
 	if (errno==EAGAIN) {
 	  io_eagain(s);
