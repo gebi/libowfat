@@ -13,9 +13,8 @@ extern int case_diffb(const char *,unsigned int,const char *);
 
 /* like str_start, ignoring case */
 extern int case_starts(const char *,const char *);
-/* alias for case_diffb? */
-extern int case_startb(const char *,unsigned int,const char *);
 
 #define case_equals(s,t) (!case_diffs((s),(t)))
+#define case_equalb(s,n,t) (!case_diffb((s),(n),(t)))
 
 #endif
