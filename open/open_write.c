@@ -1,5 +1,5 @@
 #include <unistd.h>
-#include <sys/fcntl.h>
+#include <fcntl.h>
 #include "open.h"
 
 extern int open_write(const char *filename) {
