@@ -8,7 +8,7 @@
 int byte_diff(const void* a, unsigned int len, const void* b) {
   register const char* s=a;
   register const char* t=b;
-  register const char* u=b+len;
+  register const char* u=t+len;
   register int j;
   j=0;
   for (;;) {
