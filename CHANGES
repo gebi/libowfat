@@ -10,6 +10,7 @@
   make install forgot to install ndelay.h
   fix typos in several man pages (Hynek Schlawack)
   add stralloc versions of textcode API (Kai Ruemmler)
+  add html to textcode ('<' to '&lt;' etc)
 
 0.14:
   avoid bus errors in byte_copy
