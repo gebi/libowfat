@@ -1,11 +1,12 @@
 #include <string.h>
+#include <unistd.h>
 #include "buffer.h"
 #include "textcode.h"
 #include "havealloca.h"
 
 void b64encode(const char* c) {
   char* buf=alloca(strlen(c)*2+4);
-  unsigned int dlen;
+  unsigned long dlen;
   scan_base64(c,buf,&dlen);
   buffer_put(buffer_1,buf,dlen);
 }
@@ -23,7 +24,10 @@ main(int argc,char* argv[]) {
       src[len]=0;
       b64encode(src);
     }
-    buffer_putnlflush(buffer_1);
+    if (isatty(1))
+      buffer_putnlflush(buffer_1);
+    else
+      buffer_flush(buffer_1);
     if (len==-1) return(1);
   }
   return 0;

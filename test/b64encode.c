@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include <string.h>
 #include "buffer.h"
 #include "textcode.h"
@@ -6,7 +7,10 @@
 void b64encode(const char* c) {
   char* buf=alloca(strlen(c)*2+4);
   buffer_put(buffer_1,buf,fmt_base64(buf,c,strlen(c)));
-  buffer_putnlflush(buffer_1);
+  if (isatty(1))
+    buffer_putnlflush(buffer_1);
+  else
+    buffer_flush(buffer_1);
 }
 
 main(int argc,char* argv[]) {
