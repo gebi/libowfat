@@ -15,7 +15,7 @@
 #include "iob_internal.h"
 
 int64 iob_send(int64 s,io_batch* b) {
-  io_entry* e,* last;
+  iob_entry* e,* last;
   struct iovec* v;
   int64 total,sent;
   long i;
@@ -29,7 +29,7 @@ int64 iob_send(int64 s,io_batch* b) {
   v=alloca(b->bufs*sizeof(struct iovec));
   total=0;
   for (;;) {
-    if (!(e=array_get(&b->b,sizeof(io_entry),b->next)))
+    if (!(e=array_get(&b->b,sizeof(iob_entry),b->next)))
       return -3;		/* can't happen error */
 #ifdef BSD_SENDFILE
     /* BSD sendfile can send headers and trailers.  If we run on BSD, we
@@ -58,13 +58,22 @@ int64 iob_send(int64 s,io_batch* b) {
       r=sendfile(e[headers].fd,s,e[headers].offset,e[headers].n,&hdr,&sbytes,0);
       if (r==0)
 	sent=b->bytesleft;
-      else if (r==-1 && errno==EAGAIN)
+      else if (r==-1 && errno==EAGAIN) {
 	if ((sent=sbytes)) sent=-1;
-      else
+	goto eagain;
+      } else
 	sent=-3;
     } else {
       sent=writev(s,v,headers);
-      if (sent==-1 && errno!=EAGAIN) sent=-3;
+      if (sent==-1) {
+	if (errno!=EAGAIN)
+	  sent=-3;
+	else {
+eagain:
+	  io_eagain(s);
+	  return -1;
+	}
+      }
     }
 #else
 #ifdef TCP_CORK
@@ -75,7 +84,13 @@ int64 iob_send(int64 s,io_batch* b) {
 #endif
     if (headers) {
       sent=writev(s,v,headers);
-      if (sent==-1 && errno==EAGAIN) sent=-3;
+      if (sent==-1) {
+	if (errno==EAGAIN) {
+	  io_eagain(s);
+	  return -1;
+	}
+	sent=-3;
+      }
     } else
       sent=io_sendfile(s,e->fd,e->offset,e->n);
 #endif
