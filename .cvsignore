@@ -12,7 +12,6 @@ havekqueue.h
 libepoll
 havesigio.h
 havebsdsf.h
-Makefile
 libdep
 dep
 havescope.h

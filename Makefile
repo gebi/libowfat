@@ -184,7 +184,8 @@ io_pipe.o: io/io_pipe.c io_internal.h io.h uint64.h taia.h tai.h array.h \
 io_readfile.o: io/io_readfile.c io_internal.h io.h uint64.h taia.h tai.h \
   array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 io_sendfile.o: io/io_sendfile.c io_internal.h io.h uint64.h taia.h tai.h \
-  array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h havebsdsf.h
+  array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h havebsdsf.h \
+  havesendfile.h
 io_setcookie.o: io/io_setcookie.c io_internal.h io.h uint64.h taia.h \
   tai.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 io_timeout.o: io/io_timeout.c io_internal.h io.h uint64.h taia.h tai.h \
@@ -222,15 +223,19 @@ iob_addbuf_internal.o: io/iob_addbuf_internal.c iob_internal.h iob.h io.h \
   uint64.h taia.h tai.h array.h
 iob_addfile.o: io/iob_addfile.c iob_internal.h iob.h io.h uint64.h taia.h \
   tai.h array.h
+iob_addfile_close.o: io/iob_addfile_close.c iob_internal.h iob.h io.h \
+  uint64.h taia.h tai.h array.h
 iob_adds.o: io/iob_adds.c str.h iob.h io.h uint64.h taia.h tai.h array.h
 iob_adds_free.o: io/iob_adds_free.c str.h iob.h io.h uint64.h taia.h \
   tai.h array.h
 iob_new.o: io/iob_new.c iob_internal.h iob.h io.h uint64.h taia.h tai.h \
   array.h
+iob_prefetch.o: io/iob_prefetch.c iob_internal.h iob.h io.h uint64.h \
+  taia.h tai.h array.h
 iob_reset.o: io/iob_reset.c byte.h iob_internal.h iob.h io.h uint64.h \
   taia.h tai.h array.h
-iob_send.o: io/iob_send.c havealloca.h iob_internal.h iob.h io.h uint64.h \
-  taia.h tai.h array.h havebsdsf.h
+iob_send.o: io/iob_send.c havebsdsf.h havealloca.h iob_internal.h iob.h \
+  io.h uint64.h taia.h tai.h array.h
 mmap_private.o: mmap/mmap_private.c open.h mmap.h
 mmap_read.o: mmap/mmap_read.c open.h mmap.h
 mmap_shared.o: mmap/mmap_shared.c open.h mmap.h
@@ -243,6 +248,7 @@ umult64.o: mult/umult64.c safemult.h uint16.h uint32.h uint64.h
 open_append.o: open/open_append.c open.h
 open_excl.o: open/open_excl.c open.h
 open_read.o: open/open_read.c open.h
+open_rw.o: open/open_rw.c open.h
 open_trunc.o: open/open_trunc.c open.h
 open_write.o: open/open_write.c open.h
 openreadclose.o: open/openreadclose.c open.h readclose.h stralloc.h \
@@ -269,6 +275,7 @@ scan_ushort.o: scan/scan_ushort.c scan.h
 scan_whitenskip.o: scan/scan_whitenskip.c scan.h
 scan_xint.o: scan/scan_xint.c scan.h
 scan_xlong.o: scan/scan_xlong.c scan.h
+scan_xlonglong.o: scan/scan_xlonglong.c scan.h
 scan_xshort.o: scan/scan_xshort.c scan.h
 fmt_ip4.o: socket/fmt_ip4.c fmt.h ip4.h
 fmt_ip6.o: socket/fmt_ip6.c fmt.h byte.h ip4.h ip6.h uint32.h
@@ -403,6 +410,8 @@ buffer_1.o: test/buffer_1.c buffer.h
 buffer_fromsa.o: test/buffer_fromsa.c stralloc.h buffer.h
 byte_copy.o: test/byte_copy.c byte.h
 cescape.o: test/cescape.c buffer.h textcode.h havealloca.h
+client.o: test/client.c scan.h ip6.h byte.h uint32.h str.h socket.h \
+  uint16.h
 dllink.o: test/dllink.c socket.h uint16.h uint32.h buffer.h case.h
 dnsip.o: test/dnsip.c dns.h stralloc.h iopause.h taia.h tai.h uint64.h \
   ip4.h buffer.h
@@ -422,6 +431,8 @@ iob.o: test/iob.c iob.h io.h uint64.h taia.h tai.h array.h buffer.h
 readhttp.o: test/readhttp.c stralloc.h buffer.h byte.h
 scan.o: test/scan.c scan.h
 scan_long.o: test/scan_long.c scan.h fmt.h buffer.h
+server.o: test/server.c scan.h ip6.h byte.h uint32.h str.h socket.h \
+  uint16.h
 stralloc_buffer.o: test/stralloc_buffer.c stralloc.h buffer.h
 stralloc_chomp.o: test/stralloc_chomp.c stralloc.h buffer.h
 textcode.o: test/textcode.c array.h uint64.h textcode.h
@@ -548,7 +559,7 @@ clean:
 	rm -f *.o *.a *.da *.bbg *.bb core t haveip6.h haven2i.h \
 havesl.h haveinline.h iopause.h select.h havekqueue.h haveepoll.h \
 libepoll havesigio.h havebsdsf.h havesendfile.h havescope.h havedevpoll.h \
-Makefile dep libsocket
+dep libsocket
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
 uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h \
@@ -565,8 +576,8 @@ uninstall:
 	rm -f $(patsubst %.3,$(MAN3DIR)/%.3,$(notdir $(wildcard */*.3)))
 	rm -f $(LIBDIR)/libowfat.a
 
-VERSION=libowfat-0.17
-CURNAME=libowfat-0.17
+VERSION=libowfat-0.18
+CURNAME=libowfat-0.18
 
 tar: clean rename
 	rm -f dep libdep
