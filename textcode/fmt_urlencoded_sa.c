@@ -17,7 +17,7 @@ int fmt_urlencoded_sa(stralloc *sa,const char* src,unsigned int len) {
       char dest[3] = {'%'};
       dest[1]=tohex(s[i]>>4);
       dest[2]=tohex(s[i]&15);
-      if (!stralloc_catb(sa, &dest, 3)) return 0;
+      if (!stralloc_catb(sa, dest, 3)) return 0;
     } else {
       if (!stralloc_catb(sa, s+i, 1)) return 0;
     }

@@ -30,7 +30,7 @@ int fmt_uuencoded_sa(stralloc* sa,const char* src,unsigned int len) {
       dest[2]=enc((tmp>>(1*6))&077);
       dest[3]=enc(tmp&077);
       s+=3;
-      if (!stralloc_catb(sa,&dest,4)) return 0;
+      if (!stralloc_catb(sa,dest,4)) return 0;
     }
     if (!stralloc_catb(sa,"\n",1)) return 0;
   }
