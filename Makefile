@@ -52,7 +52,7 @@ $(BUFFER_OBJS) $(MMAP_OBJS)
 
 t: t.o socket.a stralloc.a fmt.a scan.a uint.a mmap.a open.a buffer.a \
 str.a byte.a
-	gcc -g -o $@ $^
+	$(DIET)$(CC) -g -o $@ $^
 
 .PHONY: clean tar
 clean:
