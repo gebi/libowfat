@@ -25,11 +25,7 @@ int socket_mcjoin6(int s,const char ip[16],int interface)
     return socket_mcjoin4(s,ip+12,ip);
 #ifdef LIBC_HAS_IP6
   byte_copy(&opt.ipv6mr_multiaddr,16,ip);
-#ifdef __GLIBC__
   opt.ipv6mr_interface=interface;
-#else
-  opt.ipv6mr_ifindex=interface;
-#endif
   return setsockopt(s,IPPROTO_IPV6,IPV6_ADD_MEMBERSHIP,&opt,sizeof opt);
 #else
   errno=EPROTO;
