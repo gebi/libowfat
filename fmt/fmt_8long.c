@@ -5,7 +5,9 @@ unsigned int fmt_8long(char *dest,unsigned long i) {
   /* first count the number of bytes needed */
   for (len=1, tmp=i; tmp>7; ++len) tmp/=8;
   if (dest)
-    for (tmp=i, dest+=len; tmp; tmp/=8)
+    for (tmp=i, dest+=len; ; ) {
       *--dest = (tmp&7)+'0';
+      if (!(tmp>>=3)) break;
+    }
   return len;
 }
