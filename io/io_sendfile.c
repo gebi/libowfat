@@ -86,15 +86,28 @@ _syscall4(int,sendfile,int,out,int,in,long *,offset,unsigned long,count)
 int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
   off_t o=off;
   io_entry* e=array_get(&io_fds,sizeof(io_entry),s);
-  off_t i=sendfile(s,fd,&o,n);
-  if (i==-1) {
-    if (e) {
-      e->canwrite=0;
-      e->next_write=-1;
-    }
-    if (errno!=EAGAIN) i=-3;
+  off_t i;
+  uint64 done=0;
+  /* What a spectacularly broken design for sendfile64.
+   * The offset is 64-bit for sendfile64, but the count is not. */
+  while (n) {
+    off_t todo=n>0x7fffffff?0x7fffffff:n;
+    i=sendfile(s,fd,&o,todo);
+    if (i==todo) {
+      done+=todo;
+      n-=todo;
+      if (n==0) return done;
+      continue;
+    } else if (i==-1) {
+      if (e) {
+	e->canwrite=0;
+	e->next_write=-1;
+      }
+      return (errno==EAGAIN?-1:-3);
+    } else
+      return done+i;
   }
-  return i;
+  return 0;
 }
 #endif
 
