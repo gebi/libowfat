@@ -21,7 +21,7 @@ int64 io_tryread(int64 d,char* buf,int64 len) {
 	    e->next_read=-1;
 	    return -1;
     }
-    new.it_interval.tv_usec=0;
+    new.it_interval.tv_usec=10000;
     new.it_interval.tv_sec=0;
     new.it_value.tv_usec=10000;
     new.it_value.tv_sec=0;
