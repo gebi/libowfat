@@ -41,6 +41,8 @@ int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
 
 #else
 
+#include <unistd.h>
+
 #define BUFSIZE 16384
 
 int64 io_sendfile(int64 out,int64 in,uint64 off,uint64 bytes) {
