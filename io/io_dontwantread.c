@@ -26,7 +26,7 @@ void io_dontwantread(int64 d) {
 #ifdef HAVE_EPOLL
   if (io_waitmode==EPOLL) {
     struct epoll_event x;
-    x.events=EPOLLIN;
+    x.events=0;
     if (e->wantwrite) x.events|=EPOLLOUT;
     x.data.fd=d;
     epoll_ctl(io_master,newfd?EPOLL_CTL_DEL:EPOLL_CTL_MOD,d,&x);
