@@ -30,7 +30,7 @@ int64 iob_send(int64 s,io_batch* b) {
   total=0;
   for (;;) {
     if (!(e=array_get(&b->b,sizeof(io_entry),b->next)))
-      return -1;		/* can't happen error */
+      return -3;		/* can't happen error */
 #ifdef BSD_SENDFILE
     /* BSD sendfile can send headers and trailers.  If we run on BSD, we
     * should try to exploit this. */
