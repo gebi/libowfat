@@ -2,9 +2,15 @@
 #define IP6_H
 
 #include "byte.h"
+#include "uint32.h"
 
-unsigned int scan_ip6(const char *src,char *ip);
-unsigned int fmt_ip6(char *dest,const char *ip);
+unsigned int scan_ip6(const char* src,char* ip);
+unsigned int fmt_ip6(char* dest,const char* ip);
+unsigned int fmt_ip6c(char* dest,const char* ip);
+
+unsigned int scan_ip6if(const char* src,char* ip,uint32* scope_id);
+unsigned int fmt_ip6if(char* dest,const char* ip,uint32 scope_id);
+unsigned int fmt_ip6ifc(char* dest,const char* ip,uint32 scope_id);
 
 unsigned int scan_ip6_flat(const char *src,char *);
 unsigned int fmt_ip6_flat(char *dest,const char *);

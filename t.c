@@ -18,16 +18,31 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
+#include <assert.h>
 
 #define rdtscl(low) \
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
+  char buf[IP6_FMT+100];
+  int i;
+  char ip[16];
+  uint32 scope_id;
+  char* s="fec0::1:220:e0ff:fe69:ad92%eth0/64";
+  char blubip[16]="\0\0\0\0\0\0\0\0\0\0\xff\xff\x7f\0\0\001";
+  i=scan_ip6if(s,ip,&scope_id);
+  assert(s[i]=='/');
+  buffer_put(buffer_1,buf,fmt_ip6if(buf,ip,scope_id));
+  buffer_putnlflush(buffer_1);
+  buffer_put(buffer_1,buf,fmt_ip6ifc(buf,blubip,scope_id));
+  buffer_putnlflush(buffer_1);
+#if 0
   char buf[100];
   int i;
   printf("%d\n",i=fmt_pad(buf,"fnord",5,7,10));
   buf[i]=0;
   puts(buf);
+#endif
 #if 0
   char ip[16];
   char buf[32];

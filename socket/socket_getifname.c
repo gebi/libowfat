@@ -7,7 +7,7 @@
 #include "haven2i.h"
 
 #ifdef HAVE_N2I
-static char ifname[IFNAMSIZ];
+static char ifname[IF_NAMESIZE];
 
 const char* socket_getifname(uint32 _interface) {
   char *tmp=if_indextoname(_interface,ifname);
