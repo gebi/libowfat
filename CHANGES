@@ -2,6 +2,7 @@
   fixed several bugs in test/uudecode.c
   add uninstall target
   add uint16_read API like the uint32_read one
+  add buffer_putnlflush
 
 0.12:
   add textcode api for uuencode/uudecode, base64, quoted printable,
