@@ -65,7 +65,7 @@ str.a byte.a
 
 .PHONY: clean tar install rename
 clean:
-	rm -f *.o *.a core t haveip6.h haven2i.h havesl.h
+	rm -f *.o *.a core t haveip6.h haven2i.h havesl.h haveinline.h
 
 install: libowfat.a
 	install -d $(INCLUDEDIR) $(MAN3DIR) $(LIBDIR)
@@ -97,6 +97,11 @@ havesl.h:
 	if $(DIET) $(CC) -o t trysl.c >/dev/null 2>&1; then echo "#define HAVE_SOCKLEN_T"; fi > $@
 	-rm -f t
 
+haveinline.h:
+	-rm -f $@
+	if ! $(DIET) $(CC) -c tryinline.c >/dev/null 2>&1; then echo "#define inline"; fi > $@
+	-rm -f tryip6.o
+
 socket_accept6.o socket_connect6.o socket_local6.o socket_mchopcount6.o \
 socket_mcjoin6.o socket_mcleave6.o socket_mcloop6.o socket_recv6.o \
 socket_remote6.o socket_send6.o socket_tcp6.o socket_udp6.o: haveip6.h
@@ -104,3 +109,5 @@ socket_remote6.o socket_send6.o socket_tcp6.o socket_udp6.o: haveip6.h
 socket_getifidx.o socket_getifname.o: haven2i.h
 
 socket_connected.o: havesl.h
+
+fmt_xlong.o scan_double.o scan_xlong.o fmt_ip6_flat.o: haveinline.h
