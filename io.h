@@ -63,4 +63,8 @@ void io_closeonexec(int64 d);
 
 void io_close(int64 d);
 
+/* send n bytes from file fd starting at offset off to socket s */
+/* return number of bytes written */
+int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n);
+
 #endif
