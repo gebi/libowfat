@@ -1,6 +1,7 @@
 0.22:
   uh, the scope_id detection #defined the wrong constant.  libowfat
     always thought there was no scope_id.  Oops.
+  #include <unistd.h> in io/io_sendfile.c
 
 0.21:
   errno cleanup and man page updates (Rolf Eike Beer)

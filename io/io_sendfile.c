@@ -114,6 +114,7 @@ int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
 #else
 
 #include <iob.h>
+#include <unistd.h>
 
 static int64 writecb(int64 s,const void* buf,uint64 n) {
   return write(s,buf,n);
