@@ -19,3 +19,4 @@ havedevpoll.h
 libsocket
 havesendfile.h
 trysendfile
+havealloca.h
