@@ -11,6 +11,9 @@ int socket_bind4(int s,const char *ip,uint16 port) {
   byte_zero(&si,sizeof si);
   si.sin_family = AF_INET;
   uint16_pack_big((char*) &si.sin_port,port);
-  *(uint32*)&si.sin_addr = *(uint32*)ip;
+  if (ip)
+    *(uint32*)&si.sin_addr = *(uint32*)ip;
+  else
+    si.sin_addr.s_addr=INADDR_ANY;
   return bind(s,(struct sockaddr*)&si,sizeof si);
 }

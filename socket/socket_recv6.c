@@ -24,18 +24,22 @@ int socket_recv6(int s,char *buf,unsigned int len,char ip[16],uint16 *port,uint3
 #ifdef LIBC_HAS_IP6
   if (noipv6) {
     struct sockaddr_in *si4=(struct sockaddr_in *)&si;
-    byte_copy(ip,12,V4mappedprefix);
-    byte_copy(ip+12,4,(char *) &si4->sin_addr);
-    uint16_unpack_big((char *) &si4->sin_port,port);
+    if (ip) {
+      byte_copy(ip,12,V4mappedprefix);
+      byte_copy(ip+12,4,(char *) &si4->sin_addr);
+    }
+    if (port) uint16_unpack_big((char *) &si4->sin_port,port);
     return r;
   }
-  byte_copy(ip,16,(char *) &si.sin6_addr);
-  uint16_unpack_big((char *) &si.sin6_port,port);
+  if (ip) byte_copy(ip,16,(char *) &si.sin6_addr);
+  if (port) uint16_unpack_big((char *) &si.sin6_port,port);
   if (scope_id) *scope_id=si.sin6_scope_id;
 #else
-  byte_copy(ip,12,(char *)V4mappedprefix);
-  byte_copy(ip+12,4,(char *) &si.sin_addr);
-  uint16_unpack_big((char *) &si.sin_port,port);
+  if (ip) {
+    byte_copy(ip,12,(char *)V4mappedprefix);
+    byte_copy(ip+12,4,(char *) &si.sin_addr);
+  }
+  if (port) uint16_unpack_big((char *) &si.sin_port,port);
   if (scope_id) *scope_id=0;
 #endif
 

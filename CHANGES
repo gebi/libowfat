@@ -17,6 +17,7 @@
   fix typo breaking fmt_long for dest==NULL
   add fmt_*longlong()
   add range check to scan_ulong, scan_ulonglong
+  extended socket API; you can now pass NULL for results you don't want
 
 0.14:
   avoid bus errors in byte_copy

@@ -12,8 +12,8 @@ int socket_remote4(int s,char ip[4],uint16 *port)
   socklen_t len = sizeof si;
 
   if (getpeername(s,(struct sockaddr *) &si,&len) == -1) return -1;
-  *(uint32*)ip = *(uint32*)&si.sin_addr;
-  uint16_unpack_big((char *) &si.sin_port,port);
+  if (ip) *(uint32*)ip = *(uint32*)&si.sin_addr;
+  if (port) uint16_unpack_big((char *) &si.sin_port,port);
   return 0;
 }
 

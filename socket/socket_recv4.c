@@ -11,7 +11,7 @@ int socket_recv4(int s,char *buf,unsigned int len,char ip[4],uint16 *port) {
   int r;
 
   if ((r = recvfrom(s,buf,len,0,(struct sockaddr *) &si,&Len))<0) return -1;
-  *(uint32*)ip = *(uint32*)&si.sin_addr;
-  uint16_unpack_big((char *) &si.sin_port,port);
+  if (ip) *(uint32*)ip = *(uint32*)&si.sin_addr;
+  if (port) uint16_unpack_big((char *) &si.sin_port,port);
   return r;
 }
