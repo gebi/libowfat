@@ -20,7 +20,7 @@ int64 iob_send(int64 s,io_batch* b) {
 #endif
 
   if (b->bytesleft==0) return 0;
-  last=((char*)array_start(&b->b))+array_bytes(&b->b);
+  last=(iob_entry*)(((char*)array_start(&b->b))+array_bytes(&b->b));
   v=alloca(b->bufs*sizeof(struct iovec));
   total=0;
   for (;;) {
@@ -114,6 +114,7 @@ eagain:
 	  if (!rest) break;
 	} else {
 	  e[i].offset+=rest;
+	  e[i].n-=rest;
 	  goto abort;
 	}
       }

@@ -22,7 +22,7 @@ int main(int argc,char* argv[]) {
       buffer_puts(buffer_2,"unable to find IP address for ");
       buffer_puts(buffer_2,*argv);
       buffer_puts(buffer_2,": ");
-      buffer_puts(buffer_2,strerror(errno));
+      buffer_puterror(buffer_2);
       buffer_putnlflush(buffer_2);
       return 111;
     }
