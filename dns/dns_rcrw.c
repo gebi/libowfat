@@ -5,6 +5,9 @@
 #include "str.h"
 #include "openreadclose.h"
 #include "dns.h"
+#ifdef __MINGW32__
+#include <winsock2.h>
+#endif
 
 static stralloc data = {0};
 

@@ -1,6 +1,10 @@
 #include "taia.h"
-#include "select.h"
 #include "iopause.h"
+#ifdef __MINGW32__
+#include <winsock2.h>
+#else
+#include "select.h"
+#endif
 
 void iopause(iopause_fd *x,unsigned int len,struct taia *deadline,struct taia *stamp)
 {

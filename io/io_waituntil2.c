@@ -14,6 +14,11 @@
 #include <inttypes.h>
 #include <sys/epoll.h>
 #endif
+#ifdef HAVE_DEVPOLL
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/devpoll.h>
+#endif
 
 int64 io_waituntil2(int64 milliseconds) {
   struct pollfd* p;
@@ -73,6 +78,38 @@ int64 io_waituntil2(int64 milliseconds) {
 	  e->canwrite=1;
 	  e->next_write=first_writeable;
 	  first_writeable=y[i].ident;
+	}
+      }
+    }
+    return n;
+  }
+#endif
+#ifdef HAVE_DEVPOLL
+  if (io_waitmode==DEVPOLL) {
+    dvpoll_t timeout;
+    struct pollfd y[100];
+    int n;
+    timeout.dp_timeout=milliseconds;
+    timeout.dp_nfds=100;
+    timeout.dp_fds=y;
+    if ((n=ioctl(io_master,DP_POLL,&timeout))==-1) return -1;
+    for (i=n-1; i>=0; --i) {
+      io_entry* e=array_get(&io_fds,sizeof(io_entry),y[--n].fd);
+      if (e) {
+	if (y[n].revents&(POLLERR|POLLHUP)) {
+	  /* error; signal whatever app is looking for */
+	  if (e->wantread) y[n].revents=POLLIN; else
+	  if (e->wantwrite) y[n].revents=POLLOUT;
+	}
+	if (!e->canread && (y[n].revents==POLLIN)) {
+	  e->canread=1;
+	  e->next_read=first_readable;
+	  first_readable=y[n].fd;
+	}
+	if (!e->canwrite && (y[n].revents==POLLOUT)) {
+	  e->canwrite=1;
+	  e->next_write=first_writeable;
+	  first_writeable=y[i].fd;
 	}
       }
     }

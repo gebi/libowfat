@@ -11,6 +11,11 @@
 #include <inttypes.h>
 #include <sys/epoll.h>
 #endif
+#ifdef HAVE_DEVPOLL
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/devpoll.h>
+#endif
 
 void io_dontwantwrite(int64 d) {
   int newfd;
@@ -34,6 +39,15 @@ void io_dontwantwrite(int64 d) {
     EV_SET(&kev, d, EVFILT_WRITE, EV_DELETE, 0, 0, 0);
     ts.tv_sec=0; ts.tv_nsec=0;
     kevent(io_master,&kev,1,0,0,&ts);
+  }
+#endif
+#ifdef HAVE_DEVPOLL
+  if (io_waitmode==DEVPOLL) {
+    struct pollfd x;
+    x.fd=d;
+    x.events=0;
+    if (e->wantread) x.events|=POLLIN;
+    write(io_master,&x,sizeof(x));
   }
 #endif
   e->wantwrite=0;

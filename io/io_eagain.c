@@ -3,7 +3,8 @@
 void io_eagain(int64 d) {
   io_entry* e=array_get(&io_fds,sizeof(io_entry),d);
   if (e) {
-    e->canread=0;
+    if (e->wantread) e->canread=0;
+    if (e->wantwrite) e->canwrite=0;
 #ifdef HAVE_SIGIO
     if (d==alt_firstread) {
       debug_printf(("io_eagain: dequeueing %lld from alt read queue (next is %ld)\n",d,e->next_read));

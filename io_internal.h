@@ -2,10 +2,16 @@
 #include "array.h"
 #include "haveepoll.h"
 #include "havekqueue.h"
+#include "havedevpoll.h"
 #include "havesigio.h"
 #ifdef HAVE_SIGIO
 #define _GNU_SOURCE
 #include <signal.h>
+#endif
+
+#ifdef __MINGW32__
+#include "socket.h"
+extern HANDLE io_comport;
 #endif
 
 typedef struct {
@@ -19,6 +25,10 @@ typedef struct {
   long next_read;
   long next_write;
   void* cookie;
+#ifdef __MINGW32__
+  OVERLAPPED o;
+  HANDLE fd;
+#endif
 } io_entry;
 
 extern array io_fds;
@@ -40,9 +50,12 @@ enum {
 #ifdef HAVE_SIGIO
   ,_SIGIO
 #endif
+#ifdef HAVE_DEVPOLL
+  ,DEVPOLL
+#endif
 } io_waitmode;
 
-#if defined(HAVE_KQUEUE) || defined(HAVE_EPOLL)
+#if defined(HAVE_KQUEUE) || defined(HAVE_EPOLL) || defined(HAVE_DEVPOLL)
 extern int io_master;
 #endif
 #if defined(HAVE_SIGIO)

@@ -1,6 +1,8 @@
 #include <sys/types.h>
+#ifndef __MINGW32__
 #include <sys/socket.h>
 #include <net/if.h>
+#endif
 #include "socket.h"
 #include "haven2i.h"
 

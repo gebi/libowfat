@@ -1,12 +1,16 @@
 #include <sys/param.h>
 #include <sys/types.h>
+#ifndef __MINGW32__
 #include <sys/socket.h>
 #include <netinet/in.h>
+#endif
+#include "windoze.h"
 #include "byte.h"
 #include "socket.h"
 #include "ip6.h"
 #include "haveip6.h"
 #include "havesl.h"
+#include "havescope.h"
 
 int socket_recv6(int s,char *buf,unsigned int len,char ip[16],uint16 *port,uint32 *scope_id)
 {
@@ -19,7 +23,7 @@ int socket_recv6(int s,char *buf,unsigned int len,char ip[16],uint16 *port,uint3
   int r;
 
   byte_zero(&si,Len);
-  if ((r = recvfrom(s,buf,len,0,(struct sockaddr *) &si,&Len))<0) return -1;
+  if ((r = recvfrom(s,buf,len,0,(struct sockaddr *) &si,&Len))<0) return winsock2errno(-1);
 
 #ifdef LIBC_HAS_IP6
   if (noipv6) {
@@ -33,7 +37,11 @@ int socket_recv6(int s,char *buf,unsigned int len,char ip[16],uint16 *port,uint3
   }
   if (ip) byte_copy(ip,16,(char *) &si.sin6_addr);
   if (port) uint16_unpack_big((char *) &si.sin6_port,port);
+#ifdef HAVE_SCOPE_ID
   if (scope_id) *scope_id=si.sin6_scope_id;
+#else
+  if (scope_id) *scope_id=0;
+#endif
 #else
   if (ip) {
     byte_copy(ip,12,(char *)V4mappedprefix);

@@ -75,7 +75,7 @@ $(DNS_OBJS): dns.h stralloc.h taia.h tai.h uint64.h iopause.h
 $(CASE_OBJS): case.h
 $(ARRAY_OBJS): uint64.h array.h
 $(MULT_OBJS): uint64.h uint32.h uint16.h safemult.h
-$(IO_OBJS): uint64.h array.h io.h io_internal.h taia.h tai.h haveepoll.h havekqueue.h havesigio.h havebsdsf.h
+$(IO_OBJS): uint64.h array.h io.h io_internal.h taia.h tai.h haveepoll.h havekqueue.h havesigio.h havebsdsf.h havedevpoll.h
 
 
 iob_addbuf.o iob_addfile.o iob_new.o iob_reset.o iob_send.o: iob_internal.h iob.h
@@ -132,7 +132,7 @@ t: t.o libowfat.a
 clean:
 	rm -f *.o *.a *.da *.bbg *.bb core t haveip6.h haven2i.h \
 havesl.h haveinline.h iopause.h select.h havekqueue.h haveepoll.h \
-libepoll havesigio.h havebsdsf.h Makefile dep
+libepoll havesigio.h havebsdsf.h havescope.h havedevpoll.h Makefile dep
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
 uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h \
@@ -163,6 +163,11 @@ haveip6.h: tryip6.c
 	-rm -f $@
 	if $(DIET) $(CC) $(CFLAGS) -c tryip6.c >/dev/null 2>&1; then echo "#define LIBC_HAS_IP6"; fi > $@
 	-rm -f tryip6.o
+
+havescope.h: tryscope.c
+	-rm -f $@
+	if $(DIET) $(CC) $(CFLAGS) -c tryscope.c >/dev/null 2>&1; then echo "#define LIBC_HAS_SCOPE_ID"; fi > $@
+	-rm -f tryscope.o
 
 haven2i.h: tryn2i.c
 	-rm -f $@
@@ -195,6 +200,11 @@ haveepoll.h: tryepoll.c
 	if $(DIET) $(CC) $(CFLAGS) -o tryepoll tryepoll.c -lepoll >/dev/null 2>&1; then echo "#define HAVE_EPOLL 2"; fi; fi > $@
 	-rm -f tryepoll
 
+havedevpoll.h: trydevpoll.c
+	-rm -f $@
+	if $(DIET) $(CC) $(CFLAGS) -c trydevpoll.c >/dev/null 2>&1; then echo "#define HAVE_DEVPOLL"; fi > $@
+	-rm -f trydevpoll.o
+
 libepoll: haveepoll.h
 	if test "z`cat haveepoll.h`" = "z#define HAVE_EPOLL 2"; then echo -lepoll; fi > $@
 
@@ -216,7 +226,7 @@ select.h: select.h1 select.h2 trysysel.c
 
 socket_accept6.o socket_connect6.o socket_local6.o socket_mchopcount6.o \
 socket_mcjoin6.o socket_mcleave6.o socket_mcloop6.o socket_recv6.o \
-socket_remote6.o socket_send6.o socket_tcp6.o socket_udp6.o: haveip6.h
+socket_remote6.o socket_send6.o socket_tcp6.o socket_udp6.o: haveip6.h havescope.h
 
 socket_getifidx.o socket_getifname.o: haven2i.h
 
@@ -226,7 +236,7 @@ socket_remote6.o: havesl.h
 
 fmt_xlong.o scan_xlong.o fmt_ip6_flat.o $(TEXTCODE_OBJS): haveinline.h
 
-dep: haveip6.h haven2i.h havesl.h haveinline.h iopause.h select.h haveepoll.h havekqueue.h
+dep: haveip6.h haven2i.h havesl.h haveinline.h iopause.h select.h haveepoll.h havekqueue.h havedevpoll.h
 	gcc -I. -MM $(wildcard */*.c) t.c > dep
 
 libdep:

@@ -1,7 +1,10 @@
 #include <sys/types.h>
 #include <sys/param.h>
+#ifndef __MINGW32__
 #include <sys/socket.h>
 #include <netinet/in.h>
+#endif
+#include "windoze.h"
 #include "socket.h"
 #include "byte.h"
 #include "haveip6.h"
@@ -16,7 +19,7 @@
 #endif
 #endif
 
-int socket_mcjoin6(int s,const char ip[16],int interface)
+int socket_mcjoin6(int s,const char ip[16],int _interface)
 {
 #ifdef LIBC_HAS_IP6
   struct ipv6_mreq opt;
@@ -25,8 +28,8 @@ int socket_mcjoin6(int s,const char ip[16],int interface)
     return socket_mcjoin4(s,ip+12,ip);
 #ifdef LIBC_HAS_IP6
   byte_copy(&opt.ipv6mr_multiaddr,16,ip);
-  opt.ipv6mr_interface=interface;
-  return setsockopt(s,IPPROTO_IPV6,IPV6_ADD_MEMBERSHIP,&opt,sizeof opt);
+  opt.ipv6mr_interface=_interface;
+  return winsock2errno(setsockopt(s,IPPROTO_IPV6,IPV6_ADD_MEMBERSHIP,&opt,sizeof opt));
 #else
   errno=EPROTONOSUPPORT;
   return -1;

@@ -14,6 +14,8 @@
     need to try using mmap on OpenBSD and NetBSD to get zero-copy TCP.
   guard against same event being signalled twice (confused our list
     handling)
+  add support for Solaris /dev/poll
+  add lose32 support (broken, please don't use!)
 
 0.16:
   add buffer_fromsa (make buffer from stralloc)

@@ -1,13 +1,17 @@
 #include <sys/types.h>
 #include <sys/param.h>
+#ifndef __MINGW32__
 #include <sys/socket.h>
 #include <netinet/in.h>
+#endif
+#include "windoze.h"
 #include "byte.h"
 #include "socket.h"
 #include "ip6.h"
 #include "haveip6.h"
 #include "uint32.h"
 #include "havesl.h"
+#include "havescope.h"
 
 int socket_remote6(int s,char ip[16],uint16 *port,uint32 *scope_id)
 {
@@ -18,7 +22,7 @@ int socket_remote6(int s,char ip[16],uint16 *port,uint32 *scope_id)
 #endif
   socklen_t len = sizeof si;
 
-  if (getpeername(s,(struct sockaddr *) &si,&len) == -1) return -1;
+  if (getpeername(s,(struct sockaddr *) &si,&len) == -1) return winsock2errno(-1);
 #ifdef LIBC_HAS_IP6
   if (si.sin6_family==AF_INET) {
     struct sockaddr_in *si4=(struct sockaddr_in*)&si;
@@ -31,7 +35,11 @@ int socket_remote6(int s,char ip[16],uint16 *port,uint32 *scope_id)
   }
   if (ip) byte_copy(ip,16,(char *) &si.sin6_addr);
   if (port) uint16_unpack_big((char *) &si.sin6_port,port);
+#ifdef HAVE_SCOPE_ID
   if (scope_id) *scope_id=si.sin6_scope_id;
+#else
+  if (scope_id) *scope_id=0;
+#endif
 #else
   if (ip) {
     byte_copy(ip,12,V4mappedprefix);

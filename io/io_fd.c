@@ -18,17 +18,26 @@
 #include <sys/epoll.h>
 #endif
 #include <unistd.h>
+#ifdef HAVE_DEVPOLL
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/devpoll.h>
+#endif
 
 /* put d on internal data structure, return 1 on success, 0 on error */
 int io_fd(int64 d) {
-  long r;
   io_entry* e;
+#ifndef __MINGW32__
+  long r;
   if ((r=fcntl(d,F_GETFL,0)) == -1)
     return 0;	/* file descriptor not open */
+#endif
   if (!(e=array_allocate(&io_fds,sizeof(io_entry),d))) return 0;
   byte_zero(e,sizeof(io_entry));
   e->inuse=1;
+#ifndef __MINGW32__
   if (r&O_NDELAY) e->nonblock=1;
+#endif
   e->next_read=e->next_write=-1;
   if (io_waitmode==UNDECIDED) {
     first_readable=first_writeable=-1;
@@ -40,6 +49,12 @@ int io_fd(int64 d) {
     if (io_waitmode==UNDECIDED) {	/* who knows, maybe someone supports both one day */
       io_master=kqueue();
       if (io_master!=-1) io_waitmode=KQUEUE;
+    }
+#endif
+#if defined(HAVE_DEVPOLL)
+    if (io_waitmode==UNDECIDED) {
+      io_master=open("/dev/poll",O_RDWR);
+      if (io_master!=-1) io_waitmode=DEVPOLL;
     }
 #endif
 #if defined(HAVE_SIGIO)

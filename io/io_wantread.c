@@ -14,6 +14,11 @@
 #ifdef HAVE_SIGIO
 #include <sys/poll.h>
 #endif
+#ifdef HAVE_DEVPOLL
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/devpoll.h>
+#endif
 
 void io_wantread(int64 d) {
   int newfd;
@@ -37,6 +42,15 @@ void io_wantread(int64 d) {
     EV_SET(&kev, d, EVFILT_READ, EV_ADD|EV_ENABLE, 0, 0, 0);
     ts.tv_sec=0; ts.tv_nsec=0;
     kevent(io_master,&kev,1,0,0,&ts);
+  }
+#endif
+#ifdef HAVE_DEVPOLL
+  if (io_waitmode==DEVPOLL) {
+    struct pollfd x;
+    x.fd=d;
+    x.events=POLLIN;
+    if (e->wantwrite) x.events|=POLLOUT;
+    write(io_master,&x,sizeof(x));
   }
 #endif
 #ifdef HAVE_SIGIO

@@ -2,6 +2,10 @@
 #include <fcntl.h>
 #include "open.h"
 
-extern int open_write(const char *filename) {
+#ifndef O_NDELAY
+#define O_NDELAY 0
+#endif
+
+int open_write(const char *filename) {
   return open(filename,O_WRONLY|O_CREAT|O_NDELAY,0644);
 }

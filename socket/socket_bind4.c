@@ -1,6 +1,9 @@
+#ifndef __MINGW32__
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#endif
+#include "windoze.h"
 #include "byte.h"
 #include "uint16.h"
 #include "uint32.h"
@@ -15,5 +18,5 @@ int socket_bind4(int s,const char *ip,uint16 port) {
     *(uint32*)&si.sin_addr = *(uint32*)ip;
   else
     si.sin_addr.s_addr=INADDR_ANY;
-  return bind(s,(struct sockaddr*)&si,sizeof si);
+  return winsock2errno(bind(s,(struct sockaddr*)&si,sizeof si));
 }
