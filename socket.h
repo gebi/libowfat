@@ -51,7 +51,7 @@ void socket_tryreservein(int s,int size);
 const char* socket_getifname(uint32 _interface);
 uint32 socket_getifidx(const char* ifname);
 
-int noipv6;
+extern int noipv6;
 
 #ifdef __MINGW32__
 #include <winsock2.h>
