@@ -69,11 +69,18 @@ t: t.o libowfat.a
 clean:
 	rm -f *.o *.a *.da *.bbg *.bb core t haveip6.h haven2i.h havesl.h haveinline.h
 
+INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h uint16.h uint32.h uint64.h open.h textcode.h
+
 install: libowfat.a
 	install -d $(INCLUDEDIR) $(MAN3DIR) $(LIBDIR)
-	install -m 644 buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h uint16.h uint32.h uint64.h open.h textcode.h $(INCLUDEDIR)
+	install -m 644 $(INCLUDES) $(INCLUDEDIR)
 	install -m 644 $(wildcard */*.3) $(MAN3DIR)
 	install -m 644 libowfat.a $(LIBDIR)
+
+uninstall:
+	rm -f $(patsubst %.h,$(INCLUDEDIR)/%.h,$(INCLUDES))
+	rm -f $(patsubst %.3,$(MAN3DIR)/%.3,$(notdir $(wildcard */*.3)))
+	rm -f $(LIBDIR)/libowfat.a
 
 VERSION=libowfat-$(shell head -1 CHANGES|sed 's/://')
 CURNAME=$(notdir $(shell pwd))
