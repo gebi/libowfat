@@ -10,7 +10,7 @@ INCLUDEDIR=${prefix}/include
 MAN3DIR=${prefix}/man/man3
 
 LIBS=byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a \
-buffer.a mmap.a taia.a tai.a dns.a case.a mult.a array.a io.a
+buffer.a mmap.a taia.a tai.a dns.a case.a mult.a array.a io.a textcode.a
 
 all: t $(LIBS) libowfat.a
 
@@ -41,7 +41,7 @@ SCAN_OBJS=$(patsubst scan/%.c,%.o,$(wildcard scan/*.c))
 STR_OBJS=$(patsubst str/%.c,%.o,$(wildcard str/*.c))
 UINT_OBJS=$(patsubst uint/%.c,%.o,$(wildcard uint/*.c))
 OPEN_OBJS=$(patsubst open/%.c,%.o,$(wildcard open/*.c))
-STRA_OBJS=$(patsubst stralloc/%.c,%.o,$(wildcard stralloc/*.c))
+STRALLOC_OBJS=$(patsubst stralloc/%.c,%.o,$(wildcard stralloc/*.c))
 UNIX_OBJS=$(patsubst unix/%.c,%.o,$(wildcard unix/*.c))
 SOCKET_OBJS=$(patsubst socket/%.c,%.o,$(wildcard socket/*.c))
 BUFFER_OBJS=$(patsubst buffer/%.c,%.o,$(wildcard buffer/*.c))
@@ -60,7 +60,7 @@ $(FMT_OBJS): fmt.h
 $(SCAN_OBJS): scan.h
 $(STR_OBJS): str.h
 $(UINT_OBJS): uint16.h uint32.h
-$(STRA_OBJS): stralloc.h
+$(STRALLOC_OBJS): stralloc.h
 $(SOCKET_OBJS): socket.h
 $(BUFFER_OBJS): buffer.h
 $(MMAP_OBJS): mmap.h open.h
@@ -87,7 +87,7 @@ scan.a: $(SCAN_OBJS)
 str.a: $(STR_OBJS)
 uint.a: $(UINT_OBJS)
 open.a: $(OPEN_OBJS)
-stralloc.a: $(STRA_OBJS)
+stralloc.a: $(STRALLOC_OBJS)
 unix.a: $(UNIX_OBJS)
 socket.a: $(SOCKET_OBJS)
 buffer.a: $(BUFFER_OBJS)
@@ -101,11 +101,14 @@ array.a: $(ARRAY_OBJS)
 mult.a: $(MULT_OBJS)
 io.a: $(IO_OBJS)
 
-libowfat.a: $(DNS_OBJS) $(BYTE_OBJS) $(FMT_OBJS) $(SCAN_OBJS) \
-$(STR_OBJS) $(UINT_OBJS) $(OPEN_OBJS) $(STRA_OBJS) $(UNIX_OBJS) \
+ALL_OBJS=$(DNS_OBJS) $(BYTE_OBJS) $(FMT_OBJS) $(SCAN_OBJS) \
+$(STR_OBJS) $(UINT_OBJS) $(OPEN_OBJS) $(STRALLOC_OBJS) $(UNIX_OBJS) \
 $(SOCKET_OBJS) $(BUFFER_OBJS) $(MMAP_OBJS) $(TEXTCODE_OBJS) \
 $(TAIA_OBJS) $(TAI_OBJS) $(CASE_OBJS) $(ARRAY_OBJS) $(MULT_OBJS) \
 $(IO_OBJS)
+
+libowfat.a: $(ALL_OBJS)
+	ar cr libowfat.a $(ALL_OBJS)
 
 CFLAGS+=-I.
 
@@ -231,5 +234,6 @@ Makefile: GNUmakefile dep libdep
 	cat dep libdep >> $@
 	sed -e '1,/stoprip/d' -e 's/ %.c$$//' \
 	    -e 's/^VERSION=.*/'VERSION=$(VERSION)/ \
-	    -e 's/^CURNAME=.*/'CURNAME=$(CURNAME)/ < GNUmakefile >> $@
+	    -e 's/^CURNAME=.*/'CURNAME=$(CURNAME)/ \
+	    -e 's/ Makefile//' < GNUmakefile >> $@
 
