@@ -8,6 +8,7 @@
   document that the iob_write callback should limit itself
   fix mmap_shared
   add iob_free, add man pages for iob_free and iob_reset
+  fix descriptor leak in iob_addfile_close if the range was 0 (oops)
 
 0.21:
   errno cleanup and man page updates (Rolf Eike Beer)
