@@ -56,7 +56,7 @@ void httperror(struct http_data* r,const char* title,const char* message) {
     r->hdrbuf="HTTP/1.0 500 internal error\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\nout of memory\n";
     r->hlen=strlen(r->hdrbuf);
   } else {
-    i=fmt_str(c,"HTTP/1.0 ");
+    c+=fmt_str(c,"HTTP/1.0 ");
     c+=fmt_str(c,title);
     c+=fmt_str(c,"\r\nContent-Type: text/html\r\nConnection: ");
     c+=fmt_str(c,r->keepalive?"keep-alive":"close");
