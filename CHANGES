@@ -4,6 +4,7 @@
   io_trywrite and io_waitwrite not ignore SIGPIPE
   add man pages for libio, safemult
   fix possible signal race in io_tryread and io_trywrite (Scott Lamb)
+  fix byte_rchr return value (Marcus Winkler)
 
 0.18:
   make libowfat compile on BSD again (sorry, and thanks to everyone who

@@ -24,6 +24,12 @@
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
+  char buf[100]="/usr/bin/sh";
+  int len=str_len(buf);
+  assert(byte_rchr(buf,len,'/')==8);
+  assert(byte_rchr(buf,len,'@')==len);
+  assert(byte_rchr(buf,len,'h')==len-1);
+#if 0
   char buf[IP6_FMT+100];
   int i;
   char ip[16];
@@ -39,6 +45,7 @@ int main(int argc,char* argv[]) {
   scan_ip6("2001:7d0:0:f015:0:0:0:1",ip);
   buffer_put(buffer_1,buf,fmt_ip6(buf,ip));
   buffer_putnlflush(buffer_1);
+#endif
 #if 0
   char buf[100];
   int i;
