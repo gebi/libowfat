@@ -50,7 +50,7 @@ int main(int argc,char* argv[]) {
       }
     }
   }
-  buffer_init(&fileout,write,ofd,buf,sizeof buf);
+  buffer_init(&fileout,write,ofd,obuf,sizeof obuf);
   /* read uuencoded lines */
   for (;;) {
     char line[1000];	/* uuencoded lines can never be longer than 64 characters */

@@ -11,7 +11,7 @@ VPATH=str:byte:fmt:scan:uint:open:stralloc:unix:socket:buffer:mmap:textcode
 # diet libc (http://www.fefe.de/dietlibc/).
 DIET=diet -Os
 CC=gcc
-CFLAGS=-I. -pipe -Wall -O2 -pipe -fomit-frame-pointer
+CFLAGS=-I. -pipe -Wall -O2 -fomit-frame-pointer
 #CFLAGS=-pipe -Os -march=pentiumpro -mcpu=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
 
 BYTE_OBJS=$(patsubst byte/%.c,%.o,$(wildcard byte/*.c))
