@@ -22,7 +22,9 @@
   break out alloca #include dependency into havealloca.h
   support HP-UX sendfile64 (thanks to Rolf Eike Beer)
   support Solaris sendfile64
-  support MacOS X sendfile (thanks to Bernhard Schmidt)
+  support MacOS X sendfile (and comment it out again, the headers
+    declare it but it's not actually there) (thanks to Bernhard Schmidt)
+  support AIX 5 (thanks to Lutz Chwala and Arthur Erhardt)
 
 0.16:
   add buffer_fromsa (make buffer from stralloc)
