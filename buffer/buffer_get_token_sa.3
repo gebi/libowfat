@@ -17,8 +17,8 @@ previous content of \fIsa\fR.  That delimiter is also appended to
 If reading from the buffer or allocating memory fails,
 buffer_get_token_sa returns -1 and sets \fIerrno\fR appropriately.  At
 that point \fIsa\fR may already contain a partial token.
-
-On success, buffer_get_token_sa returns 0.
+.SH "RETURN VALUE"
+-1 on error (setting errno), 0 on EOF, 1 when successful.
 .SH RATIONALE
 buffer_get_token_sa appends instead of overwriting so it can be used on
 non-blocking sockets (these signal error and set \fIerrno\fR to EAGAIN;

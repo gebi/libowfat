@@ -16,8 +16,8 @@ If reading from the buffer or allocating memory fails,
 buffer_getline_sa returns -1 and sets \fIerrno\fR appropriately.  At
 that point \fIsa\fR may be empty or it may already contain a partial
 token.
-
-On success, buffer_getline_sa returns 0.
+.SH "RETURN VALUE"
+-1 on error (setting errno), 0 on EOF, 1 when successful.
 .SH RATIONALE
 buffer_getline_sa appends instead of overwriting so it can be used on
 non-blocking sockets (these signal error and set \fIerrno\fR to EAGAIN;

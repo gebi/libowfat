@@ -16,7 +16,7 @@ int buffer_get_token_sa(buffer* b,stralloc* sa,
     stralloc_append(sa,&x);
     if (byte_chr(charset,setlen,x)<setlen) break;
   }
-  return 0;
+  return 1;
 nomem:
   errno=ENOMEM;
   return -1;
