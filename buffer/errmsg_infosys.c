@@ -9,9 +9,9 @@
 extern int errmsg_cvt(struct iovec* x,const char* message, va_list a);
 extern void errmsg_writesys(int fd,const char* message,va_list list);
 
-void errmsg_warnsys(const char* message, ...) {
+void errmsg_infosys(const char* message, ...) {
   va_list a;
   va_start(a,message);
-  errmsg_writesys(2,message,a);
+  errmsg_writesys(1,message,a);
   va_end(a);
 }

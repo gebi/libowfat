@@ -3,15 +3,13 @@
 #include <sys/uio.h>
 #include "errmsg.h"
 #include "str.h"
-#include <string.h>
-#include <errno.h>
 
 extern int errmsg_cvt(struct iovec* x,const char* message, va_list a);
-extern void errmsg_writesys(int fd,const char* message,va_list list);
 
-void errmsg_warnsys(const char* message, ...) {
+void errmsg_info(const char* message, ...) {
+  struct iovec x[23];
   va_list a;
   va_start(a,message);
-  errmsg_writesys(2,message,a);
+  writev(1,x,errmsg_cvt(x,message,a));
   va_end(a);
 }

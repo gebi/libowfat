@@ -1,4 +1,5 @@
 #define _GNU_SOURCE
+#include <errno.h>
 #define extern
 #include "io_internal.h"
 #undef extern

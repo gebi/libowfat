@@ -47,6 +47,10 @@ buffer_feed.o: buffer/buffer_feed.c buffer.h
 buffer_flush.o: buffer/buffer_flush.c buffer.h
 buffer_fromsa.o: buffer/buffer_fromsa.c stralloc.h buffer.h
 buffer_get.o: buffer/buffer_get.c byte.h buffer.h
+buffer_get_new_token_sa.o: buffer/buffer_get_new_token_sa.c stralloc.h \
+  buffer.h
+buffer_get_new_token_sa_pred.o: buffer/buffer_get_new_token_sa_pred.c \
+  stralloc.h buffer.h
 buffer_get_token.o: buffer/buffer_get_token.c byte.h buffer.h \
   scan.h
 buffer_get_token_pred.o: buffer/buffer_get_token_pred.c byte.h \
@@ -56,8 +60,11 @@ buffer_get_token_sa.o: buffer/buffer_get_token_sa.c byte.h stralloc.h \
 buffer_get_token_sa_pred.o: buffer/buffer_get_token_sa_pred.c byte.h \
   stralloc.h buffer.h
 buffer_getc.o: buffer/buffer_getc.c byte.h buffer.h
+buffer_getline.o: buffer/buffer_getline.c buffer.h
 buffer_getline_sa.o: buffer/buffer_getline_sa.c stralloc.h buffer.h
 buffer_getn.o: buffer/buffer_getn.c byte.h buffer.h
+buffer_getnewline_sa.o: buffer/buffer_getnewline_sa.c stralloc.h \
+  buffer.h
 buffer_init.o: buffer/buffer_init.c buffer.h
 buffer_peek.o: buffer/buffer_peek.c buffer.h
 buffer_put.o: buffer/buffer_put.c byte.h buffer.h
@@ -68,9 +75,13 @@ buffer_puterror2.o: buffer/buffer_puterror2.c buffer.h
 buffer_putflush.o: buffer/buffer_putflush.c buffer.h
 buffer_putlong.o: buffer/buffer_putlong.c buffer.h fmt.h
 buffer_putlonglong.o: buffer/buffer_putlonglong.c buffer.h fmt.h
+buffer_putm_internal.o: buffer/buffer_putm_internal.c buffer.h
+buffer_putm_internal_flush.o: buffer/buffer_putm_internal_flush.c \
+  buffer.h
 buffer_putnlflush.o: buffer/buffer_putnlflush.c str.h buffer.h
 buffer_puts.o: buffer/buffer_puts.c str.h buffer.h
 buffer_putsa.o: buffer/buffer_putsa.c stralloc.h buffer.h
+buffer_putsaflush.o: buffer/buffer_putsaflush.c stralloc.h buffer.h
 buffer_putsalign.o: buffer/buffer_putsalign.c str.h buffer.h
 buffer_putsflush.o: buffer/buffer_putsflush.c str.h buffer.h
 buffer_putspace.o: buffer/buffer_putspace.c str.h buffer.h
@@ -82,8 +93,11 @@ buffer_stubborn.o: buffer/buffer_stubborn.c buffer.h
 buffer_stubborn2.o: buffer/buffer_stubborn2.c buffer.h
 errmsg_cvt.o: buffer/errmsg_cvt.c errmsg.h str.h
 errmsg_iam.o: buffer/errmsg_iam.c errmsg.h
+errmsg_info.o: buffer/errmsg_info.c errmsg.h str.h
+errmsg_infosys.o: buffer/errmsg_infosys.c errmsg.h str.h
 errmsg_warn.o: buffer/errmsg_warn.c errmsg.h str.h
 errmsg_warnsys.o: buffer/errmsg_warnsys.c errmsg.h str.h
+errmsg_writesys.o: buffer/errmsg_writesys.c errmsg.h str.h
 byte_chr.o: byte/byte_chr.c byte.h
 byte_copy.o: byte/byte_copy.c byte.h
 byte_copyr.o: byte/byte_copyr.c byte.h
@@ -201,6 +215,9 @@ io_finishandshutdown.o: io/io_finishandshutdown.c io_internal.h io.h \
 io_getcookie.o: io/io_getcookie.c io_internal.h io.h uint64.h \
   taia.h tai.h array.h haveepoll.h havekqueue.h havedevpoll.h \
   havesigio.h
+io_mmapwritefile.o: io/io_mmapwritefile.c io_internal.h io.h \
+  uint64.h taia.h tai.h array.h haveepoll.h havekqueue.h \
+  havedevpoll.h havesigio.h iob.h
 io_nonblock.o: io/io_nonblock.c io_internal.h io.h uint64.h \
   taia.h tai.h array.h haveepoll.h havekqueue.h havedevpoll.h \
   havesigio.h
@@ -292,6 +309,8 @@ iob_reset.o: io/iob_reset.c byte.h iob_internal.h iob.h io.h \
   uint64.h taia.h tai.h array.h
 iob_send.o: io/iob_send.c havebsdsf.h havealloca.h iob_internal.h \
   iob.h io.h uint64.h taia.h tai.h array.h
+iob_write.o: io/iob_write.c iob_internal.h iob.h io.h uint64.h \
+  taia.h tai.h array.h
 mmap_private.o: mmap/mmap_private.c open.h mmap.h
 mmap_read.o: mmap/mmap_read.c open.h mmap.h
 mmap_shared.o: mmap/mmap_shared.c open.h mmap.h
@@ -441,6 +460,7 @@ stralloc_append.o: stralloc/stralloc_append.c stralloc.h
 stralloc_cat.o: stralloc/stralloc_cat.c stralloc.h str.h
 stralloc_catb.o: stralloc/stralloc_catb.c byte.h stralloc.h
 stralloc_catlong0.o: stralloc/stralloc_catlong0.c stralloc.h fmt.h
+stralloc_catm_internal.o: stralloc/stralloc_catm_internal.c stralloc.h
 stralloc_cats.o: stralloc/stralloc_cats.c stralloc.h str.h
 stralloc_catulong0.o: stralloc/stralloc_catulong0.c stralloc.h fmt.h
 stralloc_chomp.o: stralloc/stralloc_chomp.c stralloc.h
@@ -456,6 +476,7 @@ stralloc_ready.o: stralloc/stralloc_ready.c stralloc.h
 stralloc_readyplus.o: stralloc/stralloc_readyplus.c stralloc.h
 stralloc_starts.o: stralloc/stralloc_starts.c stralloc.h byte.h \
   str.h
+stralloc_zero.o: stralloc/stralloc_zero.c stralloc.h
 tai_add.o: tai/tai_add.c tai.h uint64.h
 tai_now.o: tai/tai_now.c tai.h uint64.h
 tai_pack.o: tai/tai_pack.c tai.h uint64.h
@@ -478,6 +499,8 @@ b64decode.o: test/b64decode.c buffer.h textcode.h havealloca.h
 b64encode.o: test/b64encode.c buffer.h textcode.h havealloca.h
 buffer_1.o: test/buffer_1.c buffer.h
 buffer_fromsa.o: test/buffer_fromsa.c stralloc.h buffer.h
+buffer_getline.o: test/buffer_getline.c stralloc.h buffer.h io.h \
+  uint64.h taia.h tai.h errmsg.h
 byte_copy.o: test/byte_copy.c byte.h errmsg.h
 cescape.o: test/cescape.c buffer.h textcode.h havealloca.h
 client.o: test/client.c scan.h ip6.h byte.h uint32.h str.h \
@@ -485,13 +508,13 @@ client.o: test/client.c scan.h ip6.h byte.h uint32.h str.h \
 dllink.o: test/dllink.c socket.h uint16.h uint32.h buffer.h \
   case.h
 dnsip.o: test/dnsip.c dns.h stralloc.h iopause.h taia.h tai.h \
-  uint64.h ip4.h buffer.h
+  uint64.h ip4.h buffer.h errmsg.h
 fdpassing.o: test/fdpassing.c io.h uint64.h taia.h tai.h \
   buffer.h
-fmt_httpdate.o: test/fmt_httpdate.c scan.h buffer.h
+fmt_httpdate.o: test/fmt_httpdate.c scan.h buffer.h fmt.h
 fmt_human.o: test/fmt_human.c fmt.h buffer.h
 fmt_long.o: test/fmt_long.c fmt.h str.h
-fmt_longlong.o: test/fmt_longlong.c fmt.h str.h
+fmt_longlong.o: test/fmt_longlong.c fmt.h str.h scan.h
 httpd.o: test/httpd.c socket.h uint16.h uint32.h io.h uint64.h \
   taia.h tai.h buffer.h ip6.h byte.h array.h case.h fmt.h \
   iob.h io.h array.h str.h
@@ -505,7 +528,7 @@ iob.o: test/iob.c iob.h io.h uint64.h taia.h tai.h array.h \
   buffer.h
 proxy.o: test/proxy.c socket.h uint16.h uint32.h io.h uint64.h \
   taia.h tai.h buffer.h ip6.h byte.h str.h dns.h \
-  stralloc.h iopause.h
+  stralloc.h iopause.h scan.h
 readhttp.o: test/readhttp.c stralloc.h buffer.h byte.h
 scan.o: test/scan.c scan.h
 scan_long.o: test/scan_long.c scan.h fmt.h buffer.h
@@ -517,7 +540,7 @@ textcode.o: test/textcode.c array.h uint64.h textcode.h
 unurl.o: test/unurl.c buffer.h textcode.h havealloca.h
 urlencode.o: test/urlencode.c buffer.h textcode.h havealloca.h
 uudecode.o: test/uudecode.c textcode.h str.h buffer.h open.h \
-  stralloc.h
+  stralloc.h scan.h case.h
 vd.o: test/vd.c socket.h uint16.h uint32.h buffer.h
 base64.o: textcode/base64.c
 fmt_base64.o: textcode/fmt_base64.c fmt.h textcode.h haveinline.h
@@ -582,10 +605,10 @@ SCAN_OBJS=scan_8int.o scan_8long.o scan_8short.o scan_charsetnskip.o scan_double
 STR_OBJS=str_chr.o str_copy.o str_diff.o str_diffn.o str_len.o str_rchr.o str_start.o 
 UINT_OBJS=uint16_pack.o uint16_pack_big.o uint16_read.o uint16_read_big.o uint16_unpack.o uint16_unpack_big.o uint32_pack.o uint32_pack_big.o uint32_read.o uint32_read_big.o uint32_unpack.o uint32_unpack_big.o 
 OPEN_OBJS=open_append.o open_excl.o open_read.o open_rw.o open_trunc.o open_write.o openreadclose.o readclose.o 
-STRALLOC_OBJS=stralloc_append.o stralloc_cat.o stralloc_catb.o stralloc_catlong0.o stralloc_cats.o stralloc_catulong0.o stralloc_chomp.o stralloc_chop.o stralloc_copy.o stralloc_copyb.o stralloc_copys.o stralloc_diff.o stralloc_diffs.o stralloc_free.o stralloc_init.o stralloc_ready.o stralloc_readyplus.o stralloc_starts.o 
+STRALLOC_OBJS=stralloc_append.o stralloc_cat.o stralloc_catb.o stralloc_catlong0.o stralloc_catm_internal.o stralloc_cats.o stralloc_catulong0.o stralloc_chomp.o stralloc_chop.o stralloc_copy.o stralloc_copyb.o stralloc_copys.o stralloc_diff.o stralloc_diffs.o stralloc_free.o stralloc_init.o stralloc_ready.o stralloc_readyplus.o stralloc_starts.o stralloc_zero.o 
 UNIX_OBJS=iopause.o ndelay_off.o ndelay_on.o winsock2errno.o 
 SOCKET_OBJS=fmt_ip4.o fmt_ip6.o fmt_ip6_flat.o fmt_ip6c.o fmt_ip6if.o fmt_ip6ifc.o init.o scan_ip4.o scan_ip6.o scan_ip6_flat.o scan_ip6if.o socket_accept4.o socket_accept6.o socket_bind4.o socket_bind4_reuse.o socket_bind6.o socket_bind6_reuse.o socket_broadcast.o socket_connect4.o socket_connect6.o socket_connected.o socket_getifidx.o socket_getifname.o socket_ip4loopback.o socket_listen.o socket_local4.o socket_local6.o socket_mchopcount6.o socket_mcjoin4.o socket_mcjoin6.o socket_mcleave4.o socket_mcleave6.o socket_mcloop4.o socket_mcloop6.o socket_mcttl4.o socket_noipv6.o socket_recv4.o socket_recv6.o socket_remote4.o socket_remote6.o socket_send4.o socket_send6.o socket_tcp4.o socket_tcp6.o socket_tryreservein.o socket_udp4.o socket_udp6.o socket_v4mappedprefix.o socket_v6any.o socket_v6loopback.o 
-BUFFER_OBJS=buffer_0.o buffer_0small.o buffer_1.o buffer_1small.o buffer_2.o buffer_feed.o buffer_flush.o buffer_fromsa.o buffer_get.o buffer_get_token.o buffer_get_token_pred.o buffer_get_token_sa.o buffer_get_token_sa_pred.o buffer_getc.o buffer_getline_sa.o buffer_getn.o buffer_init.o buffer_peek.o buffer_put.o buffer_put8long.o buffer_putalign.o buffer_puterror.o buffer_puterror2.o buffer_putflush.o buffer_putlong.o buffer_putlonglong.o buffer_putnlflush.o buffer_puts.o buffer_putsa.o buffer_putsalign.o buffer_putsflush.o buffer_putspace.o buffer_putulong.o buffer_putulonglong.o buffer_putxlong.o buffer_seek.o buffer_stubborn.o buffer_stubborn2.o errmsg_cvt.o errmsg_iam.o errmsg_warn.o errmsg_warnsys.o 
+BUFFER_OBJS=buffer_0.o buffer_0small.o buffer_1.o buffer_1small.o buffer_2.o buffer_feed.o buffer_flush.o buffer_fromsa.o buffer_get.o buffer_get_new_token_sa.o buffer_get_new_token_sa_pred.o buffer_get_token.o buffer_get_token_pred.o buffer_get_token_sa.o buffer_get_token_sa_pred.o buffer_getc.o buffer_getline.o buffer_getline_sa.o buffer_getn.o buffer_getnewline_sa.o buffer_init.o buffer_peek.o buffer_put.o buffer_put8long.o buffer_putalign.o buffer_puterror.o buffer_puterror2.o buffer_putflush.o buffer_putlong.o buffer_putlonglong.o buffer_putm_internal.o buffer_putm_internal_flush.o buffer_putnlflush.o buffer_puts.o buffer_putsa.o buffer_putsaflush.o buffer_putsalign.o buffer_putsflush.o buffer_putspace.o buffer_putulong.o buffer_putulonglong.o buffer_putxlong.o buffer_seek.o buffer_stubborn.o buffer_stubborn2.o errmsg_cvt.o errmsg_iam.o errmsg_info.o errmsg_infosys.o errmsg_warn.o errmsg_warnsys.o errmsg_writesys.o 
 MMAP_OBJS=mmap_private.o mmap_read.o mmap_shared.o 
 TAIA_OBJS=taia_add.o taia_addsec.o taia_approx.o taia_frac.o taia_less.o taia_now.o taia_pack.o taia_sub.o taia_tai.o taia_uint.o taia_unpack.o 
 TAI_OBJS=tai_add.o tai_now.o tai_pack.o tai_sub.o tai_uint.o tai_unpack.o 
@@ -593,7 +616,7 @@ DNS_OBJS=dns_dfd.o dns_domain.o dns_dtda.o dns_ip.o dns_ip6.o dns_ipq.o dns_ipq6
 CASE_OBJS=case_diffb.o case_diffs.o case_lowerb.o case_lowers.o case_starts.o 
 MULT_OBJS=imult16.o imult32.o imult64.o umult16.o umult32.o umult64.o 
 ARRAY_OBJS=array_allocate.o array_bytes.o array_cat.o array_cat0.o array_catb.o array_cate.o array_cats.o array_cats0.o array_equal.o array_fail.o array_get.o array_length.o array_reset.o array_start.o array_trunc.o array_truncate.o 
-IO_OBJS=io_appendfile.o io_canread.o io_canwrite.o io_check.o io_close.o io_closeonexec.o io_createfile.o io_dontwantread.o io_dontwantwrite.o io_eagain.o io_fd.o io_finishandshutdown.o io_getcookie.o io_nonblock.o io_passfd.o io_pipe.o io_readfile.o io_readwritefile.o io_receivefd.o io_sendfile.o io_setcookie.o io_sigpipe.o io_socketpair.o io_timeout.o io_timeouted.o io_tryread.o io_tryreadtimeout.o io_trywrite.o io_trywritetimeout.o io_wait.o io_waitread.o io_waituntil.o io_waituntil2.o io_waitwrite.o io_wantread.o io_wantwrite.o iob_addbuf.o iob_addbuf_free.o iob_addbuf_internal.o iob_addfile.o iob_addfile_close.o iob_adds.o iob_adds_free.o iob_new.o iob_prefetch.o iob_reset.o iob_send.o 
+IO_OBJS=io_appendfile.o io_canread.o io_canwrite.o io_check.o io_close.o io_closeonexec.o io_createfile.o io_dontwantread.o io_dontwantwrite.o io_eagain.o io_fd.o io_finishandshutdown.o io_getcookie.o io_mmapwritefile.o io_nonblock.o io_passfd.o io_pipe.o io_readfile.o io_readwritefile.o io_receivefd.o io_sendfile.o io_setcookie.o io_sigpipe.o io_socketpair.o io_timeout.o io_timeouted.o io_tryread.o io_tryreadtimeout.o io_trywrite.o io_trywritetimeout.o io_wait.o io_waitread.o io_waituntil.o io_waituntil2.o io_waitwrite.o io_wantread.o io_wantwrite.o iob_addbuf.o iob_addbuf_free.o iob_addbuf_internal.o iob_addfile.o iob_addfile_close.o iob_adds.o iob_adds_free.o iob_new.o iob_prefetch.o iob_reset.o iob_send.o iob_write.o 
 TEXTCODE_OBJS=base64.o fmt_base64.o fmt_cescape.o fmt_foldwhitespace.o fmt_hexdump.o fmt_html.o fmt_quotedprintable.o fmt_to_array.o fmt_to_sa.o fmt_tofrom_array.o fmt_urlencoded.o fmt_uuencoded.o fmt_yenc.o scan_base64.o scan_cescape.o scan_hexdump.o scan_html.o scan_quotedprintable.o scan_to_array.o scan_to_sa.o scan_tofrom_array.o scan_urlencoded.o scan_uuencoded.o scan_yenc.o 
 
 byte.a: $(BYTE_OBJS)
