@@ -4,7 +4,7 @@
 #include <errno.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
-#ifdef __linux__
+#if defined(__linux__) || defined(__FreeBSD__)
 #include <alloca.h>
 #endif
 
