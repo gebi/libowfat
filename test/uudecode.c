@@ -192,8 +192,9 @@ invalidybegin:
 	continue;
       }
       l=filename-line+6;
-      if (!(filename=strstr(line," part="))) goto invalidybegin;
-      if (filename[6+scan_ulong(filename+6,&part)] != ' ') goto invalidybegin;
+      if (!(filename=strstr(line," part="))) {
+	part=1;
+      } else if (filename[6+scan_ulong(filename+6,&part)] != ' ') goto invalidybegin;
       if (part==1) reconstructed=0;
       if (!(filename=strstr(line," size="))) goto invalidybegin;
       if (filename[6+scan_ulong(filename+6,&totalsize)] != ' ') goto invalidybegin;
@@ -227,9 +228,16 @@ invalidpart:
       stralloc out;
       char* tmp=strstr(line," pcrc32=");
 
-      if (!tmp) goto invalidpart;
-      if (!scan_xlong(tmp+8,&wantedcrc))
-	goto invalidpart;
+      if (tmp) {
+	if (!scan_xlong(tmp+8,&wantedcrc))
+	  goto invalidpart;
+      } else if (part==1) {
+	tmp=strstr(line," crc32=");
+	if (!tmp) goto invalidpart;
+	if (!scan_xlong(tmp+7,&wantedcrc))
+	  goto invalidpart;
+	endoffset=totalsize;
+      } else goto invalidpart;
       stralloc_init(&out);
       stralloc_0(&yencpart);
       stralloc_ready(&out,yencpart.len);
@@ -258,6 +266,7 @@ invalidpart:
 	  buffer_puts(buffer_2,"warning: part ");
 	  buffer_putulong(buffer_2,part);
 	  buffer_putsflush(buffer_2," corrupt; reconstruction failed.\n");
+	  buffer_put(&fileout,out.s,out.len);
 	}
       }
       stralloc_free(&out);
