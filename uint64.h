@@ -1,8 +1,7 @@
 #ifndef UINT64_H
 #define UINT64_H
 
-#include <sys/cdefs.h>
-#include <limits.h>
+#include <endian.h>
 
 #if __WORDSIZE == 64
 typedef unsigned long uint64;
