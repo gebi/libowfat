@@ -3,40 +3,21 @@
 
 typedef unsigned int uint32;
 
-#ifndef __linux__
-#define NO_UINT32_MACROS
-#endif
-
-#ifdef NO_UINT32_MACROS
-extern void uint32_pack(char *out,uint32 in);
-extern void uint32_pack_big(char *out,uint32 in);
-extern void uint32_unpack(const char *in,uint32* out);
-extern void uint32_unpack_big(const char *in,uint32* out);
-#else
-
-#include <endian.h>
-
-#if __BYTE_ORDER == __LITTLE_ENDIAN
-
+#if defined(__i386__) && !defined(NO_UINT32_MACROS)
 #define uint32_pack(out,in) (*(uint32*)(out)=(in))
-
-extern void uint32_pack_big(char *out,uint32 in);
-
 #define uint32_unpack(in,out) (*(out)=*(uint32*)(in))
-
+#define uint32_read(in) (*(uint32*)in)
+extern void uint32_pack_big(char *out,uint32 in);
 extern void uint32_unpack_big(const char *in,uint32* out);
-
+extern uint32 uint32_read_big(const char *in);
 #else
 
 extern void uint32_pack(char *out,uint32 in);
-
-#define uint32_pack_big(out,in) (*(uint32*)(out)=(in))
-
+extern void uint32_pack_big(char *out,uint32 in);
 extern void uint32_unpack(const char *in,uint32* out);
-
-#define uint32_unpack_big(in,out) (*(out)=*(uint32*)(in))
-
-#endif
+extern void uint32_unpack_big(const char *in,uint32* out);
+extern uint32 uint32_read(const char *in);
+extern uint32 uint32_read_big(const char *in);
 
 #endif
 
