@@ -38,7 +38,7 @@ int64 iob_send(int64 s,io_batch* b) {
     for (i=0; e+i<last; ++i) {
       if (e[i].type==FROMFILE) break;
       v[i].iov_base=(char*)(e[i].buf+e[i].offset);
-      v[i].iov_len=e[i].n-e[i].offset;
+      v[i].iov_len=e[i].n;
     }
     headers=i;
 #ifdef HAVE_BSDSENDFILE
@@ -49,7 +49,7 @@ int64 iob_send(int64 s,io_batch* b) {
       for (++i; e+i<last; ++i) {
 	if (e[i].type==FROMFILE) break;
 	v[i-1].iov_base=(char*)(e[i].buf+e[i].offset);
-	v[i-1].iov_len=e[i].n-e[i].offset;
+	v[i-1].iov_len=e[i].n;
 	++trailers;
       }
       hdr.headers=v; hdr.hdr_cnt=headers;
