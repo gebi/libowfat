@@ -6,6 +6,7 @@ void byte_copy(void* out, unsigned int len, const void* in) {
   register char* s=out;
   register const char* t=in;
   register const char* u=t+len;
+#ifdef __i386__
   if (len>127) {
     if (sizeof(unsigned long)>4) {	/* a good compiler should optimize this check away */
       for (;(unsigned long)t&7;) {
@@ -21,6 +22,7 @@ void byte_copy(void* out, unsigned int len, const void* in) {
       s+=sizeof(long); t+=sizeof(long);
     }
   }
+#endif
   for (;;) {
     if (t==u) break; *s=*t; ++s; ++t;
     if (t==u) break; *s=*t; ++s; ++t;
