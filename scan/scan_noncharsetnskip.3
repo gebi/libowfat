@@ -4,7 +4,7 @@ scan_noncharsetnskip \- skip characters not from set
 .SH SYNTAX
 .B #include <scan.h>
 
-int \fBscan_noncharsetnskip\fP(const char* \fIsrc\fR, const char* \fIcharset\fR, unsigned int* \fIlimit\fR);
+long \fBscan_noncharsetnskip\fP(const char* \fIsrc\fR, const char* \fIcharset\fR, unsigned long* \fIlimit\fR);
 .SH DESCRIPTION
 scan_noncharsetnskip returns the length of the maximum prefix of \fIsrc\fR
 that consists solely of characters that do not occur in \fIcharset\fR

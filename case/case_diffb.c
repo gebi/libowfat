@@ -1,6 +1,6 @@
 #include "case.h"
 
-int case_diffb(register const char *s,register unsigned int len,register const char *t)
+int case_diffb(register const char *s,register unsigned long len,register const char *t)
 {
   register unsigned char x;
   register unsigned char y;

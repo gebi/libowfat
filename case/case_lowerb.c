@@ -1,6 +1,6 @@
 #include "case.h"
 
-void case_lowerb(char *s,unsigned int len) {
+void case_lowerb(char *s,unsigned long len) {
   unsigned char x;
   while (len > 0) {
     --len;

@@ -4,8 +4,8 @@
  *  write padlen-srclen spaces, if that is >= 0.  Then copy srclen
  *  characters from src.  Truncate only if total length is larger than
  *  maxlen.  Return number of characters written. */
-unsigned int fmt_pad(char* dest,const char* src,unsigned int srclen,unsigned int padlen,unsigned int maxlen) {
-  int todo;
+unsigned long fmt_pad(char* dest,const char* src,unsigned long srclen,unsigned long padlen,unsigned long maxlen) {
+  long todo;
   char* olddest=dest;
   char* max=dest+maxlen;
   todo=padlen-srclen;

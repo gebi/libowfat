@@ -52,18 +52,18 @@ extern unsigned int scan_double(const char *in, double *dest);
 extern unsigned int scan_plusminus(const char *src,signed int *dest);
 
 /* return the highest integer n<=limit so that isspace(in[i]) for all 0<=i<=n */
-extern unsigned int scan_whitenskip(const char *in,unsigned int limit) __pure__;
+extern unsigned long scan_whitenskip(const char *in,unsigned long limit) __pure__;
 
 /* return the highest integer n<=limit so that !isspace(in[i]) for all 0<=i<=n */
-extern unsigned int scan_nonwhitenskip(const char *in,unsigned int limit) __pure__;
+extern unsigned long scan_nonwhitenskip(const char *in,unsigned long limit) __pure__;
 
 /* return the highest integer n<=limit so that in[i] is element of
  * charset (ASCIIZ string) for all 0<=i<=n */
-extern unsigned int scan_charsetnskip(const char *in,const char *charset,unsigned int limit) __pure__;
+extern unsigned long scan_charsetnskip(const char *in,const char *charset,unsigned long limit) __pure__;
 
 /* return the highest integer n<=limit so that in[i] is not element of
  * charset (ASCIIZ string) for all 0<=i<=n */
-extern unsigned int scan_noncharsetnskip(const char *in,const char *charset,unsigned int limit) __pure__;
+extern unsigned long scan_noncharsetnskip(const char *in,const char *charset,unsigned long limit) __pure__;
 
 /* try to parse ASCII GMT date; does not understand time zones. */
 /* example dates:

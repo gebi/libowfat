@@ -4,9 +4,9 @@ fmt_pad \- pad a string with spaces.
 .SH SYNTAX
 .B #include <fmt.h>
 
-unsigned int \fBfmt_pad\fP(char *\fIdest\fR, const char *\fIsource\fR,
-      unsigned int \fIsrclen\fR, unsigned int \fIpadlen\fR,
-      unsigned int \fImaxlen\fR);
+unsigned long \fBfmt_pad\fP(char *\fIdest\fR, const char *\fIsource\fR,
+      unsigned long \fIsrclen\fR, unsigned long \fIpadlen\fR,
+      unsigned long \fImaxlen\fR);
 .SH DESCRIPTION
 fmt_pad writes \fIpadlen\fR-\fIsrclen\fR spaces (if that number is
 positive) and then \fIsrclen\fR characters from \fIsource\fR.  It

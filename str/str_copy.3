@@ -4,7 +4,7 @@ str_copy \- copy an ASCIIZ string
 .SH SYNTAX
 .B #include <str.h>
 
-extern int \fBstr_copy\fP(char* \fIout\fR,const char* \fIin\fR);
+extern long \fBstr_copy\fP(char* \fIout\fR,const char* \fIin\fR);
 .SH DESCRIPTION
 str_copy copies the leading bytes of \fIin\fR to \fIout\fR up to and
 including the first occurrance of \\0.

@@ -58,23 +58,23 @@ unsigned int fmt_plusminus(char *dest,int src);
 unsigned int fmt_minus(char *dest,int src);
 
 /* copy str to dest until \0 byte, return number of copied bytes. */
-unsigned int fmt_str(char *dest,const char *src);
+unsigned long fmt_str(char *dest,const char *src);
 
 /* copy str to dest until \0 byte or limit bytes copied.
  * return number of copied bytes. */
-unsigned int fmt_strn(char *dest,const char *src,unsigned int limit);
+unsigned long fmt_strn(char *dest,const char *src,unsigned long limit);
 
 /* "foo" -> "  foo"
  * write padlen-srclen spaces, if that is >= 0.  Then copy srclen
  * characters from src.  Truncate only if total length is larger than
  * maxlen.  Return number of characters written. */
-unsigned int fmt_pad(char* dest,const char* src,unsigned int srclen,unsigned int padlen,unsigned int maxlen);
+unsigned long fmt_pad(char* dest,const char* src,unsigned long srclen,unsigned long padlen,unsigned long maxlen);
 
 /* "foo" -> "foo  "
  * append padlen-srclen spaces after dest, if that is >= 0.  Truncate
  * only if total length is larger than maxlen.  Return number of
  * characters written. */
-unsigned int fmt_fill(char* dest,unsigned int srclen,unsigned int padlen,unsigned int maxlen);
+unsigned long fmt_fill(char* dest,unsigned long srclen,unsigned long padlen,unsigned long maxlen);
 
 /* 1 -> "1", 4900 -> "4.9k", 2300000 -> "2.3M" */
 unsigned int fmt_human(char* dest,unsigned long long l);

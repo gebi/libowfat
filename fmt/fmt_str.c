@@ -1,6 +1,6 @@
 #include "fmt.h"
 
-unsigned int fmt_str(char *out,const char *in) {
+unsigned long fmt_str(char *out,const char *in) {
   register char* s=out;
   register const char* t=in;
   for (;;) {

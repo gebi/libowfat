@@ -4,9 +4,9 @@ fmt_fill \- append spaces to a string
 .SH SYNTAX
 .B #include <fmt.h>
 
-unsigned int \fBfmt_fill\fP(char *\fIdest\fR,
-      unsigned int \fIsrclen\fR, unsigned int \fIpadlen\fR,
-      unsigned int \fImaxlen\fR);
+unsigned long \fBfmt_fill\fP(char *\fIdest\fR,
+      unsigned long \fIsrclen\fR, unsigned long \fIpadlen\fR,
+      unsigned long \fImaxlen\fR);
 .SH DESCRIPTION
 fmt_fill appends \fIpadlen\fR-\fIsrclen\fR spaces (if that number is
 positive) to \fIdest\fR (which holds \fIsrclen\fR bytes).  It truncates

@@ -4,7 +4,7 @@ scan_nonwhitenskip \- skip non-whitespace
 .SH SYNTAX
 .B #include <scan.h>
 
-int \fBscan_nonwhitenskip\fP(const char *\fIsrc\fR,unsigned int *\fIlimit\fR);
+long \fBscan_nonwhitenskip\fP(const char *\fIsrc\fR,unsigned long *\fIlimit\fR);
 .SH DESCRIPTION
 scan_nonwhitenskip returns the length of the maximum prefix of \fIsrc\fR
 that consists solely of non-whitespace characters as defined by

@@ -2,7 +2,7 @@
 
 /* byte_rchr returns the largest integer i between 0 and len-1 inclusive
  * such that one[i] equals needle, or len if not found. */
-unsigned int byte_rchr(const void* haystack,unsigned int len,char needle) {
+unsigned long byte_rchr(const void* haystack,unsigned long len,char needle) {
   register char c=needle;
   register const char* s=haystack;
   register const char* t=s+len;
