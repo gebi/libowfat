@@ -29,7 +29,7 @@ it returns -1 and sets errno appropriately.
   uint16 \fIp\fR;
   uint32 \fIscope_id\fR;
 
-  \fIs\fR = socket_tcp();
+  \fIs\fR = socket_tcp4();
   socket_bind6(s,ip,p);
   socket_send6(s,"hello, world",12,ip,p,scope_id);
 

@@ -27,7 +27,7 @@ compat:
   }
   return s;
 #else
-  return socket_tcp();
+  return socket_tcp4();
 #endif
 }
 

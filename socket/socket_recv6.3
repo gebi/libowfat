@@ -28,7 +28,7 @@ received.  If not, it returns -1 and sets errno appropriately.
   int len;
   uint32 scope_id;
 
-  \fIs\fR = socket_tcp();
+  \fIs\fR = socket_tcp4();
   socket_bind6(s,ip,p);
   len = socket_recv6(s,buf,sizeof(buf),ip,&p,&scope_id);
 
