@@ -4,7 +4,7 @@ VPATH=str:byte:fmt:scan:uint:open:stralloc:unix:socket:buffer:mmap
 
 CC=egcc
 #CFLAGS=-I. -pipe -Wall -Os -march=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
-CFLAGS=-I. -I../dietlibc/include -pipe -Wall -Os -march=athlon -mcpu=athlon -malign-functions=2 -fomit-frame-pointer -fschedule-insns2 -g
+CFLAGS=-I. -I../dietlibc/include -pipe -Wall -Os -march=athlon -mcpu=athlon -malign-functions=2 -fschedule-insns2 -g
 #CFLAGS=-I../dietlibc/include -I. -pipe -Wall -Os -march=pentiumpro -mcpu=athlon -fomit-frame-pointer -fschedule-insns2 -Wall
 #CFLAGS=-I../dietlibc/include -pipe -Os -march=pentiumpro -mcpu=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
 

@@ -14,9 +14,14 @@
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
+  char buf[100];
+  buf[fmt_fill(buf,"foobarbaz",3,5,100)]=0;
+  printf("\"%s\"\n",buf);
+#if 0
   unsigned long len;
   char *c=mmap_read("/etc/passwd",&len);
   printf("got map %p of len %lu\n",c,len);
+#endif
 #if 0
   char c;
   printf("%d\n",buffer_getc(buffer_0,&c));
