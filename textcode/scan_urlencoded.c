@@ -2,7 +2,7 @@
 #include "textcode.h"
 #include "scan.h"
 
-unsigned long scan_urlencoded(const char *src,char *dest,unsigned long *destlen) {
+static unsigned long inner_scan_urlencoded(const char *src,char *dest,unsigned long *destlen,int plus) {
   register const unsigned char* s=(const unsigned char*) src;
   unsigned long written=0,i;
   for (i=0; s[i]; ++i) {
@@ -14,7 +14,7 @@ unsigned long scan_urlencoded(const char *src,char *dest,unsigned long *destlen)
       if (j<0) break;
       dest[written]|=j;
       i+=2;
-    } else if (s[i]=='+')
+    } else if (s[i]=='+' && plus)
       dest[written]=' ';
     else
       dest[written]=s[i];
@@ -22,4 +22,12 @@ unsigned long scan_urlencoded(const char *src,char *dest,unsigned long *destlen)
   }
   *destlen=written;
   return i;
+}
+
+unsigned long scan_urlencoded(const char *src,char *dest,unsigned long *destlen) {
+  return inner_scan_urlencoded(src,dest,destlen,1);
+}
+
+unsigned long scan_urlencoded2(const char *src,char *dest,unsigned long *destlen) {
+  return inner_scan_urlencoded(src,dest,destlen,0);
 }

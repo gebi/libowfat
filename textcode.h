@@ -24,6 +24,7 @@ unsigned long scan_uuencoded(const char *src,char *dest,unsigned long *destlen);
 unsigned long scan_base64(const char *src,char *dest,unsigned long *destlen);
 unsigned long scan_quotedprintable(const char *src,char *dest,unsigned long *destlen);
 unsigned long scan_urlencoded(const char *src,char *dest,unsigned long *destlen);
+unsigned long scan_urlencoded2(const char *src,char *dest,unsigned long *destlen);
 unsigned long scan_yenc(const char *src,char *dest,unsigned long *destlen);
 unsigned long scan_hexdump(const char *src,char *dest,unsigned long *destlen);
 unsigned long scan_html(const char *src,char *dest,unsigned long *destlen);
