@@ -90,7 +90,7 @@ int main(int argc,char* argv[]) {
   enum { BEFOREBEGIN, AFTERBEGIN, SKIPHEADER } state=BEFOREBEGIN;
   enum { UUDECODE, YENC } mode=UUDECODE;
   unsigned long fmode=0,lineno=0;
-  unsigned long offset,endoffset,totalsize,linelen,part; /* used only for yenc */
+  unsigned long offset,endoffset,totalsize,linelen,part,reconstructed; /* used only for yenc */
   static stralloc yencpart;
   unsigned int crc;
 
@@ -194,6 +194,7 @@ invalidybegin:
       l=filename-line+6;
       if (!(filename=strstr(line," part="))) goto invalidybegin;
       if (filename[6+scan_ulong(filename+6,&part)] != ' ') goto invalidybegin;
+      if (part==1) reconstructed=0;
       if (!(filename=strstr(line," size="))) goto invalidybegin;
       if (filename[6+scan_ulong(filename+6,&totalsize)] != ' ') goto invalidybegin;
       if (!(filename=strstr(line," line="))) goto invalidybegin;
@@ -242,9 +243,6 @@ invalidpart:
 	/* ok, save block */
 	buffer_put(&fileout,out.s,out.len);
       } else {
-	buffer_puts(buffer_2,"warning: part ");
-	buffer_putulong(buffer_2,part);
-	buffer_puts(buffer_2," corrupt; attempting reconstruction... ");
 	out.len=0;
 	for (i=0; i<yencpart.len; ) {
 	  unsigned int x,scanned;
@@ -253,16 +251,23 @@ invalidpart:
 	  i+=x+1; out.len+=scanned;
 	}
 	i=crc32(0,out.s,out.len);
-	if (out.len == endoffset-offset && i == wantedcrc) {
-	  buffer_putsflush(buffer_2,"success!\n");
-	  buffer_put(&fileout,out.s,out.len);
-	} else
-	  buffer_putsflush(buffer_2,"failed!\n");
+	if (out.len == endoffset-offset && i == wantedcrc)
+	  ++reconstructed;
+	else {
+	  buffer_puts(buffer_2,"warning: part ");
+	  buffer_putulong(buffer_2,part);
+	  buffer_putsflush(buffer_2," corrupt; reconstruction failed.\n");
+	}
       }
       stralloc_free(&out);
       buffer_flush(&fileout);
       close(ofd);
       ofd=-1;
+      if (endoffset==totalsize && reconstructed) {
+	buffer_puts(buffer_2,"warning: had to reconstruct ");
+	buffer_putulong(buffer_2,reconstruct);
+	buffer_puts(buffer_2," parts!\n");
+      }
 #if 0
       unsigned long cur;
       if (ofd>=0) {
