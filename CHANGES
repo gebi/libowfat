@@ -2,6 +2,7 @@
   add buffer_fromsa (make buffer from stralloc)
   add API for integer multiply with overflow detection
   change length counters from int to long for 64-bit platforms
+  add array API from http://cr.yp.to/lib/array.html
 
 0.15:
   man page update (document stralloc return values)
