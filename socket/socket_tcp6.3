@@ -1,14 +1,14 @@
 .TH socket_tcp6 3
 .SH NAME
-socket_tcp \- create a non-blocking IPv6 TCP/IP stream socket
+socket_tcp6 \- create a non-blocking IPv6 TCP/IP stream socket
 .SH SYNTAX
 .B #include <socket.h>
 
 int \fBsocket_tcp6\fP();
 .SH DESCRIPTION
-socket_tcp creates a non-blocking IPv6 TCP/IP stream socket and returns a
+socket_tcp6 creates a non-blocking IPv6 TCP/IP stream socket and returns a
 file descriptor pointing to that socket.  If something goes wrong,
-socket_tcp returns -1, setting errno appropriately, without allocating
+socket_tcp6 returns -1, setting errno appropriately, without allocating
 any resources.
 
 .SH EXAMPLE
