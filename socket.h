@@ -34,8 +34,8 @@ int socket_remote6(int s,char* ip,uint16* port,uint32* scope_id);
 /* enable sending udp packets to the broadcast address */
 int socket_broadcast(int s);
 /* join a multicast group on the given interface */
-int socket_mcjoin4(int s,const char* groupip,const char* interface);
-int socket_mcjoin6(int s,const char* groupip,int interface);
+int socket_mcjoin4(int s,const char* groupip,const char* _interface);
+int socket_mcjoin6(int s,const char* groupip,int _interface);
 /* leave a multicast group on the given interface */
 int socket_mcleave4(int s,const char* groupip);
 int socket_mcleave6(int s,const char* groupip);
@@ -48,7 +48,7 @@ int socket_mcloop6(int s,char hops);
 
 void socket_tryreservein(int s,int size);
 
-const char* socket_getifname(uint32 interface);
+const char* socket_getifname(uint32 _interface);
 uint32 socket_getifidx(const char* ifname);
 
 int socket_sendfile(int out,int in,uint32 offset,uint32 bytes);
