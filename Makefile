@@ -1,6 +1,6 @@
-all: t byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a buffer.a libowfat.a
+all: t byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a buffer.a mmap.a libowfat.a
 
-VPATH=str:byte:fmt:scan:uint:open:stralloc:unix:socket:buffer
+VPATH=str:byte:fmt:scan:uint:open:stralloc:unix:socket:buffer:mmap
 
 CC=egcc
 #CFLAGS=-I. -pipe -Wall -Os -march=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
@@ -18,6 +18,7 @@ STRA_OBJS=$(patsubst stralloc/%.c,%.o,$(wildcard stralloc/*.c))
 UNIX_OBJS=$(patsubst unix/%.c,%.o,$(wildcard unix/*.c))
 SOCKET_OBJS=$(patsubst socket/%.c,%.o,$(wildcard socket/*.c))
 BUFFER_OBJS=$(patsubst buffer/%.c,%.o,$(wildcard buffer/*.c))
+MMAP_OBJS=$(patsubst mmap/%.c,%.o,$(wildcard mmap/*.c))
 
 $(BYTE_OBJS): byte.h
 $(FMT_OBJS): fmt.h
@@ -27,6 +28,7 @@ $(UINT_OBJS): uint16.h uint32.h
 $(STRA_OBJS): stralloc.h
 $(SOCKET_OBJS): socket.h
 $(BUFFER_OBJS): buffer.h
+$(MMAP_OBJS): mmap.h
 
 byte.a: $(BYTE_OBJS)
 fmt.a: $(FMT_OBJS)
@@ -38,16 +40,17 @@ stralloc.a: $(STRA_OBJS)
 unix.a: $(UNIX_OBJS)
 socket.a: $(SOCKET_OBJS)
 buffer.a: $(BUFFER_OBJS)
+mmap.a: $(MMAP_OBJS)
 
 libowfat.a: $(BYTE_OBJS) $(FMT_OBJS) $(SCAN_OBJS) $(STR_OBJS) \
 $(UINT_OBJS) $(OPEN_OBJS) $(STRA_OBJS) $(UNIX_OBJS) $(SOCKET_OBJS) \
-$(BUFFER_OBJS)
+$(BUFFER_OBJS) $(MMAP_OBJS)
 
 %.a:
 	ar cr $@ $^
 
-t: t.o socket.a stralloc.a fmt.a scan.a uint.a open.a buffer.a str.a \
-byte.a
+t: t.o socket.a stralloc.a fmt.a scan.a uint.a mmap.a open.a buffer.a \
+str.a byte.a
 	gcc -g -o $@ $^
 
 .PHONY: clean tar

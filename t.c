@@ -7,15 +7,21 @@
 #include "socket.h"
 #include "buffer.h"
 #include "ip4.h"
+#include "mmap.h"
 #include <stdio.h>
 
 #define rdtscl(low) \
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
+  unsigned long len;
+  char *c=mmap_read("/etc/passwd",&len);
+  printf("got map %p of len %lu\n",c,len);
+#if 0
   char c;
   printf("%d\n",buffer_getc(buffer_0,&c));
   printf("%c\n",c);
+#endif
 #if 0
   char buf[100]="01234567890123456789012345678901234567890123456789";
   long a,b,c;
