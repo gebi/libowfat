@@ -7,8 +7,9 @@ void byte_copy(void* out, unsigned int len, const void* in) {
   register const char* t=in;
   register const char* u=t+len;
   if (len>127) {
-    while ((unsigned long)s&(sizeof(unsigned long)-1))
+    while ((unsigned long)s&(sizeof(unsigned long)-1)) {
       if (t==u) break; *s=*t; ++s; ++t;
+    }
     /* s (destination) is now unsigned long aligned */
 #ifndef __i386__
     if (!((unsigned long)t&(sizeof(unsigned long)-1)))
