@@ -25,6 +25,10 @@
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
+  char dest[1024];
+  unsigned long len;
+  scan_urlencoded2("libstdc++.tar.gz",dest,&len);
+  buffer_putmflush(buffer_1,dest,"\n");
 #if 0
   static stralloc sa;
   stralloc_copym(&sa,"foo ","bar ","baz.\n");
