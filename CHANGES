@@ -16,6 +16,7 @@
   fix typo breaking buffer_GETC in buffer (Marcus Winkler)
   fix typo breaking fmt_long for dest==NULL
   add fmt_*longlong()
+  add range check to scan_ulong, scan_ulonglong
 
 0.14:
   avoid bus errors in byte_copy

@@ -2,7 +2,7 @@
 
 unsigned int scan_long(const char *src,long *dest) {
   register const char *tmp;
-  register int l;
+  register long int l;
   register unsigned char c;
   int neg;
   tmp=src; l=0; neg=0;

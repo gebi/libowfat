@@ -27,6 +27,11 @@ extern unsigned int scan_8long(const char *src,unsigned long *dest);
  * and return the number of bytes that were parsed */
 extern unsigned int scan_long(const char *src,signed long *dest);
 
+extern unsigned int scan_longlong(const char *src,signed long long *dest);
+extern unsigned int scan_ulonglong(const char *src,unsigned long long *dest);
+extern unsigned int scan_xlonglong(const char *src,unsigned long long *dest);
+extern unsigned int scan_8longlong(const char *src,unsigned long long *dest);
+
 extern unsigned int scan_uint(const char *src,unsigned int *dest);
 extern unsigned int scan_xint(const char *src,unsigned int *dest);
 extern unsigned int scan_8int(const char *src,unsigned int *dest);
