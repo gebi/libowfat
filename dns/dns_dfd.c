@@ -12,7 +12,7 @@ int dns_domain_fromdot(char **out,const char *buf,unsigned int n)
   char ch;
   char *x;
 
-  errno = EPROTO;
+  errno = EINVAL;
 
   for (;;) {
     if (!n) break;

@@ -8,7 +8,7 @@ DNS should have used LZ77 instead of its own sophomoric compression algorithm.
 unsigned int dns_packet_copy(const char *buf,unsigned int len,unsigned int pos,char *out,unsigned int outlen)
 {
   while (outlen) {
-    if (pos >= len) { errno = EPROTO; return 0; }
+    if (pos >= len) { errno = EINVAL; return 0; }
     *out = buf[pos++];
     ++out; --outlen;
   }
@@ -28,7 +28,7 @@ unsigned int dns_packet_skipname(const char *buf,unsigned int len,unsigned int p
     pos += ch;
   }
 
-  errno = EPROTO;
+  errno = EINVAL;
   return 0;
 }
 
@@ -72,6 +72,6 @@ unsigned int dns_packet_getname(const char *buf,unsigned int len,unsigned int po
   return pos;
 
   PROTO:
-  errno = EPROTO;
+  errno = EINVAL;
   return 0;
 }
