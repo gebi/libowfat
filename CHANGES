@@ -13,7 +13,7 @@
   buffer_getline is now a function, not a macro
   add iob_write (send io batch through callback, e.g. for SSL)
   add errmsg_info and errmsg_infosys to write to stdout instead
-  epoll fix
+  epoll fix (how could this ever work?)
 
 0.20:
   add errmsg API
