@@ -1,7 +1,8 @@
 #include "io.h"
 #include "buffer.h"
+#include <unistd.h>
 
-main() {
+int main() {
   char buf[2048];
   int64 pfd[2];
   tai6464 t;
@@ -24,4 +25,5 @@ main() {
     buffer_putnlflush(buffer_2);
     return 111;
   }
+  return 0;
 }

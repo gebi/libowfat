@@ -49,7 +49,6 @@ int header_complete(struct http_data* r) {
 }
 
 void httperror(struct http_data* r,const char* title,const char* message) {
-  int i;
   char* c;
   c=r->hdrbuf=(char*)malloc(strlen(message)+strlen(title)+200);
   if (!c) {
@@ -100,7 +99,7 @@ static struct mimeentry { const char* name, *type; } mimetab[] = {
   { "xbm",	"image/x-xbitmap" },
   { "xpm",	"image/x-xpixmap" },
   { "xwd",	"image/x-xwindowdump" },
-  { 0 } };
+  { 0,0 } };
 
 const char* mimetype(const char* filename) {
   int i,e=str_rchr(filename,'.');
@@ -127,7 +126,6 @@ const char* http_header(struct http_data* r,const char* h) {
 }
 
 void httpresponse(struct http_data* h,int64 s) {
-  int i;
   char* c;
   const char* m;
   array_cat0(&h->r);
@@ -153,7 +151,7 @@ e404:
 	io_close(fd);
 	goto e404;
       }
-      if (m=http_header(h,"Connection")) {
+      if ((m=http_header(h,"Connection"))) {
 	if (str_equal(m,"keep-alive"))
 	  h->keepalive=1;
 	else
@@ -183,8 +181,7 @@ e404:
   io_wantwrite(s);
 }
 
-main() {
-  static array a;
+int main() {
   int s=socket_tcp6();
   uint32 scope_id;
   char ip[16];
@@ -267,7 +264,7 @@ emerge:
 	  } else if (array_bytes(&h->r)>8192) {
 	    httperror(h,"500 request too long","You sent too much headers");
 	    goto emerge;
-	  } else if (l=header_complete(h))
+	  } else if ((l=header_complete(h)))
 	    httpresponse(h,i);
 	}
       }
@@ -289,4 +286,5 @@ emerge:
       }
     }
   }
+  return 0;
 }

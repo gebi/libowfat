@@ -4,7 +4,7 @@
 #include "ip6.h"
 #include <errno.h>
 
-main() {
+int main() {
   int s=socket_tcp6();
   uint32 scope_id;
   char ip[16];
@@ -108,4 +108,5 @@ main() {
       }
     }
   }
+  return 0;
 }

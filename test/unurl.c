@@ -2,10 +2,11 @@
 #include "buffer.h"
 #include "textcode.h"
 #include "havealloca.h"
+#include <unistd.h>
 
 void unurl(const char* s) {
   char* buf;
-  unsigned int len;
+  unsigned long len;
   buf=alloca(strlen(s)+1);
   if (s[scan_urlencoded(s,buf,&len)]) {
     buffer_putsflush(buffer_2,"parse error!\n");
@@ -25,7 +26,7 @@ void unurl(const char* s) {
   }
 }
 
-main(int argc,char* argv[]) {
+int main(int argc,char* argv[]) {
   int i;
   for (i=1; i<argc; ++i)
     unurl(argv[i]);

@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include "io.h"
 #include "buffer.h"
+#include <stdlib.h>
 
 void child(int64 fd) {
   int64 x=io_receivefd(fd);
@@ -21,7 +22,7 @@ void father(int64 fd) {
     io_passfd(fd,x);
 }
 
-main() {
+int main() {
   int64 sp[2];
   if (io_socketpair(sp)==-1) return 1;
   switch (fork()) {

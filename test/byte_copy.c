@@ -11,4 +11,5 @@ int main() {
   byte_copy(buf+1,1000,buf);
   carp("both unaligned");
   byte_copy(buf+1,1000,buf+3);
+  return 0;
 }

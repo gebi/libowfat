@@ -2,7 +2,7 @@
 #include "stralloc.h"
 #include "buffer.h"
 
-main() {
+int main() {
   static stralloc sa;
   stralloc_copys(&sa,"foo\r\n");
   assert(sa.len==5);

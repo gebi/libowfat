@@ -2,6 +2,7 @@
 #include "buffer.h"
 #include "textcode.h"
 #include "havealloca.h"
+#include <unistd.h>
 
 void urlencode(const char* c) {
   char* buf=alloca(strlen(c)*3+1);
@@ -9,7 +10,7 @@ void urlencode(const char* c) {
   buffer_putnlflush(buffer_1);
 }
 
-main(int argc,char* argv[]) {
+int main(int argc,char* argv[]) {
   int i;
   for (i=1; i<argc; ++i) {
     urlencode(argv[i]);

@@ -2,7 +2,7 @@
 #include "array.h"
 #include "byte.h"
 
-main() {
+int main() {
   static array x,y;
   array_cats(&x,"fnord");
   array_cats(&y,"foobar");

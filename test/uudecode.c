@@ -11,6 +11,8 @@
 #include "buffer.h"
 #include "open.h"
 #include "stralloc.h"
+#include "scan.h"
+#include "case.h"
 
 static const uint32_t crc_table[256] = {
   0x00000000L, 0x77073096L, 0xee0e612cL, 0x990951baL, 0x076dc419L,
@@ -83,7 +85,6 @@ int main(int argc,char* argv[]) {
   buffer fileout;
   int fd=0;
   int ofd=-1;
-  int broken_encoder=0;
   int found=0;
   char line[1000];	/* uuencoded lines can never be longer than 64 characters */
   int l;
@@ -106,7 +107,6 @@ int main(int argc,char* argv[]) {
     }
   }
   buffer_init(&filein,read,fd,buf,sizeof buf);
-again:
   /* skip to "^begin " */
   for (;;) {
     if ((l=buffer_getline(&filein,line,(sizeof line)-1))==0 && line[l]!='\n') {
@@ -149,7 +149,6 @@ again:
 	mode=UUDECODE;
 foundfilename:
 	if (line[l]=='"') {
-	  int m;
 	  ++l;
 	  line[str_chr(line+l,'"')]=0;
 	}
@@ -287,7 +286,7 @@ invalidpart:
       if (!(tmp=strstr(line," end="))) goto invalidpart;
       c=tmp[5+scan_ulong(tmp+5,&endoffset)];
       if (c!=' ' && c!=0) goto invalidpart;
-      --offset; endoffset;
+      --offset; --endoffset;
       if (endoffset<offset || endoffset>totalsize) goto invalidpart;
       lseek(ofd,offset,SEEK_SET);
       continue;
@@ -358,6 +357,9 @@ invalidpart:
 	switch (mimeenc) {
 	case BASE64: x=scan_base64(line,tmp,&scanned); break;
 	case QP: x=scan_quotedprintable(line,tmp,&scanned); break;
+	default:
+		 buffer_putsflush(buffer_2,"MIME encoding NONE?!\n");
+		 exit(0);
 	}
 	if (line[x]) x=0;
 	break;

@@ -18,4 +18,5 @@ int main() {
     buffer_putsflush(buffer_1,"\"\n");
     stralloc_copys(&line,"");
   }
+  return 0;
 }

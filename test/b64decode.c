@@ -11,7 +11,7 @@ void b64encode(const char* c) {
   buffer_put(buffer_1,buf,dlen);
 }
 
-main(int argc,char* argv[]) {
+int main(int argc,char* argv[]) {
   int i;
   for (i=1; i<argc; ++i) {
     b64encode(argv[i]);

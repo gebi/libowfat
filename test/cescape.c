@@ -2,6 +2,7 @@
 #include "buffer.h"
 #include "textcode.h"
 #include "havealloca.h"
+#include <unistd.h>
 
 void cescape(const char* c) {
   char* buf=alloca(strlen(c)*5+1);
@@ -9,7 +10,7 @@ void cescape(const char* c) {
   buffer_putnlflush(buffer_1);
 }
 
-main(int argc,char* argv[]) {
+int main(int argc,char* argv[]) {
   int i;
   for (i=1; i<argc; ++i) {
     cescape(argv[i]);

@@ -1,6 +1,6 @@
 #include "buffer.h"
 
-main() {
+int main() {
   buffer_puts(buffer_1,"ulong: ");
   buffer_putulong(buffer_1,23);
   buffer_puts(buffer_1,"\nlong: ");
@@ -13,4 +13,5 @@ main() {
   buffer_putsflush(buffer_1,"\n");
   buffer_putsalign(buffer_1,"aligned\n");
   buffer_flush(buffer_1);
+  return 0;
 }

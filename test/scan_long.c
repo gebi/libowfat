@@ -3,7 +3,7 @@
 #include <buffer.h>
 #include <assert.h>
 
-main() {
+int main() {
   char buf[1024];
   unsigned long long int i;
   if (sizeof(unsigned long) != 4)
@@ -19,4 +19,5 @@ main() {
     else
       assert(i<=0xffffffffull);
   }
+  return 0;
 }

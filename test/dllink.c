@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include "case.h"
 
-main(int argc,char* argv[]) {
+int main(int argc,char* argv[]) {
   int s=socket_tcp4();
   char line[1024];
   char buf[4096];
@@ -48,4 +48,5 @@ main(int argc,char* argv[]) {
     }
   }
   buffer_flush(buffer_1);
+  return 0;
 }

@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <sys/uio.h>
 
-main(int argc,char* argv[]) {
+int main(int argc,char* argv[]) {
   int s=socket_tcp4();
   char line[1024];
   char buf[4096];
@@ -12,6 +12,8 @@ main(int argc,char* argv[]) {
   int header=1;
   struct iovec x[2];
   buffer filein;
+
+  (void)argc;
   buffer_init(&filein,read,s,buf,sizeof buf);
   if (socket_connect4(s,"\x7f\x00\x00\x01",4000)) {
     perror("connect");
@@ -19,7 +21,7 @@ main(int argc,char* argv[]) {
   }
   {
     char* c;
-    if (c=strrchr(argv[0],'/'))
+    if ((c=strrchr(argv[0],'/')))
       x[0].iov_base=c+1;
     else
       x[0].iov_base=argv[0];
@@ -45,4 +47,5 @@ main(int argc,char* argv[]) {
     }
   }
   buffer_flush(buffer_1);
+  return 0;
 }

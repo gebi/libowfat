@@ -2,10 +2,10 @@
 #include "buffer.h"
 #include "io.h"
 
-main() {
+int main() {
   int64 pfd[2];
   char buf[20480];
-  int i;
+  unsigned int i;
   if (!io_pipe(pfd)) return 111;
   io_nonblock(pfd[1]);
   if (!io_fd(pfd[1])) return 111;
@@ -36,4 +36,5 @@ main() {
       buffer_putnlflush(buffer_2);
     }
   }
+  return 0;
 }

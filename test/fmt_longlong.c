@@ -1,8 +1,9 @@
 #include <fmt.h>
 #include <str.h>
 #include <assert.h>
+#include <scan.h>
 
-main() {
+int main() {
   char buf[1024];
   long long l;
 
@@ -24,4 +25,5 @@ main() {
   assert(fmt_longlong(buf,-1234567890)==11); buf[11]=0;
   assert(str_equal(buf,"-1234567890"));
   assert(scan_longlong(buf,&l)==11); assert(l==-1234567890);
+  return 0;
 }

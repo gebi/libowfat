@@ -9,7 +9,9 @@ int main(int argc,char* argv[]) {
   static stralloc fqdn;
   static stralloc out;
   char str[IP4_FMT];
-  int i;
+  unsigned int i;
+
+  (void)argc;
 
   dns_random_init(seed);
   if (*argv) ++argv;

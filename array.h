@@ -1,5 +1,5 @@
-#ifndef _ARRAY_H
-#define _ARRAY_H
+#ifndef ARRAY_H
+#define ARRAY_H
 
 #include "uint64.h"
 #include <errno.h>

@@ -1,6 +1,7 @@
 #include "array.h"
 #include "textcode.h"
 #include <assert.h>
+#include <unistd.h>
 
 array a;
 
@@ -18,4 +19,5 @@ int main() {
   assert(!array_failed(&a));
   write(1,array_start(&a),array_bytes(&a)); write(1,"\n",1);
   array_trunc(&a);
+  return 0;
 }

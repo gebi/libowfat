@@ -23,4 +23,5 @@ int main() {
   buffer_putsflush(buffer_1,".\n\n");
   buffer_putsa(buffer_1,&sa);
   buffer_flush(buffer_1);
+  return 0;
 }

@@ -3,7 +3,7 @@
 #include <buffer.h>
 #include <fmt.h>
 
-main() {
+int main() {
   char buf[100];
   time_t s,t;
   buffer_put(buffer_1,buf,fmt_httpdate(buf,time(&s)));
@@ -14,4 +14,5 @@ main() {
   buffer_puts(buffer_1," vs. ");
   buffer_putulong(buffer_1,t);
   buffer_putnlflush(buffer_1);
+  return 0;
 }
