@@ -107,16 +107,17 @@ eagain:
     else
       return total?total:sent;
     if (sent==b->bytesleft) {
-      b->bytesleft=0;
 #ifdef TCP_CORK
-    if (b->bufs && b->files) {
-      static int zero=0;
-      setsockopt(s,IPPROTO_TCP,TCP_CORK,&zero,sizeof(zero));
-    }
+      if (b->bufs && b->files) {
+	static int zero=0;
+	setsockopt(s,IPPROTO_TCP,TCP_CORK,&zero,sizeof(zero));
+      }
 #endif
+      iob_reset(b);
       break;
     } else if (sent>0) {
       int64 rest=sent;
+
       b->bytesleft-=rest;
       for (i=0; e+i<last; ++i) {
 	if (e[i].n<=rest) {
