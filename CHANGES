@@ -2,6 +2,8 @@
   add errmsg API
   work around broken Linux sendfile API (offset 64-bit but count 32-bit)
   add io_appendfile, io_readwritefile
+  support ip6.arpa in addition to ip6.int in dns_name (adds one
+    parameter to dns_name6_domain and two constants in dns.h)
 
 0.19.2:
   for some reason, a botched dependency slipped in the the Makefile

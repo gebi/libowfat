@@ -11,7 +11,10 @@ puts the (first) domain name into \fIout\fR and returns 0. If the relevant
 ip6.int domain does not exist in DNS, or has no PTR records, \fIout\fR
 will be empty.
 
-If dns_name4 has trouble with the DNS lookup or runs out of memory, it returns
+dns_name6 will try both the new "ip6.arpa" reverse lookup domain and the
+old (deprecated) "ip6.int" one.
+
+If dns_name6 has trouble with the DNS lookup or runs out of memory, it returns
 -1, setting errno appropriately. It may or may not change \fIout\fR.
 .SH "SEE ALSO"
 dns_name_packet(3), dns_name6_domain(3), dns_name4(3), dns_ip6(3)
