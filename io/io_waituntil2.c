@@ -1,4 +1,7 @@
 #include "io_internal.h"
+#ifdef HAVE_EPOLL
+#define _XOPEN_SOURCE
+#endif
 #ifdef HAVE_SIGIO
 #define _GNU_SOURCE
 #include <signal.h>
@@ -37,7 +40,7 @@ int64 io_waituntil2(int64 milliseconds) {
 	  if (e->wantread) y[i].events|=EPOLLIN;
 	  if (e->wantwrite) y[i].events|=EPOLLOUT;
 	}
-	if (!e->canread && (y[i].events&EPOLLIN)) {
+	if (!e->canread && (y[i].events&(EPOLLIN|EPOLLPRI|EPOLLRDNORM|EPOLLRDBAND))) {
 	  e->canread=1;
 	  e->next_read=first_readable;
 	  first_readable=y[i].data.fd;
@@ -96,9 +99,9 @@ int64 io_waituntil2(int64 milliseconds) {
     for (i=n-1; i>=0; --i) {
       io_entry* e=array_get(&io_fds,sizeof(io_entry),y[--n].fd);
       if (e) {
-	if (y[n].revents&(POLLERR|POLLHUP)) {
+	if (y[n].revents&(POLLERR|POLLHUP|POLLNVAL)) {
 	  /* error; signal whatever app is looking for */
-	  if (e->wantread) y[n].revents=POLLIN; else
+	  if (e->wantread) y[n].revents=POLLIN;
 	  if (e->wantwrite) y[n].revents=POLLOUT;
 	}
 	if (!e->canread && (y[n].revents&POLLIN)) {
@@ -185,7 +188,7 @@ dopoll:
   if ((i=poll(array_start(&io_pollfds),r,milliseconds))<1) return -1;
   for (j=r-1; j>=0; --j) {
     io_entry* e=array_get(&io_fds,sizeof(io_entry),p->fd);
-    if (p->revents&(POLLERR|POLLHUP)) {
+    if (p->revents&(POLLERR|POLLHUP|POLLNVAL)) {
       /* error; signal whatever app is looking for */
       if (e->wantread) p->revents|=POLLIN;
       if (e->wantwrite) p->revents|=POLLOUT;
