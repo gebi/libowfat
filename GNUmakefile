@@ -9,10 +9,10 @@ LIBDIR=${prefix}/lib
 INCLUDEDIR=${prefix}/include
 MAN3DIR=${prefix}/man/man3
 
-all: t byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a \
-buffer.a mmap.a taia.a tai.a dns.a case.a libowfat.a
+LIBS=byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a \
+buffer.a mmap.a taia.a tai.a dns.a case.a
 
-VPATH=str:byte:fmt:scan:uint:open:stralloc:unix:socket:buffer:mmap:textcode:taia:tai:dns:case
+all: t $(LIBS) libowfat.a
 
 # comment out the following line if you don't want to build with the
 # diet libc (http://www.fefe.de/dietlibc/).
@@ -20,6 +20,9 @@ DIET=/opt/diet/bin/diet -Os
 CC=gcc
 CFLAGS=-I. -pipe -Wall -O2 -fomit-frame-pointer
 #CFLAGS=-pipe -Os -march=pentiumpro -mcpu=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
+
+# startrip
+VPATH=str:byte:fmt:scan:uint:open:stralloc:unix:socket:buffer:mmap:textcode:taia:tai:dns:case
 
 BYTE_OBJS=$(patsubst byte/%.c,%.o,$(wildcard byte/*.c))
 FMT_OBJS=$(patsubst fmt/%.c,%.o,$(wildcard fmt/*.c))
@@ -46,7 +49,7 @@ $(UINT_OBJS): uint16.h uint32.h
 $(STRA_OBJS): stralloc.h
 $(SOCKET_OBJS): socket.h
 $(BUFFER_OBJS): buffer.h
-$(MMAP_OBJS): mmap.h
+$(MMAP_OBJS): mmap.h open.h
 $(TEXTCODE_OBJS): textcode.h
 $(TAI_OBJS): tai.h uint64.h
 $(TAIA_OBJS): taia.h tai.h uint64.h
@@ -56,6 +59,7 @@ $(CASE_OBJS): case.h
 iopause.o: select.h
 openreadclose.o readclose.o: readclose.h
 dns_rcip.o dns_rcrw.o openreadclose.o: openreadclose.h
+# stoprip
 
 byte.a: $(BYTE_OBJS)
 fmt.a: $(FMT_OBJS)
@@ -91,10 +95,10 @@ t.o: iopause.h
 t: t.o libowfat.a
 	$(DIET) $(CC) -g -o $@ $^
 
-.PHONY: clean tar install rename
+.PHONY: all clean tar install rename
 clean:
 	rm -f *.o *.a *.da *.bbg *.bb core t haveip6.h haven2i.h havesl.h haveinline.h \
-iopause.h select.h
+iopause.h select.h Makefile
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
 uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h \
@@ -114,7 +118,8 @@ uninstall:
 VERSION=libowfat-$(shell head -1 CHANGES|sed 's/://')
 CURNAME=$(notdir $(shell pwd))
 
-tar: clean rename
+tar: Makefile clean rename
+	rm -f dep libdep
 	cd ..; tar cvvf $(VERSION).tar.bz2 $(VERSION) --use=bzip2 --exclude CVS
 
 rename:
@@ -162,3 +167,16 @@ socket_local6.o socket_recv4.o socket_recv6.o socket_remote4.o \
 socket_remote6.o: havesl.h
 
 fmt_xlong.o scan_xlong.o fmt_ip6_flat.o $(TEXTCODE_OBJS): haveinline.h
+
+dep: haveip6.h haven2i.h havesl.h haveinline.h iopause.h select.h
+	gcc -I. -MM $(wildcard */*.c) t.c > dep
+
+libdep:
+	for i in $(LIBS); do (echo -n $$i|tr a-z A-Z|sed 's/.A$$/_OBJS=/'; echo $${i%.a}/*.c|sed -e 's@[^/]*/\([^.]*\)\.c@\1.o @g'); done > libdep
+
+Makefile: GNUmakefile dep libdep
+	echo "# do not edit!  edit GNUmakefile instead" > $@
+	sed '/startrip/,$$d' < GNUmakefile >> $@
+	cat dep libdep >> $@
+	sed -e '1,/stoprip/d' -e 's/ %.c$$//' < GNUmakefile >> $@
+
