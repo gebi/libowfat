@@ -24,8 +24,6 @@
 int main(int argc,char* argv[]) {
   printf("%d\n",case_starts("fnordhausen","FnOrD"));
   printf("%d\n",case_starts("fnordhausen","blah"));
-  printf("%d\n",case_startb("fnordhausen",5,"FnOrD"));
-  printf("%d\n",case_startb("fnordhausen",1,"foo"));
 #if 0
   char buf[]="FnOrD";
   case_lowers(buf);

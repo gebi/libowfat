@@ -70,7 +70,7 @@ extern struct dns_transmit dns_resolve_tx;
 
 extern int dns_ip4_packet(stralloc *,const char *,unsigned int);
 extern int dns_ip4(stralloc *,const stralloc *);
-extern int dns_ip6_packet(stralloc *,char *,unsigned int);
+extern int dns_ip6_packet(stralloc *,const char *,unsigned int);
 extern int dns_ip6(stralloc *,stralloc *);
 extern int dns_name_packet(stralloc *,const char *,unsigned int);
 extern void dns_name4_domain(char *,const char *);

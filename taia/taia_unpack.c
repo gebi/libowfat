@@ -1,8 +1,6 @@
 #include "taia.h"
 
-void taia_unpack(s,t)
-char *s;
-struct taia *t;
+void taia_unpack(const char* s,struct taia* t)
 {
   unsigned long x;
 

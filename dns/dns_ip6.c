@@ -5,7 +5,7 @@
 #include "ip4.h"
 #include "ip6.h"
 
-static int dns_ip6_packet_add(stralloc *out,char *buf,unsigned int len)
+static int dns_ip6_packet_add(stralloc *out,const char *buf,unsigned int len)
 {
   unsigned int pos;
   char header[16];
@@ -41,7 +41,7 @@ static int dns_ip6_packet_add(stralloc *out,char *buf,unsigned int len)
   return 0;
 }
 
-int dns_ip6_packet(stralloc *out,char *buf,unsigned int len) {
+int dns_ip6_packet(stralloc *out,const char *buf,unsigned int len) {
   if (!stralloc_copys(out,"")) return -1;
   return dns_ip6_packet_add(out,buf,len);
 }
