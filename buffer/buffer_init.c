@@ -4,6 +4,7 @@ void buffer_init(buffer* b,int (*op)(),int fd,char* y,unsigned int ylen) {
   b->op=op;
   b->fd=fd;
   b->x=y;
-  b->n=ylen;
+  b->a=ylen;
   b->p=0;
+  b->n=0;
 }

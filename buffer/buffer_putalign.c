@@ -3,7 +3,7 @@
 
 int buffer_putalign(buffer* b,const char* buf,unsigned int len) {
   int tmp;
-  while (len>(tmp=b->n-b->p)) {
+  while (len>(tmp=b->a-b->p)) {
     byte_copy(b->x+b->p, tmp, buf);
     b->p+=tmp;
     buf+=tmp;
