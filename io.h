@@ -56,6 +56,9 @@ int64 io_timeouted();
 /* put d on internal data structure, return 1 on success, 0 on error */
 int io_fd(int64 d);
 
+void io_setcookie(int64 d,void* cookie);
+void* io_getcookie(int64 d);
+
 /* put descriptor in non-blocking mode */
 void io_nonblock(int64 d);
 /* put descriptor in close-on-exec mode */

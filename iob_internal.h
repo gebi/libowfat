@@ -10,6 +10,6 @@ struct io_batch {
 typedef struct io_entry {
   enum { FROMBUF, FROMFILE } type;
   int64 fd;
-  char* buf;
+  const char* buf;
   uint64 offset,n;
 } io_entry;

@@ -38,7 +38,7 @@ int64 iob_send(int64 s,io_batch* b) {
 #endif
     for (i=0; e+i<last; ++i) {
       if (e[i].type==FROMFILE) break;
-      v[i].iov_base=e[i].buf+e[i].offset;
+      v[i].iov_base=(char*)(e[i].buf+e[i].offset);
       v[i].iov_len=e[i].n-e[i].offset;
     }
     headers=i;
@@ -49,7 +49,7 @@ int64 iob_send(int64 s,io_batch* b) {
       int r;
       for (++i; e+i<last; ++i) {
 	if (e[i].type==FROMFILE) break;
-	v[i-1].iov_base=e[i].buf+e[i].offset;
+	v[i-1].iov_base=(char*)(e[i].buf+e[i].offset);
 	v[i-1].iov_len=e[i].n-e[i].offset;
 	++trailers;
       }

@@ -13,6 +13,7 @@ typedef struct {
   tai6464 timeout;
   long next_read;
   long next_write;
+  void* cookie;
 } io_entry;
 
 array io_fds;
