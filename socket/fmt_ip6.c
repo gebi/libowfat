@@ -39,6 +39,7 @@ unsigned int fmt_ip6(char *s,const char ip[16])
       }
     }
   }
+  if (compressing) { *s++=':'; ++len; }
 
 /*  if (s) *s=0; */
   return len;
