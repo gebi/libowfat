@@ -6,6 +6,7 @@
   oops, had a declaration and man page for taia_addsec but not the
     function itself
   add buffer functions to write strerror(errno)
+  add io API supporting poll, epoll and kqueue
 
 0.15:
   man page update (document stralloc return values)
