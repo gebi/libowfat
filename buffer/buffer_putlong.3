@@ -1,0 +1,13 @@
+.TH buffer_putlong 3
+.SH NAME
+buffer_putlong \- write a decimal ASCII representation of a signed
+long integer to buffer
+.SH SYNTAX
+.B #include <buffer.h>
+
+int \fBbuffer_putlong\fP(buffer* \fIb\fR,unsigned long \fIx\fR);
+.SH DESCRIPTION
+buffer_putlong is similar to passing the result of fmt_long to
+buffer_put.
+.SH "SEE ALSO"
+fmt_long(3), buffer_put(3), buffer_flush(3), buffer(3)

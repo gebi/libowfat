@@ -122,32 +122,32 @@ rename:
 
 haveip6.h: tryip6.c
 	-rm -f $@
-	if $(DIET) $(CC) -c tryip6.c >/dev/null 2>&1; then echo "#define LIBC_HAS_IP6"; fi > $@
+	if $(DIET) $(CC) $(CFLAGS) -c tryip6.c >/dev/null 2>&1; then echo "#define LIBC_HAS_IP6"; fi > $@
 	-rm -f tryip6.o
 
 haven2i.h: tryn2i.c
 	-rm -f $@
-	if $(DIET) $(CC) -o t tryn2i.c >/dev/null 2>&1; then echo "#define HAVE_N2I"; fi > $@
+	if $(DIET) $(CC) $(CFLAGS) -o t tryn2i.c >/dev/null 2>&1; then echo "#define HAVE_N2I"; fi > $@
 	-rm -f t
 
 havesl.h: trysl.c
 	-rm -f $@
-	if ! $(DIET) $(CC) -o t trysl.c >/dev/null 2>&1; then echo "typedef int socklen_t;"; fi > $@
+	if ! $(DIET) $(CC) $(CFLAGS) -o t trysl.c >/dev/null 2>&1; then echo "typedef int socklen_t;"; fi > $@
 	-rm -f t
 
 haveinline.h: tryinline.c
 	-rm -f $@
-	if ! $(DIET) $(CC) -c tryinline.c >/dev/null 2>&1; then echo "#define inline"; fi > $@
+	if ! $(DIET) $(CC) $(CFLAGS) -c tryinline.c >/dev/null 2>&1; then echo "#define inline"; fi > $@
 	-rm -f tryinline.o
 
 iopause.h: iopause.h1 iopause.h2 trypoll.c
 	-rm -f $@
-	if $(DIET) $(CC) -o t trypoll.c >/dev/null 2>&1; then cp iopause.h2 iopause.h; else cp iopause.h1 iopause.h; fi
+	if $(DIET) $(CC) $(CFLAGS) -o t trypoll.c >/dev/null 2>&1; then cp iopause.h2 iopause.h; else cp iopause.h1 iopause.h; fi
 	-rm -f t
 
 select.h: select.h1 select.h2 trysysel.c
 	-rm -f $@
-	if $(DIET) $(CC) -c trysysel.c >/dev/null 2>&1; then cp select.h2 select.h; else cp select.h1 select.h; fi
+	if $(DIET) $(CC) $(CFLAGS) -c trysysel.c >/dev/null 2>&1; then cp select.h2 select.h; else cp select.h1 select.h; fi
 	-rm -f trysysel.o
 
 

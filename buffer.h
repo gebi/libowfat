@@ -2,12 +2,12 @@
 #define BUFFER_H
 
 typedef struct buffer {
-  char *x;
-  unsigned int p;
-  unsigned int n;
-  unsigned int a;
-  int fd;
-  int (*op)();
+  char *x;        /* actual buffer space */
+  unsigned int p; /* current position */
+  unsigned int n; /* current size of string in buffer */
+  unsigned int a; /* allocated buffer size */
+  int fd;         /* passed as first argument to op */
+  int (*op)();    /* use read(2) or write(2) */
 } buffer;
 
 #define BUFFER_INIT(op,fd,buf,len) { (buf), 0, 0, (len), (fd), (op) }
@@ -15,7 +15,7 @@ typedef struct buffer {
 #define BUFFER_INSIZE 8192
 #define BUFFER_OUTSIZE 8192
 
-extern void buffer_init(buffer* b,int (*op)(),int fd,char* y,unsigned int ylen);
+extern void buffer_init(buffer* b,int (*op)(int,char*,unsigned int),int fd,char* y,unsigned int ylen);
 
 extern int buffer_flush(buffer* b);
 extern int buffer_put(buffer* b,const char* x,unsigned int len);
@@ -35,7 +35,6 @@ extern int buffer_putnlflush(buffer* b); /* put \n and flush */
   )
 
 extern int buffer_get(buffer* b,char* x,unsigned int len);
-extern int buffer_bget(buffer* b,char* x,unsigned int len);
 extern int buffer_feed(buffer* b);
 extern int buffer_getc(buffer* b,char* x);
 extern int buffer_getn(buffer* b,char* x,unsigned int len);
