@@ -57,7 +57,7 @@ str.a byte.a
 
 .PHONY: clean tar
 clean:
-	rm -f *.o *.a core t haveip6.h haven2i.h
+	rm -f *.o *.a core t haveip6.h haven2i.h havesl.h
 
 VERSION=libowfat-$(shell head -1 CHANGES|sed 's/://')
 CURNAME=$(notdir $(shell pwd))
@@ -71,14 +71,17 @@ rename:
 haveip6.h:
 	-rm -f $@
 	if $(DIET) $(CC) -c tryip6.c >/dev/null 2>&1; then echo "#define LIBC_HAS_IP6"; fi > $@
+	-rm -f tryip6.o
 
 haven2i.h:
 	-rm -f $@
 	if $(DIET) $(CC) -o t tryn2i.c >/dev/null 2>&1; then echo "#define HAVE_N2I"; fi > $@
+	-rm -f t
 
 havesl.h:
 	-rm -f $@
 	if $(DIET) $(CC) -o t trysl.c >/dev/null 2>&1; then echo "#define HAVE_SOCKLEN_T"; fi > $@
+	-rm -f t
 
 socket_accept6.o socket_connect6.o socket_local6.o socket_mchopcount6.o \
 socket_mcjoin6.o socket_mcleave6.o socket_mcloop6.o socket_recv6.o \
@@ -86,3 +89,4 @@ socket_remote6.o socket_send6.o socket_tcp6.o socket_udp6.o: haveip6.h
 
 socket_getifidx.o socket_getifname.o: haven2i.h
 
+socket_connected: havesl.h
