@@ -12,7 +12,7 @@ extern char* mmap_shared(const char* filename,unsigned long* filesize) {
 #ifdef __MINGW32__
   HANDLE fd,m;
   char* map;
-  fd=CreateFile(filename,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_WRITE,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
+  fd=CreateFile(filename,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ|FILE_SHARE_WRITE|FILE_SHARE_DELETE,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
   if (fd==INVALID_HANDLE_VALUE)
     return 0;
   m=CreateFileMapping(fd,0,PAGE_READWRITE,0,0,NULL);
