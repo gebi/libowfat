@@ -13,5 +13,7 @@ and returns a pointer to the mapped file.
 The file is unmapped by the operating system if the process terminates.
 It can also be manually unmapped by calling \fBmunmap\fR from
 <sys/mman.h>.
+
+If the file could not be opened or mapped, (void*)0 is returned.
 .SH "SEE ALSO"
 munmap(2)
