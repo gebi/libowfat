@@ -13,6 +13,11 @@ typedef struct stralloc {
   unsigned int a;
 } stralloc;
 
+/* stralloc_init will initialize a stralloc.
+ * Previously allocated memory will not be freed; use stralloc_free for
+ * that.  To assign an empty string, use stralloc_copys(sa,""). */
+extern void stralloc_init(stralloc* sa);
+
 /* stralloc_ready makes sure that sa has enough space allocated to hold
  * len bytes: If sa is not allocated, stralloc_ready allocates at least
  * len bytes of space, and returns 1. If sa is already allocated, but
