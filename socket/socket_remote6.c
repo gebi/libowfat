@@ -6,7 +6,6 @@
 #include "socket.h"
 #include "ip6.h"
 #include "haveip6.h"
-#include "error.h"
 #include "uint32.h"
 
 int socket_remote6(int s,char ip[16],uint16 *port,uint32 *scope_id)

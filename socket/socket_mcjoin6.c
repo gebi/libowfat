@@ -28,7 +28,7 @@ int socket_mcjoin6(int s,const char ip[16],int interface)
   opt.ipv6mr_interface=interface;
   return setsockopt(s,IPPROTO_IPV6,IPV6_ADD_MEMBERSHIP,&opt,sizeof opt);
 #else
-  errno=EPROTO;
+  errno=EPROTONOSUPPORT;
   return -1;
 #endif
 }

@@ -7,7 +7,6 @@
 #include "socket.h"
 #include "ip6.h"
 #include "haveip6.h"
-#include "error.h"
 #include "uint32.h"
 #include "ip4.h"
 
@@ -33,7 +32,7 @@ int socket_connect6(int s,const char ip[16],uint16 port,uint32 scope_id)
 
   return connect(s,(struct sockaddr *) &sa,sizeof sa);
 #else
-  errno=EPROTO;
+  errno=EPROTONOSUPPORT;
   return -1;
 #endif
 }

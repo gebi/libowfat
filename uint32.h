@@ -3,6 +3,10 @@
 
 typedef unsigned int uint32;
 
+#ifndef __linux__
+#define NO_UINT32_MACROS
+#endif
+
 #ifdef NO_UINT32_MACROS
 extern void uint32_pack(char *out,uint32 in);
 extern void uint32_pack_big(char *out,uint32 in);

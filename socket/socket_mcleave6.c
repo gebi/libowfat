@@ -28,7 +28,7 @@ int socket_mcleave6(int s,const char ip[16])
   opt.ipv6mr_interface=0;
   return setsockopt(s,IPPROTO_IPV6,IPV6_DROP_MEMBERSHIP,&opt,sizeof opt);
 #else
-  errno=EPROTO;
+  errno=EPROTONOSUPPORT;
   return -1;
 #endif
 }

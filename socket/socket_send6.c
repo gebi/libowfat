@@ -26,7 +26,7 @@ int socket_send6(int s,const char *buf,unsigned int len,const char ip[16],uint16
     if (byte_equal(ip,16,V6loopback))
       return socket_send4(s,buf,len,ip4loopback,port);
 #ifdef LIBC_HAS_IP6
-    errno=EPROTO;
+    errno=EPROTONOSUPPORT;
     return -1;
   }
   si.sin6_family = AF_INET6;
@@ -34,7 +34,7 @@ int socket_send6(int s,const char *buf,unsigned int len,const char ip[16],uint16
   byte_copy((char *) &si.sin6_addr,16,ip);
   return sendto(s,buf,len,0,(struct sockaddr *) &si,sizeof si);
 #else
-  errno=EPROTO;
+  errno=EPROTONOSUPPORT;
   return -1;
 #endif
 }

@@ -26,7 +26,7 @@ int socket_bind6(int s,const char ip[16],uint16 port,uint32 scope_id)
 
   return bind(s,(struct sockaddr *) &sa,sizeof sa);
 #else
-  errno=EPROTO;
+  errno=EPROTONOSUPPORT;
   return -1;
 #endif
 }

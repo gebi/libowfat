@@ -4,7 +4,7 @@
 #include "open.h"
 #include "mmap.h"
 
-extern char* mmap_private(const char* filename,unsigned long* filesize) {
+extern char* mmap_shared(const char* filename,unsigned long* filesize) {
   int fd=open_read(filename);
   char *map;
   if (fd>=0) {

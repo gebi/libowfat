@@ -5,6 +5,10 @@
 
 typedef unsigned short uint16;
 
+#ifndef __linux__
+#define NO_UINT16_MACROS
+#endif
+
 #ifdef NO_UINT16_MACROS
 extern void uint16_pack(char *out,uint16 in);
 extern void uint16_pack_big(char *out,uint16 in);

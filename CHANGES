@@ -1,3 +1,9 @@
+0.8:
+  BSD compatibility.
+  fix mmap_shared.
+  ranlib.
+  s/EPROTO/EPROTONOSUPPORT/.
+
 0.7:
   add buffer_putspace
   fix b0read prototype in buffer/buffer_0*
