@@ -17,6 +17,7 @@
   add support for Solaris /dev/poll
   add lose32 support (broken, please don't use!)
   head -1 -> head -n 1
+  apending 0 bytes to an empty array would fail it
 
 0.16:
   add buffer_fromsa (make buffer from stralloc)

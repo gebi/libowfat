@@ -3,6 +3,7 @@
 
 void array_catb(array* to,const char* from,uint64 len) {
   long l;
+  if (!len) return;
   if (to->allocated<0) return;
   if (to->initialized+len<to->initialized) {
 fail:
