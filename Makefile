@@ -290,8 +290,8 @@ iob_prefetch.o: io/iob_prefetch.c ./iob_internal.h ./iob.h ./io.h \
   ./uint64.h ./taia.h ./tai.h ./array.h
 iob_reset.o: io/iob_reset.c ./byte.h ./iob_internal.h ./iob.h ./io.h \
   ./uint64.h ./taia.h ./tai.h ./array.h
-iob_send.o: io/iob_send.c ./havebsdsf.h ./havealloca.h ./iob_internal.h \
-  ./iob.h ./io.h ./uint64.h ./taia.h ./tai.h ./array.h
+iob_send.o: io/iob_send.c ./havebsdsf.h ./iob_internal.h ./iob.h ./io.h \
+  ./uint64.h ./taia.h ./tai.h ./array.h
 mmap_private.o: mmap/mmap_private.c ./open.h ./mmap.h
 mmap_read.o: mmap/mmap_read.c ./open.h ./mmap.h
 mmap_shared.o: mmap/mmap_shared.c ./open.h ./mmap.h
@@ -350,7 +350,7 @@ scan_ip6.o: socket/scan_ip6.c ./scan.h ./ip4.h ./ip6.h ./byte.h \
   ./uint32.h
 scan_ip6_flat.o: socket/scan_ip6_flat.c ./scan.h
 scan_ip6if.o: socket/scan_ip6if.c ./ip6.h ./byte.h ./uint32.h ./byte.h \
-  ./socket.h ./uint16.h ./havealloca.h
+  ./socket.h ./uint16.h
 socket_accept4.o: socket/socket_accept4.c ./windoze.h ./socket.h \
   ./uint16.h ./uint32.h ./havesl.h
 socket_accept6.o: socket/socket_accept6.c ./windoze.h ./byte.h ./socket.h \
@@ -474,12 +474,12 @@ taia_tai.o: taia/taia_tai.c ./taia.h ./tai.h ./uint64.h
 taia_uint.o: taia/taia_uint.c ./taia.h ./tai.h ./uint64.h
 taia_unpack.o: taia/taia_unpack.c ./taia.h ./tai.h ./uint64.h
 array.o: test/array.c ./array.h ./uint64.h ./byte.h
-b64decode.o: test/b64decode.c ./buffer.h ./textcode.h ./havealloca.h
-b64encode.o: test/b64encode.c ./buffer.h ./textcode.h ./havealloca.h
+b64decode.o: test/b64decode.c ./buffer.h ./textcode.h
+b64encode.o: test/b64encode.c ./buffer.h ./textcode.h
 buffer_1.o: test/buffer_1.c ./buffer.h
 buffer_fromsa.o: test/buffer_fromsa.c ./stralloc.h ./buffer.h
 byte_copy.o: test/byte_copy.c ./byte.h ./errmsg.h
-cescape.o: test/cescape.c ./buffer.h ./textcode.h ./havealloca.h
+cescape.o: test/cescape.c ./buffer.h ./textcode.h
 client.o: test/client.c ./scan.h ./ip6.h ./byte.h ./uint32.h ./str.h \
   ./socket.h ./uint16.h
 dllink.o: test/dllink.c ./socket.h ./uint16.h ./uint32.h ./buffer.h \
@@ -503,6 +503,9 @@ io5.o: test/io5.c ./socket.h ./uint16.h ./uint32.h ./io.h ./uint64.h \
   ./taia.h ./tai.h ./buffer.h ./ip6.h ./byte.h
 iob.o: test/iob.c ./iob.h ./io.h ./uint64.h ./taia.h ./tai.h ./array.h \
   ./buffer.h
+proxy.o: test/proxy.c ./socket.h ./uint16.h ./uint32.h ./io.h ./uint64.h \
+  ./taia.h ./tai.h ./buffer.h ./ip6.h ./byte.h ./str.h ./dns.h \
+  ./stralloc.h ./iopause.h
 readhttp.o: test/readhttp.c ./stralloc.h ./buffer.h ./byte.h
 scan.o: test/scan.c ./scan.h
 scan_long.o: test/scan_long.c ./scan.h ./fmt.h ./buffer.h
@@ -511,8 +514,8 @@ server.o: test/server.c ./scan.h ./ip6.h ./byte.h ./uint32.h ./str.h \
 stralloc_buffer.o: test/stralloc_buffer.c ./stralloc.h ./buffer.h
 stralloc_chomp.o: test/stralloc_chomp.c ./stralloc.h ./buffer.h
 textcode.o: test/textcode.c ./array.h ./uint64.h ./textcode.h
-unurl.o: test/unurl.c ./buffer.h ./textcode.h ./havealloca.h
-urlencode.o: test/urlencode.c ./buffer.h ./textcode.h ./havealloca.h
+unurl.o: test/unurl.c ./buffer.h ./textcode.h
+urlencode.o: test/urlencode.c ./buffer.h ./textcode.h
 uudecode.o: test/uudecode.c ./textcode.h ./str.h ./buffer.h ./open.h \
   ./stralloc.h
 vd.o: test/vd.c ./socket.h ./uint16.h ./uint32.h ./buffer.h
@@ -661,7 +664,7 @@ uninstall:
 	rm -f $(LIBDIR)/libowfat.a
 
 VERSION=libowfat-0.20
-CURNAME=libowfat-0.19
+CURNAME=
 
 tar: clean rename
 	rm -f dep libdep
@@ -769,7 +772,7 @@ dns_nd6.o fmt_xlong.o scan_xlong.o fmt_ip6_flat.o $(TEXTCODE_OBJS): haveinline.h
 
 iob_send.o scan_ip6if.o: havealloca.h
 
-dep: haveip6.h haven2i.h havesl.h haveinline.h iopause.h select.h haveepoll.h havekqueue.h havedevpoll.h
+dep: haveip6.h haven2i.h havesl.h haveinline.h iopause.h select.h haveepoll.h havekqueue.h havedevpoll.h havescope.h havesigio.h havebsdsf.h havesendfile.h
 	gcc -I. -MM */*.c t.c > dep
 
 libdep:
