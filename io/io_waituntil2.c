@@ -40,7 +40,11 @@ int64 io_waituntil2(int64 milliseconds) {
 	  if (e->wantread) y[i].events|=EPOLLIN;
 	  if (e->wantwrite) y[i].events|=EPOLLOUT;
 	}
+#ifdef EPOLLRDNORM
 	if (!e->canread && (y[i].events&(EPOLLIN|EPOLLPRI|EPOLLRDNORM|EPOLLRDBAND))) {
+#else
+	if (!e->canread && (y[i].events&(EPOLLIN|EPOLLPRI))) {
+#endif
 	  e->canread=1;
 	  e->next_read=first_readable;
 	  first_readable=y[i].data.fd;
