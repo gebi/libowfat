@@ -1,4 +1,6 @@
-0.20:
+0.19.1:
+  oops, I botched havealloca.h, which was not generated but static
+    Now it is generated.
 
 0.19:
   add io_socketpair
