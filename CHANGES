@@ -1,5 +1,6 @@
 0.21:
   errno cleanup and man page updates (Rolf Eike Beer)
+  implement iob_prefetch with madvise MADV_WILLNEED if it's defined
 
 0.20:
   add errmsg API

@@ -12,6 +12,12 @@ void iob_prefetch(io_batch* b,uint64 bytes) {
   if (!e) return;
   for (; e<last; ++e) {
     if (e->type==FROMFILE || e->type==FROMFILE_CLOSE) {
+#ifdef MADV_WILLNEED
+      char* c;
+      c=mmap(0,bytes,PROT_READ,MAP_SHARED,e->fd,(e->offset|4095)+1);
+      madvise(c,bytes,MADV_WILLNEED);
+      munmap(c,bytes);
+#else
       char* c,* d;
       uint64 before=bytes;
       if (e->n<bytes) bytes=e->n;
@@ -28,6 +34,7 @@ void iob_prefetch(io_batch* b,uint64 bytes) {
 	}
 	munmap(c,before);
       }
+#endif
       return;
     }
   }
