@@ -57,9 +57,10 @@ int64 iob_send(int64 s,io_batch* b) {
       if (r==0)
 	sent=b->bytesleft;
       else if (r==-1 && errno==EAGAIN) {
-	if ((sent=sbytes)) sent=-1;
-	sent=sbytes;
-	goto eagain;
+	if (!(sent=sbytes)) {
+	  sent=-1;
+	  goto eagain;
+	}
       } else
 	sent=-3;
     } else {
