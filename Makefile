@@ -663,8 +663,8 @@ uninstall:
 	rm -f $(patsubst %.3,$(MAN3DIR)/%.3,$(notdir $(wildcard */*.3)))
 	rm -f $(LIBDIR)/libowfat.a
 
-VERSION=libowfat-0.20
-CURNAME=libowfat-0.17
+VERSION=libowfat-0.21
+CURNAME=libowfat-0.20
 
 tar: clean rename
 	rm -f dep libdep

@@ -23,7 +23,7 @@ void errmsg_warnsys(const char* message, ...);
 
 #define carp(...) errmsg_warn(__VA_ARGS__,0)
 #define carpsys(...) errmsg_warnsys(__VA_ARGS__,0)
-#define die(n,...) { errmsg_warn(__VA_ARGS__,0); exit(n); }
-#define diesys(n,...) { errmsg_warnsys(__VA_ARGS__,0); exit(n); }
+#define die(n,...) do { errmsg_warn(__VA_ARGS__,0); exit(n); } while (0)
+#define diesys(n,...) do { errmsg_warnsys(__VA_ARGS__,0); exit(n); } while (0)
 
 #endif
