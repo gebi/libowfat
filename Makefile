@@ -89,4 +89,4 @@ socket_remote6.o socket_send6.o socket_tcp6.o socket_udp6.o: haveip6.h
 
 socket_getifidx.o socket_getifname.o: haven2i.h
 
-socket_connected: havesl.h
+socket_connected.o: havesl.h
