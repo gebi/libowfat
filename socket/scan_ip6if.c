@@ -2,7 +2,7 @@
 #include "byte.h"
 #include <ctype.h>
 #include "socket.h"
-#if defined(__linux__)
+#if defined(__linux__) || defined(_SGI_SOURCE)
 #include <alloca.h>
 #endif
 
