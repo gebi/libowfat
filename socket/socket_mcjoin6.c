@@ -6,7 +6,7 @@
 #include "byte.h"
 #include "haveip6.h"
 #include "ip6.h"
-#include "error.h"
+#include "errno.h"
 
 #ifndef IPV6_ADD_MEMBERSHIP
 #ifdef IPV6_JOIN_GROUP
@@ -32,7 +32,7 @@ int socket_mcjoin6(int s,const char ip[16],int interface)
 #endif
   return setsockopt(s,IPPROTO_IPV6,IPV6_ADD_MEMBERSHIP,&opt,sizeof opt);
 #else
-  errno=error_proto;
+  errno=EPROTO;
   return -1;
 #endif
 }

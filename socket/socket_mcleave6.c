@@ -5,7 +5,7 @@
 #include "socket.h"
 #include "byte.h"
 #include "haveip6.h"
-#include "error.h"
+#include "errno.h"
 #include "ip6.h"
 
 #ifndef IPV6_DROP_MEMBERSHIP
