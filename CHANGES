@@ -1,5 +1,6 @@
 0.10:
   add comment to stralloc.h that explains the structure (Markus Brischke)
+  fix socket routines (two cut-and-paste errors)
 
 0.9:
   fmt_str did not check for out==NULL!  Thanks, Uwe Ohse.
