@@ -19,3 +19,4 @@ havescope.h
 havedevpoll.h
 libsocket
 havesendfile.h
+trysendfile
