@@ -14,7 +14,10 @@
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
-#if 1
+  char buf[100];
+  printf("%d\n",fmt_str(buf,"fnord"));
+  printf("%d\n",fmt_str(0,"fnord"));
+#if 0
   buffer_putulong(buffer_1,23);
 //  buffer_putspace(buffer_1);
   buffer_putsflush(buffer_1,"\n");
