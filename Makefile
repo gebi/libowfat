@@ -638,7 +638,7 @@ uninstall:
 	rm -f $(LIBDIR)/libowfat.a
 
 VERSION=libowfat-0.21
-CURNAME=libowfat-0.20
+CURNAME=libowfat-0.21
 
 tar: clean rename
 	rm -f dep libdep

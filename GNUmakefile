@@ -162,7 +162,7 @@ CURNAME=$(notdir $(shell pwd))
 
 tar: Makefile clean rename
 	rm -f dep libdep
-	cd ..; tar cvvf $(VERSION).tar.bz2 $(VERSION) --use=bzip2 --exclude CVS
+	cd ..; tar cvvf $(VERSION).tar.bz2 --use=bzip2 --exclude CVS $(VERSION)
 
 rename:
 	if test $(CURNAME) != $(VERSION); then cd .. && mv $(CURNAME) $(VERSION); fi
