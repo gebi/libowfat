@@ -15,10 +15,12 @@ main(int argc,char* argv[]) {
   }
   if (argc<2) {
     char src[1024];
-    int len=read(0,src,sizeof(src)-1);
-    if (len==-1) return(1);
-    src[len]=0;
-    b64encode(src);
+    int len;
+    while ((len=read(0,src,sizeof(src)-1))>0) {
+      if (len==-1) return(1);
+      src[len]=0;
+      b64encode(src);
+    }
   }
   return 0;
 }
