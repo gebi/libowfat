@@ -4,7 +4,7 @@
 #include "haveinline.h"
 
 static inline int tohex(char c) {
-  return c>9?c-10+'A':c+'0';
+  return c>9?c-10+'a':c+'0';
 }
 
 unsigned int fmt_hexdump(char* dest,const char* src,unsigned int len) {
