@@ -5,6 +5,7 @@
   the integer scan routines should only write *dest if they actually
     scanned something
   io_sendfile and iob_send should return -1 to -3 just like io_trywrite
+  make io_waituntil actually take an "until", not a "how long"
 
 0.16:
   add buffer_fromsa (make buffer from stralloc)

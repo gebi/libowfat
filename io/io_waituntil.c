@@ -7,9 +7,10 @@
 
 void io_waituntil(tai6464 t) {
   uint64 x,y;
-  tai6464 now;
+  tai6464 now,diff;
   taia_now(&now);
-  if (!umult64(now.sec.x,1000,&x) || (y=x+now.nano/10000000)<x)
+  taia_sub(&diff,&t,&now);
+  if (!umult64(diff.sec.x,1000,&x) || (y=x+diff.nano/10000000)<x)
     y=-1;	/* overflow; wait indefinitely */
   io_waituntil2(y);
 }
