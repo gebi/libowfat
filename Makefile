@@ -1,4 +1,4 @@
-all: t byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a buffer.a
+all: t byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a buffer.a libowfat.a
 
 VPATH=str:byte:fmt:scan:uint:open:stralloc:unix:socket:buffer
 
@@ -38,6 +38,10 @@ stralloc.a: $(STRA_OBJS)
 unix.a: $(UNIX_OBJS)
 socket.a: $(SOCKET_OBJS)
 buffer.a: $(BUFFER_OBJS)
+
+libowfat.a: $(BYTE_OBJS) $(FMT_OBJS) $(SCAN_OBJS) $(STR_OBJS) \
+$(UINT_OBJS) $(OPEN_OBJS) $(STRA_OBJS) $(UNIX_OBJS) $(SOCKET_OBJS) \
+$(BUFFER_OBJS)
 
 %.a:
 	ar cr $@ $^
