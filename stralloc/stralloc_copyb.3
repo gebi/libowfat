@@ -11,3 +11,6 @@ stralloc_copyb makes sure that \fIsa\fR has enough space allocated to hold
 \fIbuf\fR into the stralloc.
 
 The data that \fIsa\fR previously contained is overwritten and truncated.
+.SH "RETURN VALUE"
+If stralloc_copys runs out of memory, stralloc_copys leaves \fIsa\fR
+alone and return 0, otherwise it returns 1.

@@ -14,5 +14,8 @@ additional bytes, stralloc_ready allocates at least
 \fIsa\fR->len+\fIlen\fR bytes of space, copies the old string into the
 new space, frees the old space, and returns 1. Note that this changes
 \fIsa\fR.s.
+
+If stralloc_readyplus runs out of memory, it leaves \fIsa\fR alone and
+returns 0.
 .SH "SEE ALSO"
 stralloc_ready(3)

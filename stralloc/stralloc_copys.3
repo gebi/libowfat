@@ -11,5 +11,8 @@ stralloc_copys copies a \\0-terminated string from \fIbuf\fR into
 \fBstralloc_copyb\fR(&\fIsa\fR, \fIbuf\fR, str_len(\fIbuf\fR)).
 
 The data that \fIsa\fR previously contained is overwritten and truncated.
+.SH "RETURN VALUE"
+If stralloc_copys runs out of memory, stralloc_copys leaves \fIsa\fR
+alone and return 0, otherwise it returns 1.
 .SH "SEE ALSO"
 stralloc_copyb(3)
