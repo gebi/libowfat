@@ -1,9 +1,11 @@
 #include "case.h"
 
-int case_diffb(register const char *s,register unsigned long len,register const char *t)
+int case_diffb(register const void* S,register unsigned long len,register const void* T)
 {
   register unsigned char x;
   register unsigned char y;
+  register const char* s=(const char*)S;
+  register const char* t=(const char*)T;
 
   while (len > 0) {
     --len;

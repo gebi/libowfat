@@ -4,6 +4,7 @@
 #include "buffer.h"
 #include <unistd.h>
 #include <stdio.h>
+#include "case.h"
 
 main(int argc,char* argv[]) {
   int s=socket_tcp4();
@@ -22,7 +23,13 @@ main(int argc,char* argv[]) {
     perror("connect");
     return 1;
   }
-  strcpy(buf,"dllink "); strcat(buf,argv[1]); strcat(buf,"\nq\n");
+  strcpy(buf,"dllink ");
+  if (case_equalb(argv[1],6,"ed2k:|")) {
+    strcat(buf,"ed2k://");
+    strcat(buf,argv[1]+5);
+  } else
+    strcat(buf,argv[1]);
+  strcat(buf,"\nq\n");
   write(s,buf,strlen(buf));
   for (;;) {
     line[0]=0;
