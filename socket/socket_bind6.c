@@ -1,4 +1,8 @@
 #include <errno.h>
+#include "haveip6.h"
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 #include "ip6.h"
 #include "byte.h"
 #include "socket.h"
