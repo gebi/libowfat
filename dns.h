@@ -89,7 +89,7 @@ int dns_ip6_qualify(stralloc *,stralloc *,const stralloc *);
 
 #define DNS_IP6_INT 0
 #define DNS_IP6_ARPA 1
-int dns_name6_domain(char *,const char *,int);
+void dns_name6_domain(char *,const char *,int);
 #define DNS_NAME6_DOMAIN (4*16+11)
 
 #endif
