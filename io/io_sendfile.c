@@ -128,6 +128,7 @@ int64 io_sendfile(int64 out,int64 in,uint64 off,uint64 bytes) {
   mapok:
       c=(const char*)(e->mmapped)+(off&0xffff);
       left=e->maplen-(off&0xffff);
+      if (left>bytes) left=bytes;
       while (left>0) {
 	m=write(out,c,left);
 	if (m==-1) {
