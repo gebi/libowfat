@@ -19,17 +19,29 @@
 #include <errno.h>
 #include <string.h>
 #include <assert.h>
+#include <errmsg.h>
 
 #define rdtscl(low) \
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
+  char* c="fnord";
+  int fd=open_read(c);
+  errmsg_iam(argv[0]);
+  carp("could not open file `",c,"'");
+  diesys(23,"could not open file `",c,"'");
+#if 0
+  errmsg_warn("could not open file `",c,"'",0);
+  errmsg_warnsys("could not open file `",c,"'",0);
+#endif
+#if 0
   char buf[100]="/usr/bin/sh";
   int len=str_len(buf);
   assert(byte_rchr(buf,len,'/')==8);
   assert(byte_rchr(buf,len,'@')==len);
   assert(byte_rchr(buf,len,'h')==len-1);
   printf("%d\n",byte_rchr("x",1,'x'));
+#endif
 #if 0
   char buf[IP6_FMT+100];
   int i;
