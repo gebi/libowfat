@@ -50,7 +50,7 @@ $(BUFFER_OBJS) $(MMAP_OBJS)
 %.a:
 	ar cr $@ $^
 
-t: t.o socket.a stralloc.a fmt.a scan.a uint.a mmap.a open.a buffer.a \
+t: t.o socket.a stralloc.a buffer.a scan.a uint.a mmap.a open.a fmt.a \
 str.a byte.a
 	$(DIET)$(CC) -g -o $@ $^
 
