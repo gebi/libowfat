@@ -5,14 +5,19 @@
 #include "uint32.h"
 #include "stralloc.h"
 #include "socket.h"
+#include "buffer.h"
 
 #define rdtscl(low) \
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
+  buffer_puts(buffer_1small,"hello, world\n");
+  buffer_flush(buffer_1small);
+#if 0
   int s=socket_tcp4();
   char ip[4]={127,0,0,1};
   int t=socket_connect4(s,ip,80);
+#endif
 #if 0
   char buf[100]="foo bar baz fnord   ";
   char buf2[100]="foo braz fnord";

@@ -1,5 +1,8 @@
 #include <sys/param.h>
-#include "sockaddr_in6.h"
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <errno.h>
 #include "byte.h"
 #include "socket.h"
 #include "ip6.h"
@@ -29,7 +32,7 @@ int socket_connect6(int s,const char ip[16],uint16 port,uint32 scope_id)
 
   return connect(s,(struct sockaddr *) &sa,sizeof sa);
 #else
-  errno=error_proto;
+  errno=EPROTO;
   return -1;
 #endif
 }
