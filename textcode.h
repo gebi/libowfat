@@ -20,6 +20,30 @@ unsigned int scan_urlencoded(const char *src,char *dest,unsigned int *destlen);
 unsigned int scan_yenc(const char *src,char *dest,unsigned int *destlen);
 unsigned int scan_hexdump(const char *src,char *dest,unsigned int *destlen);
 
+#ifdef STRALLOC_H
+/* These take len bytes from src and write them in encoded form to sa.
+ * As the stralloc_* functions do, 1
+ * is returned. If they run out of memory, sa contains the bytes already 
+ * written and 0 is returned.  */
+int fmt_quotedprintable_sa(stralloc *sa,const char* src,unsigned int len);
+int fmt_base64_sa(stralloc *sa,const char* src,unsigned int len);
+int fmt_uuencoded_sa(stralloc *sa,const char* src,unsigned int len);
+int fmt_urlencoded_sa(stralloc *sa,const char* src,unsigned int len);
+int fmt_yenc_sa(stralloc *sa,const char* src,unsigned int len);
+int fmt_hexdump_sa(stralloc *sa,const char* src,unsigned int len);
+
+/* These read one line from src, decoded it, and write the result to
+ * sa. As the stralloc_* functions do, 1
+ * is returned. If they run out of memory, sa contains the bytes already 
+ * written and 0 is returned.  */
+int scan_base64_sa(const char *src,stralloc* sa);
+int scan_quotedprintable_sa(const char *src,stralloc* sa);
+int scan_uuencoded_sa(const char *src,stralloc *sa);
+int scan_urlencoded_sa(const char *src,stralloc *sa);
+int scan_yenc_sa(const char *src,stralloc *sa);
+int scan_hexdump_sa(const char *src,stralloc *sa);
+#endif
+
 extern const char base64[64];
 
 #endif

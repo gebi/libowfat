@@ -1,4 +1,5 @@
 #include "fmt.h"
+#include "stralloc.h"
 #include "textcode.h"
 #include "haveinline.h"
 
@@ -9,19 +10,19 @@ static inline int fromhex(char c) {
   return -1;
 }
 
-unsigned int scan_hexdump(const char *src,char *dest,unsigned int *destlen) {
+int scan_hexdump_sa(const char *src,stralloc *sa) {
   register const unsigned char* s=(const unsigned char*) src;
-  unsigned long written=0,i;
+  unsigned long i;
   for (i=0; s[i]; ++i) {
+    char dest;
     int j=fromhex(s[i]);
     if (j<0) break;
-    dest[written]=j<<4;
+    dest=j<<4;
     j=fromhex(s[i+1]);
     if (j<0) break;
-    dest[written]|=j;
+    dest|=j;
     ++i;
-    ++written;
+    if (!stralloc_catb(sa, &dest, 1)) return 0;
   }
-  *destlen=written;
-  return i;
+  return 1;
 }
