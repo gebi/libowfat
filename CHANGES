@@ -4,6 +4,7 @@
   extend API To read line/token to stralloc to allow clearing the
     stralloc first.
   add stralloc_zero to clear a stralloc
+  add buffer_putsflush
 
 0.20:
   add errmsg API

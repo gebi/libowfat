@@ -87,6 +87,8 @@ extern buffer *buffer_2;
 #ifdef STRALLOC_H
 /* write stralloc to buffer */
 int buffer_putsa(buffer* b,stralloc* sa);
+/* write stralloc to buffer and flush */
+int buffer_putsaflush(buffer* b,stralloc* sa);
 
 /* these "read token" functions return 0 if the token was complete or
  * EOF was hit or -1 on error.  In contrast to the non-stralloc token
