@@ -11,7 +11,7 @@ unsigned long fmt_cescape(char* dest,const char* src,unsigned long len) {
     switch (s[i]) {
     case '\a': c='a'; goto doescape;
     case '\b': c='b'; goto doescape;
-    case '\e': c='e'; goto doescape;
+    case 0x1b: c='e'; goto doescape;
     case '\f': c='f'; goto doescape;
     case '\n': c='n'; goto doescape;
     case '\r': c='r'; goto doescape;

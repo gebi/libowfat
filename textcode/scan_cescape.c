@@ -11,7 +11,7 @@ unsigned long scan_cescape(const char *src,char *dest,unsigned long *destlen) {
       switch (s[i+1]) {
       case 'a': c='\a'; break;
       case 'b': c='\b'; break;
-      case 'e': c='\e'; break;
+      case 'e': c=0x1b; break;
       case 'f': c='\f'; break;
       case 'n': c='\n'; break;
       case 'r': c='\r'; break;

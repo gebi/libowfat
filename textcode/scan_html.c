@@ -8,21 +8,21 @@ unsigned long scan_html(const char *src,char *dest,unsigned long *destlen) {
   unsigned long written=0,i;
   for (i=0; s[i]; ++i) {
     if (s[i]=='&') {
-      if (case_starts(s+i+1,"amp;")) {
+      if (case_starts((const char*)s+i+1,"amp;")) {
 	dest[written]='&';
 	i+=4;
-      } else if (case_starts(s+i+1,"lt;")) {
+      } else if (case_starts((const char*)s+i+1,"lt;")) {
 	dest[written]='<';
 	i+=3;
-      } else if (case_starts(s+i+1,"gt;")) {
+      } else if (case_starts((const char*)s+i+1,"gt;")) {
 	dest[written]='>';
 	i+=3;
       }
     } else if (s[i]=='<') {
-      if (case_starts(s+i+1,"br>")) {
+      if (case_starts((const char*)s+i+1,"br>")) {
 	dest[written]='\n';
 	i+=3;
-      } else if (case_starts(s+i+1,"p>")) {
+      } else if (case_starts((const char*)s+i+1,"p>")) {
 	dest[written]='\n'; ++written;
 	dest[written]='\n';
 	i+=3;

@@ -15,7 +15,7 @@ unsigned long fmt_html(char* dest,const char* src,unsigned long len) {
     case '\n':
 	seq="<br>";
       doit:
-	written+=fmt_str(dest?dest+written:0,"&gt;");
+	written+=fmt_str(dest?dest+written:0,seq);
 	break;
     default: if (dest) dest[written]=s[i]; ++written; break;
     }
