@@ -15,7 +15,7 @@ typedef struct buffer {
 #define BUFFER_INSIZE 8192
 #define BUFFER_OUTSIZE 8192
 
-extern void buffer_init(buffer* b,int (*op)(int,char*,unsigned int),int fd,char* y,unsigned int ylen);
+extern void buffer_init(buffer* b,int (*op)(),int fd,char* y,unsigned int ylen);
 
 extern int buffer_flush(buffer* b);
 extern int buffer_put(buffer* b,const char* x,unsigned int len);
