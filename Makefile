@@ -1,3 +1,8 @@
+prefix=/usr/local
+LIBDIR=${prefix}/lib
+INCLUDEDIR=${prefix}/include
+MAN3DIR=${prefix}/man/man3
+
 all: t byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a buffer.a mmap.a libowfat.a
 
 VPATH=str:byte:fmt:scan:uint:open:stralloc:unix:socket:buffer:mmap
@@ -58,9 +63,15 @@ t: t.o socket.a stralloc.a buffer.a scan.a uint.a mmap.a open.a fmt.a \
 str.a byte.a
 	$(DIET) $(CC) -g -o $@ $^
 
-.PHONY: clean tar
+.PHONY: clean tar install rename
 clean:
 	rm -f *.o *.a core t haveip6.h haven2i.h havesl.h
+
+install: libowfat.a
+	install -d $(INCLUDEDIR) $(MAN3DIR) $(LIBDIR)
+	install -m 644 buffer.h byte.h fmt.h ip4.h ip6.h mmap.h open.h scan.h socket.h str.h stralloc.h uint16.h uint32.h uint64.h $(prefix)/include
+	install -m 644 $(wildcard */*.3) $(MAN3DIR)
+	install -m 644 libowfat.a $(LIBDIR)
 
 VERSION=libowfat-$(shell head -1 CHANGES|sed 's/://')
 CURNAME=$(notdir $(shell pwd))
