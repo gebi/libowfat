@@ -16,6 +16,7 @@ unsigned int fmt_double(char *dest, double d,int maxlen,int prec) {
   int writeok=(dest!=0);
 
   if (s) { d=-d; if (writeok) *dest='-'; --maxlen; dest++; }
+  if (d==0.0) { if (writeok) *dest='0'; --maxlen; dest++; return dest-oldbuf; }
   if ((i=e10)>=0) {
     while (i>10) { tmp=tmp*1e10; i-=10; }
     while (i>1) { tmp=tmp*10; --i; }

@@ -12,10 +12,19 @@
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
-  char buf[100];
+  char buf[100]="01234567890123456789012345678901234567890123456789";
+  long a,b,c;
+#if 0
   buf[ip4_fmt(buf,ip4loopback)]=0;
   buffer_puts(buffer_1small,buf);
   buffer_flush(buffer_1small);
+#endif
+
+  rdtscl(a);
+  c=str_len(buf);
+  rdtscl(b);
+  /*byte_zero_djb(buf,j); */
+  printf("\n%lu %d\n",b-a,c);
 #if 0
   buffer_puts(buffer_1small,"hello, world\n");
   buffer_flush(buffer_1small);
