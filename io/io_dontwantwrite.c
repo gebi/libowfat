@@ -15,7 +15,7 @@ void io_dontwantwrite(int64 d) {
   int newfd;
   io_entry* e=array_get(&io_fds,sizeof(io_entry),d);
   if (!e || !e->wantwrite) return;
-  newfd=(!e->wantread && e->wantwrite); --io_wanted_fds;
+  newfd=(!e->wantread && e->wantwrite);
   io_wanted_fds-=newfd;
 #ifdef HAVE_EPOLL
   if (io_waitmode==EPOLL) {

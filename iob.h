@@ -13,8 +13,13 @@
  * option. */
 
 #include "io.h"
+#include "array.h"
 
-typedef struct io_batch io_batch;
+typedef struct io_batch {
+  array b;
+  uint64 bytesleft;
+  long next,bufs,files;
+} io_batch;
 
 io_batch* iob_new(int hint_entries);
 int iob_addbuf(io_batch* b,const void* buf,uint64 n);
