@@ -16,7 +16,10 @@ int64 io_tryread(int64 d,char* buf,int64 len) {
     p.events=POLLIN;
     switch (poll(&p,1,0)) {
     case -1: return -3;
-    case 0: errno=EAGAIN; return -1;
+    case 0: errno=EAGAIN;
+	    e->canread=0;
+	    e->next_read=-1;
+	    return -1;
     }
     new.it_interval.tv_usec=0;
     new.it_interval.tv_sec=0;
@@ -36,6 +39,10 @@ int64 io_tryread(int64 d,char* buf,int64 len) {
     if (errno==EINTR) errno=EAGAIN;
     if (errno!=EAGAIN)
       r=-3;
+  }
+  if (r==-1 || r==0) {
+    e->canread=0;
+    e->next_read=-1;
   }
   return r;
 }

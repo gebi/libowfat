@@ -12,5 +12,6 @@ int io_fd(int64 d) {
   if (!(e=array_allocate(&io_fds,sizeof(io_entry),d))) return 0;
   e->inuse=1;
   if (r&O_NDELAY) e->nonblock=1;
+  e->next_read=e->next_write=-1;
   return 1;
 }

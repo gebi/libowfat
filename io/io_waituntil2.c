@@ -29,10 +29,18 @@ again:
     if (errno==EINTR) goto again;
     return -1;
   }
-  for (i=0; i<r; ++i) {
+  for (i=r-1; i>=0; --i) {
     io_entry* e=array_get(&io_fds,sizeof(io_entry),p->fd);
-    if (p->revents&POLLIN) e->canread=1;
-    if (p->revents&POLLOUT) e->canwrite=1;
+    if (p->revents&POLLIN) {
+      e->canread=1;
+      e->next_read=first_readable;
+      first_readable=p->fd;
+    }
+    if (p->revents&POLLOUT) {
+      e->canwrite=1;
+      e->next_write=first_writeable;
+      first_writeable=p->fd;
+    }
     p++;
   }
   return i;

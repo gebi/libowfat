@@ -16,7 +16,10 @@ int64 io_trywrite(int64 d,const char* buf,int64 len) {
     p.events=POLLOUT;
     switch (poll(&p,1,0)) {
     case -1: return -3;
-    case 0: errno=EAGAIN; return -1;
+    case 0: errno=EAGAIN;
+	    e->canwrite=0;
+	    e->next_write=-1;
+	    return -1;
     }
     new.it_interval.tv_usec=0;
     new.it_interval.tv_sec=0;
@@ -32,8 +35,14 @@ int64 io_trywrite(int64 d,const char* buf,int64 len) {
     new.it_value.tv_sec=0;
     setitimer(ITIMER_REAL,&new,&old);
   }
-  if (r==-1)
+  if (r==-1) {
+    if (errno==EINTR) errno=EAGAIN;
     if (errno!=EAGAIN)
       r=-3;
+  }
+  if (r==-1 || r==0) {
+    e->canwrite=0;
+    e->next_write=-1;
+  }
   return r;
 }

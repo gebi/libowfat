@@ -50,6 +50,9 @@ int64 io_canread();
 /* return next descriptor from io_wait that can be written to */
 int64 io_canwrite();
 
+/* return next descriptor with expired timeout */
+int64 io_timeouted();
+
 /* put d on internal data structure, return 1 on success, 0 on error */
 int io_fd(int64 d);
 

@@ -75,6 +75,6 @@ void* array_allocate(array* x,uint64 membersize,int64 pos) {
     x->allocated=wanted;
     byte_zero(x->p+x->initialized,x->allocated-x->initialized);
   }
-  x->initialized=pos*membersize;
+  x->initialized=(pos+1)*membersize;
   return x->p+pos*membersize;
 }
