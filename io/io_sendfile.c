@@ -43,6 +43,31 @@ int64 io_sendfile(int64 out,int64 in,uint64 off,uint64 bytes) {
   return sendfile64(out,in,&o,bytes);
 }
 
+#elif defined(_AIX)
+
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <unistd.h>
+#include <errno.h>
+
+int64 io_sendfile(int64 out,int64 in,uint64 off,uint64 bytes) {
+  struct sf_parms p;
+  int destfd=out;
+  p.header_data=0;
+  p.header_length=0;
+  p.file_descriptor=in;
+  p.file_offset=off;
+  p.file_bytes=bytes;
+  p.trailer_data=0;
+  p.trailer_length=0;
+  if (send_file(&destfd,&p,0)>=0)
+    return p.bytes_sent;
+  if (errno==EAGAIN)
+    return -1;
+  else
+    return -3;
+}
+
 #elif defined(__linux__)
 
 #if defined(__GLIBC__)
