@@ -1,4 +1,7 @@
 0.15:
+  man page update (document stralloc return values)
+  add stralloc_chop and stralloc_chomp
+  add buffer_putsa, buffer_get_token_sa and buffer_getline_sa
 
 0.14:
   avoid bus errors in byte_copy

@@ -71,4 +71,13 @@ extern buffer *buffer_1;
 extern buffer *buffer_1small;
 extern buffer *buffer_2;
 
+#ifdef STRALLOC_H
+/* write stralloc to buffer */
+extern int buffer_putsa(buffer* b,stralloc* sa);
+/* read token from buffer to stralloc */
+extern int buffer_get_token_sa(buffer* b,stralloc* sa,const char* charset,unsigned int setlen);
+/* read line from buffer to stralloc */
+extern int buffer_getline_sa(buffer* b,stralloc* sa);
+#endif
+
 #endif

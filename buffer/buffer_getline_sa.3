@@ -1,0 +1,22 @@
+.TH buffer_getline_sa 3
+.SH NAME
+buffer_getline_sa \- read line from buffer
+.SH SYNTAX
+.nf
+.B #include <stralloc.h>
+.B #include <buffer.h>
+
+int \fBbuffer_getline_sa\fP(buffer* \fIb\fR,stralloc* \fIsa\fR);
+.SH DESCRIPTION
+buffer_getline_sa copies data from the \fIb\fR to \fIsa\fR until a '\\n'
+is found, overwriting the previous content of \fIsa\fR.  The new-line
+is also appended to \fIsa\fR.
+
+If reading from the buffer or allocating memory fails,
+buffer_getline_sa returns -1 and sets \fIerrno\fR appropriately.  At
+that point \fIsa\fR may be empty or it may already contain a partial
+token.
+
+On success, buffer_getline_sa returns 0.
+.SH "SEE ALSO"
+buffer_get_token_sa(3), buffer(3)

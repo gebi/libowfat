@@ -12,5 +12,8 @@ is the same as
 \fIsafrom\fR must already be allocated.
 
 The data that \fIsa\fR previously contained is overwritten and truncated.
+
+If stralloc_copy has trouble allocating memory, it returns 0.  Otherwise
+it returns 1.
 .SH "SEE ALSO"
 stralloc_copyb(3)

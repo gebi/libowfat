@@ -80,4 +80,19 @@ extern void stralloc_free(stralloc* sa);
 #define stralloc_catint0(sa,i,n) (stralloc_catlong0((sa),(i),(n)))
 #define stralloc_catint(sa,i) (stralloc_catlong0((sa),(i),0))
 
+/* remove last char.  Return removed byte as unsigned char (or -1 if stralloc was empty). */
+extern int stralloc_chop(stralloc* sa);
+
+/* remove trailing "\r\n", "\n" or "\r".  Return number of removed chars (0,1 or 2) */
+extern int stralloc_chomp(stralloc* sa);
+
+#ifdef BUFFER_H
+/* write stralloc to buffer */
+extern int buffer_putsa(buffer* b,stralloc* sa);
+/* read token from buffer to stralloc */
+extern int buffer_get_token_sa(buffer* b,stralloc* sa,const char* charset,unsigned int setlen);
+/* read line from buffer to stralloc */
+extern int buffer_getline_sa(buffer* b,stralloc* sa);
+#endif
+
 #endif
