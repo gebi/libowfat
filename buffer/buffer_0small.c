@@ -7,6 +7,6 @@ static int b0read(int fd,const char* buf, unsigned int len) {
 }
 
 char buffer_0_space[128];
-static buffer it = BUFFER_INIT(b0read,0,buffer_0_space,0);
+static buffer it = BUFFER_INIT_READ(b0read,0,buffer_0_space,sizeof buffer_0_space);
 buffer *buffer_0small = &it;
 

@@ -6,6 +6,7 @@ int buffer_stubborn_read(int (*op)(),int fd,const char* buf, unsigned int len) {
   for (;;) {
     if ((w=op(fd,buf,len))<0)
       if (errno == EINTR) continue;
+    break;
   }
   return w;
 }
