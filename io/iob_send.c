@@ -16,6 +16,7 @@ int64 iob_send(int64 s,io_batch* b) {
   long i;
   long headers;
 #ifdef HAVE_BSDSENDFILE
+#define SENDFILE 1
   long trailers;
 #endif
 
