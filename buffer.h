@@ -38,6 +38,11 @@ extern int buffer_bget(buffer* b,char* x,unsigned int len);
 extern int buffer_feed(buffer* b);
 extern int buffer_getc(buffer* b,char* x);
 extern int buffer_getn(buffer* b,char* x,unsigned int len);
+
+/* read bytes until the destination buffer is full (len bytes), end of
+ * file is reached or the read char is in charset (setlen bytes).  An
+ * empty line when looking for \n will write '\n' to x and return 0.  If
+ * EOF is reached, \0 is written to the buffer */
 extern int buffer_get_token(buffer* b,char* x,unsigned int len,const char* charset,unsigned int setlen);
 #define buffer_getline(b,x,len) buffer_get_token((b),(x),(len),"\n",1)
 

@@ -8,7 +8,7 @@ int buffer_get_token(buffer* b,char* x,unsigned int len,const char* charset,unsi
   for (blen=0;blen<len;++blen) {
     register int r;
     if ((r=buffer_getc(b,x))<0) return r;
-    if (r==0) break;
+    if (r==0) { *x=0; break; }
     if (byte_chr(charset,setlen,*x)<setlen) break;
     ++x;
   }

@@ -1,4 +1,5 @@
 0.13:
+  fixed several bugs in test/uudecode.c
 
 0.12:
   add textcode api for uuencode/uudecode, base64, quoted printable,
