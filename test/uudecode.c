@@ -88,7 +88,9 @@ int main(int argc,char* argv[]) {
   char line[1000];	/* uuencoded lines can never be longer than 64 characters */
   int l;
   enum { BEFOREBEGIN, AFTERBEGIN, SKIPHEADER } state=BEFOREBEGIN;
-  enum { UUDECODE, YENC } mode=UUDECODE;
+  enum { UUDECODE, YENC, MIME } mode=UUDECODE;
+  enum { NONE, BASE64, QP} mimeenc=NONE;
+  char filename[1024];
   unsigned long fmode=0,lineno=0;
   unsigned long offset,endoffset,totalsize,linelen,part,reconstructed; /* used only for yenc */
   static stralloc yencpart;
@@ -109,9 +111,11 @@ again:
   for (;;) {
     if ((l=buffer_getline(&filein,line,(sizeof line)-1))==0 && line[l]!='\n') {
       if (state!=BEFOREBEGIN) {
-	buffer_puts(buffer_1,"premature end of file in line ");
-	buffer_putulong(buffer_1,lineno);
-	buffer_putsflush(buffer_1,"!\n");
+	if (mode!=MIME) {
+	  buffer_puts(buffer_1,"premature end of file in line ");
+	  buffer_putulong(buffer_1,lineno);
+	  buffer_putsflush(buffer_1,"!\n");
+	}
 	if (ofd>=0) {
 	  buffer_flush(&fileout);
 	  fchmod(ofd,fmode);
@@ -162,7 +166,10 @@ foundfilename:
 	    buffer_putsflush(buffer_2,"\" (must not exist yet)\n");
 	  } else {
 	    if (mode!=YENC || part==1) {
-	      buffer_puts(buffer_2,"decoding file \"");
+	      if (mode==YENC)
+		buffer_puts(buffer_2,"decoding yEnc file \"");
+	      else
+		buffer_puts(buffer_2,"uudecoding file \"");
 	      buffer_puts(buffer_2,line+l);
 	      buffer_putsflush(buffer_2,"\"\n");
 	    }
@@ -182,6 +189,68 @@ foundfilename:
       ++found;
       state=BEFOREBEGIN;
       continue;
+    } else if (str_start(line,"Content-Disposition: ")) {
+      char* c=strstr(line,"filename=");
+      if (c) {
+	mode=MIME;
+	filename[0]=0;
+	c+=9;
+	if (*c=='"') {
+	  char* d=strchr(c+1,'"');
+	  if (d) {
+	    *d=0;
+	    strcpy(filename,c+1);
+	  }
+	}
+	if (!filename[0]) {
+	  strcpy(filename,c);
+	  /* TODO: truncate at space */
+	}
+	if (state!=BEFOREBEGIN) {
+	  if (ofd>=0) {
+	    buffer_flush(&fileout);
+	    fchmod(ofd,fmode);
+	    close(ofd);
+	    ofd=-1;
+	  }
+	  ++found;
+	}
+	fmode=0644;
+      }
+    } else if (str_start(line,"Content-Transfer-Encoding: ")) {
+      if (str_start(line+27,"base64"))
+	mimeenc=BASE64;
+      else if (str_start(line+27,"quoted-printable"))
+	mimeenc=QP;
+      else if (str_start(line+27,"7bit"))
+	mimeenc=NONE; /* this is not an attachment */
+      else {
+	buffer_puts(buffer_1,"unknown encoding \"");
+	buffer_puts(buffer_1,line+27);
+	buffer_puts(buffer_1,"\" on line ");
+	buffer_putulong(buffer_1,lineno);
+	buffer_putsflush(buffer_1,".\n");
+      }
+    } else if (!line[0]) {
+      /* empty line */
+      if (ofd==-1 && filename[0]) {
+	ofd=open_excl(filename);
+	if (ofd<0) {
+	  buffer_puts(buffer_2,"error: could not create file \"");
+	  buffer_puts(buffer_2,filename);
+	  buffer_putsflush(buffer_2,"\" (must not exist yet)\n");
+	} else {
+	  buffer_puts(buffer_2,"decoding MIME attachment \"");
+	  buffer_puts(buffer_2,filename);
+	  buffer_putsflush(buffer_2,"\"\n");
+	  filename[0]=0;
+	  state=AFTERBEGIN;
+	  buffer_init(&fileout,write,ofd,obuf,sizeof obuf);
+	  continue;
+	}
+      }
+      if (state==AFTERBEGIN)
+	state=SKIPHEADER;
     } else if (str_start(line,"=ybegin ")) {
       char* filename=strstr(line," name=");
       if (!filename) {
@@ -281,14 +350,20 @@ invalidpart:
       ++found;
       state=BEFOREBEGIN;
       continue;
-    } else if (!line[0]) {
-      if (state==AFTERBEGIN)
-	state=SKIPHEADER;
     } else {
       unsigned int scanned,x;
       char tmp[300];
       switch (mode) {
-      case UUDECODE: x=scan_uuencoded(line,tmp,&scanned); break;
+      case MIME:
+	switch (mimeenc) {
+	case BASE64: x=scan_base64(line,tmp,&scanned); break;
+	case QP: x=scan_quotedprintable(line,tmp,&scanned); break;
+	}
+	if (line[x]) x=0;
+	break;
+      case UUDECODE:
+	x=scan_uuencoded(line,tmp,&scanned);
+	break;
       case YENC:
 	stralloc_cats(&yencpart,line);
 	stralloc_cats(&yencpart,"\n");

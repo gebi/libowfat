@@ -6,6 +6,8 @@
   fix #include in ndelay*.3 (Hynek Schlawack)
   add stralloc_diff and stralloc_diffs (my invention)
   scan_ip6 returned 1 for "::" (Uwe Ohse)
+  add el-cheapo MIME decoding to test/uudecode
+  make install forgot to install ndelay.h
 
 0.14:
   avoid bus errors in byte_copy
