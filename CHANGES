@@ -1,6 +1,8 @@
 0.11:
   fix fmt_long (didn't count the '-'), which in turn broke
     buffer_putlong
+  referenced wrong include file in stralloc_ready and stralloc_readyplus
+    man page.
 
 0.10:
   add comment to stralloc.h that explains the structure (Markus Brischke)
