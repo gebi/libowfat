@@ -1,7 +1,3 @@
-#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)
-#define BSD_SENDFILE
-#endif
-
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/uio.h>
@@ -13,6 +9,7 @@
 #endif
 
 #include "iob_internal.h"
+#include "havebsdsf.h"
 
 int64 iob_send(int64 s,io_batch* b) {
   iob_entry* e,* last;
@@ -20,7 +17,7 @@ int64 iob_send(int64 s,io_batch* b) {
   int64 total,sent;
   long i;
   long headers;
-#ifdef BSD_SENDFILE
+#ifdef HAVEBSDSENDFILE
   long trailers;
 #endif
 
@@ -31,7 +28,7 @@ int64 iob_send(int64 s,io_batch* b) {
   for (;;) {
     if (!(e=array_get(&b->b,sizeof(iob_entry),b->next)))
       return -3;		/* can't happen error */
-#ifdef BSD_SENDFILE
+#ifdef HAVEBSDSENDFILE
     /* BSD sendfile can send headers and trailers.  If we run on BSD, we
     * should try to exploit this. */
     headers=trailers=0;
@@ -42,7 +39,7 @@ int64 iob_send(int64 s,io_batch* b) {
       v[i].iov_len=e[i].n-e[i].offset;
     }
     headers=i;
-#ifdef BSD_SENDFILE
+#ifdef HAVEBSDSENDFILE
     if (e[i].type==FROMFILE) {
       off_t sbytes;
       struct sf_hdtr hdr;

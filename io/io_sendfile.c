@@ -1,7 +1,8 @@
 #define _FILE_OFFSET_BITS 64
 #include "io_internal.h"
+#include "havebsdsf.h"
 
-#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)
+#if defined(HAVE_BSDSENDFILE)
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/uio.h>
