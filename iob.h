@@ -1,6 +1,17 @@
 #ifndef _IOB_H
 #define _IOB_H
 
+/* These functions can be used to create a queue of small (or large)
+ * buffers and parts of files to be sent out over a socket.  It is meant
+ * for writing HTTP servers or the like. */
+
+/* This API works with non-blocking I/O.  Simply call iob_send until it
+ * returns 0 (or -1).  The implementation uses sendfile for zero-copy
+ * TCP and it will employ writev (or the built-in sendfile writev on
+ * BSD) to make sure the output fragments are coalesced into as few TCP
+ * frames as possible.  On Linux it will also use the TCP_CORK socket
+ * option. */
+
 #include "io.h"
 
 typedef struct io_batch io_batch;

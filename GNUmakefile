@@ -62,6 +62,9 @@ $(ARRAY_OBJS): uint64.h array.h
 $(MULT_OBJS): uint64.h uint32.h uint16.h safemult.h
 $(IO_OBJS): uint64.h array.h io.h io_internal.h taia.h tai.h haveepoll.h havekqueue.h
 
+
+iob_addbuf.o iob_addfile.o iob_new.o iob_reset.o iob_send.o: iob_internal.h iob.h
+
 iopause.o: select.h
 openreadclose.o readclose.o: readclose.h
 dns_rcip.o dns_rcrw.o openreadclose.o: openreadclose.h
