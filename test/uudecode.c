@@ -251,9 +251,10 @@ invalidpart:
 	  i+=x+1; out.len+=scanned;
 	}
 	i=crc32(0,out.s,out.len);
-	if (out.len == endoffset-offset && i == wantedcrc)
+	if (out.len == endoffset-offset && i == wantedcrc) {
+	  buffer_put(&fileout,out.s,out.len);
 	  ++reconstructed;
-	else {
+	} else {
 	  buffer_puts(buffer_2,"warning: part ");
 	  buffer_putulong(buffer_2,part);
 	  buffer_putsflush(buffer_2," corrupt; reconstruction failed.\n");
