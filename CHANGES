@@ -1,3 +1,6 @@
+0.19:
+  add io_socketpair
+
 0.18:
   make libowfat compile on BSD again (sorry, and thanks to everyone who
     sent me a patch :-D)

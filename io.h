@@ -12,6 +12,8 @@ int io_readfile(int64* d,const char* s);
 int io_createfile(int64* d,const char* s);
 /* like pipe(d) */
 int io_pipe(int64* d);
+/* like socketpair() */
+int io_socketpair(int64* d);
 
 /* non-blocking read(), -1 for EAGAIN and -3+errno for other errors */
 int64 io_tryread(int64 d,char* buf,int64 len);
