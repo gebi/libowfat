@@ -47,6 +47,9 @@ libowfat.a: $(BYTE_OBJS) $(FMT_OBJS) $(SCAN_OBJS) $(STR_OBJS) \
 $(UINT_OBJS) $(OPEN_OBJS) $(STRA_OBJS) $(UNIX_OBJS) $(SOCKET_OBJS) \
 $(BUFFER_OBJS) $(MMAP_OBJS)
 
+%.o: %.c
+	$(DIET) $(CC) -c $< -o $@ $(CFLAGS)
+
 %.a:
 	ar cr $@ $^
 	-ranlib $@
