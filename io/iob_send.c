@@ -18,7 +18,7 @@ int64 iob_send(int64 s,io_batch* b) {
   int64 total,sent;
   long i;
   long headers;
-#ifdef HAVEBSDSENDFILE
+#ifdef HAVE_BSDSENDFILE
   long trailers;
 #endif
 
@@ -29,7 +29,7 @@ int64 iob_send(int64 s,io_batch* b) {
   for (;;) {
     if (!(e=array_get(&b->b,sizeof(iob_entry),b->next)))
       return -3;		/* can't happen error */
-#ifdef HAVEBSDSENDFILE
+#ifdef HAVE_BSDSENDFILE
     /* BSD sendfile can send headers and trailers.  If we run on BSD, we
     * should try to exploit this. */
     headers=trailers=0;
@@ -40,7 +40,7 @@ int64 iob_send(int64 s,io_batch* b) {
       v[i].iov_len=e[i].n-e[i].offset;
     }
     headers=i;
-#ifdef HAVEBSDSENDFILE
+#ifdef HAVE_BSDSENDFILE
     if (e[i].type==FROMFILE) {
       off_t sbytes;
       struct sf_hdtr hdr;
@@ -58,6 +58,7 @@ int64 iob_send(int64 s,io_batch* b) {
 	sent=b->bytesleft;
       else if (r==-1 && errno==EAGAIN) {
 	if ((sent=sbytes)) sent=-1;
+	sent=sbytes;
 	goto eagain;
       } else
 	sent=-3;
