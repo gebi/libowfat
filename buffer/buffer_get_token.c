@@ -6,9 +6,10 @@ int buffer_get_token(buffer* b,char* x,unsigned int len,const char* charset,unsi
   int blen;
 
   for (blen=0;blen<len;++blen) {
-    if ((r=buffer_getc(b,*x))<0) return r;
-    if (r==0) return blen;
-    if (byte_chr(charset,clen,*x)<clen) return blen;
+    register int r;
+    if ((r=buffer_getc(b,x))<0) return r;
+    if (r==0) break;
+    if (byte_chr(charset,setlen,*x)<setlen) break;
     ++x;
   }
   return blen;

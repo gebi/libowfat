@@ -1,0 +1,32 @@
+.TH ip6_fmt 3
+.SH NAME
+ip6_fmt \- write a formatted ASCII representation of an IPv6 number
+.SH SYNTAX
+.B #include <ip6.h>
+
+unsigned int \fBip6_fmt\fP(char *\fIdest\fR,const char \fIip\fR[16]);
+.SH DESCRIPTION
+ip6_fmt formats an IPv6 number in ASCII representation from \fIip\fR and
+writes the result into \fIdest\fR. It returns the number of bytes
+written.
+
+ip6_fmt will apply "::" compression to the output.
+
+If \fIip\fR is an IPv4-mapped IPv6 address, ip6_fmt will output the last
+4 bytes as IPv4 number in dotted-decimal notation.
+
+If \fIdest\fR equals FMT_LEN (i.e. is zero), ip6_fmt returns the number
+of bytes it would have written.
+
+ip6_fmt does not append \\0.
+
+For convenience, ip6.h defines the integer IP6_FMT to be big enough to
+contain every possible ip6_fmt output plus \\0.
+.SH EXAMPLE
+#include <ip6.h>
+
+  char buf[IP6_FMT];
+  char ip[16];
+  buf[ip6_fmt(buf,ip)]=0;
+.SH "SEE ALSO"
+ip6_scan(3), ip4_fmt(3)
