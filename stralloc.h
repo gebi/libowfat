@@ -63,6 +63,14 @@ int stralloc_catb(stralloc* sa,const char* in,unsigned int len);
 /* stralloc_cats is analogous to stralloc_copys */
 int stralloc_cats(stralloc* sa,const char* in);
 
+#define stralloc_zero(sa) stralloc_copys(sa,"")
+
+/* like stralloc_cats but can cat more than one string at once */
+int stralloc_catm_internal(stralloc* sa,...);
+
+#define stralloc_catm(sa,...) stralloc_catm_internal(sa,__VA_ARGS__,0)
+#define stralloc_copym(sa,...) (stralloc_zero(sa) && stralloc_catm_internal(sa,__VA_ARGS__,0))
+
 /* stralloc_cat is analogous to stralloc_copy */
 int stralloc_cat(stralloc* sa,stralloc* in);
 
@@ -90,8 +98,6 @@ int stralloc_diffs(const stralloc* a,const char* b) __pure__;
 
 /* stralloc_0 appends \0 */
 #define stralloc_0(sa) stralloc_append(sa,"")
-
-#define stralloc_zero(sa) stralloc_copys(sa,"")
 
 /* stralloc_catulong0 appends a '0' padded ASCII representation of in */
 int stralloc_catulong0(stralloc* sa,unsigned long in,unsigned int n);

@@ -9,5 +9,7 @@ int \fBbuffer_puterror2\fP(buffer* \fIb\fR,int \fIerrnum\fR);
 buffer_puterror2 writes the error message corresponding to the error
 number in \fIerrnum\fR to the buffer (e.g. "No such file or directory"
 for ENOENT).
+.SH "RETURN VALUE"
+0 if everything is fine, -1 on error (setting \fIerrno\fR).
 .SH "SEE ALSO"
 buffer_puterror(3), buffer_puts(3), buffer_put(3), buffer_flush(3), buffer(3)

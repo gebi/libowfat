@@ -25,11 +25,19 @@
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
+#if 0
+  static stralloc sa;
+  stralloc_copym(&sa,"foo ","bar ","baz.\n");
+  write(1,sa.s,sa.len);
+#endif
+  buffer_putmflush(buffer_1,"foo ","bar ","baz.\n");
+#if 0
   char* c="fnord";
   int fd=open_read(c);
   errmsg_iam(argv[0]);
   carp("could not open file `",c,"'");
   diesys(23,"could not open file `",c,"'");
+#endif
 #if 0
   errmsg_warn("could not open file `",c,"'",0);
   errmsg_warnsys("could not open file `",c,"'",0);

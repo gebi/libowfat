@@ -9,5 +9,7 @@ int \fBbuffer_put8long\fP(buffer* \fIb\fR,unsigned long \fIx\fR);
 .SH DESCRIPTION
 buffer_put8long is similar to passing the result of fmt_8long to
 buffer_put.
+.SH "RETURN VALUE"
+0 if everything is fine, -1 on error (setting \fIerrno\fR).
 .SH "SEE ALSO"
 fmt_8long(3), buffer_put(3), buffer_flush(3), buffer(3)

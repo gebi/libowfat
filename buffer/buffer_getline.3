@@ -11,10 +11,9 @@ buffer_getline copies data from \fIb\fR to \fIx\fR[0], \fIx\fR[1], ...,
 new-line character ('\\n') is encountered.  That character is also
 copied.
 
-buffer_getline returns the number of bytes read (excluding the '\\n') or
--1 on error (setting \fIerrno\fR appropriately).
-
 Note that line is not 0-terminated to make reading lines with 0-bytes
 possible through this interface.
+.SH "RETURN VALUE"
+Number of bytes read (without '\\n'), -1 on error (setting \fIerrno\fR).
 .SH "SEE ALSO"
 buffer_init(3), buffer_feed(3), buffer_peek(3), buffer_seek(3), buffer(3)

@@ -9,6 +9,7 @@ buffer_putsa \- write stralloc to buffer
 int \fBbuffer_putsa\fP(buffer* \fIb\fR,const char* \fIx\fR);
 .SH DESCRIPTION
 buffer_putsa is equivalent to buffer_put(b,x.sa,x.len).
-
+.SH "RETURN VALUE"
+0 if everything is fine, -1 on error (setting \fIerrno\fR).
 .SH "SEE ALSO"
 buffer_puts(3), buffer_flush(3), buffer(3)

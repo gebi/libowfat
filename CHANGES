@@ -5,6 +5,8 @@
     stralloc first.
   add stralloc_zero to clear a stralloc
   add buffer_putsflush
+  add stralloc_catm and stralloc_copym
+  add buffer_putm and buffer_putmflush
 
 0.20:
   add errmsg API

@@ -12,8 +12,8 @@ The difference to buffer_putalign is that, when there isn't enough space
 for new data, buffer_put calls buffer_flush before copying any data,
 while buffer_putalign fills all available space with data before calling
 buffer_flush.
-
-On success, buffer_put returns 0. On error, buffer_put returns -1,
-setting \fIerrno\fR appropriately.
+.SH "RETURN VALUE"
+buffer_put returns 0 if everything was fine, -1 on error (setting
+errno).
 .SH "SEE ALSO"
 buffer_putalign(3), buffer_puts(3), buffer_flush(3), buffer(3)
