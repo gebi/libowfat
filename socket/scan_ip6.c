@@ -27,13 +27,13 @@ unsigned int scan_ip6(const char *s,char ip[16])
   for (i=0; i<16; i++) ip[i]=0;
   for (;;) {
     if (*s == ':') {
-      len++;
-      if (s[1] == ':') {	/* Found "::", skip to part 2 */
-	s+=2;
-	len++;
+      ++len;
+      ++s;
+      if (*s == ':') {	/* Found "::", skip to part 2 */
+	++len;
+	++s;
 	break;
       }
-      s++;
     }
     i = scan_xlong(s,&u);
     if (!i) return 0;
@@ -59,11 +59,12 @@ unsigned int scan_ip6(const char *s,char ip[16])
 	break;
       s++;
       len++;
-    } else if (suffixlen!=0)
+    } else if (suffixlen)
       break;
     i = scan_xlong(s,&u);
     if (!i) {
-      len--;
+      if (suffixlen)
+	--len;
       break;
     }
     if (suffixlen+prefixlen<=12 && s[i]=='.') {

@@ -7,6 +7,7 @@
 #include "socket.h"
 #include "buffer.h"
 #include "ip4.h"
+#include "ip6.h"
 #include "mmap.h"
 #include "open.h"
 #include "byte.h"
@@ -22,6 +23,12 @@
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
+  char ip[16];
+  char buf[32];
+  printf("%d (expect 2)\n",scan_ip6("::",ip));
+  printf("%d (expect 3)\n",scan_ip6("::1",ip));
+  printf("%d (expect 16)\n",scan_ip6("fec0:0:0:ffff::1/0",ip));
+  printf("%.*s\n",fmt_ip6(buf,ip),buf);
 #if 0
   static stralloc s,t;
   stralloc_copys(&s,"fnord");
@@ -31,6 +38,7 @@ int main(int argc,char* argv[]) {
   stralloc_copys(&t,"fnordh"); printf("%d\n",stralloc_diff(&s,&t));
   stralloc_copys(&t,"hausen"); printf("%d\n",stralloc_diff(&s,&t));
 #endif
+#if 0
   static stralloc s;
   stralloc_copys(&s,"fnord");
   printf("%d\n",stralloc_diffs(&s,"abc"));
@@ -38,6 +46,7 @@ int main(int argc,char* argv[]) {
   printf("%d\n",stralloc_diffs(&s,"fnord"));
   printf("%d\n",stralloc_diffs(&s,"fnordh"));
   printf("%d\n",stralloc_diffs(&s,"hausen"));
+#endif
 #if 0
   printf("%d\n",case_starts("fnordhausen","FnOrD"));
   printf("%d\n",case_starts("fnordhausen","blah"));

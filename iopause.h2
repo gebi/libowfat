@@ -5,7 +5,7 @@
 #define IOPAUSE_POLL
 
 #include <sys/types.h>
-#include <poll.h>
+#include <sys/poll.h>
 
 typedef struct pollfd iopause_fd;
 #define IOPAUSE_READ POLLIN
