@@ -12,6 +12,8 @@
   turns out that BSD sendfile is actually FreeBSD sendfile -- neither
     OpenBSD nor NetBSD have it (as of 3.4 and 1.6.1).  That means I'll
     need to try using mmap on OpenBSD and NetBSD to get zero-copy TCP.
+  guard against same event being signalled twice (confused our list
+    handling)
 
 0.16:
   add buffer_fromsa (make buffer from stralloc)
