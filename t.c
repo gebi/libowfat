@@ -37,11 +37,11 @@ int64 writecb(int64 fd,const void* buf,uint64 n) {
 }
 
 int main(int argc,char* argv[]) {
-  static io_batch b;
+  io_batch* b=iob_new(1234);
   int64 fd=open("t.c",0);
-  iob_addbuf(&b,"fnord",5);
-  iob_addfile_close(&b,fd,0,7365);
-  iob_write(1,&b,writecb);
+  iob_addbuf(b,"fnord",5);
+  iob_addfile_close(b,fd,0,7365);
+  iob_write(1,b,writecb);
 #if 0
   char dest[1024];
   unsigned long len;
