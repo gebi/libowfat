@@ -155,6 +155,20 @@ haveinline.h: tryinline.c
 	if ! $(DIET) $(CC) $(CFLAGS) -c tryinline.c >/dev/null 2>&1; then echo "#define inline"; fi > $@
 	-rm -f tryinline.o
 
+havekqueue.h: trykqueue.c
+	-rm -f $@
+	if $(DIET) $(CC) $(CFLAGS) -c trykqueue.c >/dev/null 2>&1; then echo "#define HAVE_KQUEUE"; fi > $@
+	-rm -f trykqueue.o
+
+haveepoll.h: tryepoll.c
+	-rm -f $@
+	if $(DIET) $(CC) $(CFLAGS) -o tryepoll tryepoll.c >/dev/null 2>&1; then echo "#define HAVE_EPOLL 1"; else \
+	if $(DIET) $(CC) $(CFLAGS) -o tryepoll tryepoll.c -lepoll >/dev/null 2>&1; then echo "#define HAVE_EPOLL 2"; fi; fi > $@
+	-rm -f tryepoll
+
+libepoll: haveepoll.h
+	test "`cat haveepoll.h`" = "#define HAVE_EPOLL 2" && echo -lepoll > $@
+
 iopause.h: iopause.h1 iopause.h2 trypoll.c
 	-rm -f $@
 	if $(DIET) $(CC) $(CFLAGS) -o t trypoll.c >/dev/null 2>&1; then cp iopause.h2 iopause.h; else cp iopause.h1 iopause.h; fi
