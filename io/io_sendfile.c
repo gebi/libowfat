@@ -10,9 +10,9 @@
 int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
   off_t sbytes;
   int r=sendfile(fd,s,off,n,0,&sbytes,0);
-  if (r==0) return n;
   if (r==-1)
     return (errno==EAGAIN?(sbytes?sbytes:-1):-3);
+  return n;
 }
 #elif defined(__linux__)
 
