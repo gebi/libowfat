@@ -65,7 +65,7 @@ str.a byte.a
 
 .PHONY: clean tar install rename
 clean:
-	rm -f *.o *.a core t haveip6.h haven2i.h havesl.h haveinline.h
+	rm -f *.o *.a *.da *.bbg *.bb core t haveip6.h haven2i.h havesl.h haveinline.h
 
 install: libowfat.a
 	install -d $(INCLUDEDIR) $(MAN3DIR) $(LIBDIR)
