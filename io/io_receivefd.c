@@ -13,26 +13,38 @@ union fdmsg {
 int64 io_receivefd(int64 sock) {
   struct iovec iov;
   struct msghdr msg;
+#ifdef CMSG_LEN
   union fdmsg cmsg;
   struct cmsghdr* h;
+#else
+  int fd;
+#endif
   char x[100];
   char name[100];
   iov.iov_base=x;
   iov.iov_len=100;
   msg.msg_name=name;
   msg.msg_namelen=100;
+#ifdef CMSG_LEN
   msg.msg_control=cmsg.buf;
   msg.msg_controllen=sizeof(union fdmsg);
+#else
+  msg.msg_accrights=(char*)&fd;
+  msg.msg_accrightslen=sizeof(fd);
+#endif
   msg.msg_iov = &iov;
   msg.msg_iovlen = 1;
+#ifdef CMSG_LEN
   msg.msg_flags=0;
   h=CMSG_FIRSTHDR(&msg);
   h->cmsg_len=CMSG_LEN(sizeof(int));
   h->cmsg_level=SOL_SOCKET;
   h->cmsg_type=SCM_RIGHTS;
   *((int*)CMSG_DATA(h))=-1;
+#endif
   if (recvmsg(sock,&msg,0)==-1)
     return -1;
+#ifdef CMSG_FIRSTHDR
   h=CMSG_FIRSTHDR(&msg);
   if (!h || h->cmsg_len!=CMSG_LEN(sizeof(int)) || h->cmsg_level!=SOL_SOCKET || h->cmsg_type!=SCM_RIGHTS) {
 #ifdef EPROTO
@@ -43,4 +55,8 @@ int64 io_receivefd(int64 sock) {
     return -1;
   }
   return *((int*)CMSG_DATA(h));
+#else
+  if (msg.msg_accrightslen != sizeof(fd)) return -1;
+  return fd;
+#endif
 }
