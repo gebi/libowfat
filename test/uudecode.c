@@ -9,7 +9,7 @@ int main(int argc,char* argv[]) {
   char obuf[4096];
   buffer filein;
   buffer fileout;
-  int fd=1;
+  int fd=0;
   int ofd=-1;
   unsigned long mode=0,lineno=0;
   if (argc>1) {
