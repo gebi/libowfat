@@ -27,7 +27,7 @@ else
 DIET=
 endif
 else
-DIET:=$(diet_path)
+DIET:=$(strip $(diet_path))
 endif
 # to build without diet libc support, use $ make DIET=
 # see http://www.fefe.de/dietlibc/ for details about the diet libc
