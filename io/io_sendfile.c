@@ -53,6 +53,19 @@ int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
 int64 io_sendfile(int64 out,int64 in,uint64 off,uint64 bytes) {
   return sendfile64(out,in,off,bytes,0,0);
 }
+
+#elif defined (__sun__) && defined(__svr4__)
+
+#define _LARGEFILE64_SOURCE
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/sendfile.h>
+
+int64 io_sendfile(int64 out,int64 in,uint64 off,uint64 bytes) {
+  off64_t o=off;
+  return sendfile64(out,in,&o,bytes);
+}
+
 #endif
 
 #else

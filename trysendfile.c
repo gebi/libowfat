@@ -19,6 +19,17 @@ int main() {
            x, 0);
   perror("sendfile");
 }
+#elif defined (__sun__) && defined(__svr4__)
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/sendfile.h>
+
+int main() {
+  off_t o;
+  o=0;
+  sendfile(1 /* dest */, 0 /* src */,&o,23 /* nbytes */);
+  perror("sendfile");
+}
 #else
 #error unsupported architecture
 #endif
