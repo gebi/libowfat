@@ -6,6 +6,8 @@
 #include <sys/socket.h>
 #include <sys/uio.h>
 #include <errno.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
 #ifdef __linux__
 #include <alloca.h>
 #endif
@@ -63,6 +65,12 @@ int64 iob_send(int64 s,io_batch* b) {
     } else
       sent=writev(s,v,headers);
 #else
+#ifdef TCP_CORK
+    if (b->bufs && b->files && !b->next) {
+      static int one=1;
+      setsockopt(s,IPPROTO_TCP,TCP_CORK,&one,sizeof(one));
+    }
+#endif
     if (headers)
       sent=writev(s,v,headers);
     else
@@ -74,6 +82,12 @@ int64 iob_send(int64 s,io_batch* b) {
       if (!total) return -1;
     if (sent==b->bytesleft) {
       b->bytesleft=0;
+#ifdef TCP_CORK
+    if (b->bufs && b->files) {
+      static int zero=0;
+      setsockopt(s,IPPROTO_TCP,TCP_CORK,&zero,sizeof(zero));
+    }
+#endif
       break;
     } else if (sent>0) {
       int64 rest=sent;
