@@ -3,12 +3,19 @@
 #include "str.h"
 #include "haveinline.h"
 
+static inline int issafe(unsigned char c) {
+  const char safe[] = "$/.=~";
+  return ((c>='A' && c<='Z') ||
+	  (c>='a' && c<='z') ||
+	  (c>='0' && c<='9') ||
+	  safe[str_chr(safe,c)]);
+}
+
 unsigned long fmt_urlencoded(char* dest,const char* src,unsigned long len) {
-  const char unsafe[]=" +%<>\"#{}|\\^~[]`;/?:@=&";
   register const unsigned char* s=(const unsigned char*) src;
   unsigned long written=0,i;
   for (i=0; i<len; ++i) {
-    if (s[i]&0x80 || unsafe[str_chr(unsafe,s[i])]==s[i]) {
+    if (!issafe(s[i])) {
       if (dest) {
 	dest[written]='%';
 	dest[written+1]=fmt_tohex(s[i]>>4);
