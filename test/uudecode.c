@@ -218,11 +218,11 @@ foundfilename:
 	fmode=0644;
       }
     } else if (str_start(line,"Content-Transfer-Encoding: ")) {
-      if (str_start(line+27,"base64"))
+      if (case_starts(line+27,"base64"))
 	mimeenc=BASE64;
-      else if (str_start(line+27,"quoted-printable"))
+      else if (case_starts(line+27,"quoted-printable"))
 	mimeenc=QP;
-      else if (str_start(line+27,"7bit"))
+      else if (case_starts(line+27,"7bit"))
 	mimeenc=NONE; /* this is not an attachment */
       else {
 	buffer_puts(buffer_1,"unknown encoding \"");
