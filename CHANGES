@@ -21,6 +21,8 @@
   remove socket_sendfile now that we have io_sendfile
   break out alloca #include dependency into havealloca.h
   support HP-UX sendfile64 (thanks to Rolf Eike Beer)
+  support Solaris sendfile64
+  support MacOS X sendfile (thanks to Bernhard Schmidt)
 
 0.16:
   add buffer_fromsa (make buffer from stralloc)

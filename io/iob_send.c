@@ -1,3 +1,8 @@
+#include "havebsdsf.h"
+#ifdef HAVE_BSDSENDFILE
+/* for MacOS X.  Yep, they blew it again. */
+#define SENDFILE 1
+#endif
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/uio.h>
@@ -7,7 +12,6 @@
 #include <stdlib.h>
 #include "havealloca.h"
 #include "iob_internal.h"
-#include "havebsdsf.h"
 
 int64 iob_send(int64 s,io_batch* b) {
   iob_entry* e,* last;
@@ -16,7 +20,6 @@ int64 iob_send(int64 s,io_batch* b) {
   long i;
   long headers;
 #ifdef HAVE_BSDSENDFILE
-#define SENDFILE 1
   long trailers;
 #endif
 

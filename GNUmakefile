@@ -12,7 +12,7 @@ MAN3DIR=${prefix}/man/man3
 LIBS=byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a \
 buffer.a mmap.a taia.a tai.a dns.a case.a mult.a array.a io.a textcode.a
 
-all: t $(LIBS) libowfat.a
+all: t $(LIBS) libowfat.a libsocket
 
 CC=gcc
 CFLAGS=-pipe -Wall -O2 -fomit-frame-pointer
@@ -130,8 +130,8 @@ CFLAGS+=-I.
 
 t.o: iopause.h
 
-t: t.o libowfat.a
-	$(DIET) $(CC) -g -o $@ t.o libowfat.a
+t: t.o libowfat.a libsocket
+	$(DIET) $(CC) -g -o $@ t.o libowfat.a `cat libsocket`
 
 .PHONY: all clean tar install rename
 clean:
@@ -234,6 +234,15 @@ select.h: select.h1 select.h2 trysysel.c
 	if $(DIET) $(CC) $(CFLAGS) -c trysysel.c >/dev/null 2>&1; then cp select.h2 select.h; else cp select.h1 select.h; fi
 	-rm -f trysysel.o
 
+libsocket: trysocket.c
+	if $(DIET) $(CC) $(CFLAGS) -o trysocket trysocket.c >/dev/null 2>&1; then echo ""; else \
+	if $(DIET) $(CC) $(CFLAGS) -o trysocket trysocket.c -lsocket >/dev/null 2>&1; then echo "-lsocket"; else \
+	if $(DIET) $(CC) $(CFLAGS) -o trysocket trysocket.c -lsocket -lnsl >/dev/null 2>&1; then echo "-lsocket -lnsl"; \
+	fi; fi; fi > blah
+	if $(DIET) $(CC) $(CFLAGS) -o trysocket trysendfile.c `cat blah`>/dev/null 2>&1; then cat blah; else \
+	if $(DIET) $(CC) $(CFLAGS) -o trysocket trysendfile.c -lsendfile `cat blah` >/dev/null 2>&1; then echo "-lsendfile"; cat blah; \
+	fi; fi > libsocket
+	rm -f blah trysocket
 
 socket_accept6.o socket_connect6.o socket_local6.o socket_mchopcount6.o \
 socket_mcjoin6.o socket_mcleave6.o socket_mcloop6.o socket_recv6.o \

@@ -1,3 +1,6 @@
+/* for macos X, don't ask */
+#define SENDFILE 1
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/uio.h>

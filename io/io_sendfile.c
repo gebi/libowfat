@@ -5,6 +5,7 @@
 #include "havesendfile.h"
 
 #if defined(HAVE_BSDSENDFILE)
+#define SENDFILE 1
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/uio.h>
