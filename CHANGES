@@ -6,6 +6,7 @@
     ' '; needed for web servers, so they can serve libstdc++.tar.gz)
   fix iob_write to handle failure properly
   document that the iob_write callback should limit itself
+  fix mmap_shared
   add iob_free, add man pages for iob_free and iob_reset
 
 0.21:

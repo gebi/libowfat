@@ -23,7 +23,7 @@ extern char* mmap_shared(const char* filename,unsigned long* filesize) {
   CloseHandle(fd);
   return map;
 #else
-  int fd=open_read(filename);
+  int fd=open_rw(filename);
   char *map;
   if (fd>=0) {
     *filesize=lseek(fd,0,SEEK_END);
