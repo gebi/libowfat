@@ -11,6 +11,7 @@ int main(int argc,char* argv[]) {
   buffer fileout;
   int fd=0;
   int ofd=-1;
+  int found=0;
   unsigned long mode=0,lineno=0;
   if (argc>1) {
     fd=open_read(argv[1]);
@@ -22,12 +23,14 @@ int main(int argc,char* argv[]) {
     }
   }
   buffer_init(&filein,read,fd,buf,sizeof buf);
+again:
   /* skip to "^begin " */
   for (;;) {
     char line[1000];	/* uuencoded lines can never be longer than 64 characters */
     int l;
-    if ((l=buffer_getline(&filein,line,(sizeof line)-1))==0) {
-      buffer_putsflush(buffer_2,"warning: hit end of file without finding any uuencoded data!\n");
+    if ((l=buffer_getline(&filein,line,(sizeof line)-1))==0 && line[l]!='\n') {
+      if (!found)
+	buffer_putsflush(buffer_2,"warning: hit end of file without finding any uuencoded data!\n");
       return 0;
     }
     ++lineno;
@@ -37,6 +40,11 @@ int main(int argc,char* argv[]) {
       if (line[l=6+scan_8long(line+6,&mode)]==' ' && mode) {
 	int i;
 	++l;
+	if (line[l]=='"') {
+	  int m;
+	  ++l;
+	  line[str_chr(line+l,'"')]=0;
+	}
 	if (line[l+(i=str_rchr(line+l,'/'))]) l+=i+1;
 	while (line[l]=='.') ++l;
 	if (line[l]) {
@@ -45,7 +53,12 @@ int main(int argc,char* argv[]) {
 	    buffer_puts(buffer_2,"error: could not create file \"");
 	    buffer_puts(buffer_2,line+l);
 	    buffer_putsflush(buffer_2,"\" (must not exist yet)\n");
-	  } else break;
+	  } else {
+	    buffer_puts(buffer_2,"decoding file \"");
+	    buffer_puts(buffer_2,line+l);
+	    buffer_putsflush(buffer_2,"\"\n");
+	    break;
+	  }
 	}
       }
     }
@@ -70,7 +83,8 @@ int main(int argc,char* argv[]) {
 	buffer_flush(&fileout);
 	fchmod(ofd,mode);
 	close(ofd);
-	return 0;
+	++found;
+	goto again;
       } else {
 parseerror:
 	  buffer_puts(buffer_1,"parse error in line ");
