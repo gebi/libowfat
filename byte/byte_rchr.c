@@ -7,10 +7,10 @@ unsigned int byte_rchr(const void* haystack,unsigned int len,char needle) {
   register const char* s=haystack;
   register const char* t=s+len;
   for (;;) {
-    --t; if (s<=t) break; if (*t==c) break;
-    --t; if (s<=t) break; if (*t==c) break;
-    --t; if (s<=t) break; if (*t==c) break;
-    --t; if (s<=t) break; if (*t==c) break;
+    --t; if (s>=t) break; if (*t==c) break;
+    --t; if (s>=t) break; if (*t==c) break;
+    --t; if (s>=t) break; if (*t==c) break;
+    --t; if (s>=t) break; if (*t==c) break;
   }
   return t-s;
 }

@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include <stdlib.h>
 #include "textcode.h"
 #include "str.h"
 #include "buffer.h"
@@ -11,11 +12,15 @@ int main(int argc,char* argv[]) {
   buffer fileout;
   int fd=0;
   int ofd=-1;
+  int broken_encoder=0;
   int found=0;
   char line[1000];	/* uuencoded lines can never be longer than 64 characters */
   int l;
   enum { BEFOREBEGIN, AFTERBEGIN, SKIPHEADER } state=BEFOREBEGIN;
-  unsigned long mode=0,lineno=0;
+  enum { UUDECODE, YENC } mode=UUDECODE;
+  unsigned long fmode=0,lineno=0;
+  unsigned long offset,endoffset,totalsize,linelen; /* used only for yenc */
+
   if (argc>1) {
     fd=open_read(argv[1]);
     if (fd<0) {
@@ -36,7 +41,7 @@ again:
 	buffer_putsflush(buffer_1,"!\n");
 	if (ofd>=0) {
 	  buffer_flush(&fileout);
-	  fchmod(ofd,mode);
+	  fchmod(ofd,fmode);
 	  close(ofd);
 	}
 	++found;
@@ -55,15 +60,17 @@ again:
 	buffer_putsflush(buffer_1,"!\n");
 	if (ofd>=0) {
 	  buffer_flush(&fileout);
-	  fchmod(ofd,mode);
+	  fchmod(ofd,fmode);
 	  close(ofd);
 	}
 	++found;
       }
       state=BEFOREBEGIN;
-      if (line[l=6+scan_8long(line+6,&mode)]==' ' && mode) {
+      if (line[l=6+scan_8long(line+6,&fmode)]==' ' && fmode) {
 	int i;
 	++l;
+	mode=UUDECODE;
+foundfilename:
 	if (line[l]=='"') {
 	  int m;
 	  ++l;
@@ -72,7 +79,10 @@ again:
 	if (line[l+(i=str_rchr(line+l,'/'))]) l+=i+1;
 	while (line[l]=='.') ++l;
 	if (line[l]) {
-	  ofd=open_excl(line+l);
+	  if (mode==YENC)
+	    ofd=open_write(line+l);
+	  else
+	    ofd=open_excl(line+l);
 	  if (ofd<0) {
 	    buffer_puts(buffer_2,"error: could not create file \"");
 	    buffer_puts(buffer_2,line+l);
@@ -90,7 +100,62 @@ again:
     } else if (str_equal(line,"end")) {
       if (ofd>=0) {
 	buffer_flush(&fileout);
-	fchmod(ofd,mode);
+	fchmod(ofd,fmode);
+	close(ofd);
+	ofd=-1;
+      }
+      ++found;
+      state=BEFOREBEGIN;
+      continue;
+    } else if (str_start(line,"=ybegin ")) {
+      char* filename=strstr(line," name=");
+      if (!filename) {
+invalidybegin:
+	buffer_puts(buffer_2,"invalid =ybegin at line ");
+	buffer_putulong(buffer_2,lineno);
+	buffer_putsflush(buffer_2,".\n");
+	continue;
+      }
+      l=filename-line+6;
+      if (!(filename=strstr(line," size="))) goto invalidybegin;
+      if (filename[6+scan_ulong(filename+6,&totalsize)] != ' ') goto invalidybegin;
+      if (!(filename=strstr(line," line="))) goto invalidybegin;
+      if (filename[6+scan_ulong(filename+6,&linelen)] != ' ') goto invalidybegin;
+      mode=YENC;
+      goto foundfilename;
+    } else if (str_start(line,"=ypart ")) {
+      char* tmp=strstr(line," begin=");
+      char c;
+      if (!tmp) {
+invalidpart:
+	buffer_puts(buffer_2,"invalid =ypart at line ");
+	buffer_putulong(buffer_2,lineno);
+	buffer_putsflush(buffer_2,".\n");
+	continue;
+      }
+      c=tmp[7+scan_ulong(tmp+7,&offset)];
+      if (c!=' ' && c!=0) goto invalidpart;
+      if (!(tmp=strstr(line," end="))) goto invalidpart;
+      c=tmp[5+scan_ulong(tmp+5,&endoffset)];
+      if (c!=' ' && c!=0) goto invalidpart;
+      --offset; endoffset;
+      if (endoffset<offset || endoffset>totalsize) goto invalidpart;
+      lseek(ofd,offset,SEEK_SET);
+      continue;
+    } else if (str_start(line,"=yend")) {
+      unsigned long cur;
+      if (ofd>=0) {
+	off_t rlen;
+	buffer_flush(&fileout);
+	rlen=lseek(ofd,0,SEEK_CUR)-offset;
+	if (rlen != endoffset-offset) {
+	  int toomuch=rlen-(endoffset-offset);
+	  buffer_puts(buffer_2,"warning: part size ");
+	  buffer_putulong(buffer_2,rlen);
+	  buffer_puts(buffer_2,", expected ");
+	  buffer_putulong(buffer_2,endoffset-offset);
+	  buffer_putsflush(buffer_2,"!\n");
+	}
 	close(ofd);
 	ofd=-1;
       }
@@ -102,8 +167,25 @@ again:
 	state=SKIPHEADER;
     } else {
       unsigned int scanned,x;
-      char tmp[100];
-      x=scan_uuencoded(line,tmp,&scanned);
+      char tmp[300];
+      switch (mode) {
+      case UUDECODE: x=scan_uuencoded(line,tmp,&scanned); break;
+      case YENC:
+	/* work around broken yenc encoders */
+	if ((line[0]=='.' && line[1]=='.') ||
+	    (line[0]=='>' && line[1]=='.')) {
+	  if (l>linelen && line[l-2]!='=') {
+	    if (!broken_encoder) {
+	      broken_encoder=1;
+	      buffer_putsflush(buffer_2,"compensating for broken encoder...\n");
+	    }
+	    x=scan_yenc(line+1,tmp,&scanned);
+	    break;
+	  }
+	}
+	x=scan_yenc(line,tmp,&scanned);
+	break;
+      }
       if (!x) {
 	if (state==AFTERBEGIN) {
 	  buffer_puts(buffer_1,"parse error in line ");

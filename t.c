@@ -9,6 +9,7 @@
 #include "ip4.h"
 #include "mmap.h"
 #include "open.h"
+#include "byte.h"
 #include "textcode.h"
 #include <stdio.h>
 #include <unistd.h>
@@ -17,6 +18,9 @@
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int main(int argc,char* argv[]) {
+  char buf[100]="foo bar baz";
+  printf("%d (expect 7)\n",byte_rchr(buf,11,' '));
+#if 0
   unsigned long size;
   char* buf=mmap_read(argv[1],&size);
   if (buf) {
@@ -26,6 +30,7 @@ int main(int argc,char* argv[]) {
     y=fmt_yenc(tmp,buf,size);
     write(1,tmp,x);
   }
+#endif
 #if 0
   char buf[100];
   char buf2[100];
