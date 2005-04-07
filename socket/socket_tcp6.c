@@ -11,6 +11,9 @@
 #ifndef EAFNOSUPPORT
 #define EAFNOSUPPORT EINVAL
 #endif
+#ifndef EPFNOSUPPORT
+#define EPFNOSUPPORT EAFNOSUPPORT
+#endif
 
 int socket_tcp6(void)
 {
@@ -21,7 +24,7 @@ int socket_tcp6(void)
   if (noipv6) goto compat;
   s = winsock2errno(socket(PF_INET6,SOCK_STREAM,0));
   if (s == -1) {
-    if (errno == EINVAL || errno == EAFNOSUPPORT) {
+    if (errno == EINVAL || errno == EAFNOSUPPORT || errno == EPFNOSUPPORT) {
 compat:
       s=socket(AF_INET,SOCK_STREAM,0);
       noipv6=1;

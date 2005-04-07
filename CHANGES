@@ -1,4 +1,5 @@
 0.23:
+  also recognize EPFNOSUPPORT as EAFNOSUPPORT (groan)
 
 0.22:
   uh, the scope_id detection #defined the wrong constant.  libowfat
