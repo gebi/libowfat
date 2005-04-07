@@ -4,7 +4,7 @@ buffer_init_free \- initialize buffer structure
 .SH SYNTAX
 .B #include <buffer.h>
 
-int \fBbuffer_init_free\fR(buffer &\fIb\fR,
+void \fBbuffer_init_free\fR(buffer &\fIb\fR,
                 int (*\fIop\fR)(int,char*,unsigned int),
                 int \fIfd\fR, unsigned char* \fIy\fR, unsigned long int \fIylen\fR);
 .SH DESCRIPTION

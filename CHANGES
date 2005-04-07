@@ -1,5 +1,6 @@
 0.23:
   also recognize EPFNOSUPPORT as EAFNOSUPPORT (groan)
+  fix a few man pages
 
 0.22:
   uh, the scope_id detection #defined the wrong constant.  libowfat
