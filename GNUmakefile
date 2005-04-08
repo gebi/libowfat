@@ -35,10 +35,15 @@ DIET:=$(strip $(diet_path))
 endif
 
 ifneq ($(DIET),)
+DIETLIBPATH=$(shell $(DIET) -L $(CC))
+ifneq ($(wildcard $(DIETLIBPATH)/*ibc.a),)
+LIBDIR=$(DIETLIBPATH)
+endif
 ifneq ($(DEBUG),1)
 DIET+=-Os
 endif
 endif
+
 # to build without diet libc support, use $ make DIET=
 # see http://www.fefe.de/dietlibc/ for details about the diet libc
 
