@@ -1,9 +1,5 @@
 #include "str.h"
 
-#ifdef __dietlibc__
-#undef str_len
-unsigned long str_len(const char* in) __attribute__((alias("strlen")));
-#else
 unsigned long str_len(const char* in) {
   register const char* t=in;
   for (;;) {
@@ -14,4 +10,3 @@ unsigned long str_len(const char* in) {
   }
   return t-in;
 }
-#endif
