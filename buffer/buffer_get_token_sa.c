@@ -4,7 +4,7 @@
 #include <errno.h>
 
 int buffer_get_token_sa(buffer* b,stralloc* sa,
-			const unsigned char* charset,
+			const char* charset,
 			unsigned long int setlen) {
   for (;;) {
     char x;

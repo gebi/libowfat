@@ -26,6 +26,9 @@
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
 
 int64 writecb(int64 fd,const void* buf,uint64 n) {
+  (void)fd;
+  (void)buf;
+  (void)n;
 #if 0
   int r;
   int todo=n>=65536?65536:n;
@@ -37,6 +40,8 @@ int64 writecb(int64 fd,const void* buf,uint64 n) {
 }
 
 int main(int argc,char* argv[]) {
+  (void)argc;
+  (void)argv;
 #if 0
   io_batch* b=iob_new(1234);
   int64 fd=open("t.c",0);
@@ -312,7 +317,7 @@ int main(int argc,char* argv[]) {
   rdtscl(c);
   printf("%lu %lu\n",b-a,c-b);
 #endif
-#if 1
+#if 0
   unsigned long size;
   char* buf=mmap_read(argv[1],&size);
   if (buf) {
@@ -323,6 +328,8 @@ int main(int argc,char* argv[]) {
     write(1,tmp,x);
   }
 #endif
+  printf("%d %d\n",strcmp("foo","bar"),str_diff("foo","bar"));
+  printf("%d %d\n",strcmp("foo","üar"),str_diff("foo","üar"));
   return 0;
 }
 

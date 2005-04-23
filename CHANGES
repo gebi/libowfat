@@ -2,6 +2,7 @@
   also recognize EPFNOSUPPORT as EAFNOSUPPORT (groan)
   fix a few man pages
   optimize fmt_base64 (Dan Gundlach)
+  gcc 4 cleanups (mostly unsigned char* vs char*)
 
 0.22:
   uh, the scope_id detection #defined the wrong constant.  libowfat

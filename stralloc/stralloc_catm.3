@@ -4,7 +4,7 @@ stralloc_catm \- append string(s) to a stralloc
 .SH SYNTAX
 .B #include <stralloc.h>
 
-int \fBstralloc_catm\fP(stralloc* \fIsa\fR,const unsigned char* \fIs\fR, ...);
+int \fBstralloc_catm\fP(stralloc* \fIsa\fR,const char* \fIs\fR, ...);
 .SH DESCRIPTION
 stralloc_catm appends \\0-terminated strings from \fIs\fR... to the
 end of the string stored in \fIsa\fR, allocating space if necessary, and

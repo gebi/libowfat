@@ -1,3 +1,4 @@
+#undef __dietlibc__
 #include "str.h"
 
 unsigned long str_len(const char* in) {

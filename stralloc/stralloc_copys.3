@@ -4,7 +4,7 @@ stralloc_copys \- copy data into a stralloc
 .SH SYNTAX
 .B #include <stralloc.h>
 
-int \fBstralloc_copys\fP(stralloc* \fIsa\fR,const unsigned char* \fIbuf\fR);
+int \fBstralloc_copys\fP(stralloc* \fIsa\fR,const char* \fIbuf\fR);
 .SH DESCRIPTION
 stralloc_copys copies a \\0-terminated string from \fIbuf\fR into
 \fIsa\fR, without the \\0. It is the same as

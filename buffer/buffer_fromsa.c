@@ -2,6 +2,9 @@
 #include "buffer.h"
 
 static int dummyreadwrite(int fd,char* buf,unsigned long int len) {
+  (void)fd;
+  (void)buf;
+  (void)len;
   return 0;
 }
 

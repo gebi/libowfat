@@ -2,7 +2,7 @@
 #include "fmt.h"
 
 int buffer_putlonglong(buffer *b,signed long long l) {
-  unsigned char buf[FMT_LONG];
+  char buf[FMT_LONG];
   return buffer_put(b,buf,fmt_longlong(buf,l));
 }
 

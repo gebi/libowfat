@@ -42,12 +42,12 @@ int stralloc_readyplus(stralloc* sa,unsigned long int len);
 /* stralloc_copyb copies the string buf[0], buf[1], ..., buf[len-1] into
  * sa, allocating space if necessary, and returns 1. If it runs out of
  * memory, stralloc_copyb leaves sa alone and returns 0. */
-int stralloc_copyb(stralloc* sa,const unsigned char* buf,unsigned long int len);
+int stralloc_copyb(stralloc* sa,const char* buf,unsigned long int len);
 
 /* stralloc_copys copies a \0-terminated string from buf into sa,
  * without the \0. It is the same as
  * stralloc_copyb(&sa,buf,str_len(buf)). */
-int stralloc_copys(stralloc* sa,const unsigned char* buf);
+int stralloc_copys(stralloc* sa,const char* buf);
 
 /* stralloc_copy copies the string stored in sa2 into sa. It is the same
  * as stralloc_copyb(&sa,sa2.s,sa2.len). sa2 must already be allocated. */
@@ -58,10 +58,10 @@ int stralloc_copy(stralloc* sa,const stralloc* sa2);
  * returns 1. If sa is unallocated, stralloc_catb is the same as
  * stralloc_copyb. If it runs out of memory, stralloc_catb leaves sa
  * alone and returns 0. */
-int stralloc_catb(stralloc* sa,const unsigned char* in,unsigned long int len);
+int stralloc_catb(stralloc* sa,const char* in,unsigned long int len);
 
 /* stralloc_cats is analogous to stralloc_copys */
-int stralloc_cats(stralloc* sa,const unsigned char* in);
+int stralloc_cats(stralloc* sa,const char* in);
 
 void stralloc_zero(stralloc* sa);
 
@@ -76,12 +76,12 @@ int stralloc_cat(stralloc* sa,stralloc* in);
 
 /* stralloc_append adds one byte in[0] to the end of the string stored
  * in sa. It is the same as stralloc_catb(&sa,in,1). */
-int stralloc_append(stralloc* sa,const unsigned char* in); /* beware: this takes a pointer to 1 char */
+int stralloc_append(stralloc* sa,const char* in); /* beware: this takes a pointer to 1 char */
 
 /* stralloc_starts returns 1 if the \0-terminated string in "in", without
  * the terminating \0, is a prefix of the string stored in sa. Otherwise
  * it returns 0. sa must already be allocated. */
-int stralloc_starts(stralloc* sa,const unsigned char* in) __pure__;
+int stralloc_starts(stralloc* sa,const char* in) __pure__;
 
 /* stralloc_diff returns negative, 0, or positive, depending on whether
  * a is lexicographically smaller than, equal to, or greater than the
@@ -91,7 +91,7 @@ int stralloc_diff(const stralloc* a,const stralloc* b) __pure__;
 /* stralloc_diffs returns negative, 0, or positive, depending on whether
  * a is lexicographically smaller than, equal to, or greater than the
  * string b[0], b[1], ..., b[n]=='\0'. */
-int stralloc_diffs(const stralloc* a,const unsigned char* b) __pure__;
+int stralloc_diffs(const stralloc* a,const char* b) __pure__;
 
 #define stralloc_equal(a,b) (!stralloc_diff((a),(b)))
 #define stralloc_equals(a,b) (!stralloc_diffs((a),(b)))

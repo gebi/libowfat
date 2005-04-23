@@ -1,7 +1,7 @@
 #include "byte.h"
 #include "buffer.h"
 
-int buffer_get(buffer* b,unsigned char* x,unsigned long int len) {
+int buffer_get(buffer* b,char* x,unsigned long int len) {
   int blen;
   if ((blen=buffer_feed(b))>=len)
     blen=len;

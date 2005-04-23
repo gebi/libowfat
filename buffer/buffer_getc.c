@@ -1,7 +1,7 @@
 #include "byte.h"
 #include "buffer.h"
 
-int buffer_getc(buffer* b,unsigned char* x) {
+int buffer_getc(buffer* b,char* x) {
   if (b->p==b->n) {
     register int blen;
     if ((blen=buffer_feed(b))<=0) return blen;

@@ -4,7 +4,7 @@ buffer_putsalign \- write ASCIIZ string to buffer
 .SH SYNTAX
 .B #include <buffer.h>
 
-int \fBbuffer_putsalign\fP(buffer* \fIb\fR,const unsigned char* \fIx\fR);
+int \fBbuffer_putsalign\fP(buffer* \fIb\fR,const char* \fIx\fR);
 .SH DESCRIPTION
 buffer_putsalign is like buffer_putalign with \fIlen\fR determined as
 the number of bytes before the first \\0 in \fIx\fR.

@@ -2,7 +2,8 @@
 
 int64 iob_write(int64 s,io_batch* b,io_write_callback cb) {
   iob_entry* e,* last;
-  int64 total,sent;
+  uint64 total;
+  int64 sent;
   long i;
   int thatsit;
 
@@ -18,10 +19,10 @@ int64 iob_write(int64 s,io_batch* b,io_write_callback cb) {
       sent=io_mmapwritefile(s,e[i].fd,e[i].offset,e[i].n,cb);
     else
       sent=cb(s,e[i].buf+e[i].offset,e[i].n);
-    if (sent>0 && sent>e[i].n) sent=e[i].n; /* can't happen */
-    thatsit=(sent != e[i].n);
+    if (sent>0 && (uint64)sent>e[i].n) sent=e[i].n; /* can't happen */
+    thatsit=((uint64)sent != e[i].n);
     if (sent<=0)
-      return total?total:sent;
+      return total?total:(uint64)sent;
     e[i].offset+=sent;
     e[i].n-=sent;
     total+=sent;

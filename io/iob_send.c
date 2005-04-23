@@ -13,7 +13,8 @@
 int64 iob_send(int64 s,io_batch* b) {
   iob_entry* e,* last;
   struct iovec* v;
-  int64 total,sent;
+  uint64 total;
+  int64 sent;
   long i;
   long headers;
 #ifdef HAVE_BSDSENDFILE
@@ -101,8 +102,8 @@ eagain:
     if (sent>0)
       total+=sent;
     else
-      return total?total:sent;
-    if (sent==b->bytesleft) {
+      return total?total:(uint64)sent;
+    if ((uint64)sent==b->bytesleft) {
 #ifdef TCP_CORK
       if (b->bufs && b->files) {
 	static int zero=0;
@@ -112,7 +113,7 @@ eagain:
       iob_reset(b);
       break;
     } else if (sent>0) {
-      int64 rest=sent;
+      uint64 rest=sent;
 
       b->bytesleft-=rest;
       for (i=0; e+i<last; ++i) {

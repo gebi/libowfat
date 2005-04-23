@@ -22,7 +22,7 @@ union fdmsg {
 };
 
 int io_passfd(int64 sock,int64 fd) {
-  struct msghdr msg = {0};
+  struct msghdr msg;
   struct iovec  iov;
 #ifdef CMSG_LEN
   struct cmsghdr *cmsg;

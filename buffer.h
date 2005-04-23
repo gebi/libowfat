@@ -2,7 +2,7 @@
 #define BUFFER_H
 
 typedef struct buffer {
-  unsigned char *x;	/* actual buffer space */
+  char *x;		/* actual buffer space */
   unsigned long int p;	/* current position */
   unsigned long int n;	/* current size of string in buffer */
   unsigned long int a;	/* allocated buffer size */
@@ -17,18 +17,18 @@ typedef struct buffer {
 #define BUFFER_INSIZE 8192
 #define BUFFER_OUTSIZE 8192
 
-void buffer_init(buffer* b,int (*op)(),int fd,unsigned char* y,unsigned long int ylen);
-void buffer_init_free(buffer* b,int (*op)(),int fd,unsigned char* y,unsigned long int ylen);
+void buffer_init(buffer* b,int (*op)(),int fd,char* y,unsigned long int ylen);
+void buffer_init_free(buffer* b,int (*op)(),int fd,char* y,unsigned long int ylen);
 int buffer_mmapread(buffer* b,const char* filename);
 void buffer_close(buffer* b);
 
 int buffer_flush(buffer* b);
-int buffer_put(buffer* b,const unsigned char* x,unsigned long int len);
-int buffer_putalign(buffer* b,const unsigned char* x,unsigned long int len);
-int buffer_putflush(buffer* b,const unsigned char* x,unsigned long int len);
-int buffer_puts(buffer* b,const unsigned char* x);
-int buffer_putsalign(buffer* b,const unsigned char* x);
-int buffer_putsflush(buffer* b,const unsigned char* x);
+int buffer_put(buffer* b,const char* x,unsigned long int len);
+int buffer_putalign(buffer* b,const char* x,unsigned long int len);
+int buffer_putflush(buffer* b,const char* x,unsigned long int len);
+int buffer_puts(buffer* b,const char* x);
+int buffer_putsalign(buffer* b,const char* x);
+int buffer_putsflush(buffer* b,const char* x);
 
 int buffer_putm_internal(buffer*b,...);
 int buffer_putm_internal_flush(buffer*b,...);
@@ -44,24 +44,24 @@ int buffer_putnlflush(buffer* b); /* put \n and flush */
     : buffer_put((s),&(c),1) \
   )
 
-int buffer_get(buffer* b,unsigned char* x,unsigned long int len);
+int buffer_get(buffer* b,char* x,unsigned long int len);
 int buffer_feed(buffer* b);
-int buffer_getc(buffer* b,unsigned char* x);
-int buffer_getn(buffer* b,unsigned char* x,unsigned long int len);
+int buffer_getc(buffer* b,char* x);
+int buffer_getn(buffer* b,char* x,unsigned long int len);
 
 /* read bytes until the destination buffer is full (len bytes), end of
  * file is reached or the read char is in charset (setlen bytes).  An
  * empty line when looking for \n will write '\n' to x and return 0.  If
  * EOF is reached, \0 is written to the buffer */
-int buffer_get_token(buffer* b,unsigned char* x,unsigned long int len,const unsigned char* charset,unsigned long int setlen);
-int buffer_getline(buffer* b,unsigned char* x,unsigned long int len);
+int buffer_get_token(buffer* b,char* x,unsigned long int len,const char* charset,unsigned long int setlen);
+int buffer_getline(buffer* b,char* x,unsigned long int len);
 
 /* this predicate is given the string as currently read from the buffer
  * and is supposed to return 1 if the token is complete, 0 if not. */
-typedef int (*string_predicate)(const unsigned char* x,unsigned long int len);
+typedef int (*string_predicate)(const char* x,unsigned long int len);
 
 /* like buffer_get_token but the token ends when your predicate says so */
-int buffer_get_token_pred(buffer* b,unsigned char* x,unsigned long int len,string_predicate p);
+int buffer_get_token_pred(buffer* b,char* x,unsigned long int len,string_predicate p);
 
 char *buffer_peek(buffer* b);
 void buffer_seek(buffer* b,unsigned long int len);
@@ -112,12 +112,12 @@ int buffer_putsaflush(buffer* b,stralloc* sa);
  * data is available. */
 
 /* read token from buffer to stralloc */
-int buffer_get_token_sa(buffer* b,stralloc* sa,const unsigned char* charset,unsigned long int setlen);
+int buffer_get_token_sa(buffer* b,stralloc* sa,const char* charset,unsigned long int setlen);
 /* read line from buffer to stralloc */
 int buffer_getline_sa(buffer* b,stralloc* sa);
 
 /* same as buffer_get_token_sa but empty sa first */
-int buffer_get_new_token_sa(buffer* b,stralloc* sa,const unsigned char* charset,unsigned long int setlen);
+int buffer_get_new_token_sa(buffer* b,stralloc* sa,const char* charset,unsigned long int setlen);
 /* same as buffer_getline_sa but empty sa first */
 int buffer_getnewline_sa(buffer* b,stralloc* sa);
 

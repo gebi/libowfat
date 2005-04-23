@@ -15,8 +15,10 @@ buffer.a mmap.a taia.a tai.a dns.a case.a mult.a array.a io.a textcode.a
 all: t $(LIBS) libowfat.a libsocket
 
 CC=gcc
-CFLAGS=-pipe -Wall -O2 -fomit-frame-pointer
+CFLAGS=-pipe -W -Wall -O2 -fomit-frame-pointer
 #CFLAGS=-pipe -Os -march=pentiumpro -mcpu=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
+
+CFLAGS += -fstrict-aliasing -Wstrict-aliasing=2
 
 # startrip
 ifneq ($(DEBUG),)

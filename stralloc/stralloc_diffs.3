@@ -4,7 +4,7 @@ stralloc_diffs \- check if string is prefix of stralloc
 .SH SYNTAX
 .B #include <stralloc.h>
 
-int \fBstralloc_diffs\fP(stralloc* \fIa\fR,const unsigned char* \fIb\fR);
+int \fBstralloc_diffs\fP(stralloc* \fIa\fR,const char* \fIb\fR);
 .SH DESCRIPTION
 stralloc_diffs returns negative, 0, or positive, depending on whether
 the \\0-terminated string in \fIa\fR, without
