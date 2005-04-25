@@ -3,6 +3,7 @@
   fix a few man pages
   optimize fmt_base64 (Dan Gundlach)
   gcc 4 cleanups (mostly unsigned char* vs char*)
+  fix scan_xlong, scan_xlonglong and scan_8long
 
 0.22:
   uh, the scope_id detection #defined the wrong constant.  libowfat
