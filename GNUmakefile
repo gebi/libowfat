@@ -18,7 +18,7 @@ CC=gcc
 CFLAGS=-pipe -W -Wall -O2 -fomit-frame-pointer
 #CFLAGS=-pipe -Os -march=pentiumpro -mcpu=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
 
-CFLAGS += -fstrict-aliasing -Wstrict-aliasing=2
+# CFLAGS += -fstrict-aliasing -Wstrict-aliasing=2
 
 # startrip
 ifneq ($(DEBUG),)

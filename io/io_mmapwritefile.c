@@ -17,7 +17,7 @@ int64 io_mmapwritefile(int64 out,int64 in,uint64 off,uint64 bytes,io_write_callb
   io_entry* e=array_get(&io_fds,sizeof(io_entry),out);
   if (e) {
     const char* c;
-    long left;
+    unsigned long left;
 #ifdef __MINGW32__
     if (!e->mh) e->mh=CreateFileMapping(out,0,PAGE_READONLY,0,0,NULL);
     if (!e->mh) goto readwrite;
@@ -66,7 +66,7 @@ int64 io_mmapwritefile(int64 out,int64 in,uint64 off,uint64 bytes,io_write_callb
 	    e->mmapped=0;
 	    return -3;
 	  }
-	  return sent?sent:-1;
+	  return sent?(int64)sent:-1;
 	}
 	if (m==0) return sent;
 	sent+=m;
@@ -87,12 +87,12 @@ int64 io_mmapwritefile(int64 out,int64 in,uint64 off,uint64 bytes,io_write_callb
     return sent;
   }
 readwrite:
-  if (lseek(in,off,SEEK_SET) != off)
+  if (lseek(in,off,SEEK_SET) != (off_t)off)
     return -1;
   while (bytes>0) {
     char* tmp=buf;
     if ((n=read(in,tmp,(bytes<BUFSIZE)?bytes:BUFSIZE))<=0)
-      return (sent?sent:-1);
+      return (sent?(int64)sent:-1);
     while (n>0) {
       if ((m=writecb(out,tmp,n))<0) {
 	if (m==-1) {
@@ -100,7 +100,7 @@ readwrite:
 	    e->canwrite=0;
 	    e->next_write=-1;
 	  }
-	  return errno==EAGAIN?(sent?sent:-1):-3;
+	  return errno==EAGAIN?(sent?(int64)sent:-1):-3;
 	}
 	goto abort;
       }
