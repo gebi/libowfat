@@ -11,7 +11,7 @@ int socket_accept4(int s,char *ip,uint16 *port) {
   struct sockaddr_in si;
   socklen_t len = sizeof si;
   int fd;
-  if ((fd=accept(s,(struct sockaddr*) &si,&len))==-1)
+  if ((fd=accept(s,(void*) &si,&len))==-1)
     return winsock2errno(-1);
   *(uint32*)ip = *(uint32*)&si.sin_addr;
   uint16_unpack_big((char *) &si.sin_port,port);

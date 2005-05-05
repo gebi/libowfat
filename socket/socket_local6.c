@@ -22,10 +22,10 @@ int socket_local6(int s,char ip[16],uint16 *port,uint32 *scope_id)
 #endif
   socklen_t len = sizeof si;
 
-  if (getsockname(s,(struct sockaddr *) &si,&len) == -1) return winsock2errno(-1);
+  if (getsockname(s,(void*) &si,&len) == -1) return winsock2errno(-1);
 #ifdef LIBC_HAS_IP6
   if (si.sin6_family==AF_INET) {
-    struct sockaddr_in *si4=(struct sockaddr_in*)&si;
+    struct sockaddr_in *si4=(void*)&si;
     if (ip) {
       byte_copy(ip,12,V4mappedprefix);
       byte_copy(ip+12,4,(char *) &si4->sin_addr);

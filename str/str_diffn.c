@@ -8,7 +8,7 @@
 int str_diffn(const char* a, const char* b, unsigned long limit) {
   register const unsigned char* s=(const unsigned char*)a;
   register const unsigned char* t=(const unsigned char*)b;
-  register const char* u=t+limit;
+  register const unsigned char* u=t+limit;
   register int j;
   j=0;
   for (;;) {

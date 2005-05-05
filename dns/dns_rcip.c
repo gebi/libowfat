@@ -10,8 +10,8 @@ static stralloc data = {0};
 
 static int init(char ip[256])
 {
-  int i;
-  int j;
+  unsigned long int i;
+  unsigned long int j;
   int iplen = 0;
   char *x;
 
@@ -30,7 +30,7 @@ static int init(char ip[256])
 
   if (!iplen) {
     i = openreadclose("/etc/resolv.conf",&data,64);
-    if (i == -1) return -1;
+    if (i == (unsigned long int)-1) return -1;
     if (i) {
       if (!stralloc_append(&data,"\n")) return -1;
       i = 0;

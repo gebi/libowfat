@@ -69,13 +69,14 @@ static const uint32_t crc_table[256] = {
   0x2d02ef8dL
 };
 
-unsigned int crc32(unsigned int crc, const char* buf, unsigned int len) {
-  crc = crc ^ 0xffffffffL;
+uint32_t crc32(uint32_t crc, const char* buf, unsigned int len) {
+  const unsigned char* b=(const unsigned char*)buf;
+  crc = crc ^ 0xfffffffful;
   while (len) {
-    crc = crc_table[((int)crc ^ (*buf++)) & 0xff] ^ (crc >> 8);
-    --len;
+    crc = (crc >> 8) ^ crc_table[(crc & 0xff) ^ *b];
+    ++b; --len;
   }
-  return crc ^ 0xffffffffL;
+  return crc ^ 0xfffffffful;
 }
 
 int main(int argc,char* argv[]) {

@@ -36,7 +36,7 @@ int socket_connect6(int s,const char ip[16],uint16 port,uint32 scope_id)
 #endif
   byte_copy((char *) &sa.sin6_addr,16,ip);
 
-  return winsock2errno(connect(s,(struct sockaddr *) &sa,sizeof sa));
+  return winsock2errno(connect(s,(void*) &sa,sizeof sa));
 #else
   errno=EPROTONOSUPPORT;
   return -1;

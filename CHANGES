@@ -4,6 +4,11 @@
   optimize fmt_base64 (Dan Gundlach)
   gcc 4 cleanups (mostly unsigned char* vs char*)
   fix scan_xlong, scan_xlonglong and scan_8long
+  remove a few gcc 4 warnings
+  work around freebsd 5.4 brokenness (if you don't have IPv6 in the
+    kernel, socket(PF_INET6,SOCK_STREAM,0) returns EPROTONOSUPPORT
+    instead of EPFNOSUPPORT, which basically says "yeah, I know IPv6,
+    but TCP?  never heard of it")
 
 0.22:
   uh, the scope_id detection #defined the wrong constant.  libowfat

@@ -15,5 +15,5 @@ int socket_send4(int s,const char *buf,unsigned int len,const char ip[4],uint16 
   si.sin_family = AF_INET;
   uint16_pack_big((char*) &si.sin_port,port);
   *((uint32*)&si.sin_addr) = *((uint32*)ip);
-  return winsock2errno(sendto(s,buf,len,0,(struct sockaddr *) &si,sizeof si));
+  return winsock2errno(sendto(s,buf,len,0,(void*) &si,sizeof si));
 }

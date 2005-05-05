@@ -41,7 +41,7 @@ int socket_send6(int s,const char *buf,unsigned int len,const char ip[16],uint16
 #else
   si.sin6_scope_id=0;
 #endif
-  return winsock2errno(sendto(s,buf,len,0,(struct sockaddr *) &si,sizeof si));
+  return winsock2errno(sendto(s,buf,len,0,(void*) &si,sizeof si));
 #else
   errno=EPROTONOSUPPORT;
   return -1;
