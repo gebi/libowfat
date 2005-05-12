@@ -111,22 +111,22 @@ static int thisudp(struct dns_transmit *d)
       if (byte_diff(ip,16,V6any)) {
 	d->query[2] = dns_random(256);
 	d->query[3] = dns_random(256);
-  
-        d->s1 = 1 + socket_udp6();
-        if (!d->s1) { dns_transmit_free(d); return -1; }
+
+	d->s1 = 1 + socket_udp6();
+	if (!d->s1) { dns_transmit_free(d); return -1; }
 	if (randombind(d) == -1) { dns_transmit_free(d); return -1; }
 
-        if (socket_connect6(d->s1 - 1,ip,53,d->scope_id) == 0)
-          if (send(d->s1 - 1,d->query + 2,d->querylen - 2,0) == d->querylen - 2) {
-            struct taia now;
-            taia_now(&now);
-            taia_uint(&d->deadline,timeouts[d->udploop]);
-            taia_add(&d->deadline,&d->deadline,&now);
-            d->tcpstate = 0;
-            return 0;
-          }
-  
-        socketfree(d);
+	if (socket_connect6(d->s1 - 1,ip,53,d->scope_id) == 0)
+	  if (send(d->s1 - 1,d->query + 2,d->querylen - 2,0) == (long)d->querylen - 2) {
+	    struct taia now;
+	    taia_now(&now);
+	    taia_uint(&d->deadline,timeouts[d->udploop]);
+	    taia_add(&d->deadline,&d->deadline,&now);
+	    d->tcpstate = 0;
+	    return 0;
+	  }
+
+	socketfree(d);
       }
     }
 
@@ -270,7 +270,7 @@ have sent query to curserver on UDP socket s
       if (errno == ECONNREFUSED) if (d->udploop == 2) return 0;
       return nextudp(d);
     }
-    if (r + 1 > sizeof udpbuf) return 0;
+    if ((unsigned long)r + 1 > sizeof udpbuf) return 0;
 
     if (irrelevant(d,udpbuf,r)) return 0;
     if (serverwantstcp(udpbuf,r)) return firsttcp(d);

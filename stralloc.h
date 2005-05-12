@@ -68,8 +68,8 @@ void stralloc_zero(stralloc* sa);
 /* like stralloc_cats but can cat more than one string at once */
 int stralloc_catm_internal(stralloc* sa,...);
 
-#define stralloc_catm(sa,...) stralloc_catm_internal(sa,__VA_ARGS__,0)
-#define stralloc_copym(sa,...) (stralloc_zero(sa) && stralloc_catm_internal(sa,__VA_ARGS__,0))
+#define stralloc_catm(sa,...) stralloc_catm_internal(sa,__VA_ARGS__,(char*)0)
+#define stralloc_copym(sa,...) (stralloc_zero(sa) && stralloc_catm_internal(sa,__VA_ARGS__,(char*)0))
 
 /* stralloc_cat is analogous to stralloc_copy */
 int stralloc_cat(stralloc* sa,stralloc* in);

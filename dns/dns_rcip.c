@@ -6,7 +6,7 @@
 #include "ip6.h"
 #include "dns.h"
 
-static stralloc data = {0};
+static stralloc data;
 
 static int init(char ip[256])
 {
@@ -58,7 +58,7 @@ static int init(char ip[256])
   return 0;
 }
 
-static int ok = 0;
+static int ok;
 static unsigned int uses;
 static struct taia deadline;
 static char ip[256]; /* defined if ok */

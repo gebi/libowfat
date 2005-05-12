@@ -17,8 +17,8 @@ unsigned int scan_ip6(const char *s,char ip[16])
   unsigned long u;
 
   char suffix[16];
-  int prefixlen=0;
-  int suffixlen=0;
+  unsigned int prefixlen=0;
+  unsigned int suffixlen=0;
 
   if ((i=scan_ip4(s,ip+12))) {
     for (len=0; len<12; ++len) ip[len]=V4mappedprefix[len];

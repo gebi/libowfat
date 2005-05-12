@@ -9,7 +9,7 @@ unsigned long fmt_fill(char* dest,unsigned long srclen,unsigned long padlen,unsi
   char* olddest=dest;
   char* max=dest+maxlen;
   if (dest==0) {
-    int sum=srclen>padlen?srclen:padlen;
+    unsigned long sum=srclen>padlen?srclen:padlen;
     return sum>maxlen?maxlen:sum;
   }
   dest+=srclen;

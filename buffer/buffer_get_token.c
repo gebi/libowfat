@@ -3,7 +3,7 @@
 #include "scan.h"
 
 int buffer_get_token(buffer* b,char* x,unsigned long int len,const char* charset,unsigned long int setlen) {
-  int blen;
+  unsigned long int blen;
 
   for (blen=0;blen<len;++blen) {
     register int r;

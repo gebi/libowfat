@@ -10,7 +10,7 @@ unsigned long fmt_pad(char* dest,const char* src,unsigned long srclen,unsigned l
   char* max=dest+maxlen;
   todo=padlen-srclen;
   if (dest==0) {
-    int sum=srclen>padlen?srclen:padlen;
+    unsigned long sum=srclen>padlen?srclen:padlen;
     return sum>maxlen?maxlen:sum;
   }
   for (; todo>0; --todo) {

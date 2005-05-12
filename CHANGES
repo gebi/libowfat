@@ -9,6 +9,8 @@
     kernel, socket(PF_INET6,SOCK_STREAM,0) returns EPROTONOSUPPORT
     instead of EPFNOSUPPORT, which basically says "yeah, I know IPv6,
     but TCP?  never heard of it")
+  remove even more warnings
+  64-bit cleanliness issue with auto-NULL-appending macros
 
 0.22:
   uh, the scope_id detection #defined the wrong constant.  libowfat

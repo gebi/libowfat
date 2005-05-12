@@ -2,7 +2,7 @@
 #include "buffer.h"
 
 int buffer_getn(buffer* b,char* x,unsigned long int len) {
-  int blen;
+  unsigned int blen;
 
   for(blen=0;blen<len;++blen) {
     register int r;

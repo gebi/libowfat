@@ -4,7 +4,7 @@
 #include "dns.h"
 #include "ip6.h"
 
-struct dns_transmit dns_resolve_tx = {0};
+struct dns_transmit dns_resolve_tx;
 
 int dns_resolve(const char *q,const char qtype[2])
 {

@@ -36,9 +36,9 @@ void errmsg_writesys(int fd,const char* message,va_list list) {
   {
     int j;
     for (j=0; j<i+2; ++j)
-      write(2,x[j].iov_base,x[j].iov_len);
+      write(fd,x[j].iov_base,x[j].iov_len);
   }
 #else
-  writev(2,x,i+2);
+  writev(fd,x,i+2);
 #endif
 }

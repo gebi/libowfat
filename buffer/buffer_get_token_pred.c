@@ -4,7 +4,7 @@
 
 int buffer_get_token_pred(buffer* b,char* x,unsigned long int len,
 			  string_predicate p) {
-  int blen;
+  unsigned int blen;
 
   for (blen=0;blen<len;++blen) {
     register int r;

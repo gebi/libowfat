@@ -2,6 +2,7 @@
 #include "byte.h"
 #include "case.h"
 #define _GNU_SOURCE
+#define __deprecated__
 #include <time.h>
 #include <stdlib.h>
 
