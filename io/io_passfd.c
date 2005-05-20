@@ -7,6 +7,7 @@ int io_passfd(int64 sock,int64 fd) {
 }
 #else
 
+#define _XOPEN_SOURCE
 #include <stddef.h>
 #include <sys/types.h>
 #include <sys/socket.h>

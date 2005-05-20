@@ -11,6 +11,7 @@
     but TCP?  never heard of it")
   remove even more warnings
   64-bit cleanliness issue with auto-NULL-appending macros
+  IRIX compatibility (yuck!)
 
 0.22:
   uh, the scope_id detection #defined the wrong constant.  libowfat

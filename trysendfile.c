@@ -81,4 +81,8 @@ int main() {
 
 #else
 #error unsupported architecture
+/* stupid fucking IRIX c99 does not signal #error via a non-zero exit
+ * code!  ARGH!  So insert a parse error */
+#include rumpelstilzchen
+) 
 #endif

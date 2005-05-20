@@ -6,6 +6,10 @@
 #include <time.h>
 #include <stdlib.h>
 
+#ifdef sgi
+extern char** environ;
+#endif
+
 static int parsetime(const char*c,struct tm* x) {
   unsigned long tmp;
   c+=scan_ulong(c,&tmp); x->tm_hour=tmp;
@@ -61,10 +65,18 @@ done:
   *t=timegm(&x);
 #else
   {
+#ifdef sgi
+    char** old=environ;
+    char** newenv={0};
+    environ=newenv;
+    *t=mktime(&x);
+    environ=old;
+#else
     char* old=getenv("TZ");
     unsetenv("TZ");
     *t=mktime(&x);
     if (old) setenv("TZ",old,1);
+#endif
   }
 #endif
   return c-in;
