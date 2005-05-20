@@ -197,18 +197,9 @@ io_closeonexec.o: io/io_closeonexec.c io_internal.h io.h uint64.h taia.h \
 io_createfile.o: io/io_createfile.c io_internal.h io.h uint64.h taia.h \
   tai.h uint64.h array.h uint64.h haveepoll.h havekqueue.h havedevpoll.h \
   havesigio.h
-io_dontwantread.o: io/io_dontwantread.c io_internal.h io.h uint64.h \
-  taia.h tai.h uint64.h array.h uint64.h haveepoll.h havekqueue.h \
-  havedevpoll.h havesigio.h
-io_dontwantwrite.o: io/io_dontwantwrite.c io_internal.h io.h uint64.h \
-  taia.h tai.h uint64.h array.h uint64.h haveepoll.h havekqueue.h \
-  havedevpoll.h havesigio.h
 io_eagain.o: io/io_eagain.c io_internal.h io.h uint64.h taia.h tai.h \
   uint64.h array.h uint64.h haveepoll.h havekqueue.h havedevpoll.h \
   havesigio.h
-io_fd.o: io/io_fd.c io_internal.h io.h uint64.h taia.h tai.h uint64.h \
-  array.h uint64.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h \
-  byte.h
 io_finishandshutdown.o: io/io_finishandshutdown.c io_internal.h io.h \
   uint64.h taia.h tai.h uint64.h array.h uint64.h haveepoll.h \
   havekqueue.h havedevpoll.h havesigio.h
@@ -237,7 +228,7 @@ io_receivefd.o: io/io_receivefd.c io_internal.h io.h uint64.h taia.h \
   havesigio.h
 io_sendfile.o: io/io_sendfile.c io_internal.h io.h uint64.h taia.h tai.h \
   uint64.h array.h uint64.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h havebsdsf.h havesendfile.h
+  havesigio.h havebsdsf.h havesendfile.h iob.h io.h array.h
 io_setcookie.o: io/io_setcookie.c io_internal.h io.h uint64.h taia.h \
   tai.h uint64.h array.h uint64.h haveepoll.h havekqueue.h havedevpoll.h \
   havesigio.h
@@ -273,16 +264,7 @@ io_waitread.o: io/io_waitread.c io_internal.h io.h uint64.h taia.h tai.h \
 io_waituntil.o: io/io_waituntil.c io_internal.h io.h uint64.h taia.h \
   tai.h uint64.h array.h uint64.h haveepoll.h havekqueue.h havedevpoll.h \
   havesigio.h safemult.h uint16.h uint32.h uint64.h
-io_waituntil2.o: io/io_waituntil2.c io_internal.h io.h uint64.h taia.h \
-  tai.h uint64.h array.h uint64.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h
 io_waitwrite.o: io/io_waitwrite.c io_internal.h io.h uint64.h taia.h \
-  tai.h uint64.h array.h uint64.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h
-io_wantread.o: io/io_wantread.c io_internal.h io.h uint64.h taia.h tai.h \
-  uint64.h array.h uint64.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h
-io_wantwrite.o: io/io_wantwrite.c io_internal.h io.h uint64.h taia.h \
   tai.h uint64.h array.h uint64.h haveepoll.h havekqueue.h havedevpoll.h \
   havesigio.h
 iob_addbuf.o: io/iob_addbuf.c iob_internal.h iob.h io.h uint64.h taia.h \
