@@ -8,6 +8,7 @@ int64 io_receivefd(int64 sock) {
 #else
 
 #define _XOPEN_SOURCE
+#define _XOPEN_SOURCE_EXTENDED 1
 #include <stddef.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -23,7 +24,7 @@ union fdmsg {
 int64 io_receivefd(int64 sock) {
   struct iovec iov;
   struct msghdr msg;
-#ifdef CMSG_LEN
+#ifdef CMSG_FIRSTHDR
   union fdmsg cmsg;
   struct cmsghdr* h;
 #else
@@ -35,7 +36,7 @@ int64 io_receivefd(int64 sock) {
   iov.iov_len=100;
   msg.msg_name=name;
   msg.msg_namelen=100;
-#ifdef CMSG_LEN
+#ifdef CMSG_FIRSTHDR
   msg.msg_control=cmsg.buf;
   msg.msg_controllen=sizeof(union fdmsg);
 #else
@@ -44,9 +45,12 @@ int64 io_receivefd(int64 sock) {
 #endif
   msg.msg_iov = &iov;
   msg.msg_iovlen = 1;
-#ifdef CMSG_LEN
+#ifdef CMSG_FIRSTHDR
   msg.msg_flags=0;
   h=CMSG_FIRSTHDR(&msg);
+#ifndef CMSG_LEN
+#define CMSG_LEN(x) x
+#endif
   h->cmsg_len=CMSG_LEN(sizeof(int));
   h->cmsg_level=SOL_SOCKET;
   h->cmsg_type=SCM_RIGHTS;

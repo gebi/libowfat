@@ -8,8 +8,10 @@ int io_passfd(int64 sock,int64 fd) {
 #else
 
 #define _XOPEN_SOURCE
+#define _XOPEN_SOURCE_EXTENDED 1
 #include <stddef.h>
 #include <sys/types.h>
+#include <sys/time.h>
 #include <sys/socket.h>
 #include <sys/uio.h>
 #include <errno.h>
@@ -25,8 +27,11 @@ union fdmsg {
 int io_passfd(int64 sock,int64 fd) {
   struct msghdr msg;
   struct iovec  iov;
-#ifdef CMSG_LEN
+#ifdef CMSG_FIRSTHDR
   struct cmsghdr *cmsg;
+#ifndef CMSG_SPACE
+#define CMSG_SPACE(x) x+100
+#endif
   char buf[CMSG_SPACE(sizeof(int))];
 #endif
   iov.iov_len=1;
@@ -35,12 +40,15 @@ int io_passfd(int64 sock,int64 fd) {
   msg.msg_iovlen=1;
   msg.msg_name=0;
   msg.msg_namelen=0;
-#ifdef CMSG_LEN
+#ifdef CMSG_FIRSTHDR
   msg.msg_control = buf;
   msg.msg_controllen = sizeof(buf);
   cmsg = CMSG_FIRSTHDR(&msg);
   cmsg->cmsg_level = SOL_SOCKET;
   cmsg->cmsg_type = SCM_RIGHTS;
+#ifndef CMSG_LEN
+#define CMSG_LEN(x) x
+#endif
   cmsg->cmsg_len = CMSG_LEN(sizeof(int));
   msg.msg_controllen = cmsg->cmsg_len;
   *((int*)CMSG_DATA(cmsg))=fd;
