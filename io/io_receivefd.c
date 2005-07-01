@@ -7,8 +7,15 @@ int64 io_receivefd(int64 sock) {
 }
 #else
 
+#ifdef __OpenBSD__
+#warn This is a HORRIBLE kludge around yet another thing OpenBSD broke
+#warn If they make it possible to do file descriptor passing with
+#warn _XOPEN_SOURCE defined, please send me an email so I can remove this.
+#warn _XOPEN_SOURCE needs to be defined for this to work on Solaris.
+#else
 #define _XOPEN_SOURCE
 #define _XOPEN_SOURCE_EXTENDED 1
+#endif
 #include <stddef.h>
 #include <sys/types.h>
 #include <sys/socket.h>
