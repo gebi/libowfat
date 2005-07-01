@@ -1,5 +1,9 @@
 0.24:
   fix scan_to_sa (Tim Lorenz)
+  turns out we can not do file descriptor passing on OpenBSD
+    if _XOPEN_SOURCE is defined, which is needed for Solaris.
+    OpenBSD sucks.  I checked in a _really_ kludge now.  Please do not
+    use OpenBSD if you have a choice.  Or Solaris, for that matter.
 
 0.23:
   also recognize EPFNOSUPPORT as EAFNOSUPPORT (groan)
