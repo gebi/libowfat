@@ -21,6 +21,7 @@
 #include <assert.h>
 #include "errmsg.h"
 #include "iob.h"
+#include "safemult.h"
 
 #define rdtscl(low) \
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
@@ -328,8 +329,25 @@ int main(int argc,char* argv[]) {
     write(1,tmp,x);
   }
 #endif
+#if 0
   printf("%d %d\n",strcmp("foo","bar"),str_diff("foo","bar"));
   printf("%d %d\n",strcmp("foo","üar"),str_diff("foo","üar"));
   return 0;
+#endif
+  {
+    int16 a;
+    int32 b;
+    int64 c;
+    assert(imult16(4,10000,&a)==0);
+    assert(imult16(-4,10000,&a)==0);
+    assert(imult16(5,10,&a)==1 && a==50);
+    assert(imult16(-3,10000,&a)==1 && a==-30000);
+
+    assert(imult32(0x40000000,2,&b)==0);
+    assert(imult32(0x3fffffff,2,&b)==1 && b==0x7ffffffe);
+
+    assert(imult64(0x4000000000000000ll,2,&c)==0);
+    assert(imult64(0x3fffffffffffffffll,2,&c)==1 && c==0x7ffffffffffffffell);
+  }
 }
 

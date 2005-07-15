@@ -4,6 +4,9 @@
     if _XOPEN_SOURCE is defined, which is needed for Solaris.
     OpenBSD sucks.  I checked in a _really_ kludge now.  Please do not
     use OpenBSD if you have a choice.  Or Solaris, for that matter.
+  turns out the imult routines (which I never used) were incorrect.
+    Noted by Matthew Dempsky
+  open_* from open.h now open in large file mode
 
 0.23:
   also recognize EPFNOSUPPORT as EAFNOSUPPORT (groan)
