@@ -13,7 +13,7 @@ int socket_accept4(int s,char *ip,uint16 *port) {
   int fd;
   if ((fd=accept(s,(void*) &si,&len))==-1)
     return winsock2errno(-1);
-  *(uint32*)ip = *(uint32*)&si.sin_addr;
-  uint16_unpack_big((char *) &si.sin_port,port);
+  if (ip) *(uint32*)ip = *(uint32*)&si.sin_addr;
+  if (port) uint16_unpack_big((char *) &si.sin_port,port);
   return fd;
 }
