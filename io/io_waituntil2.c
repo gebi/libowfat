@@ -23,6 +23,11 @@
 #include <sys/devpoll.h>
 #endif
 
+#define DEBUG
+#ifdef DEBUG
+#include <stdio.h>
+#endif
+
 int64 io_waituntil2(int64 milliseconds) {
   struct pollfd* p;
   long i,j,r;
@@ -86,6 +91,10 @@ int64 io_waituntil2(int64 milliseconds) {
 	  e->next_write=first_writeable;
 	  first_writeable=y[i].ident;
 	}
+#ifdef DEBUG
+      } else {
+	fprintf(stderr,"got kevent on fd#%d, which is not in array!\n",y[n].ident);
+#endif
       }
     }
     return n;
@@ -122,6 +131,10 @@ int64 io_waituntil2(int64 milliseconds) {
 	    first_writeable=y[i].fd;
 	  }
 	}
+#ifdef DEBUG
+      } else {
+	fprintf(stderr,"got kevent on fd#%d, which is not in array!\n",y[n].fd);
+#endif
       }
     }
     return n;
@@ -167,6 +180,10 @@ int64 io_waituntil2(int64 milliseconds) {
 	    e->next_write=first_writeable;
 	    first_writeable=info.si_fd;
 	  }
+#ifdef DEBUG
+	} else {
+	  fprintf(stderr,"got kevent on fd#%d, which is not in array!\n",info.si_fd);
+#endif
 	}
       }
     }
