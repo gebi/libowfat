@@ -75,6 +75,11 @@ int64 io_waituntil2(int64 milliseconds) {
     if ((n=kevent(io_master,0,0,y,100,milliseconds!=-1?&ts:0))==-1) return -1;
     for (i=n-1; i>=0; --i) {
       io_entry* e=array_get(&io_fds,sizeof(io_entry),y[--n].ident);
+#ifdef DEBUG
+      if (!e) {
+	e=e;
+      }
+#endif
       if (e) {
 	if (y[n].flags&EV_ERROR) {
 	  /* error; signal whatever app is looking for */

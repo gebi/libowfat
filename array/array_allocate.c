@@ -56,25 +56,28 @@ void* array_allocate(array* x,uint64 membersize,int64 pos) {
   /* second case of overflow: pos*membersize too large */
   if (__unlikely(!umult64(membersize,pos+1,&wanted))) return 0;
 
-  if (__unlikely(wanted >= (uint64)x->allocated)) {
-    /* round up a little */
-    if (membersize<8)
-      wanted=(wanted+127)&(-128ll);	/* round up to multiple of 128 */
-    else
-      wanted=(wanted+4095)&(-4096ll);	/* round up to 4k pages */
+  if (wanted > (uint64)x->initialized) {
+    if (__unlikely(wanted >= (uint64)x->allocated)) {
+      /* round up a little */
+      if (membersize<8)
+	wanted=(wanted+127)&(-128ll);	/* round up to multiple of 128 */
+      else
+	wanted=(wanted+4095)&(-4096ll);	/* round up to 4k pages */
 
-    if (__unlikely(wanted<128)) return 0;	/* overflow during rounding */
+      if (__unlikely(wanted<128)) return 0;	/* overflow during rounding */
 
-    if (sizeof(size_t) != sizeof(int64) && __unlikely((size_t)(wanted) != wanted))
-      return 0;
-    {
-      char* tmp=realloc(x->p,wanted);
-      if (__unlikely(!tmp)) return 0;
-      x->p=tmp;
+      if (sizeof(size_t) != sizeof(int64) && __unlikely((size_t)(wanted) != wanted))
+	return 0;
+      {
+	char* tmp=realloc(x->p,wanted);
+	if (__unlikely(!tmp)) return 0;
+	x->p=tmp;
+      }
+      x->allocated=wanted;
+      byte_zero(x->p+x->initialized,x->allocated-x->initialized);
     }
-    x->allocated=wanted;
-    byte_zero(x->p+x->initialized,x->allocated-x->initialized);
+    x->initialized=(pos+1)*membersize;
   }
-  x->initialized=(pos+1)*membersize;
+
   return x->p+pos*membersize;
 }
