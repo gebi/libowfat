@@ -1,4 +1,7 @@
 0.25:
+  array_allocate no longer truncates the array
+  array_get now not only checks whether the element fits in the
+    allocates space, it also needs to be in the initialized space.
 
 0.24:
   fix scan_to_sa (Tim Lorenz)
