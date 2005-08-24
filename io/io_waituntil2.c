@@ -23,7 +23,6 @@
 #include <sys/devpoll.h>
 #endif
 
-#define DEBUG
 #ifdef DEBUG
 #include <stdio.h>
 #endif
