@@ -19,6 +19,8 @@ CC=gcc
 CFLAGS=-pipe -W -Wall -O2 -fomit-frame-pointer
 #CFLAGS=-pipe -Os -march=pentiumpro -mcpu=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
 
+CFLAGS += -D_REENTRANT
+
 # CFLAGS += -fstrict-aliasing -Wstrict-aliasing=2
 
 array_allocate.o: array/array_allocate.c safemult.h uint16.h \

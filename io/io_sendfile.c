@@ -3,6 +3,7 @@
 #include "io_internal.h"
 #include "havebsdsf.h"
 #include "havesendfile.h"
+#include <errno.h>
 
 #if defined(HAVE_BSDSENDFILE)
 #define SENDFILE 1

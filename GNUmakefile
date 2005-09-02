@@ -20,6 +20,8 @@ CFLAGS=-pipe -W -Wall -O2 -fomit-frame-pointer
 
 # CFLAGS += -fstrict-aliasing -Wstrict-aliasing=2
 
+CFLAGS += -D_REENTRANT
+
 # startrip
 ifneq ($(DEBUG),)
 CFLAGS=-pipe -Wall -g

@@ -89,6 +89,10 @@ int io_fd(int64 d) {
 	io_waitmode=_SIGIO;
     }
 #endif
+#ifdef __MINGW32__
+    io_comport=CreateIoCompletionPort(INVALID_HANDLE_VALUE,NULL,0,1);
+    if (io_comport) io_waitmode=COMPLETIONPORT;
+#endif
   }
 #if defined(HAVE_SIGIO)
   if (io_waitmode==_SIGIO) {

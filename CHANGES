@@ -2,6 +2,8 @@
   array_allocate no longer truncates the array
   array_get now not only checks whether the element fits in the
     allocates space, it also needs to be in the initialized space.
+  add -D_REENTRANT to CFLAGS so libowfat can be used in multi-threaded
+    programs
 
 0.24:
   fix scan_to_sa (Tim Lorenz)

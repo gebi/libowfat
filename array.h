@@ -2,7 +2,6 @@
 #define ARRAY_H
 
 #include "uint64.h"
-#include <errno.h>
 
 typedef struct {
   char* p;

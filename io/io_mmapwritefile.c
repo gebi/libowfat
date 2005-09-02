@@ -6,6 +6,7 @@
 #include <windows.h>
 #else
 #include <sys/mman.h>
+#include <errno.h>
 #endif
 
 #define BUFSIZE 16384

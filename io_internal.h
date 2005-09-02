@@ -56,6 +56,9 @@ extern enum __io_waitmode {
 #ifdef HAVE_DEVPOLL
   ,DEVPOLL
 #endif
+#ifdef __MINGW32__
+  ,COMPLETIONPORT
+#endif
 } io_waitmode;
 
 #if defined(HAVE_KQUEUE) || defined(HAVE_EPOLL) || defined(HAVE_DEVPOLL)
