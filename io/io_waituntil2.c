@@ -8,7 +8,11 @@
 #endif
 #include <unistd.h>
 #include <sys/time.h>
+#ifdef __MINGW32__
+#include <windows.h>
+#else
 #include <poll.h>
+#endif
 #include <errno.h>
 #ifdef HAVE_KQUEUE
 #include <sys/event.h>
@@ -28,7 +32,9 @@
 #endif
 
 int64 io_waituntil2(int64 milliseconds) {
+#ifndef __MINGW32__
   struct pollfd* p;
+#endif
   long i,j,r;
   if (!io_wanted_fds) return 0;
 #ifdef HAVE_EPOLL
@@ -195,6 +201,78 @@ int64 io_waituntil2(int64 milliseconds) {
   }
 dopoll:
 #endif
+#ifdef __MINGW32__
+  DWORD numberofbytes;
+  ULONG_PTR x;
+  LPOVERLAPPED o;
+  if (first_readable!=-1 || first_writeable!=-1) return;
+  if (GetQueuedCompletionStatus(io_comport,&numberofbytes,&x,&o,milliseconds==-1?milliseconds:INFINITE)) {
+    io_entry* e=array_get(&io_fds,sizeof(io_entry),x);
+    if (!e) return 0;
+    e->errorcode=0;
+    if (o==&e->or && e->readqueued==1) {
+      e->readqueued=2;
+      e->canread=1;
+      e->bytes_read=numberofbytes;
+      e->next_read=first_readable;
+      first_readable=x;
+//      printf("read %lu bytes on fd %lu: %p\n",numberofbytes,x,e);
+    } else if (o==&e->ow && e->writequeued==1) {
+      e->writequeued=2;
+      e->canwrite=1;
+      e->bytes_written=numberofbytes;
+      e->next_write=first_writeable;
+      first_writeable=x;
+    } else if (o==&e->or && e->acceptqueued==1) {
+      e->acceptqueued=2;
+      e->canread=1;
+      e->next_read=first_readable;
+      first_readable=x;
+    } else if (o==&e->ow && e->connectqueued==1) {
+      e->connectqueued=2;
+      e->canwrite=1;
+      e->next_write=first_writeable;
+      first_writeable=x;
+    } else if (o==&e->os && e->sendfilequeued==1) {
+      e->sendfilequeued=2;
+      e->canwrite=1;
+      e->bytes_written=numberofbytes;
+      e->next_write=first_writeable;
+      first_writeable=x;
+    }
+    return 1;
+  } else {
+    /* either the overlapped I/O request failed or we timed out */
+    DWORD err;
+    io_entry* e;
+    if (!o) return 0;	/* timeout */
+    /* we got a completion packet for a failed I/O operation */
+    err=GetLastError();
+    if (err==WAIT_TIMEOUT) return 0;	/* or maybe not */
+    e=array_get(&io_fds,sizeof(io_entry),x);
+    if (!e) return 0;	/* WTF?! */
+    e->errorcode=err;
+    if (o==&e->or && (e->readqueued || e->acceptqueued)) {
+      if (e->readqueued) e->readqueued=2; else
+      if (e->acceptqueued) e->acceptqueued=2;
+      e->canread=1;
+      e->bytes_read=-1;
+      e->next_read=first_readable;
+      first_readable=x;
+    } else if ((o==&e->ow || o==&e->os) &&
+               (e->writequeued || e->connectqueued || e->sendfilequeued)) {
+      if (o==&e->ow) {
+	if (e->writequeued) e->writequeued=2; else
+        if (e->connectqueued) e->connectqueued=2;
+      } else if (o==&e->os) e->sendfilequeued=2;
+      e->canwrite=1;
+      e->bytes_written=-1;
+      e->next_write=first_writeable;
+      first_writeable=x;
+    }
+    return 1;
+  }
+#else
   for (i=r=0; i<array_length(&io_fds,sizeof(io_entry)); ++i) {
     io_entry* e=array_get(&io_fds,sizeof(io_entry),i);
     if (!e) return -1;
@@ -231,4 +309,5 @@ dopoll:
     p++;
   }
   return i;
+#endif
 }

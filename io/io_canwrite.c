@@ -26,7 +26,13 @@ int64 io_canwrite() {
     first_writeable=e->next_write;
     e->next_write=-1;
     debug_printf(("io_canwrite: dequeue %lld from normal write queue (next is %ld)\n",r,first_writeable));
-    if (e->wantwrite && e->canwrite) {
+    if (e->wantwrite &&
+#ifdef __MINGW32__
+                        (e->canwrite || e->sendfilequeued==1)
+#else
+                        e->canwrite
+#endif
+      				   ) {
 #ifdef HAVE_SIGIO
       e->next_write=alt_firstwrite;
       alt_firstwrite=r;

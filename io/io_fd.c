@@ -50,8 +50,10 @@ int io_fd(int64 d) {
   long r;
   if ((r=fcntl(d,F_GETFL,0)) == -1)
     return 0;	/* file descriptor not open */
+  printf("io_fd(%d)\n",(int)d);
 #endif
   if (!(e=array_allocate(&io_fds,sizeof(io_entry),d))) return 0;
+  if (e->inuse) return 1;
   byte_zero(e,sizeof(io_entry));
   e->inuse=1;
 #ifdef __MINGW32__
@@ -90,8 +92,13 @@ int io_fd(int64 d) {
     }
 #endif
 #ifdef __MINGW32__
-    io_comport=CreateIoCompletionPort(INVALID_HANDLE_VALUE,NULL,0,1);
-    if (io_comport) io_waitmode=COMPLETIONPORT;
+    io_comport=CreateIoCompletionPort(INVALID_HANDLE_VALUE,NULL,0,0);
+    if (io_comport) {
+      io_waitmode=COMPLETIONPORT;
+    } else {
+      errno=EINVAL;
+      return 0;
+    }
 #endif
   }
 #if defined(HAVE_SIGIO)
@@ -102,6 +109,14 @@ int io_fd(int64 d) {
     fcntl(d, F_SETAUXFL, O_ONESIGFD);
 #endif
     fcntl(d,F_SETFL,fcntl(d,F_GETFL)|O_NONBLOCK|O_ASYNC);
+  }
+#endif
+#ifdef __MINGW32__
+  if (io_comport) {
+    if (CreateIoCompletionPort((HANDLE)d,io_comport,(ULONG_PTR)d,0)==0) {
+      errno=EBADF;
+      return 0;
+    }
   }
 #endif
   return 1;

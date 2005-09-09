@@ -1,3 +1,82 @@
+#ifdef __MINGW32__
+
+#include <windows.h>
+#include <mswsock.h>
+#include <errno.h>
+#include "io_internal.h"
+#include "iob_internal.h"
+
+int64 iob_send(int64 s,io_batch* b) {
+  /* Windows has a sendfile called TransmitFile, which can send one
+   * header and one trailer buffer. */
+  iob_entry* x,* last;
+  io_entry* e;
+  int64 sent;
+  int i;
+
+  if (b->bytesleft==0) return 0;
+  sent=-1;
+  e=array_get(&io_fds,sizeof(io_entry),s);
+  if (!e) { errno=EBADF; return -3; }
+  if (!(x=array_get(&b->b,sizeof(iob_entry),b->next)))
+    return -3;		/* can't happen error */
+  last=(iob_entry*)(((char*)array_start(&b->b))+array_bytes(&b->b));
+
+  if (e->canwrite || e->sendfilequeued==1) {
+    /* An overlapping write finished.  Reap the result. */
+    if (e->bytes_written==-1) return -3;
+    if (e->bytes_written<x->n) {
+      sent=e->bytes_written;
+      if (x->n < e->bytes_written) {
+	e->bytes_written-=x->n;
+	x->n=0;
+	++x;
+      }
+      x->n -= e->bytes_written;
+      x->offset += e->bytes_written;
+      b->bytesleft -= e->bytes_written;
+    }
+    e->canwrite=0; e->sendfilequeued=0;
+  }
+
+  for (i=0; x+i<last; ++i)
+    if (x[i].n) break;
+
+  if (x[i].type==FROMBUF || x[i].type==FROMBUF_FREE) {
+    if (x+i+1 < last &&
+	(x[i+1].type==FROMFILE || x[i+1].type==FROMFILE_CLOSE)) {
+      TRANSMIT_FILE_BUFFERS tfb;
+      e->sendfilequeued=1;
+      memset(&tfb,0,sizeof(tfb));
+      memset(&e[i].os,0,sizeof(e[i].os));
+      e[i].os.Offset=x[i].offset;
+      e[i].os.OffsetHigh=(x[i].offset>>32);
+      if (!TransmitFile(s,(HANDLE)x[i].fd,
+		      x[i].n+tfb.HeadLength>0xffff?0xffff:x[i].n,
+		      0,&e[i].os,&tfb,TF_USE_KERNEL_APC))
+	return -3;
+      return sent;
+    } else {
+      e->writequeued=1;
+      if (!WriteFile(s,x[i].buf+x[i].offset,x[i].n,0,&e->ow))
+	return -3;
+      return sent;
+    }
+  } else {
+    e->sendfilequeued=1;
+    memset(&e[i].os,0,sizeof(e[i].os));
+    e[i].os.Offset=x[i].offset;
+    e[i].os.OffsetHigh=(x[i].offset>>32);
+    if (!TransmitFile(s,(HANDLE)x[i].fd,
+		      x[i].n>0xffff?0xffff:x[i].n,
+		      0,&e[i].os,0,TF_USE_KERNEL_APC))
+      return -3;
+    return sent;
+  }
+}
+
+#else
+
 #include "havebsdsf.h"
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -132,3 +211,5 @@ eagain:
 abort:
   return total;
 }
+
+#endif

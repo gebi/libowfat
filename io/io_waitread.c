@@ -1,7 +1,33 @@
 #include <unistd.h>
+#ifdef __MINGW32__
+#include <windows.h>
+#else
 #include <poll.h>
+#endif
 #include <errno.h>
 #include "io_internal.h"
+
+#ifdef __MINGW32__
+
+int64 io_waitread(int64 d,char* buf,int64 len) {
+  long r;
+  io_entry* e=array_get(&io_fds,sizeof(io_entry),d);
+  if (!e) { errno=EBADF; return -3; }
+  if (e->nonblock) {
+    unsigned long i=0;
+    ioctlsocket(d, FIONBIO, &i);
+  }
+  r=read(d,buf,len);
+  if (e->nonblock) {
+    unsigned long i=1;
+    ioctlsocket(d, FIONBIO, &i);
+  }
+  if (r==-1)
+    r=-3;
+  return r;
+}
+
+#else
 
 int64 io_waitread(int64 d,char* buf,int64 len) {
   long r;
@@ -25,3 +51,5 @@ again:
   }
   return r;
 }
+
+#endif

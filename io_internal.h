@@ -1,5 +1,9 @@
 #include "io.h"
 #include "array.h"
+#ifdef __MINGW32__
+#include "socket.h"
+extern HANDLE io_comport;
+#else
 #include "haveepoll.h"
 #include "havekqueue.h"
 #include "havedevpoll.h"
@@ -8,10 +12,6 @@
 #define _GNU_SOURCE
 #include <signal.h>
 #endif
-
-#ifdef __MINGW32__
-#include "socket.h"
-extern HANDLE io_comport;
 #endif
 
 typedef struct {
@@ -22,6 +22,14 @@ typedef struct {
   unsigned int canwrite:1;
   unsigned int nonblock:1;
   unsigned int inuse:1;
+#ifdef __MINGW32__
+  unsigned int readqueued:2;
+  unsigned int writequeued:2;
+  unsigned int acceptqueued:2;
+  unsigned int connectqueued:2;
+  unsigned int sendfilequeued:2;
+  unsigned int listened:1;
+#endif
   long next_read;
   long next_write;
   void* cookie;
@@ -29,8 +37,12 @@ typedef struct {
   long maplen;
   uint64 mapofs;
 #ifdef __MINGW32__
-  OVERLAPPED o;
+  OVERLAPPED or,ow,os;	/* overlapped for read+accept, write+connect, sendfile */
   HANDLE /* fd, */ mh;
+  char inbuf[8192];
+  int bytes_read,bytes_written;
+  DWORD errorcode;
+  SOCKET next_accept;
 #endif
 } io_entry;
 

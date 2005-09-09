@@ -3,6 +3,10 @@
 #include <errno.h>
 #include "io_internal.h"
 
+#ifdef __MINGW32__
+#include <stdio.h>
+#endif
+
 int64 io_canread() {
   io_entry* e;
   if (first_readable==-1)
@@ -26,7 +30,18 @@ int64 io_canread() {
     first_readable=e->next_read;
     e->next_read=-1;
     debug_printf(("io_canread: dequeue %lld from normal read queue (next is %ld)\n",r,first_readable));
-    if (e->wantread && e->canread) {
+
+#ifdef __MINGW32__
+//    printf("event on %d: wr %d rq %d aq %d\n",(int)r,e->wantread,e->readqueued,e->acceptqueued);
+#endif
+
+    if (e->wantread &&
+#ifdef __MINGW32__
+		       (e->canread || e->acceptqueued==1 || e->readqueued==1)
+#else
+			e->canread
+#endif
+				  ) {
 #ifdef HAVE_SIGIO
       e->next_read=alt_firstread;
       alt_firstread=r;

@@ -4,6 +4,9 @@
     allocates space, it also needs to be in the initialized space.
   add -D_REENTRANT to CFLAGS so libowfat can be used in multi-threaded
     programs
+  further Windoze support (test/io5.c works, gatling still doesn't)
+    This is just to get gatling to work, I may remove it again after
+    that.
 
 0.24:
   fix scan_to_sa (Tim Lorenz)

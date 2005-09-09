@@ -14,7 +14,9 @@ buffer.a mmap.a taia.a tai.a dns.a case.a mult.a array.a io.a textcode.a
 
 all: t $(LIBS) libowfat.a libsocket
 
-CC=gcc
+CROSS=
+#CROSS=i686-mingw-
+CC=$(CROSS)gcc
 CFLAGS=-pipe -W -Wall -O2 -fomit-frame-pointer
 #CFLAGS=-pipe -Os -march=pentiumpro -mcpu=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
 
@@ -126,8 +128,8 @@ $(TAIA_OBJS) $(TAI_OBJS) $(CASE_OBJS) $(ARRAY_OBJS) $(MULT_OBJS) \
 $(IO_OBJS)
 
 libowfat.a: $(ALL_OBJS)
-	ar cr $@ $(ALL_OBJS)
-	-ranlib $@
+	$(CROSS)ar cr $@ $(ALL_OBJS)
+	-$(CROSS)ranlib $@
 
 CFLAGS+=-I.
 
@@ -290,3 +292,5 @@ Makefile: GNUmakefile dep libdep
 	    -e 's/^CURNAME=.*/'CURNAME=$(CURNAME)/ \
 	    -e 's/ Makefile//' < GNUmakefile >> $@
 
+windoze:
+	$(MAKE) DIET= CROSS=i686-mingw32-

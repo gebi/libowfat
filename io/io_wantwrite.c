@@ -70,5 +70,11 @@ void io_wantwrite(int64 d) {
     }
   }
 #endif
+#ifdef __MINGW32__
+  if (!e->wantwrite) {
+    e->next_write=first_writeable;
+    first_writeable=d;
+  }
+#endif
   e->wantwrite=1;
 }

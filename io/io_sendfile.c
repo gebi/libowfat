@@ -112,6 +112,38 @@ int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
 }
 #endif
 
+#elif defined(__MINGW32__)
+
+#include <windows.h>
+#include <mswsock.h>
+
+int64 io_sendfile(int64 out,int64 in,uint64 off,uint64 bytes) {
+  io_entry* e=array_get(&io_fds,sizeof(io_entry),out);
+  if (!e) { errno=EBADF; return -3; }
+  if (e->sendfilequeued==1) {
+    /* we called TransmitFile, and it returned. */
+    e->sendfilequeued=2;
+    errno=e->errorcode;
+    if (e->bytes_written==-1) return -1;
+    if (e->bytes_written!=bytes) {	/* we wrote less than caller wanted to write */
+      e->sendfilequeued=1;	/* so queue next request */
+      off+=e->bytes_written;
+      bytes-=e->bytes_written;
+      e->os.Offset=off;
+      e->os.OffsetHigh=(off>>32);
+      TransmitFile(out,(HANDLE)in,bytes>0xffff?0xffff:bytes,0,&e->os,0,TF_USE_KERNEL_APC);
+    }
+    return e->bytes_written;
+  } else {
+    e->sendfilequeued=1;
+    e->os.Offset=off;
+    e->os.OffsetHigh=(off>>32);
+    /* we always write at most 64k, so timeout handling is possible */
+    if (!TransmitFile(out,(HANDLE)in,bytes>0xffff?0xffff:bytes,0,&e->os,0,TF_USE_KERNEL_APC))
+      return -3;
+  }
+}
+
 #else
 
 #include <iob.h>

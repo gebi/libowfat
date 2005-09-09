@@ -15,6 +15,12 @@ int main() {
     buffer_putnlflush(buffer_2);
     return 111;
   }
+  if (!io_fd(s)) {
+    buffer_puts(buffer_2,"io_fd: ");
+    buffer_puterror(buffer_2);
+    buffer_putnlflush(buffer_2);
+    return 111;
+  }
   if (socket_listen(s,16)==-1) {
     buffer_puts(buffer_2,"socket_listen: ");
     buffer_puterror(buffer_2);
@@ -22,12 +28,6 @@ int main() {
     return 111;
   }
   io_nonblock(s);
-  if (!io_fd(s)) {
-    buffer_puts(buffer_2,"io_fd: ");
-    buffer_puterror(buffer_2);
-    buffer_putnlflush(buffer_2);
-    return 111;
-  }
   io_wantread(s);
   buffer_puts(buffer_2,"listening on port 1234 (fd #");
   buffer_putulong(buffer_2,s);
@@ -35,7 +35,6 @@ int main() {
   for (;;) {
     int64 i;
     io_wait();
-    buffer_putsflush(buffer_2,"io_wait() returned!\n");
     while ((i=io_canread())!=-1) {
       if (i==s) {
 	int n;
@@ -64,6 +63,7 @@ int main() {
 	}
       } else {
 	char buf[1024];
+
 	int l=io_tryread(i,buf,sizeof buf);
 	if (l==-1) {
 	  buffer_puts(buffer_2,"io_tryread(");

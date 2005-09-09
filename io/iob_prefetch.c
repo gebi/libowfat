@@ -1,4 +1,15 @@
 #include "iob_internal.h"
+
+#ifdef __MINGW32__
+
+/* not supported */
+void iob_internal(io_batch* b,uint64 bytes) {
+  (void)b;
+  (void)bytes;
+}
+
+#else
+
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/mman.h>
@@ -40,3 +51,5 @@ void iob_prefetch(io_batch* b,uint64 bytes) {
   }
   (void)x;
 }
+
+#endif

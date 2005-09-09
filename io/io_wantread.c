@@ -19,6 +19,9 @@
 #include <sys/socket.h>
 #include <sys/devpoll.h>
 #endif
+#ifdef __MINGW32__
+#include <mswsock.h>
+#endif
 
 void io_wantread(int64 d) {
   int newfd;
@@ -68,6 +71,34 @@ void io_wantread(int64 d) {
       e->next_read=first_readable;
       first_readable=d;
     }
+  }
+#endif
+#ifdef __MINGW32__
+  if (e->listened) {
+    if (e->next_accept==0) e->next_accept=socket(AF_INET,SOCK_STREAM,0);
+    if (e->next_accept!=-1) {
+      AcceptEx(d,e->next_accept,e->inbuf,0,200,200,&e->errorcode,&e->or);
+      e->acceptqueued=1;
+    }
+  } else if (!e->wantread) {
+    if (ReadFile((HANDLE)d,e->inbuf,sizeof(e->inbuf),&e->errorcode,&e->or)) {
+queueread:
+      /* had something to read immediately.  Damn! */
+      e->readqueued=0;
+      e->canread=1;
+      e->bytes_read=e->errorcode;
+      e->errorcode=0;
+      e->next_read=first_readable;
+      first_readable=d;
+      return;
+    } else if (GetLastError()==ERROR_IO_PENDING)
+      e->readqueued=1;
+    else
+      goto queueread;
+#if 0
+    e->next_read=first_readable;
+    first_readable=d;
+#endif
   }
 #endif
   e->wantread=1;
