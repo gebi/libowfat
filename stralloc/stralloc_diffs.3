@@ -11,6 +11,6 @@ the \\0-terminated string in \fIa\fR, without
 the terminating \\0, is lexicographically smaller than, equal to, or
 greater than the string stored in \fIa\fR.
 .SH "RETURN VALUE"
-1 for success, 0 on memory allocation failure.
+<0 if a<b, 0 if a==b, >0 if a>b.
 .SH "SEE ALSO"
 stralloc_diff(3), stralloc_starts(3), str_diff(3)
