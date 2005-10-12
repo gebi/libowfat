@@ -50,7 +50,6 @@ int io_fd(int64 d) {
   long r;
   if ((r=fcntl(d,F_GETFL,0)) == -1)
     return 0;	/* file descriptor not open */
-  printf("io_fd(%d)\n",(int)d);
 #endif
   if (!(e=array_allocate(&io_fds,sizeof(io_entry),d))) return 0;
   if (e->inuse) return 1;
