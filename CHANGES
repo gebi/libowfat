@@ -8,6 +8,7 @@
     This is just to get gatling to work, I may remove it again after
     that.
   implement Nikola's idea to remove limit number of strings in errmsg
+  add taia_half
 
 0.24:
   fix scan_to_sa (Tim Lorenz)
