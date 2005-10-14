@@ -64,7 +64,7 @@ int main(int argc,char* argv[]) {
 #if 0
   buffer_putmflush(buffer_1,"foo ","bar ","baz.\n");
 #endif
-#if 0
+#if 1
   char* c="fnord";
   int fd=open_read(c);
   errmsg_iam(argv[0]);
