@@ -29,7 +29,14 @@ extern void cdb_findstart(struct cdb *);
 extern int cdb_findnext(struct cdb *,const unsigned char *,unsigned long int);
 extern int cdb_find(struct cdb *,const unsigned char *,unsigned long int);
 
+extern int cdb_firstkey(struct cdb *c,uint32 *kpos);
+extern int cdb_nextkey(struct cdb *c,uint32 *kpos);
+
+extern int cdb_successor(struct cdb *c,const unsigned char *,unsigned long int);
+
 #define cdb_datapos(c) ((c)->dpos)
 #define cdb_datalen(c) ((c)->dlen)
+#define cdb_keypos(c) ((c)->kpos)
+#define cdb_keylen(c) ((c)->dpos-(c)->kpos)
 
 #endif
