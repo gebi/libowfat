@@ -11,7 +11,7 @@ MAN3DIR=${prefix}/man/man3
 
 LIBS=byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a \
 buffer.a mmap.a taia.a tai.a dns.a case.a mult.a array.a io.a \
-textcode.a cdb.a
+textcode.a cdb.a cdb_make.a
 
 all: t $(LIBS) libowfat.a libsocket
 
