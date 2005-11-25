@@ -10,7 +10,8 @@ INCLUDEDIR=${prefix}/include
 MAN3DIR=${prefix}/man/man3
 
 LIBS=byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a \
-buffer.a mmap.a taia.a tai.a dns.a case.a mult.a array.a io.a textcode.a
+buffer.a mmap.a taia.a tai.a dns.a case.a mult.a array.a io.a \
+textcode.a cdb.a
 
 all: t $(LIBS) libowfat.a libsocket
 
@@ -53,7 +54,7 @@ endif
 # to build without diet libc support, use $ make DIET=
 # see http://www.fefe.de/dietlibc/ for details about the diet libc
 
-VPATH=str:byte:fmt:scan:uint:open:stralloc:unix:socket:buffer:mmap:textcode:taia:tai:dns:case:array:mult:io
+VPATH=str:byte:fmt:scan:uint:open:stralloc:unix:socket:buffer:mmap:textcode:taia:tai:dns:case:array:mult:io:cdb
 
 BYTE_OBJS=$(patsubst byte/%.c,%.o,$(wildcard byte/*.c))
 FMT_OBJS=$(patsubst fmt/%.c,%.o,$(wildcard fmt/*.c))
@@ -74,6 +75,7 @@ CASE_OBJS=$(patsubst case/%.c,%.o,$(wildcard case/*.c))
 ARRAY_OBJS=$(patsubst array/%.c,%.o,$(wildcard array/*.c))
 MULT_OBJS=$(patsubst mult/%.c,%.o,$(wildcard mult/*.c))
 IO_OBJS=$(patsubst io/%.c,%.o,$(wildcard io/*.c))
+CDB_OBJS=$(patsubst cdb/%.c,%.o,$(wildcard cdb/*.c))
 
 $(BYTE_OBJS): byte.h
 $(FMT_OBJS): fmt.h
@@ -92,6 +94,7 @@ $(CASE_OBJS): case.h
 $(ARRAY_OBJS): uint64.h array.h
 $(MULT_OBJS): uint64.h uint32.h uint16.h safemult.h
 $(IO_OBJS): uint64.h array.h io.h io_internal.h taia.h tai.h haveepoll.h havekqueue.h havesigio.h havebsdsf.h havedevpoll.h havesendfile.h
+$(CDB_OBJS): cdb.h uint32.h
 
 
 iob_addbuf.o iob_addfile.o iob_new.o iob_reset.o iob_send.o: iob_internal.h iob.h
@@ -120,6 +123,7 @@ case.a: $(CASE_OBJS)
 array.a: $(ARRAY_OBJS)
 mult.a: $(MULT_OBJS)
 io.a: $(IO_OBJS)
+cdb.a: $(CDB_OBJS)
 
 ALL_OBJS=$(DNS_OBJS) $(BYTE_OBJS) $(FMT_OBJS) $(SCAN_OBJS) \
 $(STR_OBJS) $(UINT_OBJS) $(OPEN_OBJS) $(STRALLOC_OBJS) $(UNIX_OBJS) \
@@ -155,7 +159,7 @@ dep libsocket havealloca.h
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
 uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h \
 openreadclose.h readclose.h ndelay.h array.h io.h safemult.h iob.h havealloca.h \
-errmsg.h
+errmsg.h cdb.h
 
 install: libowfat.a
 	install -d $(INCLUDEDIR) $(MAN3DIR) $(LIBDIR)

@@ -11,7 +11,8 @@ INCLUDEDIR=${prefix}/include
 MAN3DIR=${prefix}/man/man3
 
 LIBS=byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a \
-buffer.a mmap.a taia.a tai.a dns.a case.a mult.a array.a io.a textcode.a
+buffer.a mmap.a taia.a tai.a dns.a case.a mult.a array.a io.a \
+textcode.a cdb.a
 
 all: t $(LIBS) libowfat.a libsocket
 
@@ -116,6 +117,10 @@ case_diffs.o: case/case_diffs.c case.h
 case_lowerb.o: case/case_lowerb.c case.h
 case_lowers.o: case/case_lowers.c case.h
 case_starts.o: case/case_starts.c case.h
+cdb.o: cdb/cdb.c byte.h cdb.h uint32.h
+cdb_hash.o: cdb/cdb_hash.c cdb.h uint32.h
+cdb_make.o: cdb/cdb_make.c cdb.h uint32.h cdb_make.h buffer.h
+cdb_traverse.o: cdb/cdb_traverse.c cdb.h uint32.h
 dns_dfd.o: dns/dns_dfd.c byte.h dns.h stralloc.h iopause.h taia.h tai.h \
   uint64.h
 dns_domain.o: dns/dns_domain.c case.h byte.h dns.h stralloc.h iopause.h \
@@ -523,6 +528,7 @@ MULT_OBJS=imult16.o imult32.o imult64.o umult16.o umult32.o umult64.o
 ARRAY_OBJS=array_allocate.o array_bytes.o array_cat.o array_cat0.o array_catb.o array_cate.o array_cats.o array_cats0.o array_equal.o array_fail.o array_get.o array_length.o array_reset.o array_start.o array_trunc.o array_truncate.o 
 IO_OBJS=io_appendfile.o io_canread.o io_canwrite.o io_check.o io_close.o io_closeonexec.o io_createfile.o io_dontwantread.o io_dontwantwrite.o io_eagain.o io_fd.o io_finishandshutdown.o io_getcookie.o io_mmapwritefile.o io_nonblock.o io_passfd.o io_pipe.o io_readfile.o io_readwritefile.o io_receivefd.o io_sendfile.o io_setcookie.o io_sigpipe.o io_socketpair.o io_timeout.o io_timeouted.o io_tryread.o io_tryreadtimeout.o io_trywrite.o io_trywritetimeout.o io_wait.o io_waitread.o io_waituntil.o io_waituntil2.o io_waitwrite.o io_wantread.o io_wantwrite.o iob_addbuf.o iob_addbuf_free.o iob_addbuf_internal.o iob_addfile.o iob_addfile_close.o iob_adds.o iob_adds_free.o iob_free.o iob_new.o iob_prefetch.o iob_reset.o iob_send.o iob_write.o 
 TEXTCODE_OBJS=base64.o fmt_base64.o fmt_cescape.o fmt_foldwhitespace.o fmt_hexdump.o fmt_html.o fmt_quotedprintable.o fmt_to_array.o fmt_to_sa.o fmt_tofrom_array.o fmt_urlencoded.o fmt_uuencoded.o fmt_yenc.o scan_base64.o scan_cescape.o scan_hexdump.o scan_html.o scan_quotedprintable.o scan_to_array.o scan_to_sa.o scan_tofrom_array.o scan_urlencoded.o scan_uuencoded.o scan_yenc.o 
+CDB_OBJS=cdb.o cdb_hash.o cdb_make.o cdb_traverse.o 
 
 byte.a: $(BYTE_OBJS)
 fmt.a: $(FMT_OBJS)
@@ -543,6 +549,7 @@ case.a: $(CASE_OBJS)
 array.a: $(ARRAY_OBJS)
 mult.a: $(MULT_OBJS)
 io.a: $(IO_OBJS)
+cdb.a: $(CDB_OBJS)
 
 ALL_OBJS=$(DNS_OBJS) $(BYTE_OBJS) $(FMT_OBJS) $(SCAN_OBJS) \
 $(STR_OBJS) $(UINT_OBJS) $(OPEN_OBJS) $(STRALLOC_OBJS) $(UNIX_OBJS) \
@@ -578,7 +585,7 @@ dep libsocket havealloca.h
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
 uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h \
 openreadclose.h readclose.h ndelay.h array.h io.h safemult.h iob.h havealloca.h \
-errmsg.h
+errmsg.h cdb.h
 
 install: libowfat.a
 	install -d $(INCLUDEDIR) $(MAN3DIR) $(LIBDIR)

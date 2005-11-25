@@ -9,6 +9,7 @@
     that.
   implement Nikola's idea to remove limit number of strings in errmsg
   add taia_half
+  add cdb
 
 0.24:
   fix scan_to_sa (Tim Lorenz)
