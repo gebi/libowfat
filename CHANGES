@@ -11,6 +11,7 @@
   add taia_half
   add cdb
   add rangecheck.h
+  add io_block
 
 0.24:
   fix scan_to_sa (Tim Lorenz)

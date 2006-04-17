@@ -48,7 +48,7 @@ __static inline int range_bufinbuf(const void* buf1,size_t len1,const void* buf2
 
 /* does an array of "elements" members of size "membersize" starting at
  * "arraystart" lie inside buf1[0..len-1]? */
-int range_arrayinbuf(const void* buf1,size_t len,
+int range_arrayinbuf(const void* buf,size_t len,
 		     const void* arraystart,size_t elements,size_t membersize);
 
 /* does an ASCIIZ string starting at "ptr" lie in buf[0..len-1]? */
