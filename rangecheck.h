@@ -1,6 +1,7 @@
 #ifndef RANGECHECK_H
 #define RANGECHECK_H
 
+#include <inttypes.h>
 #include <stddef.h>
 
 /* return 0 for range error / overflow, 1 for ok */
@@ -16,14 +17,14 @@ __static inline int range_ptrinbuf(const void* buf,size_t len,const void* ptr) {
   register const char* c=(const char*)buf;	/* no pointer arithmetic on void* */
   return (c &&		/* is buf non-NULL? */
 #if (__GNUC__ == 4) && (__GNUC_MINOR__ == 1)
-	  ((size_t)c)+len>(size_t)c &&	/* gcc 4.1 miscompiles this test */
+	  ((uintptr_t)c)+len>(uintptr_t)c &&	/* gcc 4.1 miscompiles this test */
 #else
 	  c+len>c &&	/* catch integer overflows and fail if buffer is 0 bytes long */
 			/* because then ptr can't point _in_ the buffer */
 #endif
-	  (size_t)((const char*)ptr-c)<len);	/* this one is a little tricky.
+	  (uintptr_t)((const char*)ptr-c)<len);	/* this one is a little tricky.
      "ptr-c" checks the offset of ptr in the buffer is inside the buffer size.
-     Now, ptr-c can underflow; say it is -1.  When we cast it to size_t, it becomes
+     Now, ptr-c can underflow; say it is -1.  When we cast it to uintptr_t, it becomes
      a very large number. */
 }
 
@@ -32,7 +33,7 @@ __static inline int range_ptrinbuf(const void* buf,size_t len,const void* ptr) {
  * Does NOT check whether buf has a non-zero length! */
 __static inline int range_validbuf(const void* buf,size_t len) {
 #if (__GNUC__ == 4) && (__GNUC_MINOR__ == 1)
-  return (buf && (size_t)buf+len>=(size_t)buf);	/* gcc 4.1 miscompiles this test */
+  return (buf && (uintptr_t)buf+len>=(uintptr_t)buf);	/* gcc 4.1 miscompiles this test */
 #else
   return (buf && (const char*)buf+len>=(const char*)buf);
 #endif
