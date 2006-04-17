@@ -12,8 +12,8 @@ int range_arrayinbuf(const void* buf1,size_t len,
     alen=x;
   } else {
     unsigned long long t=(unsigned long long)elements*membersize;
-    alen=t;
-    if (alen!=t) return 0;
+    alen=t;			/* this strips the upper 32 bits of t */
+    if (alen!=t) return 0;	/* if that changes something, we overflowed */
   }
   return range_bufinbuf(buf1,len,arraystart,alen);
 }
