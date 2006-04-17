@@ -77,6 +77,8 @@ void* io_getcookie(int64 d);
 
 /* put descriptor in non-blocking mode */
 void io_nonblock(int64 d);
+/* put descriptor in blocking mode */
+void io_block(int64 d);
 /* put descriptor in close-on-exec mode */
 void io_closeonexec(int64 d);
 
