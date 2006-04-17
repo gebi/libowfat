@@ -10,6 +10,7 @@
   implement Nikola's idea to remove limit number of strings in errmsg
   add taia_half
   add cdb
+  add rangecheck.h
 
 0.24:
   fix scan_to_sa (Tim Lorenz)

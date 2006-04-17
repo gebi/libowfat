@@ -64,7 +64,7 @@ int main(int argc,char* argv[]) {
 #if 0
   buffer_putmflush(buffer_1,"foo ","bar ","baz.\n");
 #endif
-#if 1
+#if 0
   char* c="fnord";
   int fd=open_read(c);
   errmsg_iam(argv[0]);
@@ -318,7 +318,7 @@ int main(int argc,char* argv[]) {
   rdtscl(c);
   printf("%lu %lu\n",b-a,c-b);
 #endif
-#if 0
+#if 1
   unsigned long size;
   char* buf=mmap_read(argv[1],&size);
   if (buf) {
