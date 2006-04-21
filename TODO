@@ -17,3 +17,5 @@ HP-UX: http://docs.hp.com/hpux/onlinedocs/B9106-90009/00/01/168-con.html
 AIX: http://publib16.boulder.ibm.com/pseries/en_US/libs/commtrf2/send_file.htm
 
 Solaris 10: http://developers.sun.com/solaris/articles/event_completion.html
+
+Linux: vmsplice (not in main kernel right now)
