@@ -1,5 +1,6 @@
 #include <sys/types.h>
 #ifndef __MINGW32__
+#include <unistd.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #endif
@@ -7,6 +8,7 @@
 #include <errno.h>
 #include "haveip6.h"
 #include "socket.h"
+#include "ndelay.h"
 
 #ifndef EAFNOSUPPORT
 #define EAFNOSUPPORT EINVAL
