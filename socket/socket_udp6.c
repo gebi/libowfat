@@ -41,6 +41,7 @@ compat:
     winsock2errno(setsockopt(s,IPPROTO_IPV6,IPV6_V6ONLY,(void*)&zero,sizeof(zero)));
   }
 #endif
+  if (ndelay_on(s) == -1) { close(s); return -1; }
   return s;
 #else
   return socket_udp();

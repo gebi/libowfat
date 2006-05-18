@@ -6,6 +6,7 @@
 #include <sys/poll.h>
 #include <unistd.h>
 #include "socket.h"
+#include "ndelay.h"
 #include <sys/socket.h>
 #ifdef __dietlibc__
 #include <write12.h>
@@ -72,12 +73,14 @@ usage:
     if (s==-1) panic("server: error: socket() failed");
     if (socket_bind4_reuse(s,ip+12,port)==-1) panic("server: error: bind() failed");
     if (socket_listen(s,1)==-1) panic("server: error: listen() failed");
+    ndelay_off(s);
     if ((t=socket_accept4(s,0,0))==-1) panic("server: error: accept() failed");
   } else {
     s=socket_tcp6();
     if (s==-1) panic("server: error: socket() failed");
     if (socket_bind6_reuse(s,ip,port,scope_id)==-1) panic("server: error: bind() failed");
     if (socket_listen(s,1)==-1) panic("server: error: listen() failed");
+    ndelay_off(s);
     if ((t=socket_accept6(s,0,0,0))==-1) panic("server: error: accept() failed");
   }
   close(s);

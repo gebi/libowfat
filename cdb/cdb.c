@@ -2,15 +2,23 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/mman.h>
 #include <unistd.h>
 #include <errno.h>
 #include "byte.h"
 #include "cdb.h"
+#ifdef __MINGW32__
+#include "windows.h"
+#else
+#include <sys/mman.h>
+#endif
 
 void cdb_free(struct cdb *c) {
   if (c->map) {
+#ifdef __MINGW32__
+    UnmapViewOfFile(c->map);
+#else
     munmap(c->map,c->size);
+#endif
     c->map = 0;
   }
 }
@@ -19,14 +27,25 @@ void cdb_findstart(struct cdb *c) {
   c->loop = 0;
 }
 
-void cdb_init(struct cdb *c,int fd) {
+void cdb_init(struct cdb *c,int64 fd) {
+#ifndef __MINGW32__
   struct stat st;
   char *x;
+#endif
 
   cdb_free(c);
   cdb_findstart(c);
   c->fd = fd;
 
+#ifdef __MINGW32__
+  {
+    HANDLE m=CreateFileMapping((HANDLE)(uintptr_t)fd,0,PAGE_READONLY,0,0,NULL);
+    if (m)
+      if ((c->map=MapViewOfFile(m,FILE_MAP_READ,0,0,0)))
+	c->size=GetFileSize((HANDLE)(uintptr_t)fd,NULL);
+    CloseHandle(m);
+  }
+#else
   if (fstat(fd,&st) == 0)
     if (st.st_size <= 0xffffffff) {
       x = mmap(0,st.st_size,PROT_READ,MAP_SHARED,fd,0);
@@ -35,6 +54,7 @@ void cdb_init(struct cdb *c,int fd) {
 	c->map = x;
       }
     }
+#endif
 }
 
 int cdb_read(struct cdb *c,unsigned char *buf,unsigned long len,uint32 pos) {
@@ -58,7 +78,11 @@ int cdb_read(struct cdb *c,unsigned char *buf,unsigned long len,uint32 pos) {
   return 0;
 
   FORMAT:
+#ifdef EPROTO
   errno = EPROTO;
+#else
+  errno = EINVAL;
+#endif
   return -1;
 }
 

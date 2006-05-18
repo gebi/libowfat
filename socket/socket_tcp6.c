@@ -29,7 +29,7 @@ int socket_tcp6(void)
   if (s == -1) {
     if (errno == EINVAL || errno == EAFNOSUPPORT || errno == EPFNOSUPPORT || errno == EPROTONOSUPPORT) {
 compat:
-      s=socket(AF_INET,SOCK_STREAM,0);
+      s=winsock2errno(socket(AF_INET,SOCK_STREAM,0));
       noipv6=1;
       if (s==-1) return -1;
     } else
@@ -41,6 +41,7 @@ compat:
     winsock2errno(setsockopt(s,IPPROTO_IPV6,IPV6_V6ONLY,(void*)&zero,sizeof(zero)));
   }
 #endif
+  if (ndelay_on(s) == -1) { close(s); return -1; }
   return s;
 #else
   return socket_tcp4();

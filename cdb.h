@@ -2,6 +2,7 @@
 #define CDB_H
 
 #include "uint32.h"
+#include "uint64.h"
 
 #define CDB_HASHSTART 5381
 extern uint32 cdb_hashadd(uint32 h,unsigned char c);
@@ -9,7 +10,7 @@ extern uint32 cdb_hash(const unsigned char *buf,unsigned long int len);
 
 struct cdb {
   char *map; /* 0 if no map is available */
-  int fd;
+  int64 fd;
   uint32 size; /* initialized if map is nonzero */
   uint32 loop; /* number of hash slots searched under this key */
   uint32 khash; /* initialized if loop is nonzero */
@@ -21,7 +22,7 @@ struct cdb {
 } ;
 
 extern void cdb_free(struct cdb *);
-extern void cdb_init(struct cdb *,int fd);
+extern void cdb_init(struct cdb *,int64 fd);
 
 extern int cdb_read(struct cdb *,unsigned char *,unsigned long int,uint32);
 

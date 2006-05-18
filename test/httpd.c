@@ -190,7 +190,6 @@ int main() {
     panic("socket_bind6_reuse");
   if (socket_listen(s,16)==-1)
     panic("socket_listen");
-  io_nonblock(s);
   if (!io_fd(s))
     panic("io_fd");
   io_wantread(s);
@@ -209,7 +208,6 @@ int main() {
 	  buffer_puts(buffer_2," (fd ");
 	  buffer_putulong(buffer_2,n);
 	  buffer_puts(buffer_2,")");
-	  io_nonblock(n);
 	  if (io_fd(n)) {
 	    struct http_data* h=(struct http_data*)malloc(sizeof(struct http_data));
 	    io_wantread(n);

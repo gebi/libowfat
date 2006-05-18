@@ -2,6 +2,7 @@
 #define CDB_MAKE_H
 
 #include "buffer.h"
+#include "uint64.h"
 #include "uint32.h"
 
 #define CDB_HPLIST 1000
@@ -25,10 +26,10 @@ struct cdb_make {
   uint32 numentries;
   buffer b;
   uint32 pos;
-  int fd;
+  int64 fd;
 } ;
 
-extern int cdb_make_start(struct cdb_make *,int);
+extern int cdb_make_start(struct cdb_make *,int64);
 extern int cdb_make_addbegin(struct cdb_make *,unsigned long int,unsigned long int);
 extern int cdb_make_addend(struct cdb_make *,unsigned long int,unsigned long int,uint32);
 extern int cdb_make_add(struct cdb_make *,const unsigned char *,unsigned long int,const unsigned char *,unsigned long int);

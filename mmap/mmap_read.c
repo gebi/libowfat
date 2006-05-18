@@ -18,7 +18,8 @@ extern char* mmap_read(const char* filename,unsigned long* filesize) {
   m=CreateFileMapping(fd,0,PAGE_READONLY,0,0,NULL);
   map=0;
   if (m)
-    map=MapViewOfFile(m,FILE_MAP_READ,0,0,0);
+    if ((map=MapViewOfFile(m,FILE_MAP_READ,0,0,0)))
+      *filesize=GetFileSize(fd,NULL);
   CloseHandle(m);
   CloseHandle(fd);
   return map;

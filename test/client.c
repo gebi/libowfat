@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include "socket.h"
 #include <sys/socket.h>
+#include "ndelay.h"
 #ifdef __dietlibc__
 #include <write12.h>
 #else
@@ -73,6 +74,7 @@ usage:
     if (s==-1) panic("client: error: socket() failed");
     if (socket_connect6(s,ip,port,scope_id)==-1) panic("client: error: connect() failed");
   }
+  ndelay_off(s);
   p[0].fd=0; p[0].events=POLLIN;
   p[1].fd=s; p[1].events=POLLIN;
   while (poll(p,2,5000)) {

@@ -76,7 +76,6 @@ nomem:
     buffer_putnlflush(buffer_2);
     return 111;
   }
-  io_nonblock(s);
   if (!io_fd(s)) {
     buffer_puts(buffer_2,"io_fd: ");
     buffer_puterror(buffer_2);
@@ -106,7 +105,6 @@ fail:
 	    s->a=n; s->b=x; s->connected=0; s->done=s->todo=0;
 	    s->dir=UNDECIDED;
 	    io_nonblock(x);
-	    io_nonblock(n);
 	    socket_connect6(x,out.s,hisport,hisscope_id);
 	    if (!io_fd(x) || !io_fd(n)) {
 	      buffer_puts(buffer_2,"io_fd failed: ");

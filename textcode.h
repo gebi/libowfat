@@ -3,22 +3,35 @@
 
 /* These take len bytes from src and write them in encoded form to
  * dest (if dest != NULL), returning the number of bytes written. */
+
+/* needs len/3*4 bytes */
 unsigned long fmt_uuencoded(char* dest,const char* src,unsigned long len);
+/* needs len/3*4 bytes */
 unsigned long fmt_base64(char* dest,const char* src,unsigned long len);
+/* worst case: len*3 */
 unsigned long fmt_quotedprintable(char* dest,const char* src,unsigned long len);
+/* worst case: len*3 */
 unsigned long fmt_quotedprintable2(char* dest,const char* src,unsigned long len,const char* escapeme);
+/* worst case: len*3 */
 unsigned long fmt_urlencoded(char* dest,const char* src,unsigned long len);
+/* worst case: len*3 */
 unsigned long fmt_urlencoded2(char* dest,const char* src,unsigned long len,const char* escapeme);
+/* worst case: len*2 */
 unsigned long fmt_yenc(char* dest,const char* src,unsigned long len);
+/* needs len*2 bytes */
 unsigned long fmt_hexdump(char* dest,const char* src,unsigned long len);
-/* this changes '<' to '&lt;' and '&' to '&amp;' */
+/* change '<' to '&lt;' and '&' to '&amp;'; worst case: len*5 */
 unsigned long fmt_html(char* dest,const char* src,unsigned long len);
-/* change '\' to "\\", '\n' to "\n", ^A to "\x01" etc */
+/* change '\' to "\\", '\n' to "\n", ^A to "\x01" etc; worst case: len*4 */
 unsigned long fmt_cescape(char* dest,const char* src,unsigned long len);
+/* worst case: len*4 */
 unsigned long fmt_cescape2(char* dest,const char* src,unsigned long len,const char* escapeme);
 /* fold awk whitespace to '_'; this is great for writing fields with
  * white spaces to a log file and still allow awk to do log analysis */
+/* worst case: same size */
 unsigned long fmt_foldwhitespace(char* dest,const char* src,unsigned long len);
+/* worst case: len*3 */
+unsigned long fmt_ldapescape(char* dest,const char* src,unsigned long len);
 
 /* These read one line from src, decoded it, and write the result to
  * dest.  The number of decoded bytes is written to destlen.  dest
@@ -32,6 +45,7 @@ unsigned long scan_yenc(const char *src,char *dest,unsigned long *destlen);
 unsigned long scan_hexdump(const char *src,char *dest,unsigned long *destlen);
 unsigned long scan_html(const char *src,char *dest,unsigned long *destlen);
 unsigned long scan_cescape(const char *src,char *dest,unsigned long *destlen);
+unsigned long scan_ldapescape(const char* src,char* dest,unsigned long *destlen);
 
 #ifdef STRALLOC_H
 /* WARNING: these functions _append_ to the stralloc, not overwrite! */

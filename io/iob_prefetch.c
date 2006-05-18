@@ -3,7 +3,7 @@
 #ifdef __MINGW32__
 
 /* not supported */
-void iob_internal(io_batch* b,uint64 bytes) {
+void iob_prefetch(io_batch* b,uint64 bytes) {
   (void)b;
   (void)bytes;
 }

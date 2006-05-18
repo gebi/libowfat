@@ -12,6 +12,8 @@
   add cdb
   add rangecheck.h
   add io_block
+  make socket_(tc|ud)p[46] actually return non-blocking sockets as
+    documented (Richard Lyons)
 
 0.24:
   fix scan_to_sa (Tim Lorenz)

@@ -27,7 +27,6 @@ int main() {
     buffer_putnlflush(buffer_2);
     return 111;
   }
-  io_nonblock(s);
   io_wantread(s);
   buffer_puts(buffer_2,"listening on port 1234 (fd #");
   buffer_putulong(buffer_2,s);
@@ -47,7 +46,6 @@ int main() {
 	  buffer_puts(buffer_2," (fd ");
 	  buffer_putulong(buffer_2,n);
 	  buffer_puts(buffer_2,")");
-	  io_nonblock(n);
 	  if (io_fd(n)) {
 	    io_wantread(n);
 	  } else {

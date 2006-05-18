@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include "case.h"
+#include "ndelay.h"
 
 int main(int argc,char* argv[]) {
   int s=socket_tcp4();
@@ -14,6 +15,7 @@ int main(int argc,char* argv[]) {
   int header=1;
   buffer filein;
 
+  ndelay_off(s);
   if (argc<2 || strlen(argv[1])>900) {
     buffer_putsflush(buffer_2,"usage: dllink ed2k://|file|<filename>|<filesize>|<MD4-sum|\n");
     return 0;
