@@ -5,16 +5,12 @@ dns_name6_domain \- construct host name for reverse lookup
 .B #include <dns.h>
 
 void \fBdns_name6_domain\fP(char \fIq\fR[DNS_NAME6_DOMAIN],
-                     const char* \fIip\fR[16],int \fItype\fR);
+                     const char* \fIip\fR[16]);
 .SH DESCRIPTION
 dns_name6_domain is a low-level component of dns_name6.  It converts an
 IP address such as 4321:0:1:2:3:4:567:89ab into a domain name such as
-b.a.9.8.7.6.5.0.4.0.0.0.3.0.0.0.2.0.0.0.1.0.0.0.0.0.0.0.1.2.3.4.IP6.INT
+b.a.9.8.7.6.5.0.4.0.0.0.3.0.0.0.2.0.0.0.1.0.0.0.0.0.0.0.1.2.3.4.IP6.ARPA
 and places the packet-encoded domain name into \fIq\fR.
-
-\fItype\fR can be DNS_IP6_INT or DNS_IP6_ARPA.  The "ip6.int" domain for
-IPv6 reverse lookups is now deprecated and "ip6.arpa" is the standard
-way.
 
 q is zero terminated.
 

@@ -244,7 +244,8 @@ havesigio.h: trysigio.c
 havealloca.h: tryalloca.c
 	-rm -f $@
 	echo "#include <stdlib.h>" > $@
-	if $(DIET) $(CC) $(CFLAGS) -c tryalloca.c >/dev/null 2>&1; then echo "#include <alloca.h>"; fi >> $@
+	if $(DIET) $(CC) $(CFLAGS) -c tryalloca.c -DA >/dev/null 2>&1; then echo "#include <alloca.h>"; fi >> $@
+	if $(DIET) $(CC) $(CFLAGS) -c tryalloca.c -DB >/dev/null 2>&1; then echo "#include <malloc.h>"; fi >> $@
 	-rm -f tryalloca.o
 
 iopause.h: iopause.h1 iopause.h2 trypoll.c

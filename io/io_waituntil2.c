@@ -10,6 +10,7 @@
 #include <sys/time.h>
 #ifdef __MINGW32__
 #include <windows.h>
+#include <stdio.h>
 #else
 #include <poll.h>
 #endif
@@ -205,11 +206,19 @@ dopoll:
   DWORD numberofbytes;
   ULONG_PTR x;
   LPOVERLAPPED o;
-  if (first_readable!=-1 || first_writeable!=-1) return;
+  if (first_readable!=-1 || first_writeable!=-1) {
+    fprintf(stderr,"io_waituntil2() returning immediately because first_readable(%p) or first_writeable(%p) are set\n",first_readable,first_writeable);
+    return;
+  }
+  fprintf(stderr,"Calling GetQueuedCompletionStatus %p...",io_comport);
   if (GetQueuedCompletionStatus(io_comport,&numberofbytes,&x,&o,milliseconds==-1?milliseconds:INFINITE)) {
     io_entry* e=array_get(&io_fds,sizeof(io_entry),x);
+    fprintf(stderr," OK.  Got %x, e=%p\n",x,e);
     if (!e) return 0;
     e->errorcode=0;
+    fprintf(stderr,"o=%p, e->or=%p, e->ow=%p, e->os=%p\n",o,&e->or,&e->ow,&e->os);
+    fprintf(stderr,"e->readqueued=%d, e->writequeued=%d, e->acceptqueued=%d, e->connectqueued=%d, e->sendfilequeued=%d\n",
+	    e->readqueued,e->writequeued,e->acceptqueued,e->connectqueued,e->sendfilequeued);
     if (o==&e->or && e->readqueued==1) {
       e->readqueued=2;
       e->canread=1;
@@ -245,6 +254,7 @@ dopoll:
     /* either the overlapped I/O request failed or we timed out */
     DWORD err;
     io_entry* e;
+    fprintf(stderr," failure, o=%p.\n",o);
     if (!o) return 0;	/* timeout */
     /* we got a completion packet for a failed I/O operation */
     err=GetLastError();

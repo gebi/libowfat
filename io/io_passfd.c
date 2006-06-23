@@ -7,6 +7,10 @@ int io_passfd(int64 sock,int64 fd) {
 }
 #else
 
+#ifdef __NetBSD__
+#define _NETBSD_SOURCE
+#endif
+
 #ifdef __OpenBSD__
 #warning This is a HORRIBLE kludge around yet another thing OpenBSD broke
 #warning If they make it possible to do file descriptor passing with

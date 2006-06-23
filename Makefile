@@ -117,10 +117,10 @@ case_diffs.o: case/case_diffs.c case.h
 case_lowerb.o: case/case_lowerb.c case.h
 case_lowers.o: case/case_lowers.c case.h
 case_starts.o: case/case_starts.c case.h
-cdb.o: cdb/cdb.c byte.h cdb.h uint32.h
-cdb_hash.o: cdb/cdb_hash.c cdb.h uint32.h
-cdb_make.o: cdb/cdb_make.c cdb.h uint32.h cdb_make.h buffer.h
-cdb_traverse.o: cdb/cdb_traverse.c cdb.h uint32.h
+cdb.o: cdb/cdb.c byte.h cdb.h uint32.h uint64.h
+cdb_hash.o: cdb/cdb_hash.c cdb.h uint32.h uint64.h
+cdb_make.o: cdb/cdb_make.c cdb.h uint32.h uint64.h cdb_make.h buffer.h
+cdb_traverse.o: cdb/cdb_traverse.c cdb.h uint32.h uint64.h
 dns_dfd.o: dns/dns_dfd.c byte.h dns.h stralloc.h iopause.h taia.h tai.h \
   uint64.h
 dns_domain.o: dns/dns_domain.c case.h byte.h dns.h stralloc.h iopause.h \
@@ -187,6 +187,8 @@ fmt_xlong.o: fmt/fmt_xlong.c fmt.h haveinline.h
 fmt_xlonglong.o: fmt/fmt_xlonglong.c fmt.h
 io_appendfile.o: io/io_appendfile.c io_internal.h io.h uint64.h taia.h \
   tai.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+io_block.o: io/io_block.c io_internal.h io.h uint64.h taia.h tai.h \
+  array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 io_canread.o: io/io_canread.c io_internal.h io.h uint64.h taia.h tai.h \
   array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 io_canwrite.o: io/io_canwrite.c io_internal.h io.h uint64.h taia.h tai.h \
@@ -284,16 +286,22 @@ iob_prefetch.o: io/iob_prefetch.c iob_internal.h iob.h io.h uint64.h \
   taia.h tai.h array.h
 iob_reset.o: io/iob_reset.c byte.h iob_internal.h iob.h io.h uint64.h \
   taia.h tai.h array.h
-iob_send.o: io/iob_send.c havebsdsf.h havealloca.h iob_internal.h iob.h \
-  io.h uint64.h taia.h tai.h array.h
+iob_send.o: io/iob_send.c havebsdsf.h iob_internal.h iob.h io.h uint64.h \
+  taia.h tai.h array.h
 iob_write.o: io/iob_write.c iob_internal.h iob.h io.h uint64.h taia.h \
   tai.h array.h
 mmap_private.o: mmap/mmap_private.c open.h mmap.h
 mmap_read.o: mmap/mmap_read.c open.h mmap.h
 mmap_shared.o: mmap/mmap_shared.c open.h mmap.h
+mmap_unmap.o: mmap/mmap_unmap.c open.h mmap.h
 imult16.o: mult/imult16.c safemult.h uint16.h uint32.h uint64.h
 imult32.o: mult/imult32.c safemult.h uint16.h uint32.h uint64.h
 imult64.o: mult/imult64.c safemult.h uint16.h uint32.h uint64.h
+range_arrayinbuf.o: mult/range_arrayinbuf.c rangecheck.h safemult.h \
+  uint16.h uint32.h uint64.h
+range_str2inbuf.o: mult/range_str2inbuf.c rangecheck.h
+range_str4inbuf.o: mult/range_str4inbuf.c rangecheck.h
+range_strinbuf.o: mult/range_strinbuf.c rangecheck.h
 umult16.o: mult/umult16.c safemult.h uint16.h uint32.h uint64.h
 umult32.o: mult/umult32.c safemult.h uint16.h uint32.h uint64.h
 umult64.o: mult/umult64.c safemult.h uint16.h uint32.h uint64.h
@@ -342,7 +350,7 @@ scan_ip4.o: socket/scan_ip4.c scan.h ip4.h
 scan_ip6.o: socket/scan_ip6.c scan.h ip4.h ip6.h byte.h uint32.h
 scan_ip6_flat.o: socket/scan_ip6_flat.c scan.h
 scan_ip6if.o: socket/scan_ip6if.c ip6.h byte.h uint32.h byte.h socket.h \
-  uint16.h havealloca.h
+  uint16.h
 socket_accept4.o: socket/socket_accept4.c windoze.h socket.h uint16.h \
   uint32.h havesl.h
 socket_accept6.o: socket/socket_accept6.c windoze.h byte.h socket.h \
@@ -403,14 +411,16 @@ socket_send4.o: socket/socket_send4.c windoze.h byte.h socket.h uint16.h \
   uint32.h
 socket_send6.o: socket/socket_send6.c windoze.h byte.h socket.h uint16.h \
   uint32.h ip6.h byte.h haveip6.h ip4.h havescope.h
-socket_tcp4.o: socket/socket_tcp4.c windoze.h socket.h uint16.h uint32.h
+socket_tcp4.o: socket/socket_tcp4.c windoze.h socket.h uint16.h uint32.h \
+  ndelay.h
 socket_tcp6.o: socket/socket_tcp6.c windoze.h haveip6.h socket.h uint16.h \
-  uint32.h
+  uint32.h ndelay.h
 socket_tryreservein.o: socket/socket_tryreservein.c windoze.h socket.h \
   uint16.h uint32.h
-socket_udp4.o: socket/socket_udp4.c windoze.h socket.h uint16.h uint32.h
+socket_udp4.o: socket/socket_udp4.c windoze.h socket.h uint16.h uint32.h \
+  ndelay.h
 socket_udp6.o: socket/socket_udp6.c windoze.h haveip6.h socket.h uint16.h \
-  uint32.h
+  uint32.h ndelay.h
 socket_v4mappedprefix.o: socket/socket_v4mappedprefix.c
 socket_v6any.o: socket/socket_v6any.c
 socket_v6loopback.o: socket/socket_v6loopback.c
@@ -466,6 +476,8 @@ fmt_foldwhitespace.o: textcode/fmt_foldwhitespace.c fmt.h textcode.h \
   str.h haveinline.h
 fmt_hexdump.o: textcode/fmt_hexdump.c fmt.h textcode.h str.h haveinline.h
 fmt_html.o: textcode/fmt_html.c fmt.h textcode.h str.h haveinline.h
+fmt_ldapescape.o: textcode/fmt_ldapescape.c fmt.h textcode.h haveinline.h \
+  str.h
 fmt_quotedprintable.o: textcode/fmt_quotedprintable.c fmt.h textcode.h \
   haveinline.h str.h
 fmt_to_array.o: textcode/fmt_to_array.c array.h uint64.h textcode.h
@@ -480,6 +492,7 @@ scan_base64.o: textcode/scan_base64.c textcode.h haveinline.h
 scan_cescape.o: textcode/scan_cescape.c fmt.h textcode.h scan.h
 scan_hexdump.o: textcode/scan_hexdump.c fmt.h textcode.h scan.h
 scan_html.o: textcode/scan_html.c fmt.h textcode.h haveinline.h case.h
+scan_ldapescape.o: textcode/scan_ldapescape.c fmt.h textcode.h scan.h
 scan_quotedprintable.o: textcode/scan_quotedprintable.c fmt.h textcode.h \
   scan.h
 scan_to_array.o: textcode/scan_to_array.c str.h array.h uint64.h \
@@ -519,15 +532,15 @@ STRALLOC_OBJS=stralloc_append.o stralloc_cat.o stralloc_catb.o stralloc_catlong0
 UNIX_OBJS=iopause.o ndelay_off.o ndelay_on.o winsock2errno.o 
 SOCKET_OBJS=fmt_ip4.o fmt_ip6.o fmt_ip6_flat.o fmt_ip6c.o fmt_ip6if.o fmt_ip6ifc.o init.o scan_ip4.o scan_ip6.o scan_ip6_flat.o scan_ip6if.o socket_accept4.o socket_accept6.o socket_bind4.o socket_bind4_reuse.o socket_bind6.o socket_bind6_reuse.o socket_broadcast.o socket_connect4.o socket_connect6.o socket_connected.o socket_getifidx.o socket_getifname.o socket_ip4loopback.o socket_listen.o socket_local4.o socket_local6.o socket_mchopcount6.o socket_mcjoin4.o socket_mcjoin6.o socket_mcleave4.o socket_mcleave6.o socket_mcloop4.o socket_mcloop6.o socket_mcttl4.o socket_noipv6.o socket_recv4.o socket_recv6.o socket_remote4.o socket_remote6.o socket_send4.o socket_send6.o socket_tcp4.o socket_tcp6.o socket_tryreservein.o socket_udp4.o socket_udp6.o socket_v4mappedprefix.o socket_v6any.o socket_v6loopback.o 
 BUFFER_OBJS=buffer_0.o buffer_0small.o buffer_1.o buffer_1small.o buffer_2.o buffer_close.o buffer_feed.o buffer_flush.o buffer_fromsa.o buffer_get.o buffer_get_new_token_sa.o buffer_get_new_token_sa_pred.o buffer_get_token.o buffer_get_token_pred.o buffer_get_token_sa.o buffer_get_token_sa_pred.o buffer_getc.o buffer_getline.o buffer_getline_sa.o buffer_getn.o buffer_getnewline_sa.o buffer_init.o buffer_init_free.o buffer_mmapread.o buffer_peek.o buffer_put.o buffer_put8long.o buffer_putalign.o buffer_puterror.o buffer_puterror2.o buffer_putflush.o buffer_putlong.o buffer_putlonglong.o buffer_putm_internal.o buffer_putm_internal_flush.o buffer_putnlflush.o buffer_puts.o buffer_putsa.o buffer_putsaflush.o buffer_putsalign.o buffer_putsflush.o buffer_putspace.o buffer_putulong.o buffer_putulonglong.o buffer_putxlong.o buffer_seek.o buffer_stubborn.o buffer_stubborn2.o errmsg_iam.o errmsg_info.o errmsg_infosys.o errmsg_puts.o errmsg_warn.o errmsg_warnsys.o errmsg_write.o 
-MMAP_OBJS=mmap_private.o mmap_read.o mmap_shared.o 
+MMAP_OBJS=mmap_private.o mmap_read.o mmap_shared.o mmap_unmap.o 
 TAIA_OBJS=taia_add.o taia_addsec.o taia_approx.o taia_frac.o taia_half.o taia_less.o taia_now.o taia_pack.o taia_sub.o taia_tai.o taia_uint.o taia_unpack.o 
 TAI_OBJS=tai_add.o tai_now.o tai_pack.o tai_sub.o tai_uint.o tai_unpack.o 
 DNS_OBJS=dns_dfd.o dns_domain.o dns_dtda.o dns_ip.o dns_ip6.o dns_ipq.o dns_ipq6.o dns_mx.o dns_name.o dns_nd.o dns_nd6.o dns_packet.o dns_random.o dns_rcip.o dns_rcrw.o dns_resolve.o dns_sortip.o dns_sortip6.o dns_transmit.o dns_txt.o 
 CASE_OBJS=case_diffb.o case_diffs.o case_lowerb.o case_lowers.o case_starts.o 
-MULT_OBJS=imult16.o imult32.o imult64.o umult16.o umult32.o umult64.o 
+MULT_OBJS=imult16.o imult32.o imult64.o range_arrayinbuf.o range_str2inbuf.o range_str4inbuf.o range_strinbuf.o umult16.o umult32.o umult64.o 
 ARRAY_OBJS=array_allocate.o array_bytes.o array_cat.o array_cat0.o array_catb.o array_cate.o array_cats.o array_cats0.o array_equal.o array_fail.o array_get.o array_length.o array_reset.o array_start.o array_trunc.o array_truncate.o 
-IO_OBJS=io_appendfile.o io_canread.o io_canwrite.o io_check.o io_close.o io_closeonexec.o io_createfile.o io_dontwantread.o io_dontwantwrite.o io_eagain.o io_fd.o io_finishandshutdown.o io_getcookie.o io_mmapwritefile.o io_nonblock.o io_passfd.o io_pipe.o io_readfile.o io_readwritefile.o io_receivefd.o io_sendfile.o io_setcookie.o io_sigpipe.o io_socketpair.o io_timeout.o io_timeouted.o io_tryread.o io_tryreadtimeout.o io_trywrite.o io_trywritetimeout.o io_wait.o io_waitread.o io_waituntil.o io_waituntil2.o io_waitwrite.o io_wantread.o io_wantwrite.o iob_addbuf.o iob_addbuf_free.o iob_addbuf_internal.o iob_addfile.o iob_addfile_close.o iob_adds.o iob_adds_free.o iob_free.o iob_new.o iob_prefetch.o iob_reset.o iob_send.o iob_write.o 
-TEXTCODE_OBJS=base64.o fmt_base64.o fmt_cescape.o fmt_foldwhitespace.o fmt_hexdump.o fmt_html.o fmt_quotedprintable.o fmt_to_array.o fmt_to_sa.o fmt_tofrom_array.o fmt_urlencoded.o fmt_uuencoded.o fmt_yenc.o scan_base64.o scan_cescape.o scan_hexdump.o scan_html.o scan_quotedprintable.o scan_to_array.o scan_to_sa.o scan_tofrom_array.o scan_urlencoded.o scan_uuencoded.o scan_yenc.o 
+IO_OBJS=io_appendfile.o io_block.o io_canread.o io_canwrite.o io_check.o io_close.o io_closeonexec.o io_createfile.o io_dontwantread.o io_dontwantwrite.o io_eagain.o io_fd.o io_finishandshutdown.o io_getcookie.o io_mmapwritefile.o io_nonblock.o io_passfd.o io_pipe.o io_readfile.o io_readwritefile.o io_receivefd.o io_sendfile.o io_setcookie.o io_sigpipe.o io_socketpair.o io_timeout.o io_timeouted.o io_tryread.o io_tryreadtimeout.o io_trywrite.o io_trywritetimeout.o io_wait.o io_waitread.o io_waituntil.o io_waituntil2.o io_waitwrite.o io_wantread.o io_wantwrite.o iob_addbuf.o iob_addbuf_free.o iob_addbuf_internal.o iob_addfile.o iob_addfile_close.o iob_adds.o iob_adds_free.o iob_free.o iob_new.o iob_prefetch.o iob_reset.o iob_send.o iob_write.o 
+TEXTCODE_OBJS=base64.o fmt_base64.o fmt_cescape.o fmt_foldwhitespace.o fmt_hexdump.o fmt_html.o fmt_ldapescape.o fmt_quotedprintable.o fmt_to_array.o fmt_to_sa.o fmt_tofrom_array.o fmt_urlencoded.o fmt_uuencoded.o fmt_yenc.o scan_base64.o scan_cescape.o scan_hexdump.o scan_html.o scan_ldapescape.o scan_quotedprintable.o scan_to_array.o scan_to_sa.o scan_tofrom_array.o scan_urlencoded.o scan_uuencoded.o scan_yenc.o 
 CDB_OBJS=cdb.o cdb_hash.o cdb_make.o cdb_traverse.o 
 
 byte.a: $(BYTE_OBJS)

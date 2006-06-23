@@ -5,8 +5,10 @@
 #include "uint32.h"
 
 int socket_tcp4(void);
+int socket_tcp4b(void);
 int socket_udp4(void);
 int socket_tcp6(void);
+int socket_tcp6b(void);
 int socket_udp6(void);
 
 #define socket_tcp() socket_tcp4()

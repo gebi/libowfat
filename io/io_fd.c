@@ -26,6 +26,7 @@
 #endif
 
 #ifdef __MINGW32__
+#include <stdio.h>
 extern HANDLE io_comport;
 #endif
 array io_fds;
@@ -94,7 +95,9 @@ int io_fd(int64 d) {
     io_comport=CreateIoCompletionPort(INVALID_HANDLE_VALUE,NULL,0,0);
     if (io_comport) {
       io_waitmode=COMPLETIONPORT;
+      fprintf(stderr,"Initialized completion port: %p\n",io_comport);
     } else {
+      fprintf(stderr,"ARGH!  Could not init completion port!\n");
       errno=EINVAL;
       return 0;
     }
@@ -112,10 +115,13 @@ int io_fd(int64 d) {
 #endif
 #ifdef __MINGW32__
   if (io_comport) {
+    fprintf(stderr,"Queueing %p at completion port %p...",d,io_comport);
     if (CreateIoCompletionPort((HANDLE)d,io_comport,(ULONG_PTR)d,0)==0) {
+      fprintf(stderr," failed!\n");
       errno=EBADF;
       return 0;
     }
+    fprintf(stderr," OK!\n");
   }
 #endif
   return 1;

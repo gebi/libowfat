@@ -10,7 +10,9 @@ http://www.sysinternals.com/ntw2k/info/comport.shtml
 http://msdn.microsoft.com/msdnmag/issues/1000/winsock/default.aspx
 
 
-Solaris 9: http://docs.sun.com/db/doc/816-5218/6mbcj7nrr?q=sendfile&a=view
+Solaris 9:
+http://docs.sun.com/app/docs/doc/817-0679/6mgfb87mm?q=sendfile&a=view
+http://docs.sun.com/app/docs/doc/817-0679/6mgfb87mn?q=sendfile&a=view
 
 HP-UX: http://docs.hp.com/hpux/onlinedocs/B9106-90009/00/01/168-con.html
 

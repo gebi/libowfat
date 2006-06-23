@@ -9,6 +9,8 @@
 #include "io_internal.h"
 
 #ifdef __MINGW32__
+#include <stdio.h>
+
 /* All the Unix trickery is unsupported on Windows.  Instead, one is
  * supposed to do the whole write in overlapping mode and then get
  * notified via an I/O completion port when it's done. */
@@ -22,12 +24,17 @@ int64 io_trywrite(int64 d,const char* buf,int64 len) {
   if (!e) { errno=EBADF; return -3; }
   if (!e->nonblock) {
     DWORD written;
-    if (WriteFile((HANDLE)d,buf,len,&written,0))
+    fprintf(stderr,"Socket is in blocking mode, just calling WriteFile...");
+    if (WriteFile((HANDLE)d,buf,len,&written,0)) {
+      fprintf(stderr," OK, got %u bytes.\n",written);
       return written;
-    else
+    } else {
+      fprintf(stderr," failed.\n",written);
       return winsock2errno(-3);
+    }
   } else {
-    if (e->writequeued) {
+    if (e->writequeued && !e->canwrite) {
+      fprintf(stderr,"io_trywrite: write already queued, returning EAGAIN\n");
       errno=EAGAIN;
       return -1;
     }
@@ -35,19 +42,25 @@ int64 io_trywrite(int64 d,const char* buf,int64 len) {
       e->canwrite=0;
       e->next_write=-1;
       if (e->errorcode) {
+	fprintf(stderr,"io_trywrite: e->canwrite was set, returning error %d\n",e->errorcode);
 	errno=winsock2errno(e->errorcode);
 	return -3;
       }
+      fprintf(stderr,"io_trywrite: e->canwrite was set, had written %u bytes\n",e->bytes_written);
       return e->bytes_written;
     } else {
-      if (WriteFile((HANDLE)d,buf,len,&e->errorcode,&e->ow))
+      fprintf(stderr,"io_trywrite: queueing write...");
+      if (WriteFile((HANDLE)d,buf,len,&e->errorcode,&e->ow)) {
+	fprintf(stderr," worked unexpectedly, error %d\n",e->errorcode);
 	return e->errorcode; /* should not happen */
-      else if (GetLastError()==ERROR_IO_PENDING) {
+      } else if (GetLastError()==ERROR_IO_PENDING) {
+	fprintf(stderr," pending.\n");
 	e->writequeued=1;
 	errno=EAGAIN;
 	e->errorcode=0;
 	return -1;
       } else {
+	fprintf(stderr," failed, error %d\n",e->errorcode);
 	winsock2errno(-1);
 	e->errorcode=errno;
 	return -3;

@@ -5,6 +5,7 @@
 #include <errno.h>
 #include "io_internal.h"
 #include "iob_internal.h"
+#include <stdio.h>
 
 int64 iob_send(int64 s,io_batch* b) {
   /* Windows has a sendfile called TransmitFile, which can send one
@@ -22,7 +23,9 @@ int64 iob_send(int64 s,io_batch* b) {
     return -3;		/* can't happen error */
   last=(iob_entry*)(((char*)array_start(&b->b))+array_bytes(&b->b));
 
+  fprintf(stderr,"iob_send() called!\n");
   if (e->canwrite || e->sendfilequeued==1) {
+    fprintf(stderr,"...reaping finished WriteFile/TransmitFile.\n");
     /* An overlapping write finished.  Reap the result. */
     if (e->bytes_written==-1) return -3;
     if (e->bytes_written<x->n) {
@@ -43,26 +46,54 @@ int64 iob_send(int64 s,io_batch* b) {
     if (x[i].n) break;
 
   if (x[i].type==FROMBUF || x[i].type==FROMBUF_FREE) {
+    fprintf(stderr,"found non-sent buffer batch entry at %d\n",i);
     if (x+i+1 < last &&
 	(x[i+1].type==FROMFILE || x[i+1].type==FROMFILE_CLOSE)) {
+      fprintf(stderr,"Next is a file, can use TransmitFile\n",i);
       TRANSMIT_FILE_BUFFERS tfb;
       e->sendfilequeued=1;
       memset(&tfb,0,sizeof(tfb));
       memset(&e[i].os,0,sizeof(e[i].os));
       e[i].os.Offset=x[i].offset;
       e[i].os.OffsetHigh=(x[i].offset>>32);
+      fprintf(stderr,"Calling TransmitFile on %p...",s);
       if (!TransmitFile(s,(HANDLE)x[i].fd,
 		      x[i].n+tfb.HeadLength>0xffff?0xffff:x[i].n,
-		      0,&e[i].os,&tfb,TF_USE_KERNEL_APC))
-	return -3;
+		      0,&e[i].os,&tfb,TF_USE_KERNEL_APC)) {
+	if (GetLastError()==ERROR_IO_PENDING) {
+	  fprintf(stderr," pending.!\n");
+	  e->writequeued=1;
+	  errno=EAGAIN;
+	  e->errorcode=0;
+	  return -1;
+	} else {
+	  fprintf(stderr," failed!\n");
+	  e->errorcode=errno;
+	  return -3;
+	}
+      }
+      fprintf(stderr," OK!\n");
       return sent;
     } else {
       e->writequeued=1;
-      if (!WriteFile(s,x[i].buf+x[i].offset,x[i].n,0,&e->ow))
-	return -3;
+      fprintf(stderr,"Queueing WriteFile on %p...",s);
+      if (!WriteFile(s,x[i].buf+x[i].offset,x[i].n,0,&e->ow)) {
+	if (GetLastError()==ERROR_IO_PENDING) {
+	  fprintf(stderr," pending.\n");
+	  e->writequeued=1;
+	  errno=EAGAIN;
+	  e->errorcode=0;
+	  return -1;
+	} else {
+	  fprintf(stderr," failed.\n");
+	  e->errorcode=errno;
+	  return -3;
+	}
+      }
       return sent;
     }
   } else {
+    fprintf(stderr,"Calling TransmitFile...\n");
     e->sendfilequeued=1;
     memset(&e[i].os,0,sizeof(e[i].os));
     e[i].os.Offset=x[i].offset;

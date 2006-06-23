@@ -71,9 +71,12 @@ void io_wantwrite(int64 d) {
   }
 #endif
 #ifdef __MINGW32__
+  printf("e->wantwrite == %d\n",e->wantwrite);
   if (!e->wantwrite) {
     e->next_write=first_writeable;
+    e->canwrite=1;
     first_writeable=d;
+    printf("queueing write, setting first_writeable to %lld\n",d);
   }
 #endif
   e->wantwrite=1;

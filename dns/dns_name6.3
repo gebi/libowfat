@@ -8,11 +8,8 @@ int \fBdns_name6\fP(stralloc* \fIout\fR,const char* \fIip\fR[16]);
 .SH DESCRIPTION
 dns_name6 looks up the domain name for the 16-byte IPv6 address in \fIip\fR. It
 puts the (first) domain name into \fIout\fR and returns 0. If the relevant
-ip6.int domain does not exist in DNS, or has no PTR records, \fIout\fR
+ip6.arpa domain does not exist in DNS, or has no PTR records, \fIout\fR
 will be empty.
-
-dns_name6 will try both the new "ip6.arpa" reverse lookup domain and the
-old (deprecated) "ip6.int" one.
 
 If dns_name6 has trouble with the DNS lookup or runs out of memory, it returns
 -1, setting errno appropriately. It may or may not change \fIout\fR.

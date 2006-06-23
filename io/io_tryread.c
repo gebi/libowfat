@@ -41,15 +41,19 @@ int64 io_tryread(int64 d,char* buf,int64 len) {
       if (len>x) {
 	/* queue next read */
 	if (len>sizeof(e->inbuf)) len=sizeof(e->inbuf);
+	fprintf(stderr,"Queueing ReadFile on handle %p...",d);
 	if (ReadFile((HANDLE)d,e->inbuf,len,0,&e->or)) {
+	  fprintf(stderr," got immediate answer\n");
 	  e->canread=1;
 	  e->readqueued=2;
 	  e->next_write=first_writeable;
 	  first_writeable=d;
 	} else if ((e->errorcode=GetLastError())==ERROR_IO_PENDING) {
+	  fprintf(stderr," OK\n");
 	  e->readqueued=1;
 	  e->errorcode=0;
 	} else {
+	  fprintf(stderr," error!\n");
 	  e->canread=1;
 	  e->readqueued=2;
 	  e->next_write=first_writeable;
@@ -60,9 +64,13 @@ int64 io_tryread(int64 d,char* buf,int64 len) {
     return x;
   }
   if (!e->readqueued) {
+    fprintf(stderr,"!e->readqueued\n");
     if (len>sizeof(e->inbuf)) len=sizeof(e->inbuf);
-    if (ReadFile((HANDLE)d,e->inbuf,len,0,&e->or))
+    if (ReadFile((HANDLE)d,e->inbuf,len,0,&e->or)) {
       e->readqueued=1;
+      fprintf(stderr,"ReadFile returned nonzero\n");
+    } else
+      fprintf(stderr,"ReadFile returned zero\n");
   }
   errno=EAGAIN;
   return -1;

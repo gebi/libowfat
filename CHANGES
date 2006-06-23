@@ -14,6 +14,10 @@
   add io_block
   make socket_(tc|ud)p[46] actually return non-blocking sockets as
     documented (Richard Lyons)
+  fix for NetBSD 3.0 (Their /sys/types.h actually does not define u_char
+    unless you #define _NETBSD_SOURCE, and then their CMSG_* macros use
+    it.  This is horrible even by OpenBSD standards)
+  remove support for ip6.int (it's no longer delegated)
 
 0.24:
   fix scan_to_sa (Tim Lorenz)

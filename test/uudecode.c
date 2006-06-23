@@ -256,6 +256,8 @@ foundfilename:
       }
       if (state==AFTERBEGIN)
 	state=SKIPHEADER;
+      else if (state==SKIPHEADER)
+	state=AFTERBEGIN;
     } else if (str_start(line,"=ybegin ")) {
       char* filename=strstr(line," name=");
       if (!filename) {
