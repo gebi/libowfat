@@ -182,7 +182,7 @@ e404:
 }
 
 int main() {
-  int s=socket_tcp6();
+  int s=socket_tcp6b();
   uint32 scope_id;
   char ip[16];
   uint16 port;

@@ -66,11 +66,11 @@ usage:
     goto usage;
   }
   if (byte_equal(ip,12,V4mappedprefix)) {
-    s=socket_tcp4();
+    s=socket_tcp4b();
     if (s==-1) panic("client: error: socket() failed");
     if (socket_connect4(s,ip+12,port)==-1) panic("client: error: connect() failed");
   } else {
-    s=socket_tcp6();
+    s=socket_tcp6b();
     if (s==-1) panic("client: error: socket() failed");
     if (socket_connect6(s,ip,port,scope_id)==-1) panic("client: error: connect() failed");
   }

@@ -6,7 +6,7 @@
 #include "ndelay.h"
 
 int main(int argc,char* argv[]) {
-  int s=socket_tcp4();
+  int s=socket_tcp4b();
   char line[1024];
   char buf[4096];
   int l;

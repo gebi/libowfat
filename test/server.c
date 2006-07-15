@@ -69,14 +69,14 @@ usage:
     goto usage;
   }
   if (byte_equal(ip,12,V4mappedprefix)) {
-    s=socket_tcp4();
+    s=socket_tcp4b();
     if (s==-1) panic("server: error: socket() failed");
     if (socket_bind4_reuse(s,ip+12,port)==-1) panic("server: error: bind() failed");
     if (socket_listen(s,1)==-1) panic("server: error: listen() failed");
     ndelay_off(s);
     if ((t=socket_accept4(s,0,0))==-1) panic("server: error: accept() failed");
   } else {
-    s=socket_tcp6();
+    s=socket_tcp6b();
     if (s==-1) panic("server: error: socket() failed");
     if (socket_bind6_reuse(s,ip,port,scope_id)==-1) panic("server: error: bind() failed");
     if (socket_listen(s,1)==-1) panic("server: error: listen() failed");
