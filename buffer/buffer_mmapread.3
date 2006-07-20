@@ -25,5 +25,9 @@ buffer_close to unmap the memory in the end.
   buffer_flush(buffer_1);
   buffer_close(&input);
 
+.SH "RETURN VALUE"
+\fBbuffer_mmapread\fR returns 0 if everything was fine, -1 on error
+(setting \fIerrno\fR).
+
 .SH "SEE ALSO"
 buffer_flush(3), buffer(3)
