@@ -6,6 +6,8 @@
  * when decoding a part with broken crc. */
 #include <unistd.h>
 #include <stdlib.h>
+#include <string.h>
+#include <errno.h>
 #include "textcode.h"
 #include "str.h"
 #include "buffer.h"
@@ -107,7 +109,7 @@ int main(int argc,char* argv[]) {
       return 1;
     }
   }
-  buffer_init(&filein,read,fd,buf,sizeof buf);
+  buffer_init(&filein,(void*)read,fd,buf,sizeof buf);
   /* skip to "^begin " */
   for (;;) {
     if ((l=buffer_getline(&filein,line,(sizeof line)-1))==0 && line[l]!='\n') {
@@ -175,7 +177,7 @@ foundfilename:
 	      buffer_putsflush(buffer_2,"\"\n");
 	    }
 	    state=AFTERBEGIN;
-	    buffer_init(&fileout,write,ofd,obuf,sizeof obuf);
+	    buffer_init(&fileout,(void*)write,ofd,obuf,sizeof obuf);
 	    continue;
 	  }
 	}
@@ -250,7 +252,7 @@ foundfilename:
 	  buffer_putsflush(buffer_2,"\"\n");
 	  filename[0]=0;
 	  state=AFTERBEGIN;
-	  buffer_init(&fileout,write,ofd,obuf,sizeof obuf);
+	  buffer_init(&fileout,(void*)write,ofd,obuf,sizeof obuf);
 	  continue;
 	}
       }
@@ -326,7 +328,11 @@ invalidpart:
       if (endoffset == offset+out.len-1) ++endoffset;
       if (out.len == endoffset-offset && i == wantedcrc) {
 	/* ok, save block */
-	buffer_put(&fileout,out.s,out.len);
+	if (buffer_put(&fileout,out.s,out.len)) {
+writeerror:
+	  buffer_putmflush(buffer_1,"write error: ",strerror(errno),"\n");
+	  return 1;
+	}
       } else {
 	out.len=0;
 	for (i=0; i<yencpart.len; ) {
@@ -337,18 +343,17 @@ invalidpart:
 	}
 	i=crc32(0,out.s,out.len);
 	if (out.len == endoffset-offset && i == wantedcrc) {
-	  buffer_put(&fileout,out.s,out.len);
+	  if (buffer_put(&fileout,out.s,out.len)) goto writeerror;
 	  ++reconstructed;
 	} else {
 	  buffer_puts(buffer_2,"warning: part ");
 	  buffer_putulong(buffer_2,part);
 	  buffer_putsflush(buffer_2," corrupt; reconstruction failed.\n");
-	  buffer_put(&fileout,out.s,out.len);
+	  if (buffer_put(&fileout,out.s,out.len)) goto writeerror;
 	}
       }
       stralloc_free(&out);
-      buffer_flush(&fileout);
-      close(ofd);
+      if (buffer_flush(&fileout) || close(ofd)) goto writeerror;
       ofd=-1;
       if (endoffset==totalsize && reconstructed) {
 	buffer_puts(buffer_2,"warning: had to reconstruct ");
@@ -390,7 +395,7 @@ invalidpart:
 	}
       } else {
 	if (ofd>=0)
-	  buffer_put(&fileout,tmp,scanned);
+	  if (buffer_put(&fileout,tmp,scanned)) goto writeerror;
       }
     }
   }
