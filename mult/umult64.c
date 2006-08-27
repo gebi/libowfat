@@ -1,5 +1,6 @@
 #ifdef __x86_64__
 
+/* WARNING: this only works if compiled with -fomit-frame-pointer */
 void umult64() {
   asm volatile(
     "xchgq %rdx,%rsi\n"
