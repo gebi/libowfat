@@ -1,3 +1,23 @@
+#ifdef __x86_64__
+
+void umult64() {
+  asm volatile(
+    "xchgq %rdx,%rsi\n"
+    "movq %rdi,%rax\n"
+    "mulq %rdx\n"
+    "jc 1f\n"	/* overflow */
+    "movq %rax,(%rsi)\n"
+    "xorq %rax,%rax\n"
+    "inc %rax\n"
+    "ret\n"
+    "1:\n"
+    "xorq %rax,%rax\n"
+    /* the closing ret is renerated by gcc */
+    );
+}
+
+#else
+
 #include "safemult.h"
 
 /* return 1 for overflow, 0 for ok */
@@ -20,3 +40,4 @@ int umult64(uint64 a,uint64 b,uint64* c) {
   return 1;
 }
 
+#endif

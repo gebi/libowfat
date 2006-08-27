@@ -18,6 +18,8 @@
     unless you #define _NETBSD_SOURCE, and then their CMSG_* macros use
     it.  This is horrible even by OpenBSD standards)
   remove support for ip6.int (it's no longer delegated)
+  add asm versions of imult64 and umult64 for x86_64
+    (22 cycles -> 12 cycles on my Athlon 64)
 
 0.24:
   fix scan_to_sa (Tim Lorenz)
