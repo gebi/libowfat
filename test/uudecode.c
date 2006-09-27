@@ -309,11 +309,13 @@ invalidpart:
       if (tmp) {
 	if (!scan_xlong(tmp+8,&wantedcrc))
 	  goto invalidpart;
+	wantedcrc &= 0xfffffffful;
       } else if (part==1) {
 	tmp=strstr(line," crc32=");
 	if (!tmp) goto invalidpart;
 	if (!scan_xlong(tmp+7,&wantedcrc))
 	  goto invalidpart;
+	wantedcrc &= 0xfffffffful;
 	endoffset=totalsize;
       } else goto invalidpart;
       stralloc_init(&out);
@@ -349,6 +351,15 @@ writeerror:
 	  buffer_puts(buffer_2,"warning: part ");
 	  buffer_putulong(buffer_2,part);
 	  buffer_putsflush(buffer_2," corrupt; reconstruction failed.\n");
+	  buffer_puts(buffer_2,"  -> ");
+	  buffer_putulong(buffer_2,offset);
+	  buffer_puts(buffer_2,"-");
+	  buffer_putulong(buffer_2,endoffset);
+	  buffer_puts(buffer_2," (want crc ");
+	  buffer_putxlong(buffer_2,wantedcrc);
+	  buffer_puts(buffer_2,", got crc ");
+	  buffer_putxlong(buffer_2,i);
+	  buffer_putsflush(buffer_2,")\n");
 	  if (buffer_put(&fileout,out.s,out.len)) goto writeerror;
 	}
       }
