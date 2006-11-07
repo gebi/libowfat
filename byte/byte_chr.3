@@ -4,7 +4,7 @@ byte_chr \- search for a byte in a string
 .SH SYNTAX
 .B #include <byte.h>
 
-long \fBbyte_chr\fP(const char *\fIhaystack\fR,unsigned long \fIlen\fR,char \fIneedle\fR);
+size_t \fBbyte_chr\fP(const char *\fIhaystack\fR,size_t \fIlen\fR,char \fIneedle\fR);
 .SH DESCRIPTION
 \fIbyte_chr\fR returns the smallest integer \fIi\fR between 0 and
 \fIlen\fR-1 inclusive such that \fIone\fR[\fIi\fR] equals \fIneedle\fR.

@@ -3,9 +3,9 @@
 #include "str.h"
 #include "haveinline.h"
 
-unsigned long fmt_html(char* dest,const char* src,unsigned long len) {
+size_t fmt_html(char* dest,const char* src,size_t len) {
   register const unsigned char* s=(const unsigned char*) src;
-  unsigned long written=0,i;
+  size_t written=0,i;
   const char* seq;
   for (i=0; i<len; ++i) {
     switch (s[i]) {

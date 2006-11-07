@@ -1,6 +1,6 @@
 #include "fmt.h"
 
-unsigned int fmt_8long(char *dest,unsigned long i) {
+size_t fmt_8long(char *dest,unsigned long i) {
   register unsigned long len,tmp;
   /* first count the number of bytes needed */
   for (len=1, tmp=i; tmp>7; ++len) tmp>>=3;

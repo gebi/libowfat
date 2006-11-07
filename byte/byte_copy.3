@@ -4,7 +4,7 @@ byte_copy \- copy a string
 .SH SYNTAX
 .B #include <byte.h>
 
-void \fBbyte_copy\fP(char *\fIout\fR,unsigned long \fIlen\fR,const char *\fIin\fR);
+void \fBbyte_copy\fP(char *\fIout\fR,size_t \fIlen\fR,const char *\fIin\fR);
 .SH DESCRIPTION
 \fIbyte_copy\fR copies \fIin\fR[0] to \fIout\fR[0], \fIin\fR[1] to
 \fIout\fR[1], etc., and finally \fIin\fR[\fIlen\fR-1] to

@@ -4,7 +4,7 @@ mmap_shared \- memory map a file for reading and writing
 .SH SYNTAX
 .B #include <mmap.h>
 
-extern char* \fBmmap_shared\fP(const char* \fIfilename\fR,unsigned long* \fIfilesize\fR);
+char* \fBmmap_shared\fP(const char* \fIfilename\fR,size_t* \fIfilesize\fR);
 .SH DESCRIPTION
 mmap_shared opens \fIfilename\fR for reading and writing, maps the
 whole file into memory, closes the file, writes the length of the file

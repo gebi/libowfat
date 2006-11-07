@@ -4,7 +4,7 @@ buffer_get \- read binary data from buffer
 .SH SYNTAX
 .B #include <buffer.h>
 
-int \fBbuffer_get\fP(buffer* \fIb\fR,char* \fIx\fR,unsigned long int \fIlen\fR);
+ssize_t \fBbuffer_get\fP(buffer* \fIb\fR,char* \fIx\fR,size_t \fIlen\fR);
 .SH DESCRIPTION
 Normally buffer_get copies data to \fIx\fR[0], \fIx\fR[1], ...,
 \fIx\fR[\fIlen\fR-1] from the beginning of a string stored in

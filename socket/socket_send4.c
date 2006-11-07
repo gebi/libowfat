@@ -8,7 +8,7 @@
 #include "byte.h"
 #include "socket.h"
 
-int socket_send4(int s,const char *buf,unsigned int len,const char ip[4],uint16 port) {
+ssize_t socket_send4(int s,const char *buf,size_t len,const char ip[4],uint16 port) {
   struct sockaddr_in si;
 
   byte_zero(&si,sizeof si);

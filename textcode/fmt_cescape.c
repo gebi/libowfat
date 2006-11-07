@@ -3,9 +3,9 @@
 #include "str.h"
 #include "haveinline.h"
 
-unsigned long fmt_cescape2(char* dest,const char* src,unsigned long len,const char* escapeme) {
+size_t fmt_cescape2(char* dest,const char* src,size_t len,const char* escapeme) {
   register const unsigned char* s=(const unsigned char*) src;
-  unsigned long written=0,i;
+  size_t written=0,i;
   char c;
   for (i=0; i<len; ++i) {
     switch (s[i]) {
@@ -45,6 +45,6 @@ unsigned long fmt_cescape2(char* dest,const char* src,unsigned long len,const ch
   return written;
 }
 
-unsigned long fmt_cescape(char* dest,const char* src,unsigned long len) {
+size_t fmt_cescape(char* dest,const char* src,size_t len) {
   return fmt_cescape2(dest,src,len,"");
 }

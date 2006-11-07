@@ -4,7 +4,7 @@ scan_8long \- parse an unsigned long integer in octal ASCII representation
 .SH SYNTAX
 .B #include <scan.h>
 
-int \fBscan_8long\fP(const char *\fIsrc\fR,unsigned long *\fIdest\fR);
+size_t \fBscan_8long\fP(const char *\fIsrc\fR,unsigned long *\fIdest\fR);
 .SH DESCRIPTION
 scan_8long parses an unsigned long integer in octal ASCII representation
 from \fIsrc\fR and writes the result into \fIdest\fR. It returns the

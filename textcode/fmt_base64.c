@@ -2,7 +2,7 @@
 #include "textcode.h"
 #include "haveinline.h"
 
-unsigned long fmt_base64(char* dest,const char* src,unsigned long len) {
+size_t fmt_base64(char* dest,const char* src,size_t len) {
   register const unsigned char* s=(const unsigned char*) src;
   unsigned short bits=0,temp=0;
   unsigned long written=0,i;

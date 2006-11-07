@@ -1,6 +1,6 @@
 #include "str.h"
 
-unsigned long str_rchr(const char *in, char needle) {
+size_t str_rchr(const char *in, char needle) {
   register const char* t=in;
   register const char c=needle;
   register const char* found=0;

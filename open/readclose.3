@@ -4,7 +4,7 @@ readclose \- read a whole file into a stralloc
 .SH SYNTAX
 .B #include <readclose.h>
 
-int \fBreadclose\fP(int fd,stralloc* \fIsa\fR,unsigned int \fIbufsize\fR);
+int \fBreadclose\fP(int fd,stralloc* \fIsa\fR,size_t \fIbufsize\fR);
 .SH DESCRIPTION
 readclose reads the
 whole content into the stralloc \fIsa\fR.  The file is read in chunks of

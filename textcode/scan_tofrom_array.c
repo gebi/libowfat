@@ -2,10 +2,10 @@
 #include "array.h"
 #include "textcode.h"
 
-unsigned long scan_tofrom_array(unsigned long (*func)(const char*,char*,unsigned long*),
+size_t scan_tofrom_array(size_t (*func)(const char*,char*,size_t*),
 			        array* src,array* dest) {
-  unsigned long scanned;
-  unsigned long needed;
+  size_t scanned;
+  size_t needed;
   char* x;
   array_cat0(src);
   if (array_failed(src) || array_failed(dest)) return 0;

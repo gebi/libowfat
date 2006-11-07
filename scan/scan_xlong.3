@@ -4,7 +4,7 @@ scan_xlong \- parse an unsigned long integer in hexadecimal ASCII representation
 .SH SYNTAX
 .B #include <scan.h>
 
-int \fBscan_xlong\fP(const char *\fIsrc\fR,unsigned long *\fIdest\fR);
+size_t \fBscan_xlong\fP(const char *\fIsrc\fR,unsigned long *\fIdest\fR);
 .SH DESCRIPTION
 scan_xlong parses an unsigned long integer in hexadecimal ASCII
 representation from \fIsrc\fR and writes the result into \fIdest\fR. It

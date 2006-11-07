@@ -21,7 +21,7 @@ static int parsetime(const char*c,struct tm* x) {
   return 0;
 }
 
-unsigned int scan_httpdate(const char *in,time_t *t) {
+size_t scan_httpdate(const char *in,time_t *t) {
   struct tm x;
   int i;
   unsigned long tmp;

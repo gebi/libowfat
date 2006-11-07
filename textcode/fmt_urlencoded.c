@@ -11,9 +11,9 @@ static inline int issafe(unsigned char c) {
 	  safe[str_chr(safe,c)]);
 }
 
-unsigned long fmt_urlencoded2(char* dest,const char* src,unsigned long len,const char* escapeme) {
+size_t fmt_urlencoded2(char* dest,const char* src,size_t len,const char* escapeme) {
   register const unsigned char* s=(const unsigned char*) src;
-  unsigned long written=0,i;
+  size_t written=0,i;
   for (i=0; i<len; ++i) {
     if (!issafe(s[i]) || escapeme[str_chr(escapeme,s[i])]==s[i]) {
       if (dest) {
@@ -29,6 +29,6 @@ unsigned long fmt_urlencoded2(char* dest,const char* src,unsigned long len,const
   return written;
 }
 
-unsigned long fmt_urlencoded(char* dest,const char* src,unsigned long len) {
+size_t fmt_urlencoded(char* dest,const char* src,size_t len) {
   return fmt_urlencoded2(dest,src,len,"");
 }

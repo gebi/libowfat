@@ -5,8 +5,8 @@ buffer_init_free \- initialize buffer structure
 .B #include <buffer.h>
 
 void \fBbuffer_init_free\fR(buffer &\fIb\fR,
-                int (*\fIop\fR)(int,char*,unsigned int),
-                int \fIfd\fR, char* \fIy\fR, unsigned long int \fIylen\fR);
+                ssize_t (*\fIop\fR)(int,char*,size_t),
+                int \fIfd\fR, char* \fIy\fR, size_t \fIylen\fR);
 .SH DESCRIPTION
 buffer_init_free is like buffer_init except that the memory (\fIy\fR is
 marked to be freed by buffer_close().

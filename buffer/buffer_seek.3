@@ -4,7 +4,7 @@ buffer_seek \- remove bytes from beginning of string in buffer
 .SH SYNTAX
 .B #include <buffer.h>
 
-void \fBbuffer_seek\fP(buffer* \fIb\fR,unsigned long int \fIr\fR);
+void \fBbuffer_seek\fP(buffer* \fIb\fR,size_t \fIr\fR);
 .SH DESCRIPTION
 buffer_seek removes \fIr\fR bytes from the beginning of the string.
 \fIr\fR must be at most the current length of the string.

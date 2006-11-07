@@ -6,7 +6,7 @@ static inline int isdigit(int c) { return (c>='0' && c<='9'); }
 #include <ctype.h>
 #endif
 
-unsigned int scan_double(const char *in, double *dest) {
+size_t scan_double(const char *in, double *dest) {
   double d=0;
   register const char *c=in;
   char neg=0;

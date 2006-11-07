@@ -12,7 +12,7 @@ static inline int dec(unsigned char x) {
   }
 }
 
-unsigned long scan_base64(const char *src,char *dest,unsigned long *destlen) {
+size_t scan_base64(const char *src,char *dest,size_t *destlen) {
   unsigned short tmp=0,bits=0;
   register const unsigned char* s=(const unsigned char*) src;
   const char* orig=dest;

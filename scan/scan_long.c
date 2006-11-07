@@ -1,6 +1,6 @@
 #include "scan.h"
 
-unsigned int scan_long(const char *src,long *dest) {
+size_t scan_long(const char *src,long *dest) {
   register const char *tmp;
   register long int l;
   register unsigned char c;

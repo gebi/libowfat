@@ -5,7 +5,7 @@
 
 int buffer_get_token_sa(buffer* b,stralloc* sa,
 			const char* charset,
-			unsigned long int setlen) {
+			size_t setlen) {
   for (;;) {
     char x;
     if (!stralloc_readyplus(sa,1)) goto nomem;

@@ -7,7 +7,7 @@ buffer_get_new_token_sa \- read token from buffer
 .B #include <buffer.h>
 
 int \fBbuffer_get_new_token_sa\fP(buffer* \fIb\fR,stralloc* \fIsa\fR,
-                    const char* \fIcharset\fR,unsigned int \fIsetlen\fR);
+                    const char* \fIcharset\fR,size_t \fIsetlen\fR);
 .SH DESCRIPTION
 buffer_get_new_token_sa copies data from the \fIb\fR to \fIsa\fR until
 one of the delimiters in \fIcharset\fR is found, overwriting the

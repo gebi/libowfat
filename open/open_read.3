@@ -4,7 +4,7 @@ open_read \- open a file for reading
 .SH SYNTAX
 .B #include <open.h>
 
-extern int \fBopen_read\fP(const char *\fIfilename\fR);
+int \fBopen_read\fP(const char *\fIfilename\fR);
 .SH DESCRIPTION
 open_read opens the file \fIfilename\fR for reading and returns the file
 handle.  If there was an error opening the file, open_read returns -1

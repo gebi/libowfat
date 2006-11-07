@@ -4,7 +4,7 @@ fmt_xlonglong \- write a hexadecimal ASCII representation of an unsigned long lo
 .SH SYNTAX
 .B #include <fmt.h>
 
-unsigned int \fBfmt_xlonglong\fP(char *\fIdest\fR,unsigned long long \fIsource\fR);
+size_t \fBfmt_xlonglong\fP(char *\fIdest\fR,unsigned long long \fIsource\fR);
 .SH DESCRIPTION
 fmt_xlonglong writes an ASCII representation ('0' to '9' and 'a' to 'f',
 base 16) of \fIsource\fR to \fIdest\fR and returns the number of bytes

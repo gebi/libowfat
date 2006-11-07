@@ -4,8 +4,8 @@ buffer_get_token \- read token from buffer
 .SH SYNTAX
 .B #include <buffer.h>
 
-int \fBbuffer_get_token\fP(buffer* \fIb\fR,char* \fIx\fR,unsigned long int \fIlen\fR,
-                 const char* \fIcharset\fR,unsigned long int \fIsetlen\fR);
+ssize_t \fBbuffer_get_token\fP(buffer* \fIb\fR,char* \fIx\fR,size_t \fIlen\fR,
+                 const char* \fIcharset\fR,size_t \fIsetlen\fR);
 .SH DESCRIPTION
 buffer_get_token copies data from \fIb\fR to \fIx\fR[0], \fIx\fR[1], ...,
 \fIx\fR[\fIlen\fR-1] until \fIlen\fR bytes have been copied or one of

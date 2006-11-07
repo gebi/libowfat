@@ -4,7 +4,7 @@ stralloc_ready \- provide space in a stralloc
 .SH SYNTAX
 .B #include <stralloc.h>
 
-int \fBstralloc_ready\fP(stralloc* \fIsa\fR,unsigned long int \fIlen\fR);
+int \fBstralloc_ready\fP(stralloc* \fIsa\fR,size_t \fIlen\fR);
 .SH DESCRIPTION
 stralloc_ready makes sure that \fIsa\fR has enough space allocated to hold
 \fIlen\fR bytes: If \fIsa\fR is not allocated, stralloc_ready allocates at least

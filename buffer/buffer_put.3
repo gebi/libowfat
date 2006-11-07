@@ -4,7 +4,7 @@ buffer_put \- write binary data to buffer
 .SH SYNTAX
 .B #include <buffer.h>
 
-int \fBbuffer_put\fP(buffer* \fIb\fR,const char* \fIx\fR,unsigned long int \fIlen\fR);
+int \fBbuffer_put\fP(buffer* \fIb\fR,const char* \fIx\fR,size_t \fIlen\fR);
 .SH DESCRIPTION
 buffer_put writes \fIlen\fR bytes from \fIx\fR to \fIb\fR.
 

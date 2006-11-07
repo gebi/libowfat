@@ -4,7 +4,7 @@ fmt_human \- write a human readable ASCII representation of a long integer
 .SH SYNTAX
 .B #include <fmt.h>
 
-unsigned int \fBfmt_human\fP(char *\fIdest\fR,unsigned long long \fIsource\fR);
+size_t \fBfmt_human\fP(char *\fIdest\fR,unsigned long long \fIsource\fR);
 .SH DESCRIPTION
 fmt_human writes a human readable ASCII representation of \fIsource\fR
 to \fIdest\fR and returns the number of bytes written.  The result

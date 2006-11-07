@@ -12,7 +12,7 @@
 #include "havesl.h"
 #include "havescope.h"
 
-int socket_recv6(int s,char *buf,unsigned int len,char ip[16],uint16 *port,uint32 *scope_id)
+ssize_t socket_recv6(int s,char *buf,size_t len,char ip[16],uint16 *port,uint32 *scope_id)
 {
 #ifdef LIBC_HAS_IP6
   struct sockaddr_in6 si;
@@ -20,7 +20,7 @@ int socket_recv6(int s,char *buf,unsigned int len,char ip[16],uint16 *port,uint3
   struct sockaddr_in si;
 #endif
   socklen_t Len = sizeof si;
-  int r;
+  ssize_t r;
 
   byte_zero(&si,Len);
   if ((r = recvfrom(s,buf,len,0,(struct sockaddr *) &si,&Len))<0) return winsock2errno(-1);

@@ -5,8 +5,8 @@ buffer_init \- initialize buffer structure
 .B #include <buffer.h>
 
 void \fBbuffer_init\fR(buffer &\fIb\fR,
-                int (*\fIop\fR)(int,char*,unsigned int),
-                int \fIfd\fR, char* \fIy\fR, unsigned long int \fIylen\fR);
+                ssize_t (*\fIop\fR)(int,char*,size_t),
+                int \fIfd\fR, char* \fIy\fR, size_t \fIylen\fR);
 .SH DESCRIPTION
 buffer_init prepares \fIb\fR to store a string in \fIy\fR[0], \fIy\fR[1], ...,
 \fIy\fR[\fIylen\fR-1].  Initially the string is empty.

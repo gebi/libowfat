@@ -4,8 +4,8 @@ fmt_uint0 \- write a zero-padded ASCII representation of an unsigned integer
 .SH SYNTAX
 .B #include <fmt.h>
 
-unsigned int \fBfmt_uint0\fP(char *\fIdest\fR,unsigned int \fIsource\fR,
-                       unsigned int \fIn\fR);
+size_t \fBfmt_uint0\fP(char *\fIdest\fR,unsigned int \fIsource\fR,
+                       size_t \fIn\fR);
 .SH DESCRIPTION
 fmt_uint0 writes an ASCII representation ('0' to '9', base 10) of
 \fIsource\fR to \fIdest\fR and returns the number of bytes written.

@@ -4,7 +4,7 @@ open_excl \- open a file for exclusive writing
 .SH SYNTAX
 .B #include <open.h>
 
-extern int \fBopen_excl\fP(const char *\fIfilename\fR);
+int \fBopen_excl\fP(const char *\fIfilename\fR);
 .SH DESCRIPTION
 open_excl opens the file \fIfilename\fR for writing and returns the file
 handle.  The file may not exist before the call to \fBopen_excl\fR.  The

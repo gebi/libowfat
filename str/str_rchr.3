@@ -4,7 +4,7 @@ str_rchr \- find character in ASCIIZ string
 .SH SYNTAX
 .B #include <str.h>
 
-extern long \fBstr_rchr\fP(const char* \fIhaystack\fR,char \fIneedle\fR);
+size_t \fBstr_rchr\fP(const char* \fIhaystack\fR,char \fIneedle\fR);
 .SH DESCRIPTION
 str_rchr returns the index of the last occurrance of needle or the first
 occurrance of \\0 in \fIstring\fR.

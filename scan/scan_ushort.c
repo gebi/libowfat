@@ -5,7 +5,7 @@
  * not fit into an unsigned short (as opposed to not fitting in an
  * unsigned long) */
 
-unsigned int scan_ushort(const char* src,unsigned short* dest) {
+size_t scan_ushort(const char* src,unsigned short* dest) {
   if (sizeof(unsigned short) == sizeof(unsigned int)) {
     /* a good optimizing compiler should remove the else clause when not
      * needed */

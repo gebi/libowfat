@@ -4,7 +4,7 @@ stralloc_copyb \- copy data into a stralloc
 .SH SYNTAX
 .B #include <stralloc.h>
 
-int \fBstralloc_copyb\fP(stralloc* \fIsa\fR,const char* \fIbuf\fR,unsigned long int \fIlen\fR);
+int \fBstralloc_copyb\fP(stralloc* \fIsa\fR,const char* \fIbuf\fR,size_t \fIlen\fR);
 .SH DESCRIPTION
 stralloc_copyb makes sure that \fIsa\fR has enough space allocated to hold
 \fIlen\fR bytes.  Then it copies the first \fIlen\fR bytes from

@@ -2,7 +2,7 @@
 #include "buffer.h"
 #include "scan.h"
 
-int buffer_get_token_pred(buffer* b,char* x,unsigned long int len,
+ssize_t buffer_get_token_pred(buffer* b,char* x,size_t len,
 			  string_predicate p) {
   unsigned int blen;
 

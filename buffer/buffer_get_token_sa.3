@@ -7,7 +7,7 @@ buffer_get_token_sa \- read token from buffer
 .B #include <buffer.h>
 
 int \fBbuffer_get_token_sa\fP(buffer* \fIb\fR,stralloc* \fIsa\fR,
-                    const char* \fIcharset\fR,unsigned long int \fIsetlen\fR);
+                    const char* \fIcharset\fR,size_t \fIsetlen\fR);
 .SH DESCRIPTION
 buffer_get_token_sa appends data from the \fIb\fR to \fIsa\fR until one
 of the delimiters in \fIcharset\fR is found, NOT overwriting the

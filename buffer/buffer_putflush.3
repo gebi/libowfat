@@ -5,7 +5,7 @@ buffer_putflush \- write binary data to buffer and flush
 .B #include <buffer.h>
 
 int \fBbuffer_putflush\fP(buffer* \fIb\fR,
-                    const char* \fIx\fR,unsigned long int \fIlen\fR);
+                    const char* \fIx\fR,size_t \fIlen\fR);
 .SH DESCRIPTION
 buffer_putflush is similar to calling
 buffer_put(\fIb\fR,\fIx\fR,\fIlen\fR) and then buffer_flush(\fIb\fR).

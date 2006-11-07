@@ -1,6 +1,6 @@
 #include "str.h"
 
-unsigned long str_copy(char *out,const char *in) {
+size_t str_copy(char *out,const char *in) {
   register char* s=out;
   register const char* t=in;
   for (;;) {

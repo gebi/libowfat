@@ -4,7 +4,7 @@ fmt_uint \- write an ASCII representation of an unsigned integer
 .SH SYNTAX
 .B #include <fmt.h>
 
-unsigned int \fBfmt_uint\fP(char *\fIdest\fR,unsigned int \fIsource\fR);
+size_t \fBfmt_uint\fP(char *\fIdest\fR,unsigned int \fIsource\fR);
 .SH DESCRIPTION
 fmt_uint writes an ASCII representation ('0' to '9', base 10) of
 \fIsource\fR to \fIdest\fR and returns the number of bytes written.

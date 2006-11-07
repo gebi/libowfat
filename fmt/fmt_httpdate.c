@@ -8,11 +8,11 @@ static unsigned int fmt_2digits(char* dest,int i) {
   return 2;
 }
 
-unsigned int fmt_httpdate(char* dest,time_t t) {
+size_t fmt_httpdate(char* dest,time_t t) {
   static const char days[] = "SunMonTueWedThuFriSat";
   static const char months[] = "JanFebMarAprMayJunJulAugSepOctNovDec";
   struct tm* x=gmtime(&t);
-  int i;
+  size_t i;
 
   if (dest==0) return 29;
   /* "Sun, 06 Nov 1994 08:49:37 GMT" */

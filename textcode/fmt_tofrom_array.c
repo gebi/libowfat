@@ -1,9 +1,9 @@
 #include "array.h"
 #include "textcode.h"
 
-void fmt_tofrom_array(unsigned long (*func)(char*,const char*,unsigned long),
+void fmt_tofrom_array(size_t (*func)(char*,const char*,size_t),
 		      array* dest,array* src) {
-  unsigned long needed;
+  size_t needed;
   char* x;
   if (array_failed(dest) || array_failed(src)) { array_fail(dest); return; }
   needed=func(0,array_start(src),array_bytes(src));

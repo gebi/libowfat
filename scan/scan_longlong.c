@@ -1,6 +1,6 @@
 #include "scan.h"
 
-unsigned int scan_longlong(const char* src,signed long long* dest) {
+size_t scan_longlong(const char* src,signed long long* dest) {
   unsigned int i,o;
   unsigned long long l;
   char c=src[0];

@@ -1,6 +1,6 @@
 #include "fmt.h"
 
-unsigned int fmt_human(char* dest,unsigned long long l) {
+size_t fmt_human(char* dest,unsigned long long l) {
   char unit;
   int i;
   if (l<1000) return fmt_ulong(dest,l);

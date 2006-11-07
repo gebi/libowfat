@@ -4,7 +4,7 @@ stralloc_catlong0 \- append an integer to a stralloc
 .SH SYNTAX
 .B #include <stralloc.h>
 
-int \fBstralloc_catlong0\fP(stralloc* \fIsa\fR, unsigned long int \fIin\fR, unsigned long int \fIn\fR);
+int \fBstralloc_catlong0\fP(stralloc* \fIsa\fR, unsigned long int \fIin\fR, size_t \fIn\fR);
 .SH DESCRIPTION
 stralloc_catlong0 converts in to a string using \fBfmt_long0\fR and
 appends the result to \fIsa\fR, allocating memory as necessary.

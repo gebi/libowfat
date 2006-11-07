@@ -8,7 +8,7 @@
 #include "open.h"
 #include "mmap.h"
 
-char* mmap_private(const char* filename,unsigned long* filesize) {
+char* mmap_private(const char* filename,size_t * filesize) {
 #ifdef __MINGW32__
   HANDLE fd,m;
   char* map;

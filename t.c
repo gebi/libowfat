@@ -319,7 +319,7 @@ int main(int argc,char* argv[]) {
   printf("%lu %lu\n",b-a,c-b);
 #endif
 #if 1
-  unsigned long size;
+  size_t size;
   char* buf=mmap_read(argv[1],&size);
   if (buf) {
     unsigned int x=fmt_urlencoded2(0,buf,size,"x");
@@ -332,7 +332,6 @@ int main(int argc,char* argv[]) {
 #if 0
   printf("%d %d\n",strcmp("foo","bar"),str_diff("foo","bar"));
   printf("%d %d\n",strcmp("foo","üar"),str_diff("foo","üar"));
-  return 0;
 #endif
   {
     int16 a;
@@ -349,5 +348,7 @@ int main(int argc,char* argv[]) {
     assert(imult64(0x4000000000000000ll,2,&c)==0);
     assert(imult64(0x3fffffffffffffffll,2,&c)==1 && c==0x7ffffffffffffffell);
   }
+
+  return 0;
 }
 

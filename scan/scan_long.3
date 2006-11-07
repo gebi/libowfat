@@ -4,7 +4,7 @@ scan_long \- parse an long integer in decimal ASCII representation
 .SH SYNTAX
 .B #include <scan.h>
 
-int \fBscan_long\fP(const char *\fIsrc\fR,long *\fIdest\fR);
+size_t \fBscan_long\fP(const char *\fIsrc\fR,long *\fIdest\fR);
 .SH DESCRIPTION
 scan_long parses a long integer in decimal ASCII representation
 from \fIsrc\fR and writes the result into \fIdest\fR. It returns the

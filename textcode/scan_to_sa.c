@@ -2,10 +2,10 @@
 #include "stralloc.h"
 #include "textcode.h"
 
-unsigned long scan_to_sa(unsigned long (*func)(const char*,char*,unsigned long*),
+size_t scan_to_sa(size_t (*func)(const char*,char*,size_t*),
 			 const char* src,stralloc* sa) {
-  unsigned long written;
-  unsigned long r;
+  size_t written;
+  size_t r;
   if (!stralloc_readyplus(sa,str_len(src))) return 0;
   if ((r=func(src,sa->s+sa->len,&written)))
     sa->len+=written;

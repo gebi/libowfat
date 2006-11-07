@@ -3,9 +3,9 @@
 #include "str.h"
 #include "haveinline.h"
 
-unsigned long fmt_foldwhitespace(char* dest,const char* src,unsigned long len) {
+size_t fmt_foldwhitespace(char* dest,const char* src,size_t len) {
   register const unsigned char* s=(const unsigned char*) src;
-  unsigned long i;
+  size_t i;
   char c;
   for (i=0; i<len; ++i) {
     switch (c=s[i]) {

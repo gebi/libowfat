@@ -1,6 +1,8 @@
 #ifndef SOCKET_H
 #define SOCKET_H
 
+#include <sys/types.h>
+
 #include "uint16.h"
 #include "uint32.h"
 
@@ -24,10 +26,10 @@ int socket_bind6_reuse(int s,const char* ip,uint16 port,uint32 scope_id);
 int socket_listen(int s,unsigned int backlog);
 int socket_accept4(int s,char* ip,uint16* port);
 int socket_accept6(int s,char* ip,uint16* port,uint32* scope_id);
-int socket_recv4(int s,char* buf,unsigned int len,char* ip,uint16* port);
-int socket_recv6(int s,char* buf,unsigned int len,char* ip,uint16* port,uint32* scope_id);
-int socket_send4(int s,const char* buf,unsigned int len,const char* ip,uint16 port);
-int socket_send6(int s,const char* buf,unsigned int len,const char* ip,uint16 port,uint32 scope_id);
+ssize_t socket_recv4(int s,char* buf,size_t len,char* ip,uint16* port);
+ssize_t socket_recv6(int s,char* buf,size_t len,char* ip,uint16* port,uint32* scope_id);
+ssize_t socket_send4(int s,const char* buf,size_t len,const char* ip,uint16 port);
+ssize_t socket_send6(int s,const char* buf,size_t len,const char* ip,uint16 port,uint32 scope_id);
 int socket_local4(int s,char* ip,uint16* port);
 int socket_local6(int s,char* ip,uint16* port,uint32* scope_id);
 int socket_remote4(int s,char* ip,uint16* port);

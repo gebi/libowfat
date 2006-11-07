@@ -8,7 +8,7 @@
 #include "open.h"
 #include "mmap.h"
 
-extern char* mmap_shared(const char* filename,unsigned long* filesize) {
+extern char* mmap_shared(const char* filename,size_t * filesize) {
 #ifdef __MINGW32__
   HANDLE fd,m;
   char* map;

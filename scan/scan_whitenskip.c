@@ -1,7 +1,7 @@
 #include "scan.h"
 #include <ctype.h>
 
-unsigned long scan_whitenskip(const char *s,unsigned long limit) {
+size_t scan_whitenskip(const char *s,size_t limit) {
   register const char *t=s;
   register const char *u=t+limit;
   while (t<u && isspace(*t)) ++t;

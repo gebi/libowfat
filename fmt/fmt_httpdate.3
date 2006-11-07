@@ -4,7 +4,7 @@ fmt_httpdate \- write a date in ASCII as in the HTTP protocol
 .SH SYNTAX
 .B #include <fmt.h>
 
-unsigned int \fBfmt_httpdate\fP(char *\fIdest\fR,time_t \fIsource\fR);
+size_t \fBfmt_httpdate\fP(char *\fIdest\fR,time_t \fIsource\fR);
 .SH DESCRIPTION
 fmt_httpdate writes a date in ASCII representation as the HTTP protocol defines it:
 "Sun, 06 Nov 1994 08:49:37 GMT".

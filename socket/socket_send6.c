@@ -13,7 +13,7 @@
 #include "ip4.h"
 #include "havescope.h"
 
-int socket_send6(int s,const char *buf,unsigned int len,const char ip[16],uint16 port,uint32 scope_id)
+ssize_t socket_send6(int s,const char *buf,size_t len,const char ip[16],uint16 port,uint32 scope_id)
 {
 #ifdef LIBC_HAS_IP6
   struct sockaddr_in6 si;

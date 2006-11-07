@@ -1,6 +1,6 @@
 #include "fmt.h"
 
-unsigned int fmt_xlonglong(char *dest,unsigned long long i) {
+size_t fmt_xlonglong(char *dest,unsigned long long i) {
   int tmp=0;
   if (i>>32) {
     tmp=fmt_xlong(dest,i>>32);

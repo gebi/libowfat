@@ -4,7 +4,7 @@ socket_recv6 \- receive a UDP datagram
 .SH SYNTAX
 .B #include <socket.h>
 
-int \fBsocket_recv6\fP(int \fIs\fR, char* \fIbuf\fR, unsigned int \fIlen\fR,
+ssize_t \fBsocket_recv6\fP(int \fIs\fR, char* \fIbuf\fR, size_t \fIlen\fR,
         char \fIip\fR[16], uint16* \fIport\fR, uint32* \fIscope_id\fR);
 .SH DESCRIPTION
 socket_recv6 receives up to \fIlen\fR bytes starting at \fIbuf\fR from a UDP

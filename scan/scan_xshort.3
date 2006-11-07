@@ -4,7 +4,7 @@ scan_xshort \- parse an unsigned short integer in hexadecimal ASCII representati
 .SH SYNTAX
 .B #include <scan.h>
 
-int \fBscan_xshort\fP(const char *\fIsrc\fR,unsigned short *\fIdest\fR);
+size_t \fBscan_xshort\fP(const char *\fIsrc\fR,unsigned short *\fIdest\fR);
 .SH DESCRIPTION
 scan_xshort parses an unsigned short integer in hexadecimal ASCII
 representation from \fIsrc\fR and writes the result into \fIdest\fR. It

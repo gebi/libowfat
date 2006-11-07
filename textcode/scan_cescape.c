@@ -2,9 +2,9 @@
 #include "textcode.h"
 #include "scan.h"
 
-unsigned long scan_cescape(const char *src,char *dest,unsigned long *destlen) {
+size_t scan_cescape(const char *src,char *dest,size_t *destlen) {
   register const unsigned char* s=(const unsigned char*) src;
-  unsigned long written=0,i;
+  size_t written=0,i;
   char c;
   for (i=0; s[i]; ++i) {
     if ((c=s[i])=='\\') {

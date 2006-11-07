@@ -4,8 +4,8 @@ fmt_double \- write an ASCII representation of a double
 .SH SYNTAX
 .B #include <fmt.h>
 
-unsigned int \fBfmt_double\fP(char *\fIdest\fR,double \fId\fR,int
-\fImaxlen\fR,int \fIprec\fR);
+size_t \fBfmt_double\fP(char *\fIdest\fR,double \fId\fR,size_t
+\fImaxlen\fR,size_t \fIprec\fR);
 .SH DESCRIPTION
 fmt_double writes an ASCII representation ('0' to '9', base 10) of
 \fId\fR to \fIdest\fR and returns the number of bytes written.  No more

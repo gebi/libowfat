@@ -4,7 +4,7 @@ scan_httpdate \- parse a HTTP date
 .SH SYNTAX
 .B #include <scan.h>
 
-int \fBscan_httpdate\fP(const char *\fIsrc\fR,time_t *\fIdest\fR);
+size_t \fBscan_httpdate\fP(const char *\fIsrc\fR,time_t *\fIdest\fR);
 .SH DESCRIPTION
 scan_httpdate parses a date as defined in the HTTP standard into a
 time_t.  It returns the number of bytes read from \fIsrc\fR (0 for parse

@@ -4,8 +4,8 @@ openreadclose \- read a whole file into a stralloc
 .SH SYNTAX
 .B #include <openreadclose.h>
 
-extern int \fBopenreadclose\fP(const char *\fIfilename\fR,
-           stralloc* \fIsa\fR,unsigned int \fIbufsize\fR);
+int \fBopenreadclose\fP(const char *\fIfilename\fR,
+           stralloc* \fIsa\fR,size_t \fIbufsize\fR);
 .SH DESCRIPTION
 openreadclose opens the file \fIfilename\fR for reading and reads the
 whole content into the stralloc \fIsa\fR.  The file is read in chunks of

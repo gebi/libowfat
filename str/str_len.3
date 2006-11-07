@@ -4,7 +4,7 @@ str_len \- find length of ASCIIZ string
 .SH SYNTAX
 .B #include <str.h>
 
-extern long \fBstr_len\fP(const char* \fIstring\fR);
+size_t \fBstr_len\fP(const char* \fIstring\fR);
 .SH DESCRIPTION
 str_len returns the index of the first occurrance of \\0 in
 \fIstring\fR.

@@ -4,7 +4,7 @@ str_equal \- compare two ASCIIZ strings
 .SH SYNTAX
 .B #include <str.h>
 
-extern int \fBstr_equal\fP(const char* \fIa\fR,const char* \fIb\fR);
+size_t \fBstr_equal\fP(const char* \fIa\fR,const char* \fIb\fR);
 .SH DESCRIPTION
 \fBstr_equal\fR returns nonzero if \fIa\fR and \fIb\fR match up to and
 including the first occurrance of \\0.

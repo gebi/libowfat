@@ -1,6 +1,6 @@
 #include "fmt.h"
 
-unsigned int fmt_double(char *dest, double d,int maxlen,int prec) {
+size_t fmt_double(char *dest, double d,int maxlen,int prec) {
   union {
     double d;
     unsigned long long x;

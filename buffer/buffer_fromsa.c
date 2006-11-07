@@ -1,7 +1,7 @@
 #include "stralloc.h"
 #include "buffer.h"
 
-static int dummyreadwrite(int fd,char* buf,unsigned long int len) {
+static ssize_t dummyreadwrite(int fd,char* buf,size_t len) {
   (void)fd;
   (void)buf;
   (void)len;

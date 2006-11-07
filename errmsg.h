@@ -1,11 +1,6 @@
 #ifndef ERRMSG_H
 #define ERRMSG_H
 
-#ifdef __dietlibc__
-#include <sys/cdefs.h>
-#else
-#define __attribute__(x)
-#endif
 /* for exit(): */
 #include <stdlib.h>
 

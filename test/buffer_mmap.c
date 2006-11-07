@@ -10,4 +10,5 @@ int main() {
   }
   buffer_flush(buffer_1);
   buffer_close(&input);
+  return 0;
 }

@@ -1,8 +1,8 @@
 #include "fmt.h"
 
-unsigned int fmt_humank(char* dest,unsigned long long l) {
+size_t fmt_humank(char* dest,unsigned long long l) {
   char unit;
-  int i;
+  size_t i;
   if (l<1000) return fmt_ulong(dest,l);
   if (l>1024*1024*1024*1024ull) {
     l=(l+(1024*1024*1024*1024ull/20))/(1024*1024*1024*1024ull/10);

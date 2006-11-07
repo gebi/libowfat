@@ -4,7 +4,7 @@ fmt_ulong \- write an ASCII representation of an unsigned long integer
 .SH SYNTAX
 .B #include <fmt.h>
 
-unsigned int \fBfmt_ulong\fP(char *\fIdest\fR,unsigned long \fIsource\fR);
+size_t \fBfmt_ulong\fP(char *\fIdest\fR,unsigned long \fIsource\fR);
 .SH DESCRIPTION
 fmt_ulong writes an ASCII representation ('0' to '9', base 10) of
 \fIsource\fR to \fIdest\fR and returns the number of bytes written.

@@ -3,6 +3,7 @@
 #include "textcode.h"
 #include "havealloca.h"
 #include <unistd.h>
+#include <stdio.h>
 
 void unurl(const char* s) {
   char* buf;

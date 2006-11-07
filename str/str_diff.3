@@ -4,7 +4,7 @@ str_diff \- compare two ASCIIZ strings
 .SH SYNTAX
 .B #include <str.h>
 
-extern int \fBstr_diff\fP(const char* \fIa\fR,const char* \fIb\fR);
+int \fBstr_diff\fP(const char* \fIa\fR,const char* \fIb\fR);
 .SH DESCRIPTION
 \fBstr_diff\fR returns negative, 0, or positive, depending on whether the
 string \fIa\fR[0], \fIa\fR[1], ..., \fIa\fR[n]=='\\0' is

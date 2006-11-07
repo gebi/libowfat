@@ -1,8 +1,8 @@
 #include "textcode.h"
 
-unsigned long scan_uuencoded(const char *src,char *dest,unsigned long *destlen) {
-  unsigned int len;
-  unsigned long tmp;
+size_t scan_uuencoded(const char *src,char *dest,size_t *destlen) {
+  size_t len;
+  size_t tmp;
   register const unsigned char* s=(const unsigned char*) src;
   const char* orig=dest;
   if ((len=*s-' ')>64) return 0; len&=63;

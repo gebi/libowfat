@@ -2,7 +2,7 @@
 #include <errno.h>
 #include "readclose.h"
 
-int readclose_append(int fd,stralloc *sa,unsigned int bufsize)
+int readclose_append(int fd,stralloc *sa,size_t bufsize)
 {
   int r;
   for (;;) {
@@ -14,7 +14,7 @@ int readclose_append(int fd,stralloc *sa,unsigned int bufsize)
   }
 }
 
-int readclose(int fd,stralloc *sa,unsigned int bufsize)
+int readclose(int fd,stralloc *sa,size_t bufsize)
 {
   if (!stralloc_copys(sa,"")) { close(fd); return -1; }
   return readclose_append(fd,sa,bufsize);

@@ -4,7 +4,7 @@ fmt_plusminus \- write '+' or '-'
 .SH SYNTAX
 .B #include <fmt.h>
 
-unsigned int \fBfmt_plusminus\fP(char *\fIdest\fR,signed int \fIsource\fR);
+size_t \fBfmt_plusminus\fP(char *\fIdest\fR,signed int \fIsource\fR);
 .SH DESCRIPTION
 fmt_plusminus writes '-' to \fIdest\fR if \fIsource\fR is negative, '+'
 if \fIsource\fR is positive, nothing otherwise.  It returns the number

@@ -1,7 +1,7 @@
 #include "scan.h"
 #include <ctype.h>
 
-unsigned long scan_charsetnskip(const char *s,const char *charset,unsigned long limit) {
+size_t scan_charsetnskip(const char *s,const char *charset,size_t limit) {
   register const char *t=s;
   register const char *u=t+limit;
   register const char* i;

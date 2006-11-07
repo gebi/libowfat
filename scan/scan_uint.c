@@ -5,7 +5,7 @@
  * not fit into an unsigned int (as opposed to not fitting in an
  * unsigned long) */
 
-unsigned int scan_uint(const char* src,unsigned int* dest) {
+size_t scan_uint(const char* src,unsigned int* dest) {
   if (sizeof(unsigned int) == sizeof(unsigned long)) {
     /* a good optimizing compiler should remove the else clause when not
      * needed */

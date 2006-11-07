@@ -4,7 +4,7 @@ fmt_long \- write an ASCII representation of a long integer
 .SH SYNTAX
 .B #include <fmt.h>
 
-unsigned int \fBfmt_long\fP(char *\fIdest\fR,long \fIsource\fR);
+size_t \fBfmt_long\fP(char *\fIdest\fR,long \fIsource\fR);
 .SH DESCRIPTION
 fmt_long writes an ASCII representation ('-' and '0' to '9', base 10) of
 \fIsource\fR to \fIdest\fR and returns the number of bytes written.

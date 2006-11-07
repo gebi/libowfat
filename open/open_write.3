@@ -4,7 +4,7 @@ open_write \- open a file for writing
 .SH SYNTAX
 .B #include <open.h>
 
-extern int \fBopen_write\fP(const char *\fIfilename\fR);
+int \fBopen_write\fP(const char *\fIfilename\fR);
 .SH DESCRIPTION
 open_write opens the file \fIfilename\fR for write-only use and returns
 the file handle.  If the file does not exist, it will be created with

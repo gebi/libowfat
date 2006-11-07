@@ -1,8 +1,8 @@
 #include "scan.h"
 
-unsigned int scan_int(const char* src,int* dest) {
+size_t scan_int(const char* src,int* dest) {
   long l;
-  register int len=scan_long(src,&l);
+  size_t len=scan_long(src,&l);
   if (len) *dest=l;
   return len;
 }

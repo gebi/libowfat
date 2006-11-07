@@ -4,7 +4,7 @@ case_diffb \- compare strings case-insensitively
 .SH SYNTAX
 .B #include <case.h>
 
-int \fBcase_diffb\fP(const void* \fIa\fR,unsigned long \fIlen\fR,const void* \fIb\fR);
+int \fBcase_diffb\fP(const void* \fIa\fR,size_t \fIlen\fR,const void* \fIb\fR);
 .SH DESCRIPTION
 case_diffb is similar to byte_diff.  The difference is that for the
 comparison 'A' == 'a', 'B' == 'b', ..., 'Z' == 'z'.

@@ -1,6 +1,6 @@
 #include "str.h"
 
-unsigned long str_chr(const char *in, char needle) {
+size_t str_chr(const char *in, char needle) {
   register const char* t=in;
   register const char c=needle;
   for (;;) {

@@ -96,7 +96,7 @@ int main(int argc,char* argv[]) {
   enum { NONE, BASE64, QP} mimeenc=NONE;
   char filename[1024];
   unsigned long fmode=0,lineno=0;
-  unsigned long offset,endoffset,totalsize,linelen,part,reconstructed; /* used only for yenc */
+  unsigned long offset,endoffset,totalsize,linelen,part,reconstructed=0; /* used only for yenc */
   static stralloc yencpart;
   unsigned int crc;
 
@@ -375,7 +375,7 @@ writeerror:
       state=BEFOREBEGIN;
       continue;
     } else {
-      unsigned long scanned,x;
+      unsigned long scanned,x=0;
       char tmp[1000];
       switch (mode) {
       case MIME:

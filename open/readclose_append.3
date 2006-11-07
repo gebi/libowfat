@@ -5,7 +5,7 @@ readclose_append \- read a whole file into a stralloc
 .B #include <readclose.h>
 
 int \fBreadclose_append\fP(int fd,stralloc* \fIsa\fR,
-                     unsigned int \fIbufsize\fR);
+                     size_t \fIbufsize\fR);
 .SH DESCRIPTION
 readclose_append reads the
 whole content into the stralloc \fIsa\fR, appending it to the existing

@@ -4,7 +4,7 @@ scan_ulong \- parse an unsigned long integer in decimal ASCII representation
 .SH SYNTAX
 .B #include <scan.h>
 
-int \fBscan_ulong\fP(const char *\fIsrc\fR,unsigned long *\fIdest\fR);
+size_t \fBscan_ulong\fP(const char *\fIsrc\fR,unsigned long *\fIdest\fR);
 .SH DESCRIPTION
 scan_ulong parses an unsigned long integer in decimal ASCII representation
 from \fIsrc\fR and writes the result into \fIdest\fR. It returns the

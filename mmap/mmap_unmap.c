@@ -8,7 +8,7 @@
 #include "open.h"
 #include "mmap.h"
 
-int mmap_unmap(char* mapped,unsigned long maplen) {
+int mmap_unmap(char* mapped,size_t maplen) {
 #ifdef __MINGW32__
   (void)maplen;
   return UnmapViewOfFile(mapped)?0:-1;

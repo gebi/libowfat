@@ -4,7 +4,7 @@ scan_short \- parse an integer in decimal ASCII representation
 .SH SYNTAX
 .B #include <scan.h>
 
-int \fBscan_short\fP(const char *\fIsrc\fR,short int *\fIdest\fR);
+size_t \fBscan_short\fP(const char *\fIsrc\fR,short int *\fIdest\fR);
 .SH DESCRIPTION
 scan_short parses a short integer in decimal ASCII representation
 from \fIsrc\fR and writes the result into \fIdest\fR. It returns the

@@ -1,6 +1,6 @@
 #include "scan.h"
 
-unsigned int scan_plusminus(const char *src,signed int *dest) {
+size_t scan_plusminus(const char *src,signed int *dest) {
   *dest=1;
   switch (*src) {
   case '-': *dest=-1;

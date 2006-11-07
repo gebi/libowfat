@@ -4,7 +4,7 @@ scan_ushort \- parse an unsigned short integer in decimal ASCII representation
 .SH SYNTAX
 .B #include <scan.h>
 
-int \fBscan_ushort\fP(const char *\fIsrc\fR,unsigned short *\fIdest\fR);
+size_t \fBscan_ushort\fP(const char *\fIsrc\fR,unsigned short *\fIdest\fR);
 .SH DESCRIPTION
 scan_ushort parses an unsigned short integer in decimal ASCII representation
 from \fIsrc\fR and writes the result into \fIdest\fR. It returns the

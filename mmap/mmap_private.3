@@ -4,7 +4,7 @@ mmap_private \- memory map a file for reading and writing
 .SH SYNTAX
 .B #include <mmap.h>
 
-extern char* \fBmmap_private\fP(const char* \fIfilename\fR,unsigned long* \fIfilesize\fR);
+char* \fBmmap_private\fP(const char* \fIfilename\fR,size_t* \fIfilesize\fR);
 .SH DESCRIPTION
 mmap_private opens \fIfilename\fR for reading and writing, maps the
 whole file into memory, closes the file, writes the length of the file

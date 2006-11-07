@@ -4,7 +4,7 @@ scan_double \- parse a floating point number in decimal ASCII representation
 .SH SYNTAX
 .B #include <scan.h>
 
-int \fBscan_double\fP(const char *\fIsrc\fR,double *\fIdest\fR);
+size_t \fBscan_double\fP(const char *\fIsrc\fR,double *\fIdest\fR);
 .SH DESCRIPTION
 scan_double parses a floating point number in decimal ASCII representation
 from \fIsrc\fR and writes the result into \fIdest\fR. It returns the

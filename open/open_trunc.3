@@ -4,7 +4,7 @@ open_trunc \- open a file for writing
 .SH SYNTAX
 .B #include <open.h>
 
-extern int \fBopen_trunc\fP(const char *\fIfilename\fR);
+int \fBopen_trunc\fP(const char *\fIfilename\fR);
 .SH DESCRIPTION
 open_trunc opens the file \fIfilename\fR for write-only use
 and returns the file handle.  If the file exists, it will be truncated

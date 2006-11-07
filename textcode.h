@@ -1,65 +1,67 @@
 #ifndef TEXTCODE_H
 #define TEXTCODE_H
 
+#include <stddef.h>
+
 /* These take len bytes from src and write them in encoded form to
  * dest (if dest != NULL), returning the number of bytes written. */
 
 /* needs len/3*4 bytes */
-unsigned long fmt_uuencoded(char* dest,const char* src,unsigned long len);
+size_t fmt_uuencoded(char* dest,const char* src,size_t len);
 /* needs len/3*4 bytes */
-unsigned long fmt_base64(char* dest,const char* src,unsigned long len);
+size_t fmt_base64(char* dest,const char* src,size_t len);
 /* worst case: len*3 */
-unsigned long fmt_quotedprintable(char* dest,const char* src,unsigned long len);
+size_t fmt_quotedprintable(char* dest,const char* src,size_t len);
 /* worst case: len*3 */
-unsigned long fmt_quotedprintable2(char* dest,const char* src,unsigned long len,const char* escapeme);
+size_t fmt_quotedprintable2(char* dest,const char* src,size_t len,const char* escapeme);
 /* worst case: len*3 */
-unsigned long fmt_urlencoded(char* dest,const char* src,unsigned long len);
+size_t fmt_urlencoded(char* dest,const char* src,size_t len);
 /* worst case: len*3 */
-unsigned long fmt_urlencoded2(char* dest,const char* src,unsigned long len,const char* escapeme);
+size_t fmt_urlencoded2(char* dest,const char* src,size_t len,const char* escapeme);
 /* worst case: len*2 */
-unsigned long fmt_yenc(char* dest,const char* src,unsigned long len);
+size_t fmt_yenc(char* dest,const char* src,size_t len);
 /* needs len*2 bytes */
-unsigned long fmt_hexdump(char* dest,const char* src,unsigned long len);
+size_t fmt_hexdump(char* dest,const char* src,size_t len);
 /* change '<' to '&lt;' and '&' to '&amp;'; worst case: len*5 */
-unsigned long fmt_html(char* dest,const char* src,unsigned long len);
+size_t fmt_html(char* dest,const char* src,size_t len);
 /* change '\' to "\\", '\n' to "\n", ^A to "\x01" etc; worst case: len*4 */
-unsigned long fmt_cescape(char* dest,const char* src,unsigned long len);
+size_t fmt_cescape(char* dest,const char* src,size_t len);
 /* worst case: len*4 */
-unsigned long fmt_cescape2(char* dest,const char* src,unsigned long len,const char* escapeme);
+size_t fmt_cescape2(char* dest,const char* src,size_t len,const char* escapeme);
 /* fold awk whitespace to '_'; this is great for writing fields with
  * white spaces to a log file and still allow awk to do log analysis */
 /* worst case: same size */
-unsigned long fmt_foldwhitespace(char* dest,const char* src,unsigned long len);
+size_t fmt_foldwhitespace(char* dest,const char* src,size_t len);
 /* worst case: len*3 */
-unsigned long fmt_ldapescape(char* dest,const char* src,unsigned long len);
+size_t fmt_ldapescape(char* dest,const char* src,size_t len);
 
 /* These read one line from src, decoded it, and write the result to
  * dest.  The number of decoded bytes is written to destlen.  dest
  * should be able to hold strlen(src) bytes as a rule of thumb. */
-unsigned long scan_uuencoded(const char *src,char *dest,unsigned long *destlen);
-unsigned long scan_base64(const char *src,char *dest,unsigned long *destlen);
-unsigned long scan_quotedprintable(const char *src,char *dest,unsigned long *destlen);
-unsigned long scan_urlencoded(const char *src,char *dest,unsigned long *destlen);
-unsigned long scan_urlencoded2(const char *src,char *dest,unsigned long *destlen);
-unsigned long scan_yenc(const char *src,char *dest,unsigned long *destlen);
-unsigned long scan_hexdump(const char *src,char *dest,unsigned long *destlen);
-unsigned long scan_html(const char *src,char *dest,unsigned long *destlen);
-unsigned long scan_cescape(const char *src,char *dest,unsigned long *destlen);
-unsigned long scan_ldapescape(const char* src,char* dest,unsigned long *destlen);
+size_t scan_uuencoded(const char *src,char *dest,size_t *destlen);
+size_t scan_base64(const char *src,char *dest,size_t *destlen);
+size_t scan_quotedprintable(const char *src,char *dest,size_t *destlen);
+size_t scan_urlencoded(const char *src,char *dest,size_t *destlen);
+size_t scan_urlencoded2(const char *src,char *dest,size_t *destlen);
+size_t scan_yenc(const char *src,char *dest,size_t *destlen);
+size_t scan_hexdump(const char *src,char *dest,size_t *destlen);
+size_t scan_html(const char *src,char *dest,size_t *destlen);
+size_t scan_cescape(const char *src,char *dest,size_t *destlen);
+size_t scan_ldapescape(const char* src,char* dest,size_t *destlen);
 
 #ifdef STRALLOC_H
 /* WARNING: these functions _append_ to the stralloc, not overwrite! */
 /* stralloc wrappers; return 1 on success, 0 on failure */
 /* arg 1 is one of the fmt_* functions from above */
-int fmt_to_sa(unsigned long (*func)(char*,const char*,unsigned long),
-	      stralloc* sa,const char* src,unsigned long len);
+int fmt_to_sa(size_t (*func)(char*,const char*,size_t),
+	      stralloc* sa,const char* src,size_t len);
 
-int fmt_to_sa2(unsigned long (*func)(char*,const char*,unsigned long,const char*),
-	      stralloc* sa,const char* src,unsigned long len,const char* escapeme);
+int fmt_to_sa2(size_t (*func)(char*,const char*,size_t,const char*),
+	      stralloc* sa,const char* src,size_t len,const char* escapeme);
 
 /* arg 1 is one of the scan_* functions from above */
 /* return number of bytes scanned */
-unsigned long scan_to_sa(unsigned long (*func)(const char*,char*,unsigned long*),
+size_t scan_to_sa(size_t (*func)(const char*,char*,size_t*),
 			 const char* src,stralloc* sa);
 
 #define fmt_uuencoded_sa(sa,src,len) fmt_to_sa(fmt_uuencoded,sa,src,len)
@@ -86,22 +88,22 @@ unsigned long scan_to_sa(unsigned long (*func)(const char*,char*,unsigned long*)
 #endif
 
 #ifdef ARRAY_H
-void fmt_to_array(unsigned long (*func)(char*,const char*,unsigned long),
-		  array* a,const char* src,unsigned long len);
+void fmt_to_array(size_t (*func)(char*,const char*,size_t),
+		  array* a,const char* src,size_t len);
 
-void fmt_tofrom_array(unsigned long (*func)(char*,const char*,unsigned long),
+void fmt_tofrom_array(size_t (*func)(char*,const char*,size_t),
 		      array* dest,array* src);
 
-void fmt_to_array2(unsigned long (*func)(char*,const char*,unsigned long,const char*),
-		  array* a,const char* src,unsigned long len,const char* escapeme);
+void fmt_to_array2(size_t (*func)(char*,const char*,size_t,const char*),
+		  array* a,const char* src,size_t len,const char* escapeme);
 
-void fmt_tofrom_array2(unsigned long (*func)(char*,const char*,unsigned long,const char*),
+void fmt_tofrom_array2(size_t (*func)(char*,const char*,size_t,const char*),
 		      array* dest,array* src,const char* escapeme);
 
-unsigned long scan_to_array(unsigned long (*func)(const char*,char*,unsigned long*),
+size_t scan_to_array(size_t (*func)(const char*,char*,size_t*),
 			    const char* src,array* dest);
 
-unsigned long scan_tofrom_array(unsigned long (*func)(const char*,char*,unsigned long*),
+size_t scan_tofrom_array(size_t (*func)(const char*,char*,size_t*),
 			        array* src,array* dest);
 #endif
 
