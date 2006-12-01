@@ -26,11 +26,13 @@ appropriately, without creating a new socket.
 
   int \fIs\fR;
   char \fIip\fR[16];
-  uint16 \fIp\fR;
+  uint16 \fIport\fR;
+  uint32 \fIscope_id\fR;
 
   \fIs\fR = socket_tcp6();
-  socket_bind6(s,ip,p);
-  socket_connect6(s,ip,p);
+  socket_bind6(s,ip,port,scope_id);
+  socket_listen(s,16);
+  socket_accept6(s,ip,port,scope_id);
 
 .SH "SEE ALSO"
 socket_accept4(3), socket_connected(3)

@@ -27,7 +27,8 @@ appropriately, without creating a new socket.
 
   \fIs\fR = socket_tcp4();
   socket_bind4(s,ip,p);
-  socket_connect4(s,ip,p);
+  socket_listen(s,16);
+  socket_accept4(s,ip,p);
 
 .SH "SEE ALSO"
 socket_accept6(3), socket_connected(3)
