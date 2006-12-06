@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <string.h>
 
 static void carp(const char* routine) {
   buffer_puts(buffer_2,routine);
