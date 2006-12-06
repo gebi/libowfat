@@ -286,8 +286,8 @@ iob_prefetch.o: io/iob_prefetch.c iob_internal.h iob.h io.h uint64.h \
   taia.h tai.h array.h
 iob_reset.o: io/iob_reset.c byte.h iob_internal.h iob.h io.h uint64.h \
   taia.h tai.h array.h
-iob_send.o: io/iob_send.c havebsdsf.h iob_internal.h iob.h io.h uint64.h \
-  taia.h tai.h array.h
+iob_send.o: io/iob_send.c havebsdsf.h havealloca.h iob_internal.h iob.h \
+  io.h uint64.h taia.h tai.h array.h
 iob_write.o: io/iob_write.c iob_internal.h iob.h io.h uint64.h taia.h \
   tai.h array.h
 mmap_private.o: mmap/mmap_private.c open.h mmap.h
@@ -296,7 +296,7 @@ mmap_shared.o: mmap/mmap_shared.c open.h mmap.h
 mmap_unmap.o: mmap/mmap_unmap.c open.h mmap.h
 imult16.o: mult/imult16.c safemult.h uint16.h uint32.h uint64.h
 imult32.o: mult/imult32.c safemult.h uint16.h uint32.h uint64.h
-imult64.o: mult/imult64.c safemult.h uint16.h uint32.h uint64.h
+imult64.o: mult/imult64.c
 range_arrayinbuf.o: mult/range_arrayinbuf.c rangecheck.h safemult.h \
   uint16.h uint32.h uint64.h
 range_str2inbuf.o: mult/range_str2inbuf.c rangecheck.h
@@ -304,7 +304,7 @@ range_str4inbuf.o: mult/range_str4inbuf.c rangecheck.h
 range_strinbuf.o: mult/range_strinbuf.c rangecheck.h
 umult16.o: mult/umult16.c safemult.h uint16.h uint32.h uint64.h
 umult32.o: mult/umult32.c safemult.h uint16.h uint32.h uint64.h
-umult64.o: mult/umult64.c safemult.h uint16.h uint32.h uint64.h
+umult64.o: mult/umult64.c
 open_append.o: open/open_append.c open.h
 open_excl.o: open/open_excl.c open.h
 open_read.o: open/open_read.c open.h
@@ -350,7 +350,7 @@ scan_ip4.o: socket/scan_ip4.c scan.h ip4.h
 scan_ip6.o: socket/scan_ip6.c scan.h ip4.h ip6.h byte.h uint32.h
 scan_ip6_flat.o: socket/scan_ip6_flat.c scan.h
 scan_ip6if.o: socket/scan_ip6if.c ip6.h byte.h uint32.h byte.h socket.h \
-  uint16.h
+  uint16.h havealloca.h
 socket_accept4.o: socket/socket_accept4.c windoze.h socket.h uint16.h \
   uint32.h havesl.h
 socket_accept6.o: socket/socket_accept6.c windoze.h byte.h socket.h \
