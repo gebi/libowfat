@@ -193,7 +193,7 @@ void cleanup(int64 socket) {
 }
 
 int main() {
-  int s=socket_tcp6b();
+  int s=socket_tcp6();
   uint32 scope_id;
   char ip[16];
   uint16 port;
