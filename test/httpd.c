@@ -182,6 +182,16 @@ e404:
   io_wantwrite(s);
 }
 
+void cleanup(int64 socket) {
+  struct http_data*x=io_getcookie(socket);
+  if (x) {
+    array_reset(&x->r);
+    iob_free(&x->iob);
+    free(x->hdrbuf);
+    free(x);
+  }
+}
+
 int main() {
   int s=socket_tcp6b();
   uint32 scope_id;
@@ -242,6 +252,7 @@ int main() {
 	  buffer_puts(buffer_2,"): ");
 	  buffer_puterror(buffer_2);
 	  buffer_putnlflush(buffer_2);
+	  cleanup(i);
 	  io_close(i);
 	} else if (l==0) {
 	  if (h) {
@@ -252,6 +263,7 @@ int main() {
 	  buffer_puts(buffer_2,"eof on fd #");
 	  buffer_putulong(buffer_2,i);
 	  buffer_putnlflush(buffer_2);
+	  cleanup(i);
 	  io_close(i);
 	} else if (l>0) {
 	  array_catb(&h->r,buf,l);
@@ -280,8 +292,10 @@ emerge:
 	if (h->keepalive) {
 	  io_dontwantwrite(i);
 	  io_wantread(i);
-	} else
+	} else {
+	  cleanup(i);
 	  io_close(i);
+	}
       }
     }
   }

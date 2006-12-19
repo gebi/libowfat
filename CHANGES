@@ -21,6 +21,8 @@
   add asm versions of imult64 and umult64 for x86_64
     (22 cycles -> 12 cycles on my Athlon 64)
   use size_t and ssize_t instead of unsigned long et al
+  add iob_bytesleft
+  don't leak memory in test/httpd
 
 0.24:
   fix scan_to_sa (Tim Lorenz)
