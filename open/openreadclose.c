@@ -12,5 +12,5 @@ int openreadclose(const char *fn,stralloc *sa,size_t bufsize)
     return -1;
   }
   if (readclose(fd,sa,bufsize) == -1) return -1;
-  return 0;
+  return 1;
 }
