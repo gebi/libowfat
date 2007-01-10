@@ -20,3 +20,4 @@ libsocket
 havesendfile.h
 trysendfile
 havealloca.h
+uudecode
