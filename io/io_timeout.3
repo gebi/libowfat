@@ -14,5 +14,9 @@ io_timeout(\fId\fR,\fIt\fR) sets the timeout for descriptor \fId\fR to \fIt\fR.
 io_timeout has no return value; it always succeeds. (Space to store the timeout
 was already allocated as part of the descriptor.) It has no effect if \fId\fR is not
 the number of a descriptor.
+
+Note that you have to call io_timeouted to be notified of timeouts, just
+like you are calling io_canread or io_canwrite for read and write
+notification.
 .SH "SEE ALSO"
 io_waituntil(3), io_timeouted(3)
