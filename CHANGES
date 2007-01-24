@@ -1,4 +1,8 @@
 0.26:
+  fix really pathological case where io_timeouted would never
+    start over from the beginning because always new accept()ed
+    connections came in and got newer, higher descriptors since the last
+    io_timeouted loop.  (Dirk Engling)
 
 0.25:
   array_allocate no longer truncates the array
