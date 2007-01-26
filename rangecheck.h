@@ -79,7 +79,7 @@ int range_str4inbuf(const void* buf,size_t len,const void* stringstart);
 #define __MIN(type) ((type)-1 < 1?__MIN_SIGNED(type):__MIN_UNSIGNED(type))
 #define __MAX(type) ((type)~__MIN(type))
 
-#define assign(dest,src) ({ typeof(src) __x=(src); typeof(dest) __y=__x; (__x==__y && ((__x<1) == (__y<1))?(int)((dest)=__y),0:1); })
+#define assign(dest,src) ({ typeof(src) __x=(src); typeof(dest) __y=__x; (__x==__y && ((__x<1) == (__y<1))?(void)((dest)=__y),0:1); })
 
 /* if a+b is defined and does not have an integer overflow, do c=a+b and
  * return 0.  Otherwise, return 1. */
