@@ -14,7 +14,7 @@ int64 io_timeouted() {
     if (e->inuse && e->timeout.sec.x && taia_less(&e->timeout,&now))
       return ptr;
   }
-  ptr=0;	/* this is for really pathological cases, where more
+  ptr=-1;	/* this is for really pathological cases, where more
 		   connections come in all the time and so the timeout
 		   handling does not trigger initially */
   return -1;
