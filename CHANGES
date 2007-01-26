@@ -3,6 +3,7 @@
     start over from the beginning because always new accept()ed
     connections came in and got newer, higher descriptors since the last
     io_timeouted loop.  (Dirk Engling)
+  add some int overflow check macros to rangecheck.h
 
 0.25:
   array_allocate no longer truncates the array
