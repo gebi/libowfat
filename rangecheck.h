@@ -68,15 +68,17 @@ int range_str4inbuf(const void* buf,size_t len,const void* stringstart);
  * So I decided to add some integer overflow protection functionality
  * here for addition and subtraction, too. */
 
-/* first, we need a type independent way to find the min and max values
- * for each type, so the macros also work for integer types you defined
- * yourself */
+/* two important assumptions:
+ *   1. the platform is using two's complement
+ *   2. there are 8 bits in a byte
+ */
 
-#define __MIN_UNSIGNED(type) ((type)0)
-#define __MIN_SIGNED(type) (((type)-1)<<(sizeof(type)*8-1))
+#define __HALF_MAX_SIGNED(type) ((type)1 << (sizeof(type)*8-2))
+#define __MAX_SIGNED(type) (__HALF_MAX_SIGNED(type) - 1 + __HALF_MAX_SIGNED(type))
+#define __MIN_SIGNED(type) (-1 - __MAX_SIGNED(type))
 
 /* we use <1 and not <0 to avoid a gcc warning */
-#define __MIN(type) ((type)-1 < 1?__MIN_SIGNED(type):__MIN_UNSIGNED(type))
+#define __MIN(type) ((type)-1 < 1?__MIN_SIGNED(type):(type)0)
 #define __MAX(type) ((type)~__MIN(type))
 
 #define assign(dest,src) ({ typeof(src) __x=(src); typeof(dest) __y=__x; (__x==__y && ((__x<1) == (__y<1))?(void)((dest)=__y),0:1); })
