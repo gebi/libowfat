@@ -109,7 +109,7 @@ int main(int argc,char* argv[]) {
       return 1;
     }
   }
-  buffer_init(&filein,(void*)read,fd,buf,sizeof buf);
+  buffer_init(&filein,read,fd,buf,sizeof buf);
   /* skip to "^begin " */
   for (;;) {
     if ((l=buffer_getline(&filein,line,(sizeof line)-1))==0 && line[l]!='\n') {
@@ -177,7 +177,7 @@ foundfilename:
 	      buffer_putsflush(buffer_2,"\"\n");
 	    }
 	    state=AFTERBEGIN;
-	    buffer_init(&fileout,(void*)write,ofd,obuf,sizeof obuf);
+	    buffer_init(&fileout,write,ofd,obuf,sizeof obuf);
 	    continue;
 	  }
 	}
@@ -252,7 +252,7 @@ foundfilename:
 	  buffer_putsflush(buffer_2,"\"\n");
 	  filename[0]=0;
 	  state=AFTERBEGIN;
-	  buffer_init(&fileout,(void*)write,ofd,obuf,sizeof obuf);
+	  buffer_init(&fileout,write,ofd,obuf,sizeof obuf);
 	  continue;
 	}
       }
