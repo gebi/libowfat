@@ -5,44 +5,41 @@
 
 unsigned int fmt_ip6(char *s,const char ip[16])
 {
-  unsigned int len;
-  unsigned int i;
-  unsigned int temp;
-  unsigned int compressing;
-  unsigned int compressed;
-  int j;
+  unsigned long len,temp, k, pos0=0,len0=0, pos1=0, compr=0;
 
-  len = 0; compressing = 0; compressed = 0;
-  for (j=0; j<16; j+=2) {
-    if (j==12 && ip6_isv4mapped(ip)) {
-      temp=ip4_fmt(s,ip+12);
-      len+=temp;
-      break;
-    }
-    temp = ((unsigned long) (unsigned char) ip[j] << 8) +
-            (unsigned long) (unsigned char) ip[j+1];
-    if (temp == 0 && !compressed) {
-      if (!compressing) {
-	compressing=1;
-	if (j==0) {
-	  if (s) *s++=':'; ++len;
-	}
+  for (k=0; k<16; k+=2) {
+    if (ip[k]==0 && ip[k+1]==0) {
+      if (!compr) {
+        compr=1;
+        pos1=k;
       }
-    } else {
-      if (compressing) {
-	compressing=0; ++compressed;
-	if (s) *s++=':'; ++len;
+      if (k==14) { k=16; goto last; }
+    } else if (compr) {
+    last:
+      if ((temp=k-pos1) > len0) {
+        len0=temp;
+        pos0=pos1;
       }
-      i = fmt_xlong(s,temp); len += i; if (s) s += i;
-      if (j<14) {
-	if (s) *s++ = ':';
-	++len;
-      }
+      compr=0;
     }
   }
-  if (compressing) { if (s) *s++=':'; ++len; }
 
-/*  if (s) *s=0; */
+  for (len=0,k=0; k<16; k+=2) {
+    if (k==12 && ip6_isv4mapped(ip)) {
+      len += ip4_fmt(s,ip+12);
+      break;
+    }
+    if (pos0==k && len0) {
+      if (k==0) { ++len; if (s) *s++ = ':'; }
+      ++len; if (s) *s++ = ':';
+      k += len0-2;
+      continue;
+    }
+    temp = ((unsigned long) (unsigned char) ip[k] << 8) +
+            (unsigned long) (unsigned char) ip[k+1];
+    temp = fmt_xlong(s,temp); len += temp; if (s) s += temp;
+    if (k<14) { ++len; if (s) *s++ = ':'; }
+  }
+
   return len;
 }
-

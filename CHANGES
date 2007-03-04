@@ -4,6 +4,7 @@
     connections came in and got newer, higher descriptors since the last
     io_timeouted loop.  (Dirk Engling)
   add some int overflow check macros to rangecheck.h
+  fmt_ip6 compresses at best spot, not at first spot (Nikola Vladov)
 
 0.25:
   array_allocate no longer truncates the array
