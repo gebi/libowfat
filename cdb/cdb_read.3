@@ -16,5 +16,9 @@ int cdb_read(struct cdb *\fIc\fR,char *\fIbuf\fR,unsigned long int \fIlen\fR,uin
 \fIbuf\fR needs to point to a memory region large enough to hold
 \fIlen\fR bytes.
 
+.SH "RETURN VALUE"
+\fBcdb_read\fR returns 0 if everything went well, or -1 on error
+(setting \fIerrno\fR appropriately.
+
 .SH "SEE ALSO"
 cdb_find(3), cdb_init(3), cdb_free(3), cdbmake(1)

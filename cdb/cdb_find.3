@@ -30,7 +30,7 @@ There may be several records under a single key. You can use
 \fBcdb_findnext\fR to find the next record under this key.
 
 .SH EXAMPLE
-static struct cdb;
+static struct c;
 
 if (cdb_find(&c,key,strlen(key)>0) {
   char *buf=alloca(cdb_datalen(&c));
