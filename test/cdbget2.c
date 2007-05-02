@@ -5,13 +5,17 @@
 #include <stdlib.h>
 #include <errmsg.h>
 
+#ifndef O_BINARY
+#define O_BINARY
+#endif
+
 int main(int argc,char* argv[]) {
   int fd;
   static struct cdb c;
   errmsg_iam("cdbget");
   if (argc<3)
     die(1,"usage: cdbget data.cdb key");
-  fd=open(argv[1],O_RDONLY);
+  fd=open(argv[1],O_RDONLY|O_BINARY);
   if (fd==-1)
     diesys(1,"open");
   cdb_init(&c,fd);
