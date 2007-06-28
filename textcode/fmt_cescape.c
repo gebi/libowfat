@@ -41,6 +41,8 @@ size_t fmt_cescape2(char* dest,const char* src,size_t len,const char* escapeme) 
 	}
 	break;
     }
+    /* in case someone gives us malicious input */
+    if (written>((size_t)-1)/2) return (size_t)-1;
   }
   return written;
 }

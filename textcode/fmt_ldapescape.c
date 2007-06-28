@@ -18,6 +18,8 @@ size_t fmt_ldapescape(char* dest,const char* src,size_t len) {
     } else {
       if (dest) dest[written]=s[i]; ++written;
     }
+    /* in case someone gives us malicious input */
+    if (written>((size_t)-1)/2) return (size_t)-1;
   }
   return written;
 }

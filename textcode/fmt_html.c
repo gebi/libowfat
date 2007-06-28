@@ -19,6 +19,8 @@ size_t fmt_html(char* dest,const char* src,size_t len) {
 	break;
     default: if (dest) dest[written]=s[i]; ++written; break;
     }
+    /* in case someone gives us malicious input */
+    if (written>((size_t)-1)/2) return (size_t)-1;
   }
   return written;
 }

@@ -7,6 +7,7 @@
   fmt_ip6 compresses at best spot, not at first spot (Nikola Vladov)
   use inttypes.h to declare ints in uint*.h
   escape more in fmt_ldapescape
+  try to catch malicious input in textcode fmt_* functions
 
 0.25:
   array_allocate no longer truncates the array

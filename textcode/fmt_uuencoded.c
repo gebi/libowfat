@@ -11,6 +11,7 @@ size_t fmt_uuencoded(char* dest,const char* src,size_t len) {
   register const unsigned char* s=(const unsigned char*) src;
   const char* orig=dest;
   size_t tmp;
+  if (!dest) return len>((size_t)-1)/2?(size_t)-1:(len+2)/3*4;
   while (len) {
     {
       register unsigned int diff;
