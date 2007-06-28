@@ -1,8 +1,10 @@
 #ifndef UINT32_H
 #define UINT32_H
 
-typedef unsigned int uint32;
-typedef   signed int  int32;
+#include <inttypes.h>
+
+typedef uint32_t uint32;
+typedef int32_t int32;
 
 #if defined(__i386__) && !defined(NO_UINT32_MACROS)
 #define uint32_pack(out,in) (*(uint32*)(out)=(in))

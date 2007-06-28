@@ -1,7 +1,9 @@
 #ifndef UINT64_H
 #define UINT64_H
 
-typedef unsigned long long uint64;
-typedef signed long long int64;
+#include <inttypes.h>
+
+typedef uint64_t uint64;
+typedef int64_t int64;
 
 #endif

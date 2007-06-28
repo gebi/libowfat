@@ -5,6 +5,7 @@
     io_timeouted loop.  (Dirk Engling)
   add some int overflow check macros to rangecheck.h
   fmt_ip6 compresses at best spot, not at first spot (Nikola Vladov)
+  use inttypes.h to declare ints in uint*.h
 
 0.25:
   array_allocate no longer truncates the array
