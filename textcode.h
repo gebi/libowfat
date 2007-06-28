@@ -34,6 +34,7 @@ size_t fmt_cescape2(char* dest,const char* src,size_t len,const char* escapeme);
 size_t fmt_foldwhitespace(char* dest,const char* src,size_t len);
 /* worst case: len*3 */
 size_t fmt_ldapescape(char* dest,const char* src,size_t len);
+size_t fmt_ldapescape2(char* dest,const char* src,size_t len,const char* escapeme);
 
 /* These read one line from src, decoded it, and write the result to
  * dest.  The number of decoded bytes is written to destlen.  dest
