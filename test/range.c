@@ -129,6 +129,18 @@ void check_rangeptrbuf() {
     assert(range_str4inbuf(y,sizeof(y),y+5)==1);
     assert(range_str4inbuf(y,sizeof(y),y+6)==0);
   }
+
+  assert(range_ptrinbuf2(buf,buf+sizeof(buf),buf));
+  assert(range_ptrinbuf2(buf+sizeof(buf),buf,buf)==0);
+  assert(range_ptrinbuf2(buf,buf+sizeof(buf),buf+sizeof(buf)-1));
+  assert(range_ptrinbuf2(buf,buf+sizeof(buf),buf+sizeof(buf))==0);
+  assert(range_ptrinbuf2(buf,buf,buf)==0);
+  assert(range_ptrinbuf2(0,buf+100,buf)==0);
+
+  assert(range_validbuf2(buf,buf+100));
+  assert(range_validbuf2(buf,buf-1)==0);
+  assert(range_validbuf2(buf,buf));
+  assert(range_validbuf2(NULL,buf+100)==0);
 }
 
 void check_intof() {
@@ -188,6 +200,14 @@ void check_intof() {
     a=0; assert(sub_of(a,INT_MIN,-10)==0 && a==INT_MIN+10);
     a=0; assert(sub_of(a,INT_MAX,-10)==1);
     a=0; assert(sub_of(a,INT_MAX,10)==0 && a==INT_MAX-10);
+  }
+
+  {
+    unsigned long long a;
+    /* caveat emptor: */
+    a=0; assert(add_of(a,0xfffffff0,0x10)==1);
+      /* this does NOT work and set a to 0x100000000, just like
+       * a=0xfffffff0+0x10 sets a to 0 in C! */
   }
 
 }

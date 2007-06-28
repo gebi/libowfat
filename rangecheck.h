@@ -25,11 +25,24 @@ __static inline int range_ptrinbuf(const void* buf,size_t len,const void* ptr) {
      a very large number. */
 }
 
+/* same thing, but the buffer is specified by a pointer to the first
+ * byte (Min) and a pointer after the last byte (Max). */
+__static inline int range_ptrinbuf2(const void* Min,const void* Max,const void* ptr) {
+  return (Min && ptr>=Min && ptr<Max);
+  /* Min <= Max is implicitly checked here */
+}
+
 /* Is this a plausible buffer?
  * Check whether buf is NULL, and whether buf+len overflows.
  * Does NOT check whether buf has a non-zero length! */
 __static inline int range_validbuf(const void* buf,size_t len) {
   return (buf && (uintptr_t)buf+len>=(uintptr_t)buf);
+}
+
+/* same thing but buffer is given as pointer to first byte (Min) and
+ * pointer beyond last byte (Max).  Again, an 0-size buffer is valid. */
+__static inline int range_validbuf2(const void* Min,const void* Max) {
+  return (Min && Max>=Min);
 }
 
 /* is buf2[0..len2-1] inside buf1[0..len-1]? */
@@ -67,6 +80,12 @@ int range_str4inbuf(const void* buf,size_t len,const void* stringstart);
  *   // at this point, b<a
  * So I decided to add some integer overflow protection functionality
  * here for addition and subtraction, too. */
+
+/* usage:
+ * if (add_of(dest,a,b)) return EINVAL;		// dest=a+b;
+ * if (sub_of(dest,a,b)) return EINVAL;		// dest=a-b;
+ * if (assign(dest,some_int)) return EINVAL;	// dest=some_int;
+ */
 
 /* two important assumptions:
  *   1. the platform is using two's complement

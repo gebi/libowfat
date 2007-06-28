@@ -6,6 +6,7 @@
   add some int overflow check macros to rangecheck.h
   fmt_ip6 compresses at best spot, not at first spot (Nikola Vladov)
   use inttypes.h to declare ints in uint*.h
+  escape more in fmt_ldapescape
 
 0.25:
   array_allocate no longer truncates the array
