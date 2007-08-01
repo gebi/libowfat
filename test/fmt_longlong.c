@@ -2,6 +2,7 @@
 #include <str.h>
 #include <assert.h>
 #include <scan.h>
+#include <byte.h>
 
 int main() {
   char buf[1024];
@@ -25,5 +26,7 @@ int main() {
   assert(fmt_longlong(buf,-1234567890)==11); buf[11]=0;
   assert(str_equal(buf,"-1234567890"));
   assert(scan_longlong(buf,&l)==11); assert(l==-1234567890);
+
+  assert(fmt_xlonglong(buf,0x8000000000000000)==16 && byte_equal(buf,16,"8000000000000000"));
   return 0;
 }

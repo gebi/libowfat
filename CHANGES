@@ -8,6 +8,7 @@
   use inttypes.h to declare ints in uint*.h
   escape more in fmt_ldapescape
   try to catch malicious input in textcode fmt_* functions
+  fmt_xlonglong was utterly broken (Johannes Vetter)
 
 0.25:
   array_allocate no longer truncates the array
