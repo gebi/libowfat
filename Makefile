@@ -482,6 +482,8 @@ fmt_hexdump.o: textcode/fmt_hexdump.c fmt.h textcode.h str.h haveinline.h
 fmt_html.o: textcode/fmt_html.c fmt.h textcode.h str.h haveinline.h
 fmt_ldapescape.o: textcode/fmt_ldapescape.c fmt.h textcode.h haveinline.h \
   str.h
+fmt_ldapescape2.o: textcode/fmt_ldapescape2.c fmt.h textcode.h \
+  haveinline.h
 fmt_quotedprintable.o: textcode/fmt_quotedprintable.c fmt.h textcode.h \
   haveinline.h str.h
 fmt_to_array.o: textcode/fmt_to_array.c array.h uint64.h textcode.h
