@@ -1,4 +1,5 @@
 0.27:
+  add fmt_strm
 
 0.26:
   fix really pathological case where io_timeouted would never

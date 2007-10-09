@@ -90,4 +90,7 @@ size_t fmt_httpdate(char* dest,time_t t);
 /* internal functions, may be independently useful */
 char fmt_tohex(char c);
 
+#define fmt_strm(b,...) fmt_strm_internal(b,__VA_ARGS__,(char*)0)
+size_t fmt_strm_internal(char* dest,...);
+
 #endif
