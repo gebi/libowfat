@@ -55,6 +55,7 @@ void io_dontwantwrite(int64 d);
 
 void io_wait();
 void io_waituntil(tai6464 t);
+void io_waituntil2(int64 milliseconds);
 void io_check();
 
 /* signal that read/accept/whatever returned EAGAIN */
