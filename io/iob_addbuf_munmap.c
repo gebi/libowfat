@@ -1,5 +1,11 @@
+#include <sys/types.h>
+#include <sys/mman.h>
 #include "iob_internal.h"
 
-int iob_addbuf_free(io_batch* b,const void* buf,uint64 n) {
-  return iob_addbuf_internal(b,buf,n,2);
+static void cleanup(struct iob_entry* x) {
+  munmap((char*)x->buf,x->n);
+}
+
+int iob_addbuf_munmap(io_batch* b,const void* buf,uint64 n) {
+  return iob_addbuf_internal(b,buf,n,cleanup);
 }

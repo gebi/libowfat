@@ -45,10 +45,10 @@ int64 iob_send(int64 s,io_batch* b) {
   for (i=0; x+i<last; ++i)
     if (x[i].n) break;
 
-  if (x[i].type==FROMBUF || x[i].type==FROMBUF_FREE || x[i].type==FROMBUF_MUNMAP) {
+  if (x[i].type==FROMBUF) {
     fprintf(stderr,"found non-sent buffer batch entry at %d\n",i);
     if (x+i+1 < last &&
-	(x[i+1].type==FROMFILE || x[i+1].type==FROMFILE_CLOSE)) {
+	(x[i+1].type==FROMFILE)) {
       fprintf(stderr,"Next is a file, can use TransmitFile\n",i);
       TRANSMIT_FILE_BUFFERS tfb;
       e->sendfilequeued=1;
@@ -144,18 +144,18 @@ int64 iob_send(int64 s,io_batch* b) {
     headers=trailers=0;
 #endif
     for (i=0; e+i<last; ++i) {
-      if (e[i].type==FROMFILE || e[i].type==FROMFILE_CLOSE) break;
+      if (e[i].type==FROMFILE) break;
       v[i].iov_base=(char*)(e[i].buf+e[i].offset);
       v[i].iov_len=e[i].n;
     }
     headers=i;
 #ifdef HAVE_BSDSENDFILE
-    if (e[i].type==FROMFILE || e[i].type==FROMFILE_CLOSE) {
+    if (e[i].type==FROMFILE) {
       off_t sbytes;
       struct sf_hdtr hdr;
       int r;
       for (++i; e+i<last; ++i) {
-	if (e[i].type==FROMFILE || e[i].type==FROMFILE_CLOSE) break;
+	if (e[i].type==FROMFILE) break;
 	v[i-1].iov_base=(char*)(e[i].buf+e[i].offset);
 	v[i-1].iov_len=e[i].n;
 	++trailers;

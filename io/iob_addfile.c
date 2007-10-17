@@ -12,6 +12,7 @@ int iob_addfile(io_batch* b,int64 fd,uint64 off,uint64 n) {
   e->buf=0;
   e->n=n;
   e->offset=off;
+  e->cleanup=0;
   b->bytesleft+=n;
   ++b->files;
   return 1;

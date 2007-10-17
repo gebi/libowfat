@@ -22,7 +22,7 @@ void iob_prefetch(io_batch* b,uint64 bytes) {
   e=(iob_entry*)array_start(&b->b);
   if (!e) return;
   for (; e<last; ++e) {
-    if (e->type==FROMFILE || e->type==FROMFILE_CLOSE) {
+    if (e->type==FROMFILE) {
 #ifdef MADV_WILLNEED
       char* c;
       c=mmap(0,bytes,PROT_READ,MAP_SHARED,e->fd,(e->offset|4095)+1);

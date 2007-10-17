@@ -15,7 +15,7 @@ int64 iob_write(int64 s,io_batch* b,io_write_callback cb) {
   thatsit=0;
   for (i=0; e+i<last; ++i) {
     if (!e[i].n) continue;
-    if (e[i].type==FROMFILE  || e[i].type==FROMFILE_CLOSE)
+    if (e[i].type==FROMFILE)
       sent=io_mmapwritefile(s,e[i].fd,e[i].offset,e[i].n,cb);
     else
       sent=cb(s,e[i].buf+e[i].offset,e[i].n);
