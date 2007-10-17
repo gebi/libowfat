@@ -3,7 +3,7 @@
 #include "str.h"
 
 extern int stralloc_diffs(const stralloc* a,const char* b) {
-  register unsigned long int i;
+  register size_t i;
   register int j;
   for (i=0;;++i) {
     if (i==a->len) return (!b[i])?0:-1; if (!b[i]) return 1;

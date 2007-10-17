@@ -1,7 +1,7 @@
 #include <stralloc.h>
 
 int stralloc_chomp(stralloc* sa) {
-  unsigned int max=sa->len;
+  size_t max=sa->len;
   if (max>0) {
     register char x;
     --max;
