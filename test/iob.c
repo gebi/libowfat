@@ -20,5 +20,6 @@ int main() {
   do {
     r=iob_write(1,b,write_cb);
   } while (r>0);
+  iob_free(b);
   return 0;
 }
