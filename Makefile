@@ -178,6 +178,7 @@ fmt_minus.o: fmt/fmt_minus.c fmt.h
 fmt_pad.o: fmt/fmt_pad.c fmt.h
 fmt_plusminus.o: fmt/fmt_plusminus.c fmt.h
 fmt_str.o: fmt/fmt_str.c fmt.h
+fmt_strm_internal.o: fmt/fmt_strm_internal.c fmt.h
 fmt_strn.o: fmt/fmt_strn.c fmt.h
 fmt_tohex.o: fmt/fmt_tohex.c fmt.h
 fmt_ulong.o: fmt/fmt_ulong.c fmt.h
@@ -271,6 +272,8 @@ iob_addbuf_free.o: io/iob_addbuf_free.c iob_internal.h iob.h io.h \
   uint64.h taia.h tai.h array.h
 iob_addbuf_internal.o: io/iob_addbuf_internal.c iob_internal.h iob.h io.h \
   uint64.h taia.h tai.h array.h
+iob_addbuf_munmap.o: io/iob_addbuf_munmap.c iob_internal.h iob.h io.h \
+  uint64.h taia.h tai.h array.h
 iob_addfile.o: io/iob_addfile.c iob_internal.h iob.h io.h uint64.h taia.h \
   tai.h array.h
 iob_addfile_close.o: io/iob_addfile_close.c iob_internal.h iob.h io.h \
@@ -288,8 +291,8 @@ iob_prefetch.o: io/iob_prefetch.c iob_internal.h iob.h io.h uint64.h \
   taia.h tai.h array.h
 iob_reset.o: io/iob_reset.c byte.h iob_internal.h iob.h io.h uint64.h \
   taia.h tai.h array.h
-iob_send.o: io/iob_send.c havebsdsf.h havealloca.h iob_internal.h iob.h \
-  io.h uint64.h taia.h tai.h array.h
+iob_send.o: io/iob_send.c havebsdsf.h iob_internal.h iob.h io.h uint64.h \
+  taia.h tai.h array.h
 iob_write.o: io/iob_write.c iob_internal.h iob.h io.h uint64.h taia.h \
   tai.h array.h
 mmap_private.o: mmap/mmap_private.c open.h mmap.h
@@ -352,7 +355,7 @@ scan_ip4.o: socket/scan_ip4.c scan.h ip4.h
 scan_ip6.o: socket/scan_ip6.c scan.h ip4.h ip6.h byte.h uint32.h
 scan_ip6_flat.o: socket/scan_ip6_flat.c scan.h
 scan_ip6if.o: socket/scan_ip6if.c ip6.h byte.h uint32.h byte.h socket.h \
-  uint16.h havealloca.h
+  uint16.h
 socket_accept4.o: socket/socket_accept4.c windoze.h socket.h uint16.h \
   uint32.h havesl.h
 socket_accept6.o: socket/socket_accept6.c windoze.h byte.h socket.h \
@@ -529,7 +532,7 @@ t.o: t.c fmt.h scan.h str.h uint16.h uint32.h stralloc.h socket.h \
   buffer.h ip4.h ip6.h byte.h mmap.h open.h textcode.h dns.h iopause.h \
   taia.h tai.h uint64.h case.h errmsg.h iob.h io.h array.h safemult.h
 BYTE_OBJS=byte_chr.o byte_copy.o byte_copyr.o byte_diff.o byte_rchr.o byte_zero.o 
-FMT_OBJS=fmt_8long.o fmt_8longlong.o fmt_double.o fmt_fill.o fmt_httpdate.o fmt_human.o fmt_humank.o fmt_long.o fmt_longlong.o fmt_minus.o fmt_pad.o fmt_plusminus.o fmt_str.o fmt_strn.o fmt_tohex.o fmt_ulong.o fmt_ulong0.o fmt_ulonglong.o fmt_xlong.o fmt_xlonglong.o 
+FMT_OBJS=fmt_8long.o fmt_8longlong.o fmt_double.o fmt_fill.o fmt_httpdate.o fmt_human.o fmt_humank.o fmt_long.o fmt_longlong.o fmt_minus.o fmt_pad.o fmt_plusminus.o fmt_str.o fmt_strm_internal.o fmt_strn.o fmt_tohex.o fmt_ulong.o fmt_ulong0.o fmt_ulonglong.o fmt_xlong.o fmt_xlonglong.o 
 SCAN_OBJS=scan_8int.o scan_8long.o scan_8short.o scan_charsetnskip.o scan_double.o scan_fromhex.o scan_httpdate.o scan_int.o scan_long.o scan_longlong.o scan_noncharsetnskip.o scan_nonwhitenskip.o scan_plusminus.o scan_short.o scan_uint.o scan_ulong.o scan_ulonglong.o scan_ushort.o scan_whitenskip.o scan_xint.o scan_xlong.o scan_xlonglong.o scan_xshort.o 
 STR_OBJS=str_chr.o str_copy.o str_diff.o str_diffn.o str_len.o str_rchr.o str_start.o 
 UINT_OBJS=uint16_pack.o uint16_pack_big.o uint16_read.o uint16_read_big.o uint16_unpack.o uint16_unpack_big.o uint32_pack.o uint32_pack_big.o uint32_read.o uint32_read_big.o uint32_unpack.o uint32_unpack_big.o 
@@ -545,8 +548,8 @@ DNS_OBJS=dns_dfd.o dns_domain.o dns_dtda.o dns_ip.o dns_ip6.o dns_ipq.o dns_ipq6
 CASE_OBJS=case_diffb.o case_diffs.o case_lowerb.o case_lowers.o case_starts.o 
 MULT_OBJS=imult16.o imult32.o imult64.o range_arrayinbuf.o range_str2inbuf.o range_str4inbuf.o range_strinbuf.o umult16.o umult32.o umult64.o 
 ARRAY_OBJS=array_allocate.o array_bytes.o array_cat.o array_cat0.o array_catb.o array_cate.o array_cats.o array_cats0.o array_equal.o array_fail.o array_get.o array_length.o array_reset.o array_start.o array_trunc.o array_truncate.o 
-IO_OBJS=io_appendfile.o io_block.o io_canread.o io_canwrite.o io_check.o io_close.o io_closeonexec.o io_createfile.o io_dontwantread.o io_dontwantwrite.o io_eagain.o io_fd.o io_finishandshutdown.o io_getcookie.o io_mmapwritefile.o io_nonblock.o io_passfd.o io_pipe.o io_readfile.o io_readwritefile.o io_receivefd.o io_sendfile.o io_setcookie.o io_sigpipe.o io_socketpair.o io_timeout.o io_timeouted.o io_tryread.o io_tryreadtimeout.o io_trywrite.o io_trywritetimeout.o io_wait.o io_waitread.o io_waituntil.o io_waituntil2.o io_waitwrite.o io_wantread.o io_wantwrite.o iob_addbuf.o iob_addbuf_free.o iob_addbuf_internal.o iob_addfile.o iob_addfile_close.o iob_adds.o iob_adds_free.o iob_bytesleft.o iob_free.o iob_new.o iob_prefetch.o iob_reset.o iob_send.o iob_write.o 
-TEXTCODE_OBJS=base64.o fmt_base64.o fmt_cescape.o fmt_foldwhitespace.o fmt_hexdump.o fmt_html.o fmt_ldapescape.o fmt_quotedprintable.o fmt_to_array.o fmt_to_sa.o fmt_tofrom_array.o fmt_urlencoded.o fmt_uuencoded.o fmt_yenc.o scan_base64.o scan_cescape.o scan_hexdump.o scan_html.o scan_ldapescape.o scan_quotedprintable.o scan_to_array.o scan_to_sa.o scan_tofrom_array.o scan_urlencoded.o scan_uuencoded.o scan_yenc.o 
+IO_OBJS=io_appendfile.o io_block.o io_canread.o io_canwrite.o io_check.o io_close.o io_closeonexec.o io_createfile.o io_dontwantread.o io_dontwantwrite.o io_eagain.o io_fd.o io_finishandshutdown.o io_getcookie.o io_mmapwritefile.o io_nonblock.o io_passfd.o io_pipe.o io_readfile.o io_readwritefile.o io_receivefd.o io_sendfile.o io_setcookie.o io_sigpipe.o io_socketpair.o io_timeout.o io_timeouted.o io_tryread.o io_tryreadtimeout.o io_trywrite.o io_trywritetimeout.o io_wait.o io_waitread.o io_waituntil.o io_waituntil2.o io_waitwrite.o io_wantread.o io_wantwrite.o iob_addbuf.o iob_addbuf_free.o iob_addbuf_internal.o iob_addbuf_munmap.o iob_addfile.o iob_addfile_close.o iob_adds.o iob_adds_free.o iob_bytesleft.o iob_free.o iob_new.o iob_prefetch.o iob_reset.o iob_send.o iob_write.o 
+TEXTCODE_OBJS=base64.o fmt_base64.o fmt_cescape.o fmt_foldwhitespace.o fmt_hexdump.o fmt_html.o fmt_ldapescape.o fmt_ldapescape2.o fmt_quotedprintable.o fmt_to_array.o fmt_to_sa.o fmt_tofrom_array.o fmt_urlencoded.o fmt_uuencoded.o fmt_yenc.o scan_base64.o scan_cescape.o scan_hexdump.o scan_html.o scan_ldapescape.o scan_quotedprintable.o scan_to_array.o scan_to_sa.o scan_tofrom_array.o scan_urlencoded.o scan_uuencoded.o scan_yenc.o 
 CDB_OBJS=cdb.o cdb_hash.o cdb_make.o cdb_traverse.o 
 
 byte.a: $(BYTE_OBJS)
@@ -617,8 +620,8 @@ uninstall:
 	rm -f $(patsubst %.3,$(MAN3DIR)/%.3,$(notdir $(wildcard */*.3)))
 	rm -f $(LIBDIR)/libowfat.a
 
-VERSION=libowfat-0.26
-CURNAME=libowfat-0.25
+VERSION=libowfat-0.27
+CURNAME=libowfat-0.27
 
 tar: clean rename
 	rm -f dep libdep
