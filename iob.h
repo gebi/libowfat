@@ -24,6 +24,7 @@ typedef struct io_batch {
 io_batch* iob_new(int hint_entries);
 int iob_addbuf(io_batch* b,const void* buf,uint64 n);
 int iob_addbuf_free(io_batch* b,const void* buf,uint64 n);
+int iob_addbuf_munmap(io_batch* b,const void* buf,uint64 n);
 int iob_adds(io_batch* b,const char* s);
 int iob_adds_free(io_batch* b,const char* s);
 int iob_addfile(io_batch* b,int64 fd,uint64 off,uint64 n);

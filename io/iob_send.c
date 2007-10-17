@@ -45,7 +45,7 @@ int64 iob_send(int64 s,io_batch* b) {
   for (i=0; x+i<last; ++i)
     if (x[i].n) break;
 
-  if (x[i].type==FROMBUF || x[i].type==FROMBUF_FREE) {
+  if (x[i].type==FROMBUF || x[i].type==FROMBUF_FREE || x[i].type==FROMBUF_MUNMAP) {
     fprintf(stderr,"found non-sent buffer batch entry at %d\n",i);
     if (x+i+1 < last &&
 	(x[i+1].type==FROMFILE || x[i+1].type==FROMFILE_CLOSE)) {
