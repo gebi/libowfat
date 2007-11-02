@@ -1,4 +1,5 @@
 #include <stdarg.h>
+#include <string.h>
 #include "stralloc.h"
 
 int stralloc_catm_internal(stralloc* sa, ...) {
