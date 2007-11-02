@@ -15,6 +15,6 @@ void socket_deferaccept(int s,enum defermode mode) {
   struct accept_filter_arg afa;
   memset(&afa,0,sizeof(afa));
   strcpy(afa.af_name,mode==HTTPIN?"httpreader":"dataready");
-  setsockopt(sok, SOL_SOCKET, SO_ACCEPTFILTER, &afa, sizeof(afa));
+  setsockopt(s, SOL_SOCKET, SO_ACCEPTFILTER, &afa, sizeof(afa));
 #endif
 }
