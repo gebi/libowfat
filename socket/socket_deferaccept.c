@@ -9,6 +9,7 @@
 void socket_deferaccept(int s,enum defermode mode) {
 #ifdef TCP_DEFER_ACCEPT
   int one=1;
+  (void)mode;
   setsockopt(s,IPPROTO_TCP,TCP_DEFER_ACCEPT,&one,sizeof(one));
 #elif defined(SO_ACCEPTFILTER)
   struct accept_filter_arg afa;
