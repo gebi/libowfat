@@ -50,6 +50,17 @@ int socket_mchopcount6(int s,char hops);
 int socket_mcloop4(int s,char hops);
 int socket_mcloop6(int s,char hops);
 
+/* please note that these are platform specific.  Do not expect them to
+ * work.  You might still get an accept() signalled even though there is
+ * no data available.  So far, DATAIN is supported on FreeBSD and Linux,
+ * and HTTPIN is supported on FreeBSD. */
+enum defermode {
+  DATAIN,	// only signal accept() if there is data coming in
+  HTTPIN,	// only signal accept() if a HTTP header has come in
+};
+
+void socket_deferaccept(int s,enum defermode mode);
+
 void socket_tryreservein(int s,int size);
 
 const char* socket_getifname(uint32 _interface);
