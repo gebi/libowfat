@@ -2,6 +2,7 @@
   add fmt_strm
   add iob_addbuf_munmap
   add socket_deferaccept
+  catch one more case in umult64 (Tomi Jylhä-Ollila)
 
 0.26:
   fix really pathological case where io_timeouted would never

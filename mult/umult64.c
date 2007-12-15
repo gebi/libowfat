@@ -37,7 +37,11 @@ int umult64(uint64 a,uint64 b,uint64* c) {
 
   a=(uint64)(ahi)*blo+(uint64)(alo)*bhi;
   if (a>0xffffffff) return 0;
-  *c=(a<<32)+(uint64)(alo)*blo;
+  {
+    uint64 x=(uint64)(alo)*blo;
+    if (x+(a<<32) < x) return 0;
+    *c=x+(a<<32);
+  }
   return 1;
 }
 

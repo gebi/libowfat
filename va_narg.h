@@ -30,4 +30,7 @@
          19,18,17,16,15,14,13,12,11,10, \
          9,8,7,6,5,4,3,2,1,0
 
+#define COUNT(x, ...)  ({ typeof (x) __fnord[] = { x, __VA_ARGS__ }; sizeof(__fnord)/sizeof(__fnord[0]); })
+#define COUNT_PREFIX(x, ...)  ({ typeof (x) __fnord[] = { x, __VA_ARGS__ }; sizeof(__fnord)/sizeof(__fnord[0]); }), x, __VA_ARGS__
+
 #endif
