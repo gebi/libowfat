@@ -1,4 +1,5 @@
 0.28:
+  add uint64 pack and unpack routines
 
 0.27:
   add fmt_strm

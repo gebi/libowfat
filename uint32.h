@@ -6,7 +6,7 @@
 typedef uint32_t uint32;
 typedef int32_t int32;
 
-#if defined(__i386__) && !defined(NO_UINT32_MACROS)
+#if (defined(__i386__) || defined(__x86_64__)) && !defined(NO_UINT32_MACROS)
 #define uint32_pack(out,in) (*(uint32*)(out)=(in))
 #define uint32_unpack(in,out) (*(out)=*(uint32*)(in))
 #define uint32_read(in) (*(uint32*)(in))
