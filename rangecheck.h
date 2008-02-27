@@ -106,7 +106,7 @@ int range_str4inbuf(const void* buf,size_t len,const void* stringstart);
  * return 0.  Otherwise, return 1. */
 #define add_of(c,a,b) ({ typeof(a) __a=a; typeof(b) __b=b; (__b)<1?((__MIN(typeof(c))-(__b)<=(__a))?assign(c,__a+__b):1) : ((__MAX(typeof(c))-(__b)>=(__a))?assign(c,__a+__b):1); })
 
-#define sub_of(c,a,b) ({ typeof(a) __a=a; typeof(b) __b=b; (__b)<1?((__MAX(typeof(c))-(__b)>=(__a))?assign(c,__a-__b):1) : ((__MIN(typeof(c))+(__b)<=(__a))?assign(c,__a-__b):1); })
+#define sub_of(c,a,b) ({ typeof(a) __a=a; typeof(b) __b=b; (__b)<1?((__MAX(typeof(c))+(__b)>=(__a))?assign(c,__a-__b):1) : ((__MIN(typeof(c))+(__b)<=(__a))?assign(c,__a-__b):1); })
 
 #undef __static
 

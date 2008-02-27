@@ -204,10 +204,7 @@ void check_intof() {
 
   {
     unsigned long long a;
-    /* caveat emptor: */
-    a=0; assert(add_of(a,0xfffffff0,0x10)==1);
-      /* this does NOT work and set a to 0x100000000, just like
-       * a=0xfffffff0+0x10 sets a to 0 in C! */
+    a=0; assert(add_of(a,0xfffffff0ul,0x10)==0 && a==0x100000000);
   }
 
 }

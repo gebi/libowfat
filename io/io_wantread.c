@@ -32,6 +32,7 @@ void io_wantread(int64 d) {
 #ifdef HAVE_EPOLL
   if (io_waitmode==EPOLL) {
     struct epoll_event x;
+    byte_zero(&x,sizeof(x));	// to shut up valgrind
     x.events=EPOLLIN;
     if (e->wantwrite) x.events|=EPOLLOUT;
     x.data.fd=d;
