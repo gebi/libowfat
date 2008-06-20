@@ -318,7 +318,7 @@ int main(int argc,char* argv[]) {
   rdtscl(c);
   printf("%lu %lu\n",b-a,c-b);
 #endif
-#if 1
+#if 0
   size_t size;
   char* buf=mmap_read(argv[1],&size);
   if (buf) {
@@ -333,6 +333,7 @@ int main(int argc,char* argv[]) {
   printf("%d %d\n",strcmp("foo","bar"),str_diff("foo","bar"));
   printf("%d %d\n",strcmp("foo","üar"),str_diff("foo","üar"));
 #endif
+#if 0
   {
     int16 a;
     int32 b;
@@ -348,6 +349,9 @@ int main(int argc,char* argv[]) {
     assert(imult64(0x4000000000000000ll,2,&c)==0);
     assert(imult64(0x3fffffffffffffffll,2,&c)==1 && c==0x7ffffffffffffffell);
   }
+#endif
+  stralloc a;
+  printf("%d\n",stralloc_copym(&a,"fnord",", ","foo"));
 
   return 0;
 }
