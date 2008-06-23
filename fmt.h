@@ -93,4 +93,9 @@ char fmt_tohex(char c);
 #define fmt_strm(b,...) fmt_strm_internal(b,__VA_ARGS__,(char*)0)
 size_t fmt_strm_internal(char* dest,...);
 
+#ifndef MAX_ALLOCA
+#define MAX_ALLOCA 100000
+#endif
+#define fmt_strm_alloca(a,...) ({ size_t len=fmt_strm((char*)0,a,__VA_ARGS__)+1; char* c=(len<MAX_ALLOCA?alloca(len):0); if (c) c[fmt_strm(c,a,__VA_ARGS__)]=0; c;})
+
 #endif
