@@ -65,6 +65,7 @@ void httperror(struct http_data* r,const char* title,const char* message) {
     c+=fmt_str(c,"\r\n\r\n<title>");
     c+=fmt_str(c,title+4);
     c+=fmt_str(c,"</title>\n");
+    c+=fmt_str(c,message);
     r->hlen=c - r->hdrbuf;
   }
   iob_addbuf(&r->iob,r->hdrbuf,r->hlen);
