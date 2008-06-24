@@ -10,7 +10,8 @@ int \fBopenreadclose\fP(const char *\fIfilename\fR,
 openreadclose opens the file \fIfilename\fR for reading and reads the
 whole content into the stralloc \fIsa\fR.  The file is read in chunks of
 \fIbufsize\fR bytes size.  If everything worked fine, openreadclose
-returns 0.  A not existing file is treated as an empty file.  On error,
-openreadclose returns -1 and sets errno appropriately.
+returns 1.  If the file did not exist, openreadclose returns 0.  On
+every other error, openreadclose returns -1 and sets errno
+appropriately.
 .SH "SEE ALSO"
 open_read(3), readclose(3)

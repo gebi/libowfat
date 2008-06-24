@@ -41,8 +41,13 @@ int64 writecb(int64 fd,const void* buf,uint64 n) {
 }
 
 int main(int argc,char* argv[]) {
+  char* c=fmt_strm_alloca("foo"," bar","\n");
+
+  write(1,c,strlen(c));
+
   (void)argc;
   (void)argv;
+
 #if 0
   io_batch* b=iob_new(1234);
   int64 fd=open("t.c",0);
@@ -350,8 +355,10 @@ int main(int argc,char* argv[]) {
     assert(imult64(0x3fffffffffffffffll,2,&c)==1 && c==0x7ffffffffffffffell);
   }
 #endif
+#if 0
   stralloc a;
   printf("%d\n",stralloc_copym(&a,"fnord",", ","foo"));
+#endif
 
   return 0;
 }
