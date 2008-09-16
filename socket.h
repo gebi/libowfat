@@ -46,9 +46,9 @@ int socket_mcleave6(int s,const char* groupip);
 /* set multicast TTL/hop count for outgoing packets */
 int socket_mcttl4(int s,char hops);
 int socket_mchopcount6(int s,char hops);
-/* enable multicast loopback */
-int socket_mcloop4(int s,char hops);
-int socket_mcloop6(int s,char hops);
+/* enable multicast loopback, pass 1 for enable, 0 for disable */
+int socket_mcloop4(int s,char loop);
+int socket_mcloop6(int s,char loop);
 
 /* please note that these are platform specific.  Do not expect them to
  * work.  You might still get an accept() signalled even though there is
