@@ -1,6 +1,7 @@
 0.28:
   add uint64 pack and unpack routines
   fix subtle typo in sub_of (David Sirovsky)
+  work around gcc bugs
 
 0.27:
   add fmt_strm
