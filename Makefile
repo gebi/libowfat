@@ -526,6 +526,12 @@ uint32_read.o: uint/uint32_read.c uint32.h
 uint32_read_big.o: uint/uint32_read_big.c uint32.h
 uint32_unpack.o: uint/uint32_unpack.c uint32.h
 uint32_unpack_big.o: uint/uint32_unpack_big.c uint32.h
+uint64_pack.o: uint/uint64_pack.c uint64.h uint32.h
+uint64_pack_big.o: uint/uint64_pack_big.c uint64.h uint32.h
+uint64_read.o: uint/uint64_read.c uint64.h uint32.h
+uint64_read_big.o: uint/uint64_read_big.c uint64.h uint32.h
+uint64_unpack.o: uint/uint64_unpack.c uint64.h uint32.h
+uint64_unpack_big.o: uint/uint64_unpack_big.c uint64.h uint32.h
 iopause.o: unix/iopause.c taia.h tai.h uint64.h iopause.h taia.h select.h
 ndelay_off.o: unix/ndelay_off.c ndelay.h
 ndelay_on.o: unix/ndelay_on.c ndelay.h
@@ -537,7 +543,7 @@ BYTE_OBJS=byte_chr.o byte_copy.o byte_copyr.o byte_diff.o byte_rchr.o byte_zero.
 FMT_OBJS=fmt_8long.o fmt_8longlong.o fmt_double.o fmt_fill.o fmt_httpdate.o fmt_human.o fmt_humank.o fmt_long.o fmt_longlong.o fmt_minus.o fmt_pad.o fmt_plusminus.o fmt_str.o fmt_strm_internal.o fmt_strn.o fmt_tohex.o fmt_ulong.o fmt_ulong0.o fmt_ulonglong.o fmt_xlong.o fmt_xlonglong.o 
 SCAN_OBJS=scan_8int.o scan_8long.o scan_8short.o scan_charsetnskip.o scan_double.o scan_fromhex.o scan_httpdate.o scan_int.o scan_long.o scan_longlong.o scan_noncharsetnskip.o scan_nonwhitenskip.o scan_plusminus.o scan_short.o scan_uint.o scan_ulong.o scan_ulonglong.o scan_ushort.o scan_whitenskip.o scan_xint.o scan_xlong.o scan_xlonglong.o scan_xshort.o 
 STR_OBJS=str_chr.o str_copy.o str_diff.o str_diffn.o str_len.o str_rchr.o str_start.o 
-UINT_OBJS=uint16_pack.o uint16_pack_big.o uint16_read.o uint16_read_big.o uint16_unpack.o uint16_unpack_big.o uint32_pack.o uint32_pack_big.o uint32_read.o uint32_read_big.o uint32_unpack.o uint32_unpack_big.o 
+UINT_OBJS=uint16_pack.o uint16_pack_big.o uint16_read.o uint16_read_big.o uint16_unpack.o uint16_unpack_big.o uint32_pack.o uint32_pack_big.o uint32_read.o uint32_read_big.o uint32_unpack.o uint32_unpack_big.o uint64_pack.o uint64_pack_big.o uint64_read.o uint64_read_big.o uint64_unpack.o uint64_unpack_big.o 
 OPEN_OBJS=open_append.o open_excl.o open_read.o open_rw.o open_trunc.o open_write.o openreadclose.o readclose.o 
 STRALLOC_OBJS=stralloc_append.o stralloc_cat.o stralloc_catb.o stralloc_catlong0.o stralloc_catm_internal.o stralloc_cats.o stralloc_catulong0.o stralloc_chomp.o stralloc_chop.o stralloc_copy.o stralloc_copyb.o stralloc_copys.o stralloc_diff.o stralloc_diffs.o stralloc_free.o stralloc_init.o stralloc_ready.o stralloc_readyplus.o stralloc_starts.o stralloc_zero.o 
 UNIX_OBJS=iopause.o ndelay_off.o ndelay_on.o winsock2errno.o 
@@ -622,8 +628,8 @@ uninstall:
 	rm -f $(patsubst %.3,$(MAN3DIR)/%.3,$(notdir $(wildcard */*.3)))
 	rm -f $(LIBDIR)/libowfat.a
 
-VERSION=libowfat-0.27
-CURNAME=libowfat-0.27
+VERSION=libowfat-0.28
+CURNAME=libowfat-0.28
 
 tar: clean rename
 	rm -f dep libdep
