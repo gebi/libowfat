@@ -45,7 +45,8 @@ size_t scan_httpdate(const char *in,time_t *t) {
     goto done;
   }
   c+=scan_ulong(c,&tmp); x.tm_mday=tmp;
-  ++c;
+  while (*c==' ') ++c; // work around crappy sqlite download httpd
+//  ++c;
   for (i=0; i<12; ++i)
     if (case_equalb(c,3,months+i*3)) {
       x.tm_mon=i; break;
@@ -59,6 +60,10 @@ size_t scan_httpdate(const char *in,time_t *t) {
   if (parsetime(c,&x)) return 0;
   c+=9;
   if (byte_equal(c,3,"GMT")) c+=3;
+  if (*c=='+' || *c=='-') {
+    ++c;
+    while (*c>='0' && *c<='9') ++c;
+  }
 done:
   x.tm_wday=x.tm_yday=x.tm_isdst=0;
 #if defined(__dietlibc__) || defined(__GLIBC__)
