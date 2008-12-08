@@ -10,6 +10,7 @@
 #ifdef HAVE_EPOLL
 #include <inttypes.h>
 #include <sys/epoll.h>
+#include <byte.h>
 #endif
 #ifdef HAVE_SIGIO
 #include <sys/poll.h>
