@@ -1,4 +1,4 @@
-#ifdef __x86_64__
+#if defined(__x86_64__) && defined(__OPTIMIZE__)
 
 /* WARNING: this only works if compiled with -fomit-frame-pointer */
 void imult64() {

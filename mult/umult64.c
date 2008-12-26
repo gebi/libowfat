@@ -21,6 +21,16 @@ void umult64() {
 
 #include "safemult.h"
 
+#ifdef __GNUC__
+
+int umult64(uint64 a,uint64 b,uint64* c) {
+  __uint128_t x=((__uint128_t)a)*b;
+  if ((*c=(uint64)x) != x) return 0;
+  return 1;
+}
+
+#else
+
 /* return 1 for overflow, 0 for ok */
 int umult64(uint64 a,uint64 b,uint64* c) {
   uint32 ahi=a>>32;
@@ -44,5 +54,7 @@ int umult64(uint64 a,uint64 b,uint64* c) {
   }
   return 1;
 }
+
+#endif
 
 #endif
