@@ -20,6 +20,7 @@ int main() {
   assert(imult64(0x3fffffffffffffffll,2,&c)==1 && c==0x7ffffffffffffffell);
 
   assert(umult64(0x0000000100000002ull,0x00000000ffffffffull,&c)==0);
+  assert(umult64(0x0000000000000001ull,0x00000000ffffffffull,&c)==1);
 
   return 0;
 }
