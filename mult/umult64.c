@@ -21,7 +21,7 @@ void umult64() {
 
 #include "safemult.h"
 
-#ifdef __GNUC__
+#if defined(__GNUC__) && (defined(__x86_64__) || defined(__ia64__) || defined(__powerpc64__) || defined(__alpha__) || defined(__mips64__) || defined(__sparc64__))
 
 int umult64(uint64 a,uint64 b,uint64* c) {
   __uint128_t x=((__uint128_t)a)*b;
