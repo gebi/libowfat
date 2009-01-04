@@ -55,8 +55,8 @@ int socket_mcloop6(int s,char loop);
  * no data available.  So far, DATAIN is supported on FreeBSD and Linux,
  * and HTTPIN is supported on FreeBSD. */
 enum defermode {
-  DATAIN,	// only signal accept() if there is data coming in
-  HTTPIN,	// only signal accept() if a HTTP header has come in
+  DATAIN,	/* only signal accept() if there is data coming in */
+  HTTPIN,	/* only signal accept() if a HTTP header has come in */
 };
 
 void socket_deferaccept(int s,enum defermode mode);
