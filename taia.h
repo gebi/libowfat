@@ -4,6 +4,7 @@
 /* Times with 1 attosecond precision */
 
 #include "tai.h"
+#include "uint32.h"
 
 /* A struct taia value is a number between 0 inclusive and 2^64
  * exclusive. The number is a multiple of 10^-18. The format of struct
@@ -11,8 +12,8 @@
  * not look inside struct taia. */
 typedef struct taia {
   struct tai sec;
-  unsigned long nano; /* 0...999999999 */
-  unsigned long atto; /* 0...999999999 */
+  uint32 nano; /* 0...999999999 */
+  uint32 atto; /* 0...999999999 */
 } tai6464;
 
 /* extract seconds */
