@@ -14,9 +14,10 @@ typedef struct buffer {
   int fd;		/* passed as first argument to op */
   ssize_t (*op)();	/* use read(2) or write(2) */
   enum { NOTHING, FREE, MUNMAP } todo;
+  void* cookie;
 } buffer;
 
-#define BUFFER_INIT(op,fd,buf,len) { (buf), 0, 0, (len), (fd), (op), NOTHING }
+#define BUFFER_INIT(op,fd,buf,len) { (buf), 0, 0, (len), (fd), (op), NOTHING, NULL }
 #define BUFFER_INIT_FREE(op,fd,buf,len) { (buf), 0, 0, (len), (fd), (op), FREE }
 #define BUFFER_INIT_READ(op,fd,buf,len) BUFFER_INIT(op,fd,buf,len) /*obsolete*/
 #define BUFFER_INSIZE 8192
@@ -135,7 +136,8 @@ int buffer_get_new_token_sa_pred(buffer* b,stralloc* sa,sa_predicate p);
 
 /* make a buffer from a stralloc.
  * Do not change the stralloc after this! */
-void buffer_fromsa(buffer* b,stralloc* sa);
+void buffer_fromsa(buffer* b,stralloc* sa);	/* read from sa */
+int buffer_tosa(buffer*b,stralloc* sa);		/* write to sa, auto-growing it */
 #endif
 
 #endif

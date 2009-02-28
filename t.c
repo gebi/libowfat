@@ -41,13 +41,25 @@ int64 writecb(int64 fd,const void* buf,uint64 n) {
 }
 
 int main(int argc,char* argv[]) {
+  stralloc a;
+  buffer b;
+  int i;
+  stralloc_init(&a);
+  buffer_tosa(&b,&a);
+
+  for (i=0; i<100; ++i)
+    buffer_puts(&b,"foo bar baz!\n");
+  buffer_flush(&b);
+  buffer_putsa(buffer_1,&a);
+  buffer_flush(buffer_1);
+#if 0
   char* c=fmt_strm_alloca("foo"," bar","\n");
 
   write(1,c,strlen(c));
 
   (void)argc;
   (void)argv;
-
+#endif
 #if 0
   io_batch* b=iob_new(1234);
   int64 fd=open("t.c",0);
