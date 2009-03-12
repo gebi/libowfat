@@ -1,9 +1,4 @@
-#ifdef __dietlibc__
-#include <sys/cdefs.h>
-#else
-#define __likely(x) x
-#define __unlikely(x) x
-#endif
+#include "likely.h"
 #include "safemult.h"
 #include "array.h"
 

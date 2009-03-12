@@ -1,6 +1,7 @@
 0.29:
   save 8 bytes in taia.h for 64-bit systems
   add buffer_tosa (buffer writing to auto-growing stralloc)
+  add iarray
 
 0.28:
   add uint64 pack and unpack routines

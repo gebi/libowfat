@@ -147,7 +147,7 @@ CFLAGS+=-I.
 t.o: iopause.h
 
 t: t.o libowfat.a libsocket
-	$(DIET) $(CC) -g -o $@ t.o libowfat.a `cat libsocket`
+	$(DIET) $(CC) -g -o $@ t.o libowfat.a `cat libsocket` -lpthread
 
 .PHONY: all clean tar install rename
 clean:
@@ -159,7 +159,7 @@ dep libsocket havealloca.h
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
 uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h \
 openreadclose.h readclose.h ndelay.h array.h io.h safemult.h iob.h havealloca.h \
-errmsg.h cdb.h cdb_make.h rangecheck.h
+errmsg.h cdb.h cdb_make.h rangecheck.h iarray.h
 
 install: libowfat.a
 	install -d $(INCLUDEDIR) $(MAN3DIR) $(LIBDIR)
