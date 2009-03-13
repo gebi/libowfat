@@ -14,7 +14,7 @@ LIBS=byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a \
 buffer.a mmap.a taia.a tai.a dns.a case.a mult.a array.a io.a \
 textcode.a cdb.a
 
-all: t $(LIBS) libowfat.a libsocket
+all: $(LIBS) libowfat.a libsocket t
 
 CROSS=
 #CROSS=i686-mingw-
@@ -26,8 +26,8 @@ CFLAGS=-pipe -W -Wall -O2 -fomit-frame-pointer
 
 CFLAGS += -D_REENTRANT
 
-array_allocate.o: array/array_allocate.c safemult.h uint16.h uint32.h \
-  uint64.h array.h byte.h
+array_allocate.o: array/array_allocate.c likely.h safemult.h uint16.h \
+  uint32.h uint64.h array.h byte.h
 array_bytes.o: array/array_bytes.c array.h uint64.h
 array_cat.o: array/array_cat.c array.h uint64.h byte.h
 array_cat0.o: array/array_cat0.c array.h uint64.h
@@ -37,18 +37,18 @@ array_cats.o: array/array_cats.c array.h uint64.h str.h
 array_cats0.o: array/array_cats0.c array.h uint64.h str.h
 array_equal.o: array/array_equal.c byte.h array.h uint64.h
 array_fail.o: array/array_fail.c array.h uint64.h
-array_get.o: array/array_get.c safemult.h uint16.h uint32.h uint64.h \
-  array.h
+array_get.o: array/array_get.c likely.h safemult.h uint16.h uint32.h \
+  uint64.h array.h
 array_length.o: array/array_length.c array.h uint64.h
 array_reset.o: array/array_reset.c array.h uint64.h
 array_start.o: array/array_start.c array.h uint64.h
 array_trunc.o: array/array_trunc.c array.h uint64.h
-array_truncate.o: array/array_truncate.c safemult.h uint16.h uint32.h \
-  uint64.h array.h
-iarray_allocate.o: array/iarray_allocate.c iarray.h uint64.h
+array_truncate.o: array/array_truncate.c likely.h safemult.h uint16.h \
+  uint32.h uint64.h array.h
+iarray_allocate.o: array/iarray_allocate.c likely.h iarray.h uint64.h
+iarray_free.o: array/iarray_free.c iarray.h uint64.h
 iarray_get.o: array/iarray_get.c iarray.h uint64.h
-iarray_length.o: array/iarray_length.c iarray.h uint64.h
-init_iarray.o: array/init_iarray.c iarray.h uint64.h
+iarray_init.o: array/iarray_init.c iarray.h uint64.h
 buffer_0.o: buffer/buffer_0.c buffer.h
 buffer_0small.o: buffer/buffer_0small.c buffer.h
 buffer_1.o: buffer/buffer_1.c buffer.h
@@ -315,8 +315,6 @@ iob_prefetch.o: io/iob_prefetch.c iob_internal.h iob.h io.h uint64.h \
   taia.h tai.h uint32.h array.h
 iob_reset.o: io/iob_reset.c byte.h iob_internal.h iob.h io.h uint64.h \
   taia.h tai.h uint32.h array.h
-iob_send.o: io/iob_send.c havebsdsf.h havealloca.h iob_internal.h iob.h \
-  io.h uint64.h taia.h tai.h uint32.h array.h
 iob_write.o: io/iob_write.c iob_internal.h iob.h io.h uint64.h taia.h \
   tai.h uint32.h array.h
 mmap_private.o: mmap/mmap_private.c open.h mmap.h
@@ -378,8 +376,6 @@ init.o: socket/init.c
 scan_ip4.o: socket/scan_ip4.c scan.h ip4.h
 scan_ip6.o: socket/scan_ip6.c scan.h ip4.h ip6.h byte.h uint32.h
 scan_ip6_flat.o: socket/scan_ip6_flat.c scan.h
-scan_ip6if.o: socket/scan_ip6if.c ip6.h byte.h uint32.h byte.h socket.h \
-  uint16.h havealloca.h
 socket_accept4.o: socket/socket_accept4.c windoze.h socket.h uint16.h \
   uint32.h havesl.h
 socket_accept6.o: socket/socket_accept6.c windoze.h byte.h socket.h \
@@ -563,7 +559,9 @@ ndelay_on.o: unix/ndelay_on.c ndelay.h
 winsock2errno.o: unix/winsock2errno.c
 t.o: t.c fmt.h scan.h str.h uint16.h uint32.h stralloc.h socket.h \
   buffer.h ip4.h ip6.h byte.h mmap.h open.h textcode.h dns.h iopause.h \
-  taia.h tai.h uint64.h case.h errmsg.h iob.h io.h array.h safemult.h
+  taia.h tai.h uint64.h case.h errmsg.h iob.h io.h array.h safemult.h \
+  iarray.h io_internal.h haveepoll.h havekqueue.h havedevpoll.h \
+  havesigio.h
 BYTE_OBJS=byte_chr.o byte_copy.o byte_copyr.o byte_diff.o byte_rchr.o byte_zero.o 
 FMT_OBJS=fmt_8long.o fmt_8longlong.o fmt_double.o fmt_fill.o fmt_httpdate.o fmt_human.o fmt_humank.o fmt_long.o fmt_longlong.o fmt_minus.o fmt_pad.o fmt_plusminus.o fmt_str.o fmt_strm_internal.o fmt_strn.o fmt_tohex.o fmt_ulong.o fmt_ulong0.o fmt_ulonglong.o fmt_xlong.o fmt_xlonglong.o 
 SCAN_OBJS=scan_8int.o scan_8long.o scan_8short.o scan_charsetnskip.o scan_double.o scan_fromhex.o scan_httpdate.o scan_int.o scan_long.o scan_longlong.o scan_noncharsetnskip.o scan_nonwhitenskip.o scan_plusminus.o scan_short.o scan_uint.o scan_ulong.o scan_ulonglong.o scan_ushort.o scan_whitenskip.o scan_xint.o scan_xlong.o scan_xlonglong.o scan_xshort.o 
@@ -580,7 +578,7 @@ TAI_OBJS=tai_add.o tai_now.o tai_pack.o tai_sub.o tai_uint.o tai_unpack.o
 DNS_OBJS=dns_dfd.o dns_domain.o dns_dtda.o dns_ip.o dns_ip6.o dns_ipq.o dns_ipq6.o dns_mx.o dns_name.o dns_nd.o dns_nd6.o dns_packet.o dns_random.o dns_rcip.o dns_rcrw.o dns_resolve.o dns_sortip.o dns_sortip6.o dns_transmit.o dns_txt.o 
 CASE_OBJS=case_diffb.o case_diffs.o case_lowerb.o case_lowers.o case_starts.o 
 MULT_OBJS=imult16.o imult32.o imult64.o range_arrayinbuf.o range_str2inbuf.o range_str4inbuf.o range_strinbuf.o umult16.o umult32.o umult64.o 
-ARRAY_OBJS=array_allocate.o array_bytes.o array_cat.o array_cat0.o array_catb.o array_cate.o array_cats.o array_cats0.o array_equal.o array_fail.o array_get.o array_length.o array_reset.o array_start.o array_trunc.o array_truncate.o iarray_allocate.o iarray_get.o iarray_length.o init_iarray.o 
+ARRAY_OBJS=array_allocate.o array_bytes.o array_cat.o array_cat0.o array_catb.o array_cate.o array_cats.o array_cats0.o array_equal.o array_fail.o array_get.o array_length.o array_reset.o array_start.o array_trunc.o array_truncate.o iarray_allocate.o iarray_free.o iarray_get.o iarray_init.o 
 IO_OBJS=io_appendfile.o io_block.o io_canread.o io_canwrite.o io_check.o io_close.o io_closeonexec.o io_createfile.o io_dontwantread.o io_dontwantwrite.o io_eagain.o io_fd.o io_finishandshutdown.o io_getcookie.o io_mmapwritefile.o io_nonblock.o io_passfd.o io_pipe.o io_readfile.o io_readwritefile.o io_receivefd.o io_sendfile.o io_setcookie.o io_sigpipe.o io_socketpair.o io_timeout.o io_timeouted.o io_tryread.o io_tryreadtimeout.o io_trywrite.o io_trywritetimeout.o io_wait.o io_waitread.o io_waituntil.o io_waituntil2.o io_waitwrite.o io_wantread.o io_wantwrite.o iob_addbuf.o iob_addbuf_free.o iob_addbuf_internal.o iob_addbuf_munmap.o iob_addfile.o iob_addfile_close.o iob_adds.o iob_adds_free.o iob_bytesleft.o iob_free.o iob_new.o iob_prefetch.o iob_reset.o iob_send.o iob_write.o 
 TEXTCODE_OBJS=base64.o fmt_base64.o fmt_cescape.o fmt_foldwhitespace.o fmt_hexdump.o fmt_html.o fmt_ldapescape.o fmt_ldapescape2.o fmt_quotedprintable.o fmt_to_array.o fmt_to_sa.o fmt_tofrom_array.o fmt_urlencoded.o fmt_uuencoded.o fmt_yenc.o scan_base64.o scan_cescape.o scan_hexdump.o scan_html.o scan_ldapescape.o scan_quotedprintable.o scan_to_array.o scan_to_sa.o scan_tofrom_array.o scan_urlencoded.o scan_uuencoded.o scan_yenc.o 
 CDB_OBJS=cdb.o cdb_hash.o cdb_make.o cdb_traverse.o 
@@ -625,10 +623,14 @@ CFLAGS+=-I.
 	ar cr $@ $^
 	-ranlib $@
 
-t.o: iopause.h
+t.o: t.c fmt.h scan.h str.h uint16.h uint32.h stralloc.h socket.h \
+  buffer.h ip4.h ip6.h byte.h mmap.h open.h textcode.h dns.h iopause.h \
+  taia.h tai.h uint64.h case.h errmsg.h iob.h io.h array.h safemult.h \
+  iarray.h io_internal.h haveepoll.h havekqueue.h havedevpoll.h \
+  havesigio.h
 
 t: t.o libowfat.a libsocket
-	$(DIET) $(CC) -g -o $@ t.o libowfat.a `cat libsocket`
+	$(DIET) $(CC) -g -o $@ t.o libowfat.a `cat libsocket` -lpthread
 
 .PHONY: all clean tar install rename
 clean:
@@ -640,7 +642,7 @@ dep libsocket havealloca.h
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
 uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h \
 openreadclose.h readclose.h ndelay.h array.h io.h safemult.h iob.h havealloca.h \
-errmsg.h cdb.h cdb_make.h rangecheck.h
+errmsg.h cdb.h cdb_make.h rangecheck.h iarray.h
 
 install: libowfat.a
 	install -d $(INCLUDEDIR) $(MAN3DIR) $(LIBDIR)
@@ -654,7 +656,7 @@ uninstall:
 	rm -f $(LIBDIR)/libowfat.a
 
 VERSION=libowfat-0.29
-CURNAME=libowfat-0.28
+CURNAME=libowfat
 
 tar: clean rename
 	rm -f dep libdep
