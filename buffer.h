@@ -81,8 +81,6 @@ void buffer_seek(buffer* b,size_t len);
     : buffer_get((s),(c),1) \
   )
 
-int buffer_copy(buffer* out,buffer* in);
-
 int buffer_putulong(buffer *b,unsigned long int l);
 int buffer_put8long(buffer *b,unsigned long int l);
 int buffer_putxlong(buffer *b,unsigned long int l);
