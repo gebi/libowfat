@@ -99,7 +99,7 @@ $(CDB_OBJS): cdb.h uint32.h
 
 iob_addbuf.o iob_addfile.o iob_new.o iob_reset.o iob_send.o: iob_internal.h iob.h
 
-iopause.o: select.h
+iopause.o: iopause.h select.h
 openreadclose.o readclose.o: readclose.h
 dns_rcip.o dns_rcrw.o openreadclose.o: openreadclose.h
 
