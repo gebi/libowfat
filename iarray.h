@@ -1,6 +1,8 @@
 #ifndef IARRAY_H
 #define IARRAY_H
 
+#warning DO NOT USE THIS YET.  It may look thread-safe but it is not!
+
 #include "uint64.h"
 #include <stddef.h>
 #include <pthread.h>
