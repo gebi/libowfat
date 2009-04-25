@@ -11,8 +11,12 @@ int64 io_timeouted() {
   e=array_get(&io_fds,sizeof(io_entry),ptr);
   if (!e) return -1;
   for (;ptr<alen; ++ptr,++e) {
-    if (e->inuse && e->timeout.sec.x && taia_less(&e->timeout,&now))
+    if (e->inuse && e->timeout.sec.x && taia_less(&e->timeout,&now)) {
+      /* we have a timeout */
+      if ((e->canread&&e->wantread) || (e->canwrite&&e->wantwrite))
+	continue;	/* don't count it if we can signal something else */
       return ptr;
+    }
   }
   ptr=-1;	/* this is for really pathological cases, where more
 		   connections come in all the time and so the timeout

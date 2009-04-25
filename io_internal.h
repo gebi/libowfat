@@ -1,3 +1,8 @@
+#ifndef my_extern
+#define my_extern extern
+#endif
+#undef my_extern
+
 #include "io.h"
 #include "array.h"
 #ifdef __MINGW32__
