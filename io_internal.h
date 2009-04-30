@@ -1,7 +1,6 @@
 #ifndef my_extern
 #define my_extern extern
 #endif
-#undef my_extern
 
 #include "io.h"
 #include "array.h"
@@ -51,14 +50,14 @@ typedef struct {
 #endif
 } io_entry;
 
-extern array io_fds;
-extern uint64 io_wanted_fds;
-extern array io_pollfds;
+my_extern array io_fds;
+my_extern uint64 io_wanted_fds;
+my_extern array io_pollfds;
 
-extern long first_readable;
-extern long first_writeable;
+my_extern long first_readable;
+my_extern long first_writeable;
 
-extern enum __io_waitmode {
+my_extern enum __io_waitmode {
   UNDECIDED,
   POLL
 #ifdef HAVE_KQUEUE
@@ -79,14 +78,14 @@ extern enum __io_waitmode {
 } io_waitmode;
 
 #if defined(HAVE_KQUEUE) || defined(HAVE_EPOLL) || defined(HAVE_DEVPOLL)
-extern int io_master;
+my_extern int io_master;
 #endif
 #if defined(HAVE_SIGIO)
-extern int io_signum;
-extern sigset_t io_ss;
+my_extern int io_signum;
+my_extern sigset_t io_ss;
 
-extern long alt_firstread;
-extern long alt_firstwrite;
+my_extern long alt_firstread;
+my_extern long alt_firstwrite;
 #endif
 
 int64 io_waituntil2(int64 milliseconds);
