@@ -211,7 +211,7 @@ dopoll:
     return;
   }
   fprintf(stderr,"Calling GetQueuedCompletionStatus %p...",io_comport);
-  if (GetQueuedCompletionStatus(io_comport,&numberofbytes,&x,&o,milliseconds==-1?milliseconds:INFINITE)) {
+  if (GetQueuedCompletionStatus(io_comport,&numberofbytes,&x,&o,milliseconds==-1?INFINITE:milliseconds)) {
     io_entry* e=array_get(&io_fds,sizeof(io_entry),x);
     fprintf(stderr," OK.  Got %x, e=%p\n",x,e);
     if (!e) return 0;
