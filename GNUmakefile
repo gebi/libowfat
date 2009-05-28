@@ -151,7 +151,7 @@ t.o: t.c fmt.h scan.h str.h uint16.h uint32.h stralloc.h socket.h \
   buffer.h ip4.h ip6.h byte.h mmap.h open.h textcode.h dns.h iopause.h \
   taia.h tai.h uint64.h case.h errmsg.h iob.h io.h array.h safemult.h \
   iarray.h io_internal.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h
+  havesigio.h CAS.h
 
 t: t.o libowfat.a libsocket
 	$(DIET) $(CC) -g -o $@ t.o libowfat.a `cat libsocket` -lpthread
