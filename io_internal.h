@@ -6,7 +6,7 @@
 #include "array.h"
 #ifdef __MINGW32__
 #include "socket.h"
-extern HANDLE io_comport;
+my_extern HANDLE io_comport;
 #else
 #include "haveepoll.h"
 #include "havekqueue.h"
