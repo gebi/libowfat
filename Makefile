@@ -26,8 +26,8 @@ CFLAGS=-pipe -W -Wall -O2 -fomit-frame-pointer
 
 CFLAGS += -D_REENTRANT
 
-array_allocate.o: array/array_allocate.c safemult.h uint16.h uint32.h \
-  uint64.h array.h byte.h
+array_allocate.o: array/array_allocate.c likely.h safemult.h uint16.h \
+ uint32.h uint64.h array.h byte.h
 array_bytes.o: array/array_bytes.c array.h uint64.h
 array_cat.o: array/array_cat.c array.h uint64.h byte.h
 array_cat0.o: array/array_cat0.c array.h uint64.h
@@ -37,18 +37,18 @@ array_cats.o: array/array_cats.c array.h uint64.h str.h
 array_cats0.o: array/array_cats0.c array.h uint64.h str.h
 array_equal.o: array/array_equal.c byte.h array.h uint64.h
 array_fail.o: array/array_fail.c array.h uint64.h
-array_get.o: array/array_get.c safemult.h uint16.h uint32.h uint64.h \
-  array.h
+array_get.o: array/array_get.c likely.h safemult.h uint16.h uint32.h \
+ uint64.h array.h
 array_length.o: array/array_length.c array.h uint64.h
 array_reset.o: array/array_reset.c array.h uint64.h
 array_start.o: array/array_start.c array.h uint64.h
 array_trunc.o: array/array_trunc.c array.h uint64.h
-array_truncate.o: array/array_truncate.c safemult.h uint16.h uint32.h \
-  uint64.h array.h
-iarray_allocate.o: array/iarray_allocate.c iarray.h uint64.h
+array_truncate.o: array/array_truncate.c likely.h safemult.h uint16.h \
+ uint32.h uint64.h array.h
+iarray_allocate.o: array/iarray_allocate.c likely.h iarray.h uint64.h
+iarray_free.o: array/iarray_free.c iarray.h uint64.h
 iarray_get.o: array/iarray_get.c iarray.h uint64.h
-iarray_length.o: array/iarray_length.c iarray.h uint64.h
-init_iarray.o: array/init_iarray.c iarray.h uint64.h
+iarray_init.o: array/iarray_init.c iarray.h uint64.h
 buffer_0.o: buffer/buffer_0.c buffer.h
 buffer_0small.o: buffer/buffer_0small.c buffer.h
 buffer_1.o: buffer/buffer_1.c buffer.h
@@ -60,16 +60,16 @@ buffer_flush.o: buffer/buffer_flush.c buffer.h
 buffer_fromsa.o: buffer/buffer_fromsa.c stralloc.h buffer.h
 buffer_get.o: buffer/buffer_get.c byte.h buffer.h
 buffer_get_new_token_sa.o: buffer/buffer_get_new_token_sa.c stralloc.h \
-  buffer.h
+ buffer.h
 buffer_get_new_token_sa_pred.o: buffer/buffer_get_new_token_sa_pred.c \
-  stralloc.h buffer.h
+ stralloc.h buffer.h
 buffer_get_token.o: buffer/buffer_get_token.c byte.h buffer.h scan.h
 buffer_get_token_pred.o: buffer/buffer_get_token_pred.c byte.h buffer.h \
-  scan.h
+ scan.h
 buffer_get_token_sa.o: buffer/buffer_get_token_sa.c byte.h stralloc.h \
-  buffer.h
+ buffer.h
 buffer_get_token_sa_pred.o: buffer/buffer_get_token_sa_pred.c byte.h \
-  stralloc.h buffer.h
+ stralloc.h buffer.h
 buffer_getc.o: buffer/buffer_getc.c byte.h buffer.h
 buffer_getline.o: buffer/buffer_getline.c buffer.h
 buffer_getline_sa.o: buffer/buffer_getline_sa.c stralloc.h buffer.h
@@ -89,7 +89,7 @@ buffer_putlong.o: buffer/buffer_putlong.c buffer.h fmt.h
 buffer_putlonglong.o: buffer/buffer_putlonglong.c buffer.h fmt.h
 buffer_putm_internal.o: buffer/buffer_putm_internal.c buffer.h
 buffer_putm_internal_flush.o: buffer/buffer_putm_internal_flush.c \
-  buffer.h
+ buffer.h
 buffer_putnlflush.o: buffer/buffer_putnlflush.c str.h buffer.h
 buffer_puts.o: buffer/buffer_puts.c str.h buffer.h
 buffer_putsa.o: buffer/buffer_putsa.c stralloc.h buffer.h
@@ -127,47 +127,47 @@ cdb_hash.o: cdb/cdb_hash.c cdb.h uint32.h uint64.h
 cdb_make.o: cdb/cdb_make.c cdb.h uint32.h uint64.h cdb_make.h buffer.h
 cdb_traverse.o: cdb/cdb_traverse.c cdb.h uint32.h uint64.h
 dns_dfd.o: dns/dns_dfd.c byte.h dns.h stralloc.h iopause.h taia.h tai.h \
-  uint64.h uint32.h
+ uint64.h uint32.h
 dns_domain.o: dns/dns_domain.c case.h byte.h dns.h stralloc.h iopause.h \
-  taia.h tai.h uint64.h uint32.h
+ taia.h tai.h uint64.h uint32.h
 dns_dtda.o: dns/dns_dtda.c stralloc.h dns.h stralloc.h iopause.h taia.h \
-  tai.h uint64.h uint32.h
+ tai.h uint64.h uint32.h
 dns_ip.o: dns/dns_ip.c stralloc.h uint16.h byte.h dns.h stralloc.h \
-  iopause.h taia.h tai.h uint64.h uint32.h
+ iopause.h taia.h tai.h uint64.h uint32.h
 dns_ip6.o: dns/dns_ip6.c stralloc.h uint16.h byte.h dns.h stralloc.h \
-  iopause.h taia.h tai.h uint64.h uint32.h ip4.h ip6.h byte.h
+ iopause.h taia.h tai.h uint64.h uint32.h ip4.h ip6.h byte.h
 dns_ipq.o: dns/dns_ipq.c stralloc.h case.h byte.h str.h dns.h stralloc.h \
-  iopause.h taia.h tai.h uint64.h uint32.h
+ iopause.h taia.h tai.h uint64.h uint32.h
 dns_ipq6.o: dns/dns_ipq6.c stralloc.h case.h byte.h str.h dns.h \
-  stralloc.h iopause.h taia.h tai.h uint64.h uint32.h
+ stralloc.h iopause.h taia.h tai.h uint64.h uint32.h
 dns_mx.o: dns/dns_mx.c stralloc.h byte.h uint16.h dns.h stralloc.h \
-  iopause.h taia.h tai.h uint64.h uint32.h
+ iopause.h taia.h tai.h uint64.h uint32.h
 dns_name.o: dns/dns_name.c stralloc.h uint16.h byte.h dns.h stralloc.h \
-  iopause.h taia.h tai.h uint64.h uint32.h ip6.h byte.h
+ iopause.h taia.h tai.h uint64.h uint32.h ip6.h byte.h
 dns_nd.o: dns/dns_nd.c byte.h fmt.h dns.h stralloc.h iopause.h taia.h \
-  tai.h uint64.h uint32.h
+ tai.h uint64.h uint32.h
 dns_nd6.o: dns/dns_nd6.c byte.h fmt.h dns.h stralloc.h iopause.h taia.h \
-  tai.h uint64.h uint32.h haveinline.h
+ tai.h uint64.h uint32.h haveinline.h
 dns_packet.o: dns/dns_packet.c dns.h stralloc.h iopause.h taia.h tai.h \
-  uint64.h uint32.h
+ uint64.h uint32.h
 dns_random.o: dns/dns_random.c dns.h stralloc.h iopause.h taia.h tai.h \
-  uint64.h uint32.h taia.h uint32.h
+ uint64.h uint32.h taia.h uint32.h
 dns_rcip.o: dns/dns_rcip.c taia.h tai.h uint64.h uint32.h openreadclose.h \
-  stralloc.h byte.h ip4.h ip6.h byte.h dns.h iopause.h taia.h
+ stralloc.h byte.h ip4.h ip6.h byte.h dns.h iopause.h taia.h
 dns_rcrw.o: dns/dns_rcrw.c taia.h tai.h uint64.h uint32.h byte.h str.h \
-  openreadclose.h stralloc.h dns.h iopause.h taia.h
+ openreadclose.h stralloc.h dns.h iopause.h taia.h
 dns_resolve.o: dns/dns_resolve.c iopause.h taia.h tai.h uint64.h uint32.h \
-  taia.h byte.h dns.h stralloc.h iopause.h ip6.h byte.h
+ taia.h byte.h dns.h stralloc.h iopause.h ip6.h byte.h
 dns_sortip.o: dns/dns_sortip.c byte.h dns.h stralloc.h iopause.h taia.h \
-  tai.h uint64.h uint32.h
+ tai.h uint64.h uint32.h
 dns_sortip6.o: dns/dns_sortip6.c byte.h dns.h stralloc.h iopause.h taia.h \
-  tai.h uint64.h uint32.h
+ tai.h uint64.h uint32.h
 dns_transmit.o: dns/dns_transmit.c socket.h uint16.h uint32.h byte.h \
-  uint16.h dns.h stralloc.h iopause.h taia.h tai.h uint64.h ip6.h byte.h
+ uint16.h dns.h stralloc.h iopause.h taia.h tai.h uint64.h ip6.h byte.h
 dns_txt.o: dns/dns_txt.c stralloc.h uint16.h byte.h dns.h stralloc.h \
-  iopause.h taia.h tai.h uint64.h uint32.h
+ iopause.h taia.h tai.h uint64.h uint32.h
 buffer_getline.o: examples/buffer_getline.c stralloc.h buffer.h io.h \
-  uint64.h taia.h tai.h uint32.h errmsg.h
+ uint64.h taia.h tai.h uint32.h errmsg.h
 byte.o: examples/byte.c byte.h buffer.h
 str.o: examples/str.c str.h buffer.h
 fmt_8long.o: fmt/fmt_8long.c fmt.h
@@ -192,133 +192,136 @@ fmt_ulonglong.o: fmt/fmt_ulonglong.c fmt.h
 fmt_xlong.o: fmt/fmt_xlong.c fmt.h haveinline.h
 fmt_xlonglong.o: fmt/fmt_xlonglong.c fmt.h
 io_appendfile.o: io/io_appendfile.c io_internal.h io.h uint64.h taia.h \
-  tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h
+ tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h
 io_block.o: io/io_block.c io_internal.h io.h uint64.h taia.h tai.h \
-  uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+ uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 io_canread.o: io/io_canread.c io_internal.h io.h uint64.h taia.h tai.h \
-  uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+ uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 io_canwrite.o: io/io_canwrite.c io_internal.h io.h uint64.h taia.h tai.h \
-  uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+ uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 io_check.o: io/io_check.c io_internal.h io.h uint64.h taia.h tai.h \
-  uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+ uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 io_close.o: io/io_close.c io_internal.h io.h uint64.h taia.h tai.h \
-  uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+ uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 io_closeonexec.o: io/io_closeonexec.c io_internal.h io.h uint64.h taia.h \
-  tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h
+ tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h
 io_createfile.o: io/io_createfile.c io_internal.h io.h uint64.h taia.h \
-  tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h
+ tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h
 io_dontwantread.o: io/io_dontwantread.c io_internal.h io.h uint64.h \
-  taia.h tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h byte.h
+ taia.h tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h byte.h
 io_dontwantwrite.o: io/io_dontwantwrite.c io_internal.h io.h uint64.h \
-  taia.h tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h byte.h
+ taia.h tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h byte.h
 io_eagain.o: io/io_eagain.c io_internal.h io.h uint64.h taia.h tai.h \
-  uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+ uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 io_fd.o: io/io_fd.c io_internal.h io.h uint64.h taia.h tai.h uint32.h \
-  array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h byte.h
+ array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h byte.h
 io_finishandshutdown.o: io/io_finishandshutdown.c io_internal.h io.h \
-  uint64.h taia.h tai.h uint32.h array.h haveepoll.h havekqueue.h \
-  havedevpoll.h havesigio.h
+ uint64.h taia.h tai.h uint32.h array.h haveepoll.h havekqueue.h \
+ havedevpoll.h havesigio.h
 io_getcookie.o: io/io_getcookie.c io_internal.h io.h uint64.h taia.h \
-  tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h
+ tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h
 io_mmapwritefile.o: io/io_mmapwritefile.c io_internal.h io.h uint64.h \
-  taia.h tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h iob.h
+ taia.h tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h iob.h
 io_nonblock.o: io/io_nonblock.c io_internal.h io.h uint64.h taia.h tai.h \
-  uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+ uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 io_passfd.o: io/io_passfd.c io_internal.h io.h uint64.h taia.h tai.h \
-  uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+ uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 io_pipe.o: io/io_pipe.c io_internal.h io.h uint64.h taia.h tai.h uint32.h \
-  array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+ array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 io_readfile.o: io/io_readfile.c io_internal.h io.h uint64.h taia.h tai.h \
-  uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+ uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 io_readwritefile.o: io/io_readwritefile.c io_internal.h io.h uint64.h \
-  taia.h tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h
+ taia.h tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h
 io_receivefd.o: io/io_receivefd.c io_internal.h io.h uint64.h taia.h \
-  tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h
+ tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h
 io_sendfile.o: io/io_sendfile.c io_internal.h io.h uint64.h taia.h tai.h \
-  uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h \
-  havebsdsf.h havesendfile.h
+ uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h \
+ havebsdsf.h havesendfile.h
 io_setcookie.o: io/io_setcookie.c io_internal.h io.h uint64.h taia.h \
-  tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h
+ tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h
 io_sigpipe.o: io/io_sigpipe.c io_internal.h io.h uint64.h taia.h tai.h \
-  uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+ uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 io_socketpair.o: io/io_socketpair.c windoze.h io_internal.h io.h uint64.h \
-  taia.h tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h
+ taia.h tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h
+io_starteventloop.o: io/io_starteventloop.c io_internal.h io.h uint64.h \
+ taia.h tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h
 io_timeout.o: io/io_timeout.c io_internal.h io.h uint64.h taia.h tai.h \
-  uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+ uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 io_timeouted.o: io/io_timeouted.c io_internal.h io.h uint64.h taia.h \
-  tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h
+ tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h
 io_tryread.o: io/io_tryread.c io_internal.h io.h uint64.h taia.h tai.h \
-  uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h \
-  byte.h
+ uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h \
+ byte.h
 io_tryreadtimeout.o: io/io_tryreadtimeout.c io_internal.h io.h uint64.h \
-  taia.h tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h
+ taia.h tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h
 io_trywrite.o: io/io_trywrite.c io_internal.h io.h uint64.h taia.h tai.h \
-  uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+ uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 io_trywritetimeout.o: io/io_trywritetimeout.c io_internal.h io.h uint64.h \
-  taia.h tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h
+ taia.h tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h
 io_wait.o: io/io_wait.c io_internal.h io.h uint64.h taia.h tai.h uint32.h \
-  array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+ array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 io_waitread.o: io/io_waitread.c io_internal.h io.h uint64.h taia.h tai.h \
-  uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+ uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 io_waituntil.o: io/io_waituntil.c io_internal.h io.h uint64.h taia.h \
-  tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h safemult.h uint16.h
+ tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h safemult.h uint16.h
 io_waituntil2.o: io/io_waituntil2.c io_internal.h io.h uint64.h taia.h \
-  tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h
+ tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h
 io_waitwrite.o: io/io_waitwrite.c io_internal.h io.h uint64.h taia.h \
-  tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h
+ tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h
 io_wantread.o: io/io_wantread.c io_internal.h io.h uint64.h taia.h tai.h \
-  uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h \
-  byte.h
+ uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h \
+ byte.h
 io_wantwrite.o: io/io_wantwrite.c io_internal.h io.h uint64.h taia.h \
-  tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h byte.h
+ tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h byte.h
 iob_addbuf.o: io/iob_addbuf.c iob_internal.h iob.h io.h uint64.h taia.h \
-  tai.h uint32.h array.h
+ tai.h uint32.h array.h
 iob_addbuf_free.o: io/iob_addbuf_free.c iob_internal.h iob.h io.h \
-  uint64.h taia.h tai.h uint32.h array.h
+ uint64.h taia.h tai.h uint32.h array.h
 iob_addbuf_internal.o: io/iob_addbuf_internal.c iob_internal.h iob.h io.h \
-  uint64.h taia.h tai.h uint32.h array.h
+ uint64.h taia.h tai.h uint32.h array.h
 iob_addbuf_munmap.o: io/iob_addbuf_munmap.c iob_internal.h iob.h io.h \
-  uint64.h taia.h tai.h uint32.h array.h
+ uint64.h taia.h tai.h uint32.h array.h
 iob_addfile.o: io/iob_addfile.c iob_internal.h iob.h io.h uint64.h taia.h \
-  tai.h uint32.h array.h
+ tai.h uint32.h array.h
 iob_addfile_close.o: io/iob_addfile_close.c iob_internal.h iob.h io.h \
-  uint64.h taia.h tai.h uint32.h array.h
+ uint64.h taia.h tai.h uint32.h array.h
 iob_adds.o: io/iob_adds.c str.h iob.h io.h uint64.h taia.h tai.h uint32.h \
-  array.h
+ array.h
 iob_adds_free.o: io/iob_adds_free.c str.h iob.h io.h uint64.h taia.h \
-  tai.h uint32.h array.h
+ tai.h uint32.h array.h
 iob_bytesleft.o: io/iob_bytesleft.c iob.h io.h uint64.h taia.h tai.h \
-  uint32.h array.h
+ uint32.h array.h
 iob_free.o: io/iob_free.c iob_internal.h iob.h io.h uint64.h taia.h tai.h \
-  uint32.h array.h
+ uint32.h array.h
 iob_new.o: io/iob_new.c byte.h iob_internal.h iob.h io.h uint64.h taia.h \
-  tai.h uint32.h array.h
+ tai.h uint32.h array.h
 iob_prefetch.o: io/iob_prefetch.c iob_internal.h iob.h io.h uint64.h \
-  taia.h tai.h uint32.h array.h
+ taia.h tai.h uint32.h array.h
 iob_reset.o: io/iob_reset.c byte.h iob_internal.h iob.h io.h uint64.h \
-  taia.h tai.h uint32.h array.h
+ taia.h tai.h uint32.h array.h
 iob_send.o: io/iob_send.c havebsdsf.h havealloca.h iob_internal.h iob.h \
-  io.h uint64.h taia.h tai.h uint32.h array.h
+ io.h uint64.h taia.h tai.h uint32.h array.h
 iob_write.o: io/iob_write.c iob_internal.h iob.h io.h uint64.h taia.h \
-  tai.h uint32.h array.h
+ tai.h uint32.h array.h
 mmap_private.o: mmap/mmap_private.c open.h mmap.h
 mmap_read.o: mmap/mmap_read.c open.h mmap.h
 mmap_shared.o: mmap/mmap_shared.c open.h mmap.h
@@ -327,7 +330,7 @@ imult16.o: mult/imult16.c safemult.h uint16.h uint32.h uint64.h
 imult32.o: mult/imult32.c safemult.h uint16.h uint32.h uint64.h
 imult64.o: mult/imult64.c safemult.h uint16.h uint32.h uint64.h
 range_arrayinbuf.o: mult/range_arrayinbuf.c rangecheck.h safemult.h \
-  uint16.h uint32.h uint64.h
+ uint16.h uint32.h uint64.h
 range_str2inbuf.o: mult/range_str2inbuf.c rangecheck.h
 range_str4inbuf.o: mult/range_str4inbuf.c rangecheck.h
 range_strinbuf.o: mult/range_strinbuf.c rangecheck.h
@@ -341,7 +344,7 @@ open_rw.o: open/open_rw.c open.h
 open_trunc.o: open/open_trunc.c open.h
 open_write.o: open/open_write.c open.h
 openreadclose.o: open/openreadclose.c open.h readclose.h stralloc.h \
-  openreadclose.h
+ openreadclose.h
 readclose.o: open/readclose.c readclose.h stralloc.h
 scan_8int.o: scan/scan_8int.c scan.h
 scan_8long.o: scan/scan_8long.c scan.h
@@ -371,89 +374,89 @@ fmt_ip6.o: socket/fmt_ip6.c fmt.h byte.h ip4.h ip6.h byte.h uint32.h
 fmt_ip6_flat.o: socket/fmt_ip6_flat.c ip6.h byte.h uint32.h haveinline.h
 fmt_ip6c.o: socket/fmt_ip6c.c fmt.h byte.h ip4.h ip6.h byte.h uint32.h
 fmt_ip6if.o: socket/fmt_ip6if.c ip6.h byte.h uint32.h str.h fmt.h \
-  socket.h uint16.h
+ socket.h uint16.h
 fmt_ip6ifc.o: socket/fmt_ip6ifc.c fmt.h byte.h ip4.h ip6.h byte.h \
-  uint32.h
+ uint32.h
 init.o: socket/init.c
 scan_ip4.o: socket/scan_ip4.c scan.h ip4.h
 scan_ip6.o: socket/scan_ip6.c scan.h ip4.h ip6.h byte.h uint32.h
 scan_ip6_flat.o: socket/scan_ip6_flat.c scan.h
 scan_ip6if.o: socket/scan_ip6if.c ip6.h byte.h uint32.h byte.h socket.h \
-  uint16.h havealloca.h
+ uint16.h havealloca.h
 socket_accept4.o: socket/socket_accept4.c windoze.h socket.h uint16.h \
-  uint32.h havesl.h
+ uint32.h havesl.h
 socket_accept6.o: socket/socket_accept6.c windoze.h byte.h socket.h \
-  uint16.h uint32.h ip6.h byte.h haveip6.h havesl.h havescope.h
+ uint16.h uint32.h ip6.h byte.h haveip6.h havesl.h havescope.h
 socket_bind4.o: socket/socket_bind4.c windoze.h byte.h uint16.h uint32.h \
-  socket.h uint16.h uint32.h
+ socket.h uint16.h uint32.h
 socket_bind4_reuse.o: socket/socket_bind4_reuse.c socket.h uint16.h \
-  uint32.h windoze.h
+ uint32.h windoze.h
 socket_bind6.o: socket/socket_bind6.c haveip6.h windoze.h ip6.h byte.h \
-  uint32.h byte.h socket.h uint16.h
+ uint32.h byte.h socket.h uint16.h
 socket_bind6_reuse.o: socket/socket_bind6_reuse.c socket.h uint16.h \
-  uint32.h windoze.h
+ uint32.h windoze.h
 socket_broadcast.o: socket/socket_broadcast.c socket.h uint16.h uint32.h \
-  windoze.h
+ windoze.h
 socket_connect4.o: socket/socket_connect4.c windoze.h byte.h socket.h \
-  uint16.h uint32.h uint16.h uint32.h
+ uint16.h uint32.h uint16.h uint32.h
 socket_connect6.o: socket/socket_connect6.c windoze.h byte.h socket.h \
-  uint16.h uint32.h ip6.h byte.h haveip6.h uint32.h ip4.h havescope.h
+ uint16.h uint32.h ip6.h byte.h haveip6.h uint32.h ip4.h havescope.h
 socket_connected.o: socket/socket_connected.c socket.h uint16.h uint32.h \
-  havesl.h
+ havesl.h
 socket_deferaccept.o: socket/socket_deferaccept.c socket.h uint16.h \
-  uint32.h
+ uint32.h
 socket_getifidx.o: socket/socket_getifidx.c socket.h uint16.h uint32.h \
-  haven2i.h
+ haven2i.h
 socket_getifname.o: socket/socket_getifname.c socket.h uint16.h uint32.h \
-  haven2i.h
+ haven2i.h
 socket_ip4loopback.o: socket/socket_ip4loopback.c
 socket_listen.o: socket/socket_listen.c socket.h uint16.h uint32.h \
-  windoze.h
+ windoze.h
 socket_local4.o: socket/socket_local4.c windoze.h byte.h socket.h \
-  uint16.h uint32.h havesl.h
+ uint16.h uint32.h havesl.h
 socket_local6.o: socket/socket_local6.c windoze.h byte.h socket.h \
-  uint16.h uint32.h ip6.h byte.h haveip6.h uint32.h havesl.h havescope.h
+ uint16.h uint32.h ip6.h byte.h haveip6.h uint32.h havesl.h havescope.h
 socket_mchopcount6.o: socket/socket_mchopcount6.c windoze.h socket.h \
-  uint16.h uint32.h byte.h haveip6.h ip6.h byte.h
+ uint16.h uint32.h byte.h haveip6.h ip6.h byte.h
 socket_mcjoin4.o: socket/socket_mcjoin4.c windoze.h socket.h uint16.h \
-  uint32.h byte.h
+ uint32.h byte.h
 socket_mcjoin6.o: socket/socket_mcjoin6.c windoze.h socket.h uint16.h \
-  uint32.h byte.h haveip6.h ip6.h byte.h
+ uint32.h byte.h haveip6.h ip6.h byte.h
 socket_mcleave4.o: socket/socket_mcleave4.c windoze.h socket.h uint16.h \
-  uint32.h byte.h
+ uint32.h byte.h
 socket_mcleave6.o: socket/socket_mcleave6.c windoze.h socket.h uint16.h \
-  uint32.h byte.h haveip6.h ip6.h byte.h
+ uint32.h byte.h haveip6.h ip6.h byte.h
 socket_mcloop4.o: socket/socket_mcloop4.c windoze.h socket.h uint16.h \
-  uint32.h
+ uint32.h
 socket_mcloop6.o: socket/socket_mcloop6.c windoze.h socket.h uint16.h \
-  uint32.h haveip6.h
+ uint32.h haveip6.h
 socket_mcttl4.o: socket/socket_mcttl4.c windoze.h socket.h uint16.h \
-  uint32.h
+ uint32.h
 socket_noipv6.o: socket/socket_noipv6.c
 socket_recv4.o: socket/socket_recv4.c windoze.h socket.h uint16.h \
-  uint32.h havesl.h
+ uint32.h havesl.h
 socket_recv6.o: socket/socket_recv6.c windoze.h byte.h socket.h uint16.h \
-  uint32.h ip6.h byte.h haveip6.h havesl.h havescope.h
+ uint32.h ip6.h byte.h haveip6.h havesl.h havescope.h
 socket_remote4.o: socket/socket_remote4.c windoze.h byte.h socket.h \
-  uint16.h uint32.h havesl.h havescope.h
+ uint16.h uint32.h havesl.h havescope.h
 socket_remote6.o: socket/socket_remote6.c windoze.h byte.h socket.h \
-  uint16.h uint32.h ip6.h byte.h haveip6.h uint32.h havesl.h havescope.h
+ uint16.h uint32.h ip6.h byte.h haveip6.h uint32.h havesl.h havescope.h
 socket_send4.o: socket/socket_send4.c windoze.h byte.h socket.h uint16.h \
-  uint32.h
+ uint32.h
 socket_send6.o: socket/socket_send6.c windoze.h byte.h socket.h uint16.h \
-  uint32.h ip6.h byte.h haveip6.h ip4.h havescope.h
+ uint32.h ip6.h byte.h haveip6.h ip4.h havescope.h
 socket_tcp4.o: socket/socket_tcp4.c socket.h uint16.h uint32.h ndelay.h
 socket_tcp4b.o: socket/socket_tcp4b.c windoze.h socket.h uint16.h \
-  uint32.h ndelay.h
+ uint32.h ndelay.h
 socket_tcp6.o: socket/socket_tcp6.c socket.h uint16.h uint32.h ndelay.h
 socket_tcp6b.o: socket/socket_tcp6b.c windoze.h haveip6.h socket.h \
-  uint16.h uint32.h ndelay.h
+ uint16.h uint32.h ndelay.h
 socket_tryreservein.o: socket/socket_tryreservein.c windoze.h socket.h \
-  uint16.h uint32.h
+ uint16.h uint32.h
 socket_udp4.o: socket/socket_udp4.c windoze.h socket.h uint16.h uint32.h \
-  ndelay.h
+ ndelay.h
 socket_udp6.o: socket/socket_udp6.c windoze.h haveip6.h socket.h uint16.h \
-  uint32.h ndelay.h
+ uint32.h ndelay.h
 socket_v4mappedprefix.o: socket/socket_v4mappedprefix.c
 socket_v6any.o: socket/socket_v6any.c
 socket_v6loopback.o: socket/socket_v6loopback.c
@@ -506,21 +509,21 @@ base64.o: textcode/base64.c
 fmt_base64.o: textcode/fmt_base64.c fmt.h textcode.h haveinline.h
 fmt_cescape.o: textcode/fmt_cescape.c fmt.h textcode.h str.h haveinline.h
 fmt_foldwhitespace.o: textcode/fmt_foldwhitespace.c fmt.h textcode.h \
-  str.h haveinline.h
+ str.h haveinline.h
 fmt_hexdump.o: textcode/fmt_hexdump.c fmt.h textcode.h str.h haveinline.h
 fmt_html.o: textcode/fmt_html.c fmt.h textcode.h str.h haveinline.h
 fmt_ldapescape.o: textcode/fmt_ldapescape.c fmt.h textcode.h haveinline.h \
-  str.h
+ str.h
 fmt_ldapescape2.o: textcode/fmt_ldapescape2.c fmt.h textcode.h \
-  haveinline.h
+ haveinline.h
 fmt_quotedprintable.o: textcode/fmt_quotedprintable.c fmt.h textcode.h \
-  haveinline.h str.h
+ haveinline.h str.h
 fmt_to_array.o: textcode/fmt_to_array.c array.h uint64.h textcode.h
 fmt_to_sa.o: textcode/fmt_to_sa.c stralloc.h textcode.h
 fmt_tofrom_array.o: textcode/fmt_tofrom_array.c array.h uint64.h \
-  textcode.h
+ textcode.h
 fmt_urlencoded.o: textcode/fmt_urlencoded.c fmt.h textcode.h str.h \
-  haveinline.h
+ haveinline.h
 fmt_uuencoded.o: textcode/fmt_uuencoded.c fmt.h textcode.h haveinline.h
 fmt_yenc.o: textcode/fmt_yenc.c fmt.h textcode.h
 scan_base64.o: textcode/scan_base64.c textcode.h haveinline.h
@@ -529,12 +532,12 @@ scan_hexdump.o: textcode/scan_hexdump.c fmt.h textcode.h scan.h
 scan_html.o: textcode/scan_html.c fmt.h textcode.h haveinline.h case.h
 scan_ldapescape.o: textcode/scan_ldapescape.c fmt.h textcode.h scan.h
 scan_quotedprintable.o: textcode/scan_quotedprintable.c fmt.h textcode.h \
-  scan.h
+ scan.h
 scan_to_array.o: textcode/scan_to_array.c str.h array.h uint64.h \
-  textcode.h
+ textcode.h
 scan_to_sa.o: textcode/scan_to_sa.c str.h stralloc.h textcode.h
 scan_tofrom_array.o: textcode/scan_tofrom_array.c str.h array.h uint64.h \
-  textcode.h
+ textcode.h
 scan_urlencoded.o: textcode/scan_urlencoded.c fmt.h textcode.h scan.h
 scan_uuencoded.o: textcode/scan_uuencoded.c textcode.h
 scan_yenc.o: textcode/scan_yenc.c fmt.h textcode.h
@@ -557,13 +560,15 @@ uint64_read_big.o: uint/uint64_read_big.c uint64.h uint32.h
 uint64_unpack.o: uint/uint64_unpack.c uint64.h uint32.h
 uint64_unpack_big.o: uint/uint64_unpack_big.c uint64.h uint32.h
 iopause.o: unix/iopause.c taia.h tai.h uint64.h uint32.h iopause.h taia.h \
-  select.h
+ select.h
 ndelay_off.o: unix/ndelay_off.c ndelay.h
 ndelay_on.o: unix/ndelay_on.c ndelay.h
 winsock2errno.o: unix/winsock2errno.c
 t.o: t.c fmt.h scan.h str.h uint16.h uint32.h stralloc.h socket.h \
-  buffer.h ip4.h ip6.h byte.h mmap.h open.h textcode.h dns.h iopause.h \
-  taia.h tai.h uint64.h case.h errmsg.h iob.h io.h array.h safemult.h
+ buffer.h ip4.h ip6.h byte.h mmap.h open.h textcode.h dns.h iopause.h \
+ taia.h tai.h uint64.h case.h errmsg.h iob.h io.h array.h safemult.h \
+ iarray.h CAS.h io_internal.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h
 BYTE_OBJS=byte_chr.o byte_copy.o byte_copyr.o byte_diff.o byte_rchr.o byte_zero.o 
 FMT_OBJS=fmt_8long.o fmt_8longlong.o fmt_double.o fmt_fill.o fmt_httpdate.o fmt_human.o fmt_humank.o fmt_long.o fmt_longlong.o fmt_minus.o fmt_pad.o fmt_plusminus.o fmt_str.o fmt_strm_internal.o fmt_strn.o fmt_tohex.o fmt_ulong.o fmt_ulong0.o fmt_ulonglong.o fmt_xlong.o fmt_xlonglong.o 
 SCAN_OBJS=scan_8int.o scan_8long.o scan_8short.o scan_charsetnskip.o scan_double.o scan_fromhex.o scan_httpdate.o scan_int.o scan_long.o scan_longlong.o scan_noncharsetnskip.o scan_nonwhitenskip.o scan_plusminus.o scan_short.o scan_uint.o scan_ulong.o scan_ulonglong.o scan_ushort.o scan_whitenskip.o scan_xint.o scan_xlong.o scan_xlonglong.o scan_xshort.o 
@@ -580,7 +585,7 @@ TAI_OBJS=tai_add.o tai_now.o tai_pack.o tai_sub.o tai_uint.o tai_unpack.o
 DNS_OBJS=dns_dfd.o dns_domain.o dns_dtda.o dns_ip.o dns_ip6.o dns_ipq.o dns_ipq6.o dns_mx.o dns_name.o dns_nd.o dns_nd6.o dns_packet.o dns_random.o dns_rcip.o dns_rcrw.o dns_resolve.o dns_sortip.o dns_sortip6.o dns_transmit.o dns_txt.o 
 CASE_OBJS=case_diffb.o case_diffs.o case_lowerb.o case_lowers.o case_starts.o 
 MULT_OBJS=imult16.o imult32.o imult64.o range_arrayinbuf.o range_str2inbuf.o range_str4inbuf.o range_strinbuf.o umult16.o umult32.o umult64.o 
-ARRAY_OBJS=array_allocate.o array_bytes.o array_cat.o array_cat0.o array_catb.o array_cate.o array_cats.o array_cats0.o array_equal.o array_fail.o array_get.o array_length.o array_reset.o array_start.o array_trunc.o array_truncate.o iarray_allocate.o iarray_get.o iarray_length.o init_iarray.o 
+ARRAY_OBJS=array_allocate.o array_bytes.o array_cat.o array_cat0.o array_catb.o array_cate.o array_cats.o array_cats0.o array_equal.o array_fail.o array_get.o array_length.o array_reset.o array_start.o array_trunc.o array_truncate.o
 IO_OBJS=io_appendfile.o io_block.o io_canread.o io_canwrite.o io_check.o io_close.o io_closeonexec.o io_createfile.o io_dontwantread.o io_dontwantwrite.o io_eagain.o io_fd.o io_finishandshutdown.o io_getcookie.o io_mmapwritefile.o io_nonblock.o io_passfd.o io_pipe.o io_readfile.o io_readwritefile.o io_receivefd.o io_sendfile.o io_setcookie.o io_sigpipe.o io_socketpair.o io_timeout.o io_timeouted.o io_tryread.o io_tryreadtimeout.o io_trywrite.o io_trywritetimeout.o io_wait.o io_waitread.o io_waituntil.o io_waituntil2.o io_waitwrite.o io_wantread.o io_wantwrite.o iob_addbuf.o iob_addbuf_free.o iob_addbuf_internal.o iob_addbuf_munmap.o iob_addfile.o iob_addfile_close.o iob_adds.o iob_adds_free.o iob_bytesleft.o iob_free.o iob_new.o iob_prefetch.o iob_reset.o iob_send.o iob_write.o 
 TEXTCODE_OBJS=base64.o fmt_base64.o fmt_cescape.o fmt_foldwhitespace.o fmt_hexdump.o fmt_html.o fmt_ldapescape.o fmt_ldapescape2.o fmt_quotedprintable.o fmt_to_array.o fmt_to_sa.o fmt_tofrom_array.o fmt_urlencoded.o fmt_uuencoded.o fmt_yenc.o scan_base64.o scan_cescape.o scan_hexdump.o scan_html.o scan_ldapescape.o scan_quotedprintable.o scan_to_array.o scan_to_sa.o scan_tofrom_array.o scan_urlencoded.o scan_uuencoded.o scan_yenc.o 
 CDB_OBJS=cdb.o cdb_hash.o cdb_make.o cdb_traverse.o 
@@ -629,7 +634,7 @@ t.o: t.c fmt.h scan.h str.h uint16.h uint32.h stralloc.h socket.h \
   buffer.h ip4.h ip6.h byte.h mmap.h open.h textcode.h dns.h iopause.h \
   taia.h tai.h uint64.h case.h errmsg.h iob.h io.h array.h safemult.h \
   iarray.h io_internal.h haveepoll.h havekqueue.h havedevpoll.h \
-  havesigio.h
+  havesigio.h CAS.h
 
 t: t.o libowfat.a libsocket
 	$(DIET) $(CC) -g -o $@ t.o libowfat.a `cat libsocket` -lpthread
