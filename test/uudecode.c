@@ -5,6 +5,7 @@
  * that replace "^." with "^..".  This decoder will try reversing this
  * when decoding a part with broken crc. */
 #include <unistd.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
