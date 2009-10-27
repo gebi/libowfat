@@ -6,7 +6,7 @@
 
 /* return 0 for range error / overflow, 1 for ok */
 
-#if defined(__GNUC__) && defined(__OPTIMIZE__)
+#if defined(__GNUC__) && defined(__OPTIMIZE__) && !defined(__clang__)
 #define __static extern
 #else
 #define __static static
