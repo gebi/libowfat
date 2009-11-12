@@ -1,6 +1,8 @@
 #ifndef _CAS_H
 #define _CAS_H
 
+#include <stddef.h>
+
 /* Atomic operations for lock-free data structures.
  * We operate on machine words and use size_t as a type.
  * CAS stands for Compare And Swap, the most common operation. */
@@ -10,6 +12,23 @@
 #if defined(__INTEL_COMPILER) || (__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 1))
 #define USE_BUILTINS
 #endif
+
+/* if (*x == oldval) { *x=newval; return 1; } else return 0; */
+static inline int compare_and_swap(volatile size_t* x,size_t oldval,size_t newval) {
+#ifdef USE_BUILTINS
+  __sync_bool_compare_and_swap(x,oldval,newval);
+#elif defined(__i386__)
+  char result;
+  asm volatile ("lock; cmpxchgl %3, %0; setz %1" : "=m"(*x), "=q" (result) : "m" (*x), "r" (newval), "a" (oldval) : "memory");
+  return result;
+#elif defined(__x86_64__)
+  char result;
+  asm volatile ("lock; cmpxchgq %3, %0; setz %1" : "=m"(*x), "=q" (result) : "m" (*x), "r" (newval), "a" (oldval) : "memory");
+  return result;
+#else
+#error architecture not supported and gcc too old, edit CAS.h
+#endif
+}
 
 /* *x += val; */
 static inline void atomic_add(size_t* x,size_t val) {
@@ -90,23 +109,6 @@ static inline void atomic_and(volatile size_t* x,size_t val) {
   asm volatile ("lock; andl %1, %0" : "+m" (*x) : "r" (val) );
 #elif defined(__x86_64__)
   asm volatile ("lock; andq %1, %0" : "+m" (*x) : "r" (val) );
-#else
-#error architecture not supported and gcc too old, edit CAS.h
-#endif
-}
-
-/* if (*x == oldval) { *x=newval; return 1; } else return 0; */
-static inline int compare_and_swap(volatile size_t* x,size_t oldval,size_t newval) {
-#ifdef USE_BUILTINS
-  __sync_bool_compare_and_swap(x,oldval,newval);
-#elif defined(__i386__)
-  char result;
-  asm volatile ("lock; cmpxchgl %3, %0; setz %1" : "=m"(*x), "=q" (result) : "m" (*x), "r" (newval), "a" (oldval) : "memory");
-  return result;
-#elif defined(__x86_64__)
-  char result;
-  asm volatile ("lock; cmpxchgq %3, %0; setz %1" : "=m"(*x), "=q" (result) : "m" (*x), "r" (newval), "a" (oldval) : "memory");
-  return result;
 #else
 #error architecture not supported and gcc too old, edit CAS.h
 #endif

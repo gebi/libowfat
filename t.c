@@ -24,10 +24,14 @@
 #include "safemult.h"
 #include "iarray.h"
 
+#include "CAS.h"
+
 #include "io_internal.h"
 
 #define rdtscl(low) \
      __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
+
+// #define atomic_add(mem,val) asm volatile ("lock; add%z0 %1, %0": "+m" (mem): "ir" (val))
 
 int64 writecb(int64 fd,const void* buf,uint64 n) {
   (void)fd;
@@ -44,6 +48,23 @@ int64 writecb(int64 fd,const void* buf,uint64 n) {
 }
 
 int main(int argc,char* argv[]) {
+  static size_t x;
+  x=23;
+  atomic_add(&x,3);
+  printf("%u\n",x);
+  printf("%u\n",atomic_add_return(&x,-3));
+  printf("%u\n",compare_and_swap(&x,26,17));
+  printf("%u\n",compare_and_swap(&x,23,17));
+
+#if 0
+  atomic_add(&x,3); printf("%u\n",x);
+  x=23;
+  atomic_add(&x,3); assert(x==26);
+  atomic_or(&x,1); assert(x==27);
+  atomic_and(&x,-2); assert(x==26);
+#endif
+
+#if 0
   iarray a;
   char* c;
   iarray_init(&a,sizeof(io_entry));
@@ -51,6 +72,7 @@ int main(int argc,char* argv[]) {
   printf("23 -> %p\n",c=iarray_allocate(&a,23));
   printf("1234567 -> %p\n",c=iarray_allocate(&a,1234567));
   printf("23 -> %p\n",iarray_get(&a,23));
+#endif
 #if 0
   io_batch* b=iob_new(1234);
   int64 fd=open("t.c",0);
