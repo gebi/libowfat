@@ -30,6 +30,8 @@ int winsock2errno(long l) {
       errno=ENAMETOOLONG; break;
     case WSAENOTEMPTY:
       errno=ENOTEMPTY; break;
+    case WSAEPROTONOSUPPORT:
+      errno=EPROTONOSUPPORT; break;
     default:
       errno=x;
       break;

@@ -44,7 +44,9 @@ int io_passfd(int64 sock,int64 fd) {
 #define CMSG_SPACE(x) x+100
 #endif
   char buf[CMSG_SPACE(sizeof(int))];
+  memset(buf,0,sizeof(buf));
 #endif
+  memset(&msg,0,sizeof(msg));
   iov.iov_len=1;
   iov.iov_base="x";
   msg.msg_iov=&iov;
