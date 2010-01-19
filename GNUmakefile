@@ -168,11 +168,19 @@ uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h
 openreadclose.h readclose.h ndelay.h array.h io.h safemult.h iob.h havealloca.h \
 errmsg.h cdb.h cdb_make.h rangecheck.h iarray.h
 
-install: libowfat.a
-	install -d $(INCLUDEDIR) $(MAN3DIR) $(LIBDIR)
+install-inc:
+	install -d $(INCLUDEDIR)
 	install -m 644 $(INCLUDES) $(INCLUDEDIR)
-	install -m 644 $(wildcard */*.3) $(MAN3DIR)
+
+install-lib: libowfat.a
+	install -d $(LIBDIR)
 	install -m 644 libowfat.a $(LIBDIR)
+
+install-man:
+	install -d $(MAN3DIR)
+	install -m 644 $(wildcard */*.3) $(MAN3DIR)
+
+install: install-inc install-man install-lib
 
 uninstall:
 	rm -f $(patsubst %.h,$(INCLUDEDIR)/%.h,$(INCLUDES))
