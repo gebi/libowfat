@@ -441,6 +441,12 @@ socket_remote4.o: socket/socket_remote4.c windoze.h byte.h socket.h \
  uint16.h uint32.h havesl.h havescope.h
 socket_remote6.o: socket/socket_remote6.c windoze.h byte.h socket.h \
  uint16.h uint32.h ip6.h byte.h haveip6.h uint32.h havesl.h havescope.h
+socket_sctp4.o: socket/socket_sctp4.c socket.h uint16.h uint32.h ndelay.h
+socket_sctp4b.o: socket/socket_sctp4b.c windoze.h socket.h uint16.h \
+ uint32.h ndelay.h
+socket_sctp6.o: socket/socket_sctp6.c socket.h uint16.h uint32.h ndelay.h
+socket_sctp6b.o: socket/socket_sctp6b.c windoze.h haveip6.h socket.h \
+ uint16.h uint32.h ndelay.h
 socket_send4.o: socket/socket_send4.c windoze.h byte.h socket.h uint16.h \
  uint32.h
 socket_send6.o: socket/socket_send6.c windoze.h byte.h socket.h uint16.h \
@@ -651,11 +657,19 @@ uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h
 openreadclose.h readclose.h ndelay.h array.h io.h safemult.h iob.h havealloca.h \
 errmsg.h cdb.h cdb_make.h rangecheck.h iarray.h
 
-install: libowfat.a
-	install -d $(INCLUDEDIR) $(MAN3DIR) $(LIBDIR)
+install-inc:
+	install -d $(INCLUDEDIR)
 	install -m 644 $(INCLUDES) $(INCLUDEDIR)
-	install -m 644 $(wildcard */*.3) $(MAN3DIR)
+
+install-lib: libowfat.a
+	install -d $(LIBDIR)
 	install -m 644 libowfat.a $(LIBDIR)
+
+install-man:
+	install -d $(MAN3DIR)
+	install -m 644 $(wildcard */*.3) $(MAN3DIR)
+
+install: install-inc install-man install-lib
 
 uninstall:
 	rm -f $(patsubst %.h,$(INCLUDEDIR)/%.h,$(INCLUDES))
