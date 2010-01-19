@@ -26,6 +26,7 @@ int io_passfd(int64 sock,int64 fd) {
 #include <sys/socket.h>
 #include <sys/uio.h>
 #include <errno.h>
+#include <string.h>
 #include "io_internal.h"
 
 union fdmsg {
