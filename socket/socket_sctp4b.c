@@ -7,6 +7,7 @@
 #include "windoze.h"
 #include "socket.h"
 #include "ndelay.h"
+#include <errno.h>
 
 #ifndef EPROTONOSUPPORT
 #define EPROTONOSUPPORT EINVAL
