@@ -50,6 +50,9 @@ typedef struct {
 #endif
 } io_entry;
 
+extern int io_multithreaded;
+extern int io_sockets[2];
+
 my_extern array io_fds;
 my_extern uint64 io_wanted_fds;
 my_extern array io_pollfds;
@@ -91,5 +94,17 @@ my_extern long alt_firstwrite;
 int64 io_waituntil2(int64 milliseconds);
 
 void io_sigpipe(void);
+
+/* return next descriptor from io_wait that can be read from */
+int64 io_canread_unlocked();
+/* return next descriptor from io_wait that can be written to */
+int64 io_canwrite_unlocked();
+/* return next descriptor with expired timeout */
+int64 io_timeouted_unlocked();
+
+struct eventpacket {
+  int fd;
+  enum { CANREAD, CANWRITE, TIMEOUT } what;
+};
 
 #define debug_printf(x)

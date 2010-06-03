@@ -1,3 +1,4 @@
+/* this header file comes from libowfat, http://www.fefe.de/libowfat/ */
 #ifndef IO_H
 #define IO_H
 
@@ -102,6 +103,8 @@ int io_passfd(int64 sock,int64 fd);
 /* Receive fd over sock (must be a unix domain socket) from other
  * process.  Return sock if ok, -1 on error, setting errno. */
 int64 io_receivefd(int64 sock);
+
+int io_starteventloopthread(unsigned int threads);
 
 typedef int64 (*io_write_callback)(int64 s,const void* buf,uint64 n);
 

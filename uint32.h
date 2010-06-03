@@ -1,3 +1,4 @@
+/* this header file comes from libowfat, http://www.fefe.de/libowfat/ */
 #ifndef UINT32_H
 #define UINT32_H
 

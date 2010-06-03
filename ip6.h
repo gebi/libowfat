@@ -1,3 +1,4 @@
+/* this header file comes from libowfat, http://www.fefe.de/libowfat/ */
 #ifndef IP6_H
 #define IP6_H
 

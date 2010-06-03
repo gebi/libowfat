@@ -1,3 +1,4 @@
+/* this header file comes from libowfat, http://www.fefe.de/libowfat/ */
 #ifndef SCAN_H
 #define SCAN_H
 

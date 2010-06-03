@@ -1,3 +1,4 @@
+/* this header file comes from libowfat, http://www.fefe.de/libowfat/ */
 #ifndef CDB_MAKE_H
 #define CDB_MAKE_H
 
