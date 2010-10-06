@@ -3,6 +3,9 @@
   add buffer_tosa (buffer writing to auto-growing stralloc)
   add iarray
   support SCTP in addition to TCP
+  fix io_receivefd so the incoming buffer is only 1 byte; io_passfd
+    sends only one byte, so we might receive (and discard) other data if
+    we try to read more (Stefan Bühler, from the lightttpd project)
 
 0.28:
   add uint64 pack and unpack routines
