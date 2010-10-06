@@ -41,10 +41,10 @@ int64 io_receivefd(int64 sock) {
 #else
   int fd;
 #endif
-  char x[100];
+  char x;
   char name[100];
-  iov.iov_base=x;
-  iov.iov_len=100;
+  iov.iov_base=&x;
+  iov.iov_len=1;
   msg.msg_name=name;
   msg.msg_namelen=100;
 #ifdef CMSG_FIRSTHDR
