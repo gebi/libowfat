@@ -5,18 +5,58 @@
 #include <inttypes.h>
 #include <stddef.h>
 
-/* return 0 for range error / overflow, 1 for ok */
+/* We are trying to achieve that gcc has to inline the function and we
+ * don't want it to emit a copy of the function.  This can be done with
+ * static inline or with extern inline.  static inline tells gcc to not
+ * emit a copy unless someone is using & to take a pointer, which nobody
+ * is ever supposed to do.  extern inline tells gcc to not ever emit a
+ * copy.
+ *
+ * Unfortunately, the C99 standard defines extern inline to mean "always
+ * emit a copy for external reference", so this causes duplicate symbol
+ * linking errors.  gcc signals C99 inline expansion mode by defining
+ * __GNUC_STDC_INLINE__ and it then has an attribute gnu_inline to
+ * switch back to GNU behavior.  So that's what we are doing.  Taking
+ * the address of one of these functions is considered a user error.
+ *
+ * We are so anal about inlining here because these checks can in most
+ * cases be optimized away.  In particular, if you call this function
+ * often, gcc can see that some of the basic checks are done repeatedly
+ * and not do them again.  But this only works if the function is
+ * inlined. */
 
-#if defined(__GNUC__) && defined(__OPTIMIZE__) && !defined(__clang__)
+#if defined(__GNUC_STDC_INLINE__)
+#define __gnuinline __attribute__((gnu_inline))
+#else
+#define __gnuinline
+#endif
+
+#if defined(__GNUC__) && !defined(__NO_INLINE__) && !defined(__clang__)
 #define __static extern
 #else
 #define __static static
 #endif
 
+#if !defined(__GNUC__) || (__GNUC__ < 3)
+#define __builtin_expect(foo,bar) (foo)
+#define __expect(foo,bar) (foo)
+#else
+#define __expect(foo,bar) __builtin_expect((long)(foo),bar)
+#endif
+
+#if defined(__GNUC__) && !defined(__likely)
+#define __likely(foo) __expect((foo),1)
+#define __unlikely(foo) __expect((foo),0)
+#endif
+
+/* return 0 for range error / overflow, 1 for ok */
+
+/* we assume the normal case is that the checked value is in range */
+
 /* does ptr point to one of buf[0], buf[1], ... buf[len-1]? */
-__static inline int range_ptrinbuf(const void* buf,size_t len,const void* ptr) {
+__static inline __gnuinline int range_ptrinbuf(const void* buf,size_t len,const void* ptr) {
   register const char* c=(const char*)buf;	/* no pointer arithmetic on void* */
-  return (c &&		/* is buf non-NULL? */
+  return __likely(c &&		/* is buf non-NULL? */
 	  ((uintptr_t)c)+len>(uintptr_t)c &&	/* gcc 4.1 miscompiles without (uintptr_t) */
 			/* catch integer overflows and fail if buffer is 0 bytes long */
 			/* because then ptr can't point _in_ the buffer */
@@ -28,30 +68,30 @@ __static inline int range_ptrinbuf(const void* buf,size_t len,const void* ptr) {
 
 /* same thing, but the buffer is specified by a pointer to the first
  * byte (Min) and a pointer after the last byte (Max). */
-__static inline int range_ptrinbuf2(const void* Min,const void* Max,const void* ptr) {
-  return (Min && ptr>=Min && ptr<Max);
+__static inline __gnuinline int range_ptrinbuf2(const void* Min,const void* Max,const void* ptr) {
+  return __likely(Min && ptr>=Min && ptr<Max);
   /* Min <= Max is implicitly checked here */
 }
 
 /* Is this a plausible buffer?
  * Check whether buf is NULL, and whether buf+len overflows.
  * Does NOT check whether buf has a non-zero length! */
-__static inline int range_validbuf(const void* buf,size_t len) {
-  return (buf && (uintptr_t)buf+len>=(uintptr_t)buf);
+__static inline __gnuinline int range_validbuf(const void* buf,size_t len) {
+  return __likely(buf && (uintptr_t)buf+len>=(uintptr_t)buf);
 }
 
 /* same thing but buffer is given as pointer to first byte (Min) and
  * pointer beyond last byte (Max).  Again, an 0-size buffer is valid. */
-__static inline int range_validbuf2(const void* Min,const void* Max) {
-  return (Min && Max>=Min);
+__static inline __gnuinline int range_validbuf2(const void* Min,const void* Max) {
+  return __likely(Min && Max>=Min);
 }
 
 /* is buf2[0..len2-1] inside buf1[0..len-1]? */
-__static inline int range_bufinbuf(const void* buf1,size_t len1,const void* buf2,size_t len2) {
+__static inline __gnuinline int range_bufinbuf(const void* buf1,size_t len1,const void* buf2,size_t len2) {
   return range_validbuf(buf1,len1) &&
          range_validbuf(buf2,len2) &&
-	 buf1<=buf2 &&
-	 (ptrdiff_t)buf1+len1>=(ptrdiff_t)buf2+len2;
+	 __likely(buf1<=buf2 &&
+	 (ptrdiff_t)buf1+len1>=(ptrdiff_t)buf2+len2);
 }
 
 /* does an array of "elements" members of size "membersize" starting at
