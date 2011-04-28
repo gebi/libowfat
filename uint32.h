@@ -8,9 +8,19 @@ typedef uint32_t uint32;
 typedef int32_t int32;
 
 #if (defined(__i386__) || defined(__x86_64__)) && !defined(NO_UINT32_MACROS)
-#define uint32_pack(out,in) (*(uint32*)(out)=(in))
-#define uint32_unpack(in,out) (*(out)=*(uint32*)(in))
-#define uint32_read(in) (*(uint32*)(in))
+
+static inline void uint32_pack(char* out,uint32 in) {
+  *(uint32*)out=in;
+}
+
+static inline void uint32_unpack(const char *in,uint32* out) {
+  *out=*(uint32*)in;
+}
+
+static inline uint32 uint32_read(const char* in) {
+  return *(uint32*)in;
+}
+
 void uint32_pack_big(char *out,uint32 in);
 void uint32_unpack_big(const char *in,uint32* out);
 uint32 uint32_read_big(const char *in);
