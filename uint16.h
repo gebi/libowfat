@@ -8,9 +8,19 @@ typedef uint16_t uint16;
 typedef int16_t int16;
 
 #if (defined(__i386__) || defined(__x86_64__)) && !defined(NO_UINT16_MACROS)
-#define uint16_pack(out,in) (*(uint16*)(out)=(in))
-#define uint16_unpack(in,out) (*(out)=*(uint16*)(in))
-#define uint16_read(in) (*(uint16*)(in))
+
+static inline void uint16_pack(char* out,uint16 in) {
+  *(uint16*)out=in;
+}
+
+static inline void uint16_unpack(const char *in,uint16* out) {
+  *out=*(uint16*)in;
+}
+
+static inline uint16 uint16_read(const char* in) {
+  return *(uint16*)in;
+}
+
 void uint16_pack_big(char *out,uint16 in);
 void uint16_unpack_big(const char *in,uint16* out);
 uint16 uint16_read_big(const char *in);
