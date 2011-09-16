@@ -8,7 +8,6 @@
 #include "byte.h"
 #include "socket.h"
 #include "havesl.h"
-#include "havescope.h"
 
 int socket_remote4(int s,char ip[4],uint16 *port)
 {
