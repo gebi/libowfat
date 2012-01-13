@@ -1,9 +1,13 @@
 #include "socket.h"
 
 #include <sys/types.h>
+#ifndef __MINGW32__
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
+#endif
+#include "windoze.h"
+#include "socket.h"
 #include <string.h>
 
 void socket_deferaccept(int s,enum defermode mode) {
