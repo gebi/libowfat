@@ -4,6 +4,8 @@
 
 /* for size_t: */
 #include <stddef.h>
+/* for uint32_t */
+#include <stdint.h>
 /* for time_t: */
 #include <sys/types.h>
 
@@ -87,6 +89,12 @@ size_t fmt_humank(char* dest,unsigned long long l);
 
 /* "Sun, 06 Nov 1994 08:49:37 GMT" */
 size_t fmt_httpdate(char* dest,time_t t);
+
+#define FMT_UTF8 5
+#define FMT_ASN1LENGTH 17 /* enough space to hold 2^128-1 */
+/* some variable length encodings for integers */
+size_t fmt_utf8(char* dest,uint32_t n);	/* can store 0-0x7fffffff */
+size_t fmt_asn1derlength(char* dest,unsigned long long l);
 
 /* internal functions, may be independently useful */
 char fmt_tohex(char c);

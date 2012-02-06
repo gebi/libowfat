@@ -73,6 +73,10 @@ size_t scan_noncharsetnskip(const char *in,const char *charset,size_t limit) __p
  */
 size_t scan_httpdate(const char *in,time_t *t) __pure__;
 
+/* some variable length encodings for integers */
+size_t scan_utf8(const char* in,size_t len,uint32_t* n) __pure__;
+size_t scan_asn1derlength(const char* in,size_t len,unsigned long long* n) __pure__;
+
 /* a few internal function that might be useful independently */
 /* convert from hex ASCII, return 0 to 15 for success or -1 for failure */
 int scan_fromhex(unsigned char c);
