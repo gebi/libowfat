@@ -7,6 +7,10 @@
 #include "tai.h"
 #include "uint32.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* A struct taia value is a number between 0 inclusive and 2^64
  * exclusive. The number is a multiple of 10^-18. The format of struct
  * taia is designed to speed up common operations; applications should
@@ -66,5 +70,9 @@ unsigned int taia_fmtfrac(char *s,const tai6464 *t);
 
 /* initialize t to secs seconds. */
 void taia_uint(tai6464 *t,unsigned int secs);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

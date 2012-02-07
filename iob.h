@@ -16,6 +16,10 @@
 #include "io.h"
 #include "array.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct io_batch {
   array b;
   uint64 bytesleft;
@@ -36,5 +40,9 @@ void iob_reset(io_batch* b);
 void iob_free(io_batch* b);
 void iob_prefetch(io_batch* b,uint64 bytes);
 uint64 iob_bytesleft(const io_batch* b);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

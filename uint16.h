@@ -4,6 +4,10 @@
 
 #include <inttypes.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef uint16_t uint16;
 typedef int16_t int16;
 
@@ -33,6 +37,10 @@ void uint16_unpack_big(const char *in,uint16* out);
 uint16 uint16_read(const char *in);
 uint16 uint16_read_big(const char *in);
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif

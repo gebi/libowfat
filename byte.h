@@ -5,6 +5,10 @@
 /* for size_t: */
 #include <stddef.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef __pure__
 #define __pure__
 #endif
@@ -36,5 +40,9 @@ int byte_diff(const void* a, size_t len, const void* b) __pure__;
 void byte_zero(void* out, size_t len);
 
 #define byte_equal(s,n,t) (!byte_diff((s),(n),(t)))
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

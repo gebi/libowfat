@@ -7,6 +7,10 @@
 #include "uint64.h"
 #include "taia.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* like open(s,O_RDONLY) */
 /* return 1 if ok, 0 on error */
 int io_readfile(int64* d,const char* s);
@@ -72,7 +76,8 @@ int64 io_canwrite();
 int64 io_timeouted();
 
 /* put d on internal data structure, return 1 on success, 0 on error */
-int io_fd(int64 d);
+int io_fd(int64 d);		/* use this for sockets before you called connect() or accept() */
+int io_fd_connected(int64 d);	/* use this for connected sockets (assumes socket is writable) */
 
 void io_setcookie(int64 d,void* cookie);
 void* io_getcookie(int64 d);
@@ -113,6 +118,10 @@ int64 io_mmapwritefile(int64 out,int64 in,uint64 off,uint64 bytes,io_write_callb
 
 #ifdef __MINGW32__
 #include_next <io.h>
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif

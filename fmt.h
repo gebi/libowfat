@@ -9,6 +9,10 @@
 /* for time_t: */
 #include <sys/types.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define FMT_LONG  41 /* enough space to hold -2^127 in decimal, plus \0 */
 #define FMT_ULONG 40 /* enough space to hold 2^128 - 1 in decimal, plus \0 */
 #define FMT_8LONG 44 /* enough space to hold 2^128 - 1 in octal, plus \0 */
@@ -92,9 +96,11 @@ size_t fmt_httpdate(char* dest,time_t t);
 
 #define FMT_UTF8 5
 #define FMT_ASN1LENGTH 17 /* enough space to hold 2^128-1 */
+#define FMT_ASN1TAG 19 /* enough space to hold 2^128-1 */
 /* some variable length encodings for integers */
 size_t fmt_utf8(char* dest,uint32_t n);	/* can store 0-0x7fffffff */
-size_t fmt_asn1derlength(char* dest,unsigned long long l);
+size_t fmt_asn1derlength(char* dest,unsigned long long l);	/* 0-0x7f: 1 byte, above that 1+bytes_needed bytes */
+size_t fmt_asn1dertag(char* dest,unsigned long long l);	/* 1 byte for each 7 bits; upper bit = more bytes coming */
 
 /* internal functions, may be independently useful */
 char fmt_tohex(char c);
@@ -106,5 +112,9 @@ size_t fmt_strm_internal(char* dest,...);
 #define MAX_ALLOCA 100000
 #endif
 #define fmt_strm_alloca(a,...) ({ size_t len=fmt_strm((char*)0,a,__VA_ARGS__)+1; char* c=(len<MAX_ALLOCA?alloca(len):0); if (c) c[fmt_strm(c,a,__VA_ARGS__)]=0; c;})
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

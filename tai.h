@@ -6,6 +6,10 @@
 
 #include "uint64.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* A struct tai value is an integer between 0 inclusive and 2^64
  * exclusive. The format of struct tai is designed to speed up common
  * operations; applications should not look inside struct tai.
@@ -57,5 +61,9 @@ void tai_pack(char *,const struct tai *);
 void tai_unpack(const char *,struct tai *);
 
 void tai_uint(struct tai *,unsigned int);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

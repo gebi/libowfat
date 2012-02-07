@@ -3,6 +3,11 @@
 #define STR_H
 
 #include <stddef.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef __pure__
 #define __pure__
 #endif
@@ -45,5 +50,9 @@ int str_start(const char *a,const char *b) __pure__;
 
 /* convenience shortcut to test for string equality */
 #define str_equal(s,t) (!str_diff((s),(t)))
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

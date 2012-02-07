@@ -4,6 +4,10 @@
 
 #include <stddef.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* These take len bytes from src and write them in encoded form to
  * dest (if dest != NULL), returning the number of bytes written. */
 
@@ -110,5 +114,9 @@ size_t scan_tofrom_array(size_t (*func)(const char*,char*,size_t*),
 #endif
 
 extern const char base64[64];
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

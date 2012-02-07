@@ -4,6 +4,10 @@
 
 #include <stddef.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* turn upper case letters to lower case letters, ASCIIZ */
 void case_lowers(char *s);
 /* turn upper case letters to lower case letters, binary */
@@ -19,5 +23,9 @@ int case_starts(const char *,const char *);
 
 #define case_equals(s,t) (!case_diffs((s),(t)))
 #define case_equalb(s,n,t) (!case_diffb((s),(n),(t)))
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

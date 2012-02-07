@@ -2,6 +2,10 @@
 #ifndef IP4_H
 #define IP4_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 unsigned int scan_ip4(const char *src,char *ip);
 unsigned int fmt_ip4(char *dest,const char *ip);
 
@@ -13,5 +17,9 @@ unsigned int fmt_ip4(char *dest,const char *ip);
 #define FMT_IP4 20
 
 extern const char ip4loopback[4]; /* = {127,0,0,1};*/
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

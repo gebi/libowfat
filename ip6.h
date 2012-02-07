@@ -5,6 +5,10 @@
 #include "byte.h"
 #include "uint32.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 unsigned int scan_ip6(const char* src,char* ip);
 unsigned int fmt_ip6(char* dest,const char* ip);
 unsigned int fmt_ip6c(char* dest,const char* ip);
@@ -32,5 +36,9 @@ extern const char V6loopback[16]; /*={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1}; */
 extern const char V6any[16]; /*={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; */
 
 #define ip6_isv4mapped(ip) (byte_equal(ip,12,V4mappedprefix))
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

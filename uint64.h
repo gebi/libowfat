@@ -4,6 +4,10 @@
 
 #include <inttypes.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef uint64_t uint64;
 typedef int64_t int64;
 
@@ -23,6 +27,10 @@ void uint64_unpack_big(const char *in,uint64* out);
 uint64 uint64_read(const char *in);
 uint64 uint64_read_big(const char *in);
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif

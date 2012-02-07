@@ -18,14 +18,32 @@ my_extern HANDLE io_comport;
 #endif
 #endif
 
+/* We simulate a level-triggered API on top of an event signalling
+ * mechanism that can be level-triggered (epoll/kqueue/poll) or
+ * edge-triggered (SIGIO).
+ * Difficulty: we want to avoid unnecessary syscalls, so we keep state
+ * internally.  If the user says he does not want to read/write anymore,
+ * we don't tell the kernel straight away.  The rationale is that the
+ * typical protocol consists of interleaved reading and writing, so
+ * after each read you'd call io_dontwantread, io_wantwrite, io_wait,
+ * io_dontwantwrite, io_wantread, and in the regular case there is no
+ * incoming data between io_dontwantread and io_wantread, so we might as
+ * well optimistically not do those syscalls and then handle the
+ * complexity if there is more incoming data. */
+
+/* Basically, we tell the kernel that we want to read if !canread,
+ * and we tell the kernel that we want to write if !canwrite. */
+
 typedef struct {
   tai6464 timeout;
-  unsigned int wantread:1;
+  unsigned int wantread:1;	/* does the app want to read/write? */
   unsigned int wantwrite:1;
-  unsigned int canread:1;
+  unsigned int canread:1;	/* do we know we can read/write? */
   unsigned int canwrite:1;
-  unsigned int nonblock:1;
-  unsigned int inuse:1;
+  unsigned int nonblock:1;	/* is this socket non-blocking? */
+  unsigned int inuse:1;		/* internal consistency checking */
+  unsigned int kernelwantread:1;	/* did we tell the kernel we want to read/write? */
+  unsigned int kernelwantwrite:1;
 #ifdef __MINGW32__
   unsigned int readqueued:2;
   unsigned int writequeued:2;

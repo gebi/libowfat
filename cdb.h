@@ -5,6 +5,10 @@
 #include "uint32.h"
 #include "uint64.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define CDB_HASHSTART 5381
 extern uint32 cdb_hashadd(uint32 h,unsigned char c);
 extern uint32 cdb_hash(const unsigned char *buf,unsigned long int len);
@@ -40,5 +44,9 @@ extern int cdb_successor(struct cdb *c,const unsigned char *,unsigned long int);
 #define cdb_datalen(c) ((c)->dlen)
 #define cdb_keypos(c) ((c)->kpos)
 #define cdb_keylen(c) ((c)->dpos-(c)->kpos)
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

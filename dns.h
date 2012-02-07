@@ -6,6 +6,10 @@
 #include "iopause.h"
 #include "taia.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define DNS_C_IN "\0\1"
 #define DNS_C_ANY "\0\377"
 
@@ -91,5 +95,9 @@ int dns_ip6_qualify(stralloc *,stralloc *,const stralloc *);
 void dns_name6_domain(char *,const char *);
 #define DNS_NAME6_DOMAIN (4*16+11)
 int dns_name6(stralloc *,const char *);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

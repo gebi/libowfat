@@ -7,6 +7,10 @@
 /* for ssize_t: */
 #include <sys/types.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct buffer {
   char *x;		/* actual buffer space */
   size_t p;		/* current position */
@@ -137,6 +141,10 @@ int buffer_get_new_token_sa_pred(buffer* b,stralloc* sa,sa_predicate p);
  * Do not change the stralloc after this! */
 void buffer_fromsa(buffer* b,stralloc* sa);	/* read from sa */
 int buffer_tosa(buffer*b,stralloc* sa);		/* write to sa, auto-growing it */
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif

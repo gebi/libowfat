@@ -4,6 +4,14 @@
 
 #include "stralloc.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 int openreadclose(const char *filename,stralloc *buf,size_t initiallength);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

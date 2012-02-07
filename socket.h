@@ -7,6 +7,10 @@
 #include "uint16.h"
 #include "uint32.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 int socket_tcp4(void);
 int socket_tcp4b(void);
 int socket_udp4(void);
@@ -115,6 +119,10 @@ extern int noipv6;
 #define EREMOTE WSAEREMOTE
 #define EDISCON WSAEDISCON
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif

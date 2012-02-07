@@ -3,6 +3,11 @@
 #define STRALLOC_H
 
 #include <stddef.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef __pure__
 #define __pure__
 #endif
@@ -156,6 +161,10 @@ int buffer_get_new_token_sa_pred(buffer* b,stralloc* sa,sa_predicate p);
 /* make a buffer from a stralloc.
  * Do not change the stralloc after this! */
 void buffer_fromsa(buffer* b,stralloc* sa);
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif

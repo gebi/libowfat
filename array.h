@@ -5,6 +5,10 @@
 #include <stddef.h>
 #include "uint64.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct {
   char* p;
   int64 allocated;	/* in bytes */
@@ -39,5 +43,9 @@ void array_chop(array* x,uint64 membersize,uint64 members);
 
 #define array_failed(x) (array_bytes(x)==-1)
 #define array_unallocated(x) (array_bytes(x)==0)
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

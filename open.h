@@ -2,6 +2,10 @@
 #ifndef OPEN_H
 #define OPEN_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* open filename for reading and return the file handle or -1 on error */
 int open_read(const char* filename);
 
@@ -28,5 +32,9 @@ int open_write(const char* filename);
 /* open filename for reading and writing.  Create file if not there.
  * Return file handle or -1 on error. */
 int open_rw(const char* filename);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

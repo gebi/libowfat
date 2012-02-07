@@ -5,6 +5,10 @@
 /* for exit(): */
 #include <stdlib.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* These use file descriptor 2, not buffer_2!
  * Call buffer_flush(buffer_2) before calling these! */
 
@@ -26,5 +30,9 @@ void errmsg_infosys(const char* message, ...);
 #define diesys(n,...) do { errmsg_warnsys(__VA_ARGS__,(char*)0); exit(n); } while (0)
 #define msg(...) errmsg_info(__VA_ARGS__,(char*)0);
 #define msgsys(...) errmsg_infosys(__VA_ARGS__,(char*)0);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
