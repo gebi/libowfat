@@ -16,7 +16,7 @@
 /* if (*x == oldval) { *x=newval; return 1; } else return 0; */
 static inline int compare_and_swap(volatile size_t* x,size_t oldval,size_t newval) {
 #ifdef USE_BUILTINS
-  __sync_bool_compare_and_swap(x,oldval,newval);
+  return __sync_bool_compare_and_swap(x,oldval,newval);
 #elif defined(__i386__)
   char result;
   asm volatile ("lock; cmpxchgl %3, %0; setz %1" : "=m"(*x), "=q" (result) : "m" (*x), "r" (newval), "a" (oldval) : "memory");
@@ -46,7 +46,7 @@ static inline void atomic_add(size_t* x,size_t val) {
 /* return *x += val; */
 static inline size_t atomic_add_return(size_t* x,size_t val) {
 #ifdef USE_BUILTINS
-  __sync_add_and_fetch(x,val);
+  return __sync_add_and_fetch(x,val);
 #elif defined(__i386__)
   size_t i = val;
   asm volatile ("lock; xaddl %1, %0" : "+m" (*x), "+r" (val) :: "memory" );
