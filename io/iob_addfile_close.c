@@ -13,7 +13,10 @@ int iob_addfile_close(io_batch* b,int64 fd,uint64 off,uint64 n) {
   io_fd(fd);
   e=array_allocate(&b->b,sizeof(iob_entry),
 		   array_length(&b->b,sizeof(iob_entry)));
-  if (!e) return 0;
+  if (!e) {
+    io_close(fd);
+    return 0;
+  }
   e->type=FROMFILE;
   e->fd=fd;
   e->buf=0;

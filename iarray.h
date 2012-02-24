@@ -6,7 +6,11 @@
 
 #include "uint64.h"
 #include <stddef.h>
+#ifdef __MINGW32__
+#include <windows.h>
+#else
 #include <pthread.h>
+#endif
 
 /* this is an indirect array; it only reallocs the indirect index, not
  * the whole array.  The actual data does not move.  So there is no need
@@ -17,7 +21,11 @@ typedef struct {
   size_t elemsize,pagefence,elemperpage,bytesperpage;
   /* pagefence is the number of pages + 1,
    * i.e. the first out of bounds index in "pages" */
+#ifdef __MINGW32__
+  CRITICAL_SECTION cs;
+#else
   pthread_mutex_t m;
+#endif
 } iarray;
 
 void iarray_init(iarray* ia,size_t elemsize);

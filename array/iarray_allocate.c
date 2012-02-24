@@ -9,7 +9,11 @@ void* iarray_allocate(iarray* ia,size_t pos) {
     return ia->pages[y]+(pos%ia->elemperpage)*ia->elemsize;
   /* the case where ia->pages == NULL is implicit */
 
+#ifdef __MINGW32__
+  EnterCriticalSection(&ia->cs);
+#else
   pthread_mutex_lock(&ia->m);
+#endif
 
   if (__unlikely(y >= ia->pagefence)) {
     char** np;
@@ -37,11 +41,19 @@ void* iarray_allocate(iarray* ia,size_t pos) {
    * however */
   if (__unlikely(ia->pages[y]==0 && (ia->pages[y]=malloc(ia->bytesperpage))==0)) {
 unlockandfail:
+#ifdef __MINGW32__
+    LeaveCriticalSection(&ia->cs);
+#else
     pthread_mutex_unlock(&ia->m);
+#endif
     return 0;
   }
 
+#ifdef __MINGW32__
+  LeaveCriticalSection(&ia->cs);
+#else
   pthread_mutex_unlock(&ia->m);
+#endif
 
   return ia->pages[y] + (pos%ia->elemperpage)*ia->elemsize;
 }
