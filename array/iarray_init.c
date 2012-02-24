@@ -11,6 +11,10 @@ void iarray_init(iarray* ia,size_t elemsize) {
   else
     ia->bytesperpage=elemsize;
   ia->elemperpage=ia->bytesperpage/elemsize;
+#ifdef __MINGW32__
+  InitializeCriticalSection(&ia->cs);
+#else
   pthread_mutex_init(&ia->m,NULL);
+#endif
 }
 
