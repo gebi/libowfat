@@ -15,6 +15,5 @@ void io_eagain(int64 d) {
       alt_firstwrite=e->next_write;
     }
 #endif
-    e->next_read=-1;
   }
 }
