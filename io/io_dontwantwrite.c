@@ -18,11 +18,22 @@
 #include <sys/devpoll.h>
 #endif
 
-void io_dontwantwrite(int64 d) {
+#ifdef DEBUG
+#include <assert.h>
+#else
+#define assert(x)
+#endif
+
+/* IDEA: if someone calls io_dontwantwrite, do not do the syscall to
+ * tell the kernel about it.  Only when a write event comes in and the
+ * user has told us he does not want them, THEN tell the kernel we are
+ * not interested.  In the typical protocol case of "write request, read
+ * reply", this should save a lot of syscalls. */
+
+void io_dontwantwrite_really(int64 d,io_entry* e) {
   int newfd;
-  io_entry* e=array_get(&io_fds,sizeof(io_entry),d);
-  if (!e || !e->wantwrite) return;
-  newfd=(!e->wantread && e->wantwrite);
+  assert(e->kernelwantwrite);
+  newfd=!e->kernelwantread;
   io_wanted_fds-=newfd;
 #ifdef HAVE_EPOLL
   if (io_waitmode==EPOLL) {
@@ -31,7 +42,7 @@ void io_dontwantwrite(int64 d) {
     x.events=0;
     if (e->wantread) x.events|=EPOLLIN;
     x.data.fd=d;
-    epoll_ctl(io_master,newfd?EPOLL_CTL_DEL:EPOLL_CTL_MOD,d,&x);
+    epoll_ctl(io_master,e->kernelwantread?EPOLL_CTL_MOD:EPOLL_CTL_DEL,d,&x);
   }
 #endif
 #ifdef HAVE_KQUEUE
@@ -48,10 +59,20 @@ void io_dontwantwrite(int64 d) {
     struct pollfd x;
     x.fd=d;
     x.events=0;
-    if (e->wantread) x.events|=POLLIN;
+    if (e->kernelwantread) x.events|=POLLIN;
     if (!x.events) x.events=POLLREMOVE;
     write(io_master,&x,sizeof(x));
   }
 #endif
   e->wantwrite=0;
+  e->kernelwantwrite=0;
+}
+
+void io_dontwantwrite(int64 d) {
+  io_entry* e=array_get(&io_fds,sizeof(io_entry),d);
+  if (e) {
+    if (e->canwrite)
+      io_dontwantwrite_really(d,e);
+    e->wantwrite=0;
+  }
 }

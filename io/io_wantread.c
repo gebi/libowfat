@@ -24,20 +24,25 @@
 #include <mswsock.h>
 #endif
 
-void io_wantread(int64 d) {
+#ifdef DEBUG
+#include <assert.h>
+#else
+#define assert(x)
+#endif
+
+void io_wantread_really(int64 d,io_entry* e) {
   int newfd;
-  io_entry* e=array_get(&io_fds,sizeof(io_entry),d);
-  if (!e || e->wantread) return;
-  newfd=(!e->wantread && !e->wantwrite);
+  assert(!e->kernelwantread);
+  newfd=!e->kernelwantwrite;
   io_wanted_fds+=newfd;
 #ifdef HAVE_EPOLL
   if (io_waitmode==EPOLL) {
     struct epoll_event x;
     byte_zero(&x,sizeof(x));	// to shut up valgrind
     x.events=EPOLLIN;
-    if (e->wantwrite) x.events|=EPOLLOUT;
+    if (e->kernelwantwrite) x.events|=EPOLLOUT;
     x.data.fd=d;
-    epoll_ctl(io_master,newfd?EPOLL_CTL_ADD:EPOLL_CTL_MOD,d,&x);
+    epoll_ctl(io_master,e->kernelwantwrite?EPOLL_CTL_MOD:EPOLL_CTL_ADD,d,&x);
   }
 #endif
 #ifdef HAVE_KQUEUE
@@ -104,4 +109,18 @@ queueread:
   }
 #endif
   e->wantread=1;
+  e->kernelwantread=1;
+}
+
+void io_wantread(int64 d) {
+  io_entry* e=array_get(&io_fds,sizeof(io_entry),d);
+  if (!e || e->wantread) return;
+  if (e->canread) {
+    e->next_read=first_readable;
+    first_readable=d;
+    e->wantread=1;
+    return;
+  }
+  /* the harder case: do as before */
+  if (!e->kernelwantread) io_wantread_really(d, e); else e->wantread=1;
 }

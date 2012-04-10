@@ -3,6 +3,8 @@
 #include <errno.h>
 #include "io_internal.h"
 
+void io_wantwrite_really(int64 d, io_entry* e);
+
 int64 io_canwrite() {
   io_entry* e;
   if (first_writeable==-1)
@@ -40,6 +42,8 @@ int64 io_canwrite() {
       if (io_waitmode!=_SIGIO)
 #endif
 	e->canwrite=0;
+      if (!e->kernelwantwrite)
+	io_wantwrite_really(r,e);
       return r;
     }
   }

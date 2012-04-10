@@ -21,20 +21,33 @@
 #include <sys/devpoll.h>
 #endif
 
-void io_wantwrite(int64 d) {
+#ifdef DEBUG
+#include <assert.h>
+#else
+#define assert(x)
+#endif
+
+/* IDEA: if someone calls io_dontwantwrite, do not do the syscall to
+ * tell the kernel about it.  Only when a write event comes in and the
+ * user has told us he does not want them, THEN tell the kernel we are
+ * not interested.  In the typical protocol case of "write request, read
+ * reply", this should save a lot of syscalls.
+ * Now, if someone calls io_wantwrite, we might be in the situation that
+ * canwrite is already set.  In that case, just enqueue the fd. */
+
+void io_wantwrite_really(int64 d, io_entry* e) {
   int newfd;
-  io_entry* e=array_get(&io_fds,sizeof(io_entry),d);
-  if (!e || e->wantwrite) return;
-  newfd=(!e->wantread && !e->wantwrite);
+  assert(!e->kernelwantwrite);	/* we should not be here if we already told the kernel we want to write */
+  newfd=(!e->kernelwantread);
   io_wanted_fds+=newfd;
 #ifdef HAVE_EPOLL
   if (io_waitmode==EPOLL) {
     struct epoll_event x;
     byte_zero(&x,sizeof(x));	// to shut up valgrind
     x.events=EPOLLOUT;
-    if (e->wantread) x.events|=EPOLLIN;
+    if (e->kernelwantread) x.events|=EPOLLIN;
     x.data.fd=d;
-    epoll_ctl(io_master,newfd?EPOLL_CTL_ADD:EPOLL_CTL_MOD,d,&x);
+    epoll_ctl(io_master,e->kernelwantread?EPOLL_CTL_MOD:EPOLL_CTL_ADD,d,&x);
   }
 #endif
 #ifdef HAVE_KQUEUE
@@ -82,4 +95,19 @@ void io_wantwrite(int64 d) {
   }
 #endif
   e->wantwrite=1;
+  e->kernelwantwrite=1;
+}
+
+void io_wantwrite(int64 d) {
+  io_entry* e=array_get(&io_fds,sizeof(io_entry),d);
+  if (!e) return;
+  if (e->wantwrite && e->kernelwantwrite) return;
+  if (e->canwrite) {
+    e->next_write=first_writeable;
+    first_writeable=d;
+    e->wantwrite=1;
+    return;
+  }
+  /* the harder case: do as before */
+  if (!e->kernelwantwrite) io_wantwrite_really(d, e); else e->wantwrite=1;
 }

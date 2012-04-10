@@ -77,7 +77,7 @@ int64 io_timeouted();
 
 /* put d on internal data structure, return 1 on success, 0 on error */
 int io_fd(int64 d);		/* use this for sockets before you called connect() or accept() */
-int io_fd_connected(int64 d);	/* use this for connected sockets (assumes socket is writable) */
+int io_fd_canwrite(int64 d);	/* use this for connected sockets (assumes socket is writable) */
 
 void io_setcookie(int64 d,void* cookie);
 void* io_getcookie(int64 d);

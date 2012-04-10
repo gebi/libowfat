@@ -45,7 +45,7 @@ long alt_firstwrite;
 #endif
 
 /* put d on internal data structure, return 1 on success, 0 on error */
-int io_fd(int64 d) {
+static io_entry* io_fd_internal(int64 d) {
   io_entry* e;
 #ifndef __MINGW32__
   long r;
@@ -53,7 +53,7 @@ int io_fd(int64 d) {
     return 0;	/* file descriptor not open */
 #endif
   if (!(e=array_allocate(&io_fds,sizeof(io_entry),d))) return 0;
-  if (e->inuse) return 1;
+  if (e->inuse) return e;
   byte_zero(e,sizeof(io_entry));
   e->inuse=1;
 #ifdef __MINGW32__
@@ -124,5 +124,16 @@ int io_fd(int64 d) {
     fprintf(stderr," OK!\n");
   }
 #endif
-  return 1;
+  return e;
+}
+
+int io_fd(int64 d) {
+  io_entry* e=io_fd_internal(d);
+  return !!e;
+}
+
+int io_fd_canwrite(int64 d) {
+  io_entry* e=io_fd_internal(d);
+  if (e) e->canwrite=1;
+  return !!e;
 }

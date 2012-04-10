@@ -6,6 +6,8 @@
   fix io_receivefd so the incoming buffer is only 1 byte; io_passfd
     sends only one byte, so we might receive (and discard) other data if
     we try to read more (Stefan Bühler, from the lightttpd project)
+  add io_fd_canwrite (like io_fd but assume the fd is writable)
+  save a few syscalls here and there
 
 0.28:
   add uint64 pack and unpack routines

@@ -30,19 +30,6 @@ static inline int compare_and_swap(volatile size_t* x,size_t oldval,size_t newva
 #endif
 }
 
-/* *x += val; */
-static inline void atomic_add(size_t* x,size_t val) {
-#ifdef USE_BUILTINS
-  __sync_add_and_fetch(x,val);
-#elif defined(__i386__)
-  asm volatile ("lock; addl %1, %0" : "+m" (*x) : "ir" (val) );
-#elif defined(__x86_64__)
-  asm volatile ("lock; addq %1, %0" : "+m" (*x) : "ir" (val) );
-#else
-#error architecture not supported and gcc too old, edit CAS.h
-#endif
-}
-
 /* return *x += val; */
 static inline size_t atomic_add_return(size_t* x,size_t val) {
 #ifdef USE_BUILTINS
@@ -56,7 +43,23 @@ static inline size_t atomic_add_return(size_t* x,size_t val) {
   asm volatile ("lock; xaddq %1, %0" : "+m" (*x), "+r" (val) :: "memory" );
   return i + val;
 #else
-#error architecture not supported and gcc too old, edit CAS.h
+  size_t y;
+  for (y=*x; compare_and_swap(&x,y,y+val)==0; y=*x) ;
+  return y+val;
+#endif
+}
+
+
+/* *x += val; */
+static inline void atomic_add(size_t* x,size_t val) {
+#ifdef USE_BUILTINS
+  __sync_add_and_fetch(x,val);
+#elif defined(__i386__)
+  asm volatile ("lock; addl %1, %0" : "+m" (*x) : "ir" (val) );
+#elif defined(__x86_64__)
+  asm volatile ("lock; addq %1, %0" : "+m" (*x) : "ir" (val) );
+#else
+  atomic_add_return(&x,val);
 #endif
 }
 

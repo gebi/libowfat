@@ -7,6 +7,8 @@
 #include <stdio.h>
 #endif
 
+void io_wantread_really(int64 d, io_entry* e);
+
 int64 io_canread() {
   io_entry* e;
   if (first_readable==-1)
@@ -49,6 +51,8 @@ int64 io_canread() {
       if (io_waitmode!=_SIGIO)
 #endif
 	e->canread=0;
+      if (!e->kernelwantread)
+	io_wantread_really(r,e);
       return r;
     }
   }

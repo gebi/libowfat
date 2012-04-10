@@ -303,7 +303,8 @@ invalidpart:
       continue;
     } else if (str_start(line,"=yend")) {
       /* first try to decode it normally and see if the CRC matches */
-      unsigned long i,wantedcrc;
+      unsigned long i,wantedcrc,gotcrc;
+      gotcrc=0;
       stralloc out;
       char* tmp=strstr(line," pcrc32=");
 
@@ -311,12 +312,14 @@ invalidpart:
 	if (!scan_xlong(tmp+8,&wantedcrc))
 	  goto invalidpart;
 	wantedcrc &= 0xfffffffful;
+	gotcrc=1;
       } else if (part==1) {
 	tmp=strstr(line," crc32=");
 	if (!tmp) goto invalidpart;
 	if (!scan_xlong(tmp+7,&wantedcrc))
 	  goto invalidpart;
 	wantedcrc &= 0xfffffffful;
+	gotcrc=1;
 	endoffset=totalsize;
       } else goto invalidpart;
       stralloc_init(&out);
@@ -345,6 +348,7 @@ writeerror:
 	  i+=x+1; out.len+=scanned;
 	}
 	i=crc32(0,out.s,out.len);
+	if (!gotcrc) wantedcrc=i;
 	if (out.len == endoffset-offset && i == wantedcrc) {
 	  if (buffer_put(&fileout,out.s,out.len)) goto writeerror;
 	  ++reconstructed;

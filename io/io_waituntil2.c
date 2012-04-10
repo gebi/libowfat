@@ -32,6 +32,83 @@
 #include <stdio.h>
 #endif
 
+#ifndef EPOLLRDNORM
+#define EPOLLRDNORM 0
+#endif
+#ifndef EPOLLRDBAND
+#define EPOLLRDNORM 0
+#endif
+
+#if 0
+static void handleevent(int fd,int readable,int writable,int error) {
+  io_entry* e=array_get(&io_fds,sizeof(io_entry),fd);
+  if (e) {
+    int curevents=0,newevents;
+    if (e->kernelwantread) curevents |= POLLIN;
+    if (e->kernelwantwrite) curevents |= POLLOUT;
+
+#ifdef DEBUG
+    if (readable && !e->kernelwantread)
+      printf("got unexpected read event on fd #%d\n",fd);
+    if (writable && !e->kernelwantwrite)
+      printf("got unexpected write event on fd #%d\n",fd);
+#endif
+
+    if (error) {
+      /* signal whatever app is looking for */
+      if (e->wantread) readable=1;
+      if (e->wantwrite) writable=1;
+    }
+
+    if (readable && !e->canread) {
+      e->canread=1;
+      if (e->wantread) {
+	e->next_read=first_readable;
+	first_readable=y[i].data.fd;
+      }
+    }
+    if (writable && !e->canwrite) {
+      e->canwrite=1;
+      if (e->wantwrite) {
+	e->next_write=first_writeable;
+	first_writeable=y[i].data.fd;
+      }
+    }
+
+    /* TODO: wie kommuniziere ich nach außen, was der Caller tun soll?
+     * Bitfeld-Integer? */
+
+    newevents=0;
+    if (!e->canread || e->wantread) {
+      newevents|=EPOLLIN;
+      e->kernelwantread=1;
+    } else
+      e->kernelwantread=0;
+    if (!e->canwrite || e->wantwrite) {
+      newevents|=EPOLLOUT;
+      e->kernelwantwrite=1;
+    } else
+      e->kernelwantwrite=0;
+    if (newevents != curevents) {
+#if 0
+      printf("canread %d, wantread %d, kernelwantread %d, canwrite %d, wantwrite %d, kernelwantwrite %d\n",
+	      e->canread,e->wantread,e->kernelwantread,e->canwrite,e->wantwrite,e->kernelwantwrite);
+      printf("newevents: read %d write %d\n",!!(newevents&EPOLLIN),!!(newevents&EPOLLOUT));
+#endif
+      y[i].events=newevents;
+      if (newevents) {
+	epoll_ctl(io_master,EPOLL_CTL_MOD,y[i].data.fd,y+i);
+      } else {
+	epoll_ctl(io_master,EPOLL_CTL_DEL,y[i].data.fd,y+i);
+	--io_wanted_fds;
+      }
+    }
+  } else {
+    epoll_ctl(io_master,EPOLL_CTL_DEL,y[i].data.fd,y+i);
+  }
+}
+#endif
+
 int64 io_waituntil2(int64 milliseconds) {
 #ifndef __MINGW32__
   struct pollfd* p;
@@ -46,24 +123,75 @@ int64 io_waituntil2(int64 milliseconds) {
     for (i=n-1; i>=0; --i) {
       io_entry* e=array_get(&io_fds,sizeof(io_entry),y[i].data.fd);
       if (e) {
+	int curevents=0,newevents;
+	if (e->kernelwantread) curevents |= EPOLLIN;
+	if (e->kernelwantwrite) curevents |= EPOLLOUT;
+
+#ifdef DEBUG
+	if ((y[i].events&(EPOLLIN|EPOLLPRI|EPOLLRDNORM|EPOLLRDBAND)) && !e->kernelwantread)
+	  printf("got unexpected read event on fd #%d\n",y[i].data.fd);
+	if ((y[i].events&EPOLLOUT) && !e->kernelwantwrite)
+	  printf("got unexpected write event on fd #%d\n",y[i].data.fd);
+#endif
+
 	if (y[i].events&(EPOLLERR|EPOLLHUP)) {
 	  /* error; signal whatever app is looking for */
 	  if (e->wantread) y[i].events|=EPOLLIN;
 	  if (e->wantwrite) y[i].events|=EPOLLOUT;
 	}
-#ifdef EPOLLRDNORM
+
 	if (!e->canread && (y[i].events&(EPOLLIN|EPOLLPRI|EPOLLRDNORM|EPOLLRDBAND))) {
-#else
-	if (!e->canread && (y[i].events&(EPOLLIN|EPOLLPRI))) {
-#endif
-	  e->canread=1;
-	  e->next_read=first_readable;
-	  first_readable=y[i].data.fd;
+	  if (e->canread) {
+	    newevents &= ~EPOLLIN;
+	  } else {
+	    e->canread=1;
+	    if (e->wantread) {
+	      e->next_read=first_readable;
+	      first_readable=y[i].data.fd;
+	    }
+	  }
 	}
-	if (!e->canwrite && (y[i].events&EPOLLOUT)) {
-	  e->canwrite=1;
-	  e->next_write=first_writeable;
-	  first_writeable=y[i].data.fd;
+	if (y[i].events&EPOLLOUT) {
+	  if (e->canwrite) {
+	    newevents &= ~EPOLLOUT;
+	  } else {
+	    /* If !e->wantwrite: The laziness optimization in
+	     * io_dontwantwrite hit.  We did not tell the kernel that we
+	     * are no longer interested in writing to save the syscall.
+	     * Now we know we could write if we wanted; remember that
+	     * and then go on. */
+	    e->canwrite=1;
+	    if (e->wantwrite) {
+	      e->next_write=first_writeable;
+	      first_writeable=y[i].data.fd;
+	    }
+	  }
+	}
+
+	newevents=0;
+	if (!e->canread || e->wantread) {
+	  newevents|=EPOLLIN;
+	  e->kernelwantread=1;
+	} else
+	  e->kernelwantread=0;
+	if (!e->canwrite || e->wantwrite) {
+	  newevents|=EPOLLOUT;
+	  e->kernelwantwrite=1;
+	} else
+	  e->kernelwantwrite=0;
+	if (newevents != curevents) {
+#if 0
+	  printf("canread %d, wantread %d, kernelwantread %d, canwrite %d, wantwrite %d, kernelwantwrite %d\n",
+		 e->canread,e->wantread,e->kernelwantread,e->canwrite,e->wantwrite,e->kernelwantwrite);
+	  printf("newevents: read %d write %d\n",!!(newevents&EPOLLIN),!!(newevents&EPOLLOUT));
+#endif
+	  y[i].events=newevents;
+	  if (newevents) {
+	    epoll_ctl(io_master,EPOLL_CTL_MOD,y[i].data.fd,y+i);
+	  } else {
+	    epoll_ctl(io_master,EPOLL_CTL_DEL,y[i].data.fd,y+i);
+	    --io_wanted_fds;
+	  }
 	}
       } else {
 	epoll_ctl(io_master,EPOLL_CTL_DEL,y[i].data.fd,y+i);
@@ -81,11 +209,6 @@ int64 io_waituntil2(int64 milliseconds) {
     if ((n=kevent(io_master,0,0,y,100,milliseconds!=-1?&ts:0))==-1) return -1;
     for (i=n-1; i>=0; --i) {
       io_entry* e=array_get(&io_fds,sizeof(io_entry),y[--n].ident);
-#ifdef DEBUG
-      if (!e) {
-	e=e;
-      }
-#endif
       if (e) {
 	if (y[n].flags&EV_ERROR) {
 	  /* error; signal whatever app is looking for */

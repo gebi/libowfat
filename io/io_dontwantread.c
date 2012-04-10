@@ -18,20 +18,25 @@
 #include <sys/devpoll.h>
 #endif
 
-void io_dontwantread(int64 d) {
+#ifdef DEBUG
+#include <assert.h>
+#else
+#define assert(x)
+#endif
+
+void io_dontwantread_really(int64 d, io_entry* e) {
   int newfd;
-  io_entry* e=array_get(&io_fds,sizeof(io_entry),d);
-  if (!e || !e->wantread) return;
-  newfd=(e->wantread && !e->wantwrite);
+  assert(e->kernelwantread);
+  newfd=!e->kernelwantwrite;
   io_wanted_fds-=newfd;
 #ifdef HAVE_EPOLL
   if (io_waitmode==EPOLL) {
     struct epoll_event x;
     byte_zero(&x,sizeof(x));	// to shut up valgrind
     x.events=0;
-    if (e->wantwrite) x.events|=EPOLLOUT;
+    if (e->kernelwantwrite) x.events|=EPOLLOUT;
     x.data.fd=d;
-    epoll_ctl(io_master,newfd?EPOLL_CTL_DEL:EPOLL_CTL_MOD,d,&x);
+    epoll_ctl(io_master,e->kernelwantwrite?EPOLL_CTL_MOD:EPOLL_CTL_DEL,d,&x);
   }
 #endif
 #ifdef HAVE_KQUEUE
@@ -48,10 +53,20 @@ void io_dontwantread(int64 d) {
     struct pollfd x;
     x.fd=d;
     x.events=0;
-    if (e->wantwrite) x.events|=POLLOUT;
+    if (e->kernelwantwrite) x.events|=POLLOUT;
     if (!x.events) x.events=POLLREMOVE;
     write(io_master,&x,sizeof(x));
   }
 #endif
   e->wantread=0;
+  e->kernelwantread=0;
+}
+
+void io_dontwantread(int64 d) {
+  io_entry* e=array_get(&io_fds,sizeof(io_entry),d);
+  if (e) {
+    if (e->canread)
+      io_dontwantread_really(d,e);
+    e->wantread=0;
+  }
 }
