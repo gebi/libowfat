@@ -172,6 +172,8 @@ byte.o: examples/byte.c byte.h buffer.h
 str.o: examples/str.c str.h buffer.h
 fmt_8long.o: fmt/fmt_8long.c fmt.h
 fmt_8longlong.o: fmt/fmt_8longlong.c fmt.h
+fmt_asn1derlength.o: fmt/fmt_asn1derlength.c fmt.h
+fmt_asn1dertag.o: fmt/fmt_asn1dertag.c fmt.h
 fmt_double.o: fmt/fmt_double.c fmt.h
 fmt_fill.o: fmt/fmt_fill.c fmt.h
 fmt_httpdate.o: fmt/fmt_httpdate.c fmt.h byte.h
@@ -189,6 +191,7 @@ fmt_tohex.o: fmt/fmt_tohex.c fmt.h
 fmt_ulong.o: fmt/fmt_ulong.c fmt.h
 fmt_ulong0.o: fmt/fmt_ulong0.c fmt.h
 fmt_ulonglong.o: fmt/fmt_ulonglong.c fmt.h
+fmt_utf8.o: fmt/fmt_utf8.c fmt.h
 fmt_xlong.o: fmt/fmt_xlong.c fmt.h haveinline.h
 fmt_xlonglong.o: fmt/fmt_xlonglong.c fmt.h
 io_appendfile.o: io/io_appendfile.c io_internal.h io.h uint64.h taia.h \
@@ -295,8 +298,8 @@ iob_addbuf_free.o: io/iob_addbuf_free.c iob_internal.h iob.h io.h \
  uint64.h taia.h tai.h uint32.h array.h
 iob_addbuf_internal.o: io/iob_addbuf_internal.c iob_internal.h iob.h io.h \
  uint64.h taia.h tai.h uint32.h array.h
-iob_addbuf_munmap.o: io/iob_addbuf_munmap.c iob_internal.h iob.h io.h \
- uint64.h taia.h tai.h uint32.h array.h
+iob_addbuf_munmap.o: io/iob_addbuf_munmap.c mmap.h iob_internal.h iob.h \
+ io.h uint64.h taia.h tai.h uint32.h array.h
 iob_addfile.o: io/iob_addfile.c iob_internal.h iob.h io.h uint64.h taia.h \
  tai.h uint32.h array.h
 iob_addfile_close.o: io/iob_addfile_close.c iob_internal.h iob.h io.h \
@@ -315,8 +318,8 @@ iob_prefetch.o: io/iob_prefetch.c iob_internal.h iob.h io.h uint64.h \
  taia.h tai.h uint32.h array.h
 iob_reset.o: io/iob_reset.c byte.h iob_internal.h iob.h io.h uint64.h \
  taia.h tai.h uint32.h array.h
-iob_send.o: io/iob_send.c havebsdsf.h havealloca.h iob_internal.h iob.h \
- io.h uint64.h taia.h tai.h uint32.h array.h
+iob_send.o: io/iob_send.c havebsdsf.h iob_internal.h iob.h io.h uint64.h \
+ taia.h tai.h uint32.h array.h
 iob_write.o: io/iob_write.c iob_internal.h iob.h io.h uint64.h taia.h \
  tai.h uint32.h array.h
 mmap_private.o: mmap/mmap_private.c open.h mmap.h
@@ -346,6 +349,8 @@ readclose.o: open/readclose.c readclose.h stralloc.h
 scan_8int.o: scan/scan_8int.c scan.h
 scan_8long.o: scan/scan_8long.c scan.h
 scan_8short.o: scan/scan_8short.c scan.h
+scan_asn1derlength.o: scan/scan_asn1derlength.c scan.h
+scan_asn1dertag.o: scan/scan_asn1dertag.c scan.h
 scan_charsetnskip.o: scan/scan_charsetnskip.c scan.h
 scan_double.o: scan/scan_double.c scan.h
 scan_fromhex.o: scan/scan_fromhex.c scan.h
@@ -361,6 +366,7 @@ scan_uint.o: scan/scan_uint.c scan.h
 scan_ulong.o: scan/scan_ulong.c scan.h
 scan_ulonglong.o: scan/scan_ulonglong.c scan.h
 scan_ushort.o: scan/scan_ushort.c scan.h
+scan_utf8.o: scan/scan_utf8.c fmt.h
 scan_whitenskip.o: scan/scan_whitenskip.c scan.h
 scan_xint.o: scan/scan_xint.c scan.h
 scan_xlong.o: scan/scan_xlong.c scan.h
@@ -379,7 +385,7 @@ scan_ip4.o: socket/scan_ip4.c scan.h ip4.h
 scan_ip6.o: socket/scan_ip6.c scan.h ip4.h ip6.h byte.h uint32.h
 scan_ip6_flat.o: socket/scan_ip6_flat.c scan.h
 scan_ip6if.o: socket/scan_ip6if.c ip6.h byte.h uint32.h byte.h socket.h \
- uint16.h havealloca.h
+ uint16.h
 socket_accept4.o: socket/socket_accept4.c windoze.h socket.h uint16.h \
  uint32.h havesl.h
 socket_accept6.o: socket/socket_accept6.c windoze.h byte.h socket.h \
@@ -401,7 +407,7 @@ socket_connect6.o: socket/socket_connect6.c windoze.h byte.h socket.h \
 socket_connected.o: socket/socket_connected.c socket.h uint16.h uint32.h \
  havesl.h
 socket_deferaccept.o: socket/socket_deferaccept.c socket.h uint16.h \
- uint32.h
+ uint32.h windoze.h
 socket_getifidx.o: socket/socket_getifidx.c socket.h uint16.h uint32.h \
  haven2i.h
 socket_getifname.o: socket/socket_getifname.c socket.h uint16.h uint32.h \
@@ -435,7 +441,7 @@ socket_recv4.o: socket/socket_recv4.c windoze.h socket.h uint16.h \
 socket_recv6.o: socket/socket_recv6.c windoze.h byte.h socket.h uint16.h \
  uint32.h ip6.h byte.h haveip6.h havesl.h havescope.h
 socket_remote4.o: socket/socket_remote4.c windoze.h byte.h socket.h \
- uint16.h uint32.h havesl.h havescope.h
+ uint16.h uint32.h havesl.h
 socket_remote6.o: socket/socket_remote6.c windoze.h byte.h socket.h \
  uint16.h uint32.h ip6.h byte.h haveip6.h uint32.h havesl.h havescope.h
 socket_sctp4.o: socket/socket_sctp4.c socket.h uint16.h uint32.h ndelay.h
@@ -573,14 +579,14 @@ t.o: t.c fmt.h scan.h str.h uint16.h uint32.h stralloc.h socket.h \
  iarray.h CAS.h io_internal.h haveepoll.h havekqueue.h havedevpoll.h \
  havesigio.h
 BYTE_OBJS=byte_chr.o byte_copy.o byte_copyr.o byte_diff.o byte_rchr.o byte_zero.o 
-FMT_OBJS=fmt_8long.o fmt_8longlong.o fmt_double.o fmt_fill.o fmt_httpdate.o fmt_human.o fmt_humank.o fmt_long.o fmt_longlong.o fmt_minus.o fmt_pad.o fmt_plusminus.o fmt_str.o fmt_strm_internal.o fmt_strn.o fmt_tohex.o fmt_ulong.o fmt_ulong0.o fmt_ulonglong.o fmt_xlong.o fmt_xlonglong.o 
-SCAN_OBJS=scan_8int.o scan_8long.o scan_8short.o scan_charsetnskip.o scan_double.o scan_fromhex.o scan_httpdate.o scan_int.o scan_long.o scan_longlong.o scan_noncharsetnskip.o scan_nonwhitenskip.o scan_plusminus.o scan_short.o scan_uint.o scan_ulong.o scan_ulonglong.o scan_ushort.o scan_whitenskip.o scan_xint.o scan_xlong.o scan_xlonglong.o scan_xshort.o 
+FMT_OBJS=fmt_8long.o fmt_8longlong.o fmt_asn1derlength.o fmt_asn1dertag.o fmt_double.o fmt_fill.o fmt_httpdate.o fmt_human.o fmt_humank.o fmt_long.o fmt_longlong.o fmt_minus.o fmt_pad.o fmt_plusminus.o fmt_str.o fmt_strm_internal.o fmt_strn.o fmt_tohex.o fmt_ulong.o fmt_ulong0.o fmt_ulonglong.o fmt_utf8.o fmt_xlong.o fmt_xlonglong.o 
+SCAN_OBJS=scan_8int.o scan_8long.o scan_8short.o scan_asn1derlength.o scan_asn1dertag.o scan_charsetnskip.o scan_double.o scan_fromhex.o scan_httpdate.o scan_int.o scan_long.o scan_longlong.o scan_noncharsetnskip.o scan_nonwhitenskip.o scan_plusminus.o scan_short.o scan_uint.o scan_ulong.o scan_ulonglong.o scan_ushort.o scan_utf8.o scan_whitenskip.o scan_xint.o scan_xlong.o scan_xlonglong.o scan_xshort.o 
 STR_OBJS=str_chr.o str_copy.o str_diff.o str_diffn.o str_len.o str_rchr.o str_start.o 
 UINT_OBJS=uint16_pack.o uint16_pack_big.o uint16_read.o uint16_read_big.o uint16_unpack.o uint16_unpack_big.o uint32_pack.o uint32_pack_big.o uint32_read.o uint32_read_big.o uint32_unpack.o uint32_unpack_big.o uint64_pack.o uint64_pack_big.o uint64_read.o uint64_read_big.o uint64_unpack.o uint64_unpack_big.o 
 OPEN_OBJS=open_append.o open_excl.o open_read.o open_rw.o open_trunc.o open_write.o openreadclose.o readclose.o 
 STRALLOC_OBJS=stralloc_append.o stralloc_cat.o stralloc_catb.o stralloc_catlong0.o stralloc_catm_internal.o stralloc_cats.o stralloc_catulong0.o stralloc_chomp.o stralloc_chop.o stralloc_copy.o stralloc_copyb.o stralloc_copys.o stralloc_diff.o stralloc_diffs.o stralloc_free.o stralloc_init.o stralloc_ready.o stralloc_readyplus.o stralloc_starts.o stralloc_zero.o 
 UNIX_OBJS=iopause.o ndelay_off.o ndelay_on.o winsock2errno.o 
-SOCKET_OBJS=fmt_ip4.o fmt_ip6.o fmt_ip6_flat.o fmt_ip6c.o fmt_ip6if.o fmt_ip6ifc.o init.o scan_ip4.o scan_ip6.o scan_ip6_flat.o scan_ip6if.o socket_accept4.o socket_accept6.o socket_bind4.o socket_bind4_reuse.o socket_bind6.o socket_bind6_reuse.o socket_broadcast.o socket_connect4.o socket_connect6.o socket_connected.o socket_deferaccept.o socket_getifidx.o socket_getifname.o socket_ip4loopback.o socket_listen.o socket_local4.o socket_local6.o socket_mchopcount6.o socket_mcjoin4.o socket_mcjoin6.o socket_mcleave4.o socket_mcleave6.o socket_mcloop4.o socket_mcloop6.o socket_mcttl4.o socket_noipv6.o socket_recv4.o socket_recv6.o socket_remote4.o socket_remote6.o socket_send4.o socket_send6.o socket_tcp4.o socket_tcp4b.o socket_tcp6.o socket_tcp6b.o socket_tryreservein.o socket_udp4.o socket_udp6.o socket_v4mappedprefix.o socket_v6any.o socket_v6loopback.o 
+SOCKET_OBJS=fmt_ip4.o fmt_ip6.o fmt_ip6_flat.o fmt_ip6c.o fmt_ip6if.o fmt_ip6ifc.o init.o scan_ip4.o scan_ip6.o scan_ip6_flat.o scan_ip6if.o socket_accept4.o socket_accept6.o socket_bind4.o socket_bind4_reuse.o socket_bind6.o socket_bind6_reuse.o socket_broadcast.o socket_connect4.o socket_connect6.o socket_connected.o socket_deferaccept.o socket_getifidx.o socket_getifname.o socket_ip4loopback.o socket_listen.o socket_local4.o socket_local6.o socket_mchopcount6.o socket_mcjoin4.o socket_mcjoin6.o socket_mcleave4.o socket_mcleave6.o socket_mcloop4.o socket_mcloop6.o socket_mcttl4.o socket_noipv6.o socket_recv4.o socket_recv6.o socket_remote4.o socket_remote6.o socket_sctp4.o socket_sctp4b.o socket_sctp6.o socket_sctp6b.o socket_send4.o socket_send6.o socket_tcp4.o socket_tcp4b.o socket_tcp6.o socket_tcp6b.o socket_tryreservein.o socket_udp4.o socket_udp6.o socket_v4mappedprefix.o socket_v6any.o socket_v6loopback.o 
 BUFFER_OBJS=buffer_0.o buffer_0small.o buffer_1.o buffer_1small.o buffer_2.o buffer_close.o buffer_feed.o buffer_flush.o buffer_fromsa.o buffer_get.o buffer_get_new_token_sa.o buffer_get_new_token_sa_pred.o buffer_get_token.o buffer_get_token_pred.o buffer_get_token_sa.o buffer_get_token_sa_pred.o buffer_getc.o buffer_getline.o buffer_getline_sa.o buffer_getn.o buffer_getnewline_sa.o buffer_init.o buffer_init_free.o buffer_mmapread.o buffer_peek.o buffer_put.o buffer_put8long.o buffer_putalign.o buffer_puterror.o buffer_puterror2.o buffer_putflush.o buffer_putlong.o buffer_putlonglong.o buffer_putm_internal.o buffer_putm_internal_flush.o buffer_putnlflush.o buffer_puts.o buffer_putsa.o buffer_putsaflush.o buffer_putsalign.o buffer_putsflush.o buffer_putspace.o buffer_putulong.o buffer_putulonglong.o buffer_putxlong.o buffer_seek.o buffer_stubborn.o buffer_stubborn2.o buffer_tosa.o errmsg_iam.o errmsg_info.o errmsg_infosys.o errmsg_puts.o errmsg_warn.o errmsg_warnsys.o errmsg_write.o 
 MMAP_OBJS=mmap_private.o mmap_read.o mmap_shared.o mmap_unmap.o 
 TAIA_OBJS=taia_add.o taia_addsec.o taia_approx.o taia_frac.o taia_half.o taia_less.o taia_now.o taia_pack.o taia_sub.o taia_tai.o taia_uint.o taia_unpack.o 
@@ -652,7 +658,7 @@ dep libsocket havealloca.h
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
 uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h \
 openreadclose.h readclose.h ndelay.h array.h io.h safemult.h iob.h havealloca.h \
-errmsg.h cdb.h cdb_make.h rangecheck.h iarray.h
+errmsg.h cdb.h cdb_make.h rangecheck.h iarray.h va_narg.h isset.h
 
 install-inc:
 	install -d $(INCLUDEDIR)
@@ -674,7 +680,7 @@ uninstall:
 	rm -f $(LIBDIR)/libowfat.a
 
 VERSION=libowfat-0.29
-CURNAME=libowfat
+CURNAME=libowfat-0.27
 
 tar: clean rename
 	rm -f dep libdep
