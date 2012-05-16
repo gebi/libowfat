@@ -41,6 +41,8 @@ void byte_zero(void* out, size_t len);
 
 #define byte_equal(s,n,t) (!byte_diff((s),(n),(t)))
 
+int byte_equal_notimingattack(const void* a, size_t len,const void* b) __pure__;
+
 #ifdef __cplusplus
 }
 #endif
