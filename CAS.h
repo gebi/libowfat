@@ -53,7 +53,7 @@ static inline size_t atomic_add_return(size_t* x,size_t val) {
 /* *x += val; */
 static inline void atomic_add(size_t* x,size_t val) {
 #ifdef USE_BUILTINS
-  __sync_add_and_fetch(x,val);
+  return __sync_add_and_fetch(x,val);
 #elif defined(__i386__)
   asm volatile ("lock; addl %1, %0" : "+m" (*x) : "ir" (val) );
 #elif defined(__x86_64__)
