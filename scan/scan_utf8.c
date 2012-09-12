@@ -41,6 +41,7 @@ size_t scan_utf8(const char* in,size_t len,uint32_t* num) {
    */
   m=(1<<(k*5-4+(k==2)));
   while (k>1) {
+    if ((*in&0xc0)!=0x80) return 0;
     i=(i<<6) | ((*in++)&0x3f);
     --k;
   }
