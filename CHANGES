@@ -1,3 +1,6 @@
+0.30:
+  add compiletimeassert.h
+
 0.29:
   save 8 bytes in taia.h for 64-bit systems
   add buffer_tosa (buffer writing to auto-growing stralloc)
