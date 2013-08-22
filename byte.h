@@ -43,6 +43,10 @@ void byte_zero(void* out, size_t len);
 
 int byte_equal_notimingattack(const void* a, size_t len,const void* b) __pure__;
 
+#if defined(__i386__) || defined(__x86_64__)
+#define UNALIGNED_ACCESS_OK
+#endif
+
 #ifdef __cplusplus
 }
 #endif
