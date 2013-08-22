@@ -57,6 +57,7 @@ buffer_2.o: buffer/buffer_2.c buffer.h
 buffer_close.o: buffer/buffer_close.c buffer.h
 buffer_feed.o: buffer/buffer_feed.c buffer.h
 buffer_flush.o: buffer/buffer_flush.c buffer.h
+buffer_frombuf.o: buffer/buffer_frombuf.c stralloc.h buffer.h
 buffer_fromsa.o: buffer/buffer_fromsa.c stralloc.h buffer.h
 buffer_get.o: buffer/buffer_get.c byte.h buffer.h
 buffer_get_new_token_sa.o: buffer/buffer_get_new_token_sa.c stralloc.h \
@@ -80,13 +81,13 @@ buffer_init_free.o: buffer/buffer_init_free.c buffer.h
 buffer_mmapread.o: buffer/buffer_mmapread.c buffer.h mmap.h
 buffer_peek.o: buffer/buffer_peek.c buffer.h
 buffer_put.o: buffer/buffer_put.c byte.h buffer.h
-buffer_put8long.o: buffer/buffer_put8long.c buffer.h fmt.h
+buffer_put8long.o: buffer/buffer_put8long.c buffer.h fmt.h byte.h
 buffer_putalign.o: buffer/buffer_putalign.c byte.h buffer.h
 buffer_puterror.o: buffer/buffer_puterror.c buffer.h
 buffer_puterror2.o: buffer/buffer_puterror2.c buffer.h
 buffer_putflush.o: buffer/buffer_putflush.c buffer.h
-buffer_putlong.o: buffer/buffer_putlong.c buffer.h fmt.h
-buffer_putlonglong.o: buffer/buffer_putlonglong.c buffer.h fmt.h
+buffer_putlong.o: buffer/buffer_putlong.c buffer.h fmt.h byte.h
+buffer_putlonglong.o: buffer/buffer_putlonglong.c buffer.h fmt.h byte.h
 buffer_putm_internal.o: buffer/buffer_putm_internal.c buffer.h
 buffer_putm_internal_flush.o: buffer/buffer_putm_internal_flush.c \
  buffer.h
@@ -97,9 +98,9 @@ buffer_putsaflush.o: buffer/buffer_putsaflush.c stralloc.h buffer.h
 buffer_putsalign.o: buffer/buffer_putsalign.c str.h buffer.h
 buffer_putsflush.o: buffer/buffer_putsflush.c str.h buffer.h
 buffer_putspace.o: buffer/buffer_putspace.c str.h buffer.h
-buffer_putulong.o: buffer/buffer_putulong.c buffer.h fmt.h
-buffer_putulonglong.o: buffer/buffer_putulonglong.c buffer.h fmt.h
-buffer_putxlong.o: buffer/buffer_putxlong.c buffer.h fmt.h
+buffer_putulong.o: buffer/buffer_putulong.c buffer.h fmt.h byte.h
+buffer_putulonglong.o: buffer/buffer_putulonglong.c buffer.h fmt.h byte.h
+buffer_putxlong.o: buffer/buffer_putxlong.c buffer.h fmt.h byte.h
 buffer_seek.o: buffer/buffer_seek.c buffer.h
 buffer_stubborn.o: buffer/buffer_stubborn.c buffer.h
 buffer_stubborn2.o: buffer/buffer_stubborn2.c buffer.h
@@ -115,6 +116,7 @@ byte_chr.o: byte/byte_chr.c byte.h
 byte_copy.o: byte/byte_copy.c byte.h
 byte_copyr.o: byte/byte_copyr.c byte.h
 byte_diff.o: byte/byte_diff.c byte.h
+byte_equal_notimingattack.o: byte/byte_equal_notimingattack.c byte.h
 byte_rchr.o: byte/byte_rchr.c byte.h
 byte_zero.o: byte/byte_zero.c byte.h
 case_diffb.o: case/case_diffb.c case.h
@@ -126,6 +128,7 @@ cdb.o: cdb/cdb.c byte.h cdb.h uint32.h uint64.h
 cdb_hash.o: cdb/cdb_hash.c cdb.h uint32.h uint64.h
 cdb_make.o: cdb/cdb_make.c cdb.h uint32.h uint64.h cdb_make.h buffer.h
 cdb_traverse.o: cdb/cdb_traverse.c cdb.h uint32.h uint64.h
+critbit.o: critbit/critbit.c
 dns_dfd.o: dns/dns_dfd.c byte.h dns.h stralloc.h iopause.h taia.h tai.h \
  uint64.h uint32.h
 dns_domain.o: dns/dns_domain.c case.h byte.h dns.h stralloc.h iopause.h \
@@ -144,10 +147,10 @@ dns_mx.o: dns/dns_mx.c stralloc.h byte.h uint16.h dns.h stralloc.h \
  iopause.h taia.h tai.h uint64.h uint32.h
 dns_name.o: dns/dns_name.c stralloc.h uint16.h byte.h dns.h stralloc.h \
  iopause.h taia.h tai.h uint64.h uint32.h ip6.h byte.h
-dns_nd.o: dns/dns_nd.c byte.h fmt.h dns.h stralloc.h iopause.h taia.h \
- tai.h uint64.h uint32.h
-dns_nd6.o: dns/dns_nd6.c byte.h fmt.h dns.h stralloc.h iopause.h taia.h \
- tai.h uint64.h uint32.h haveinline.h
+dns_nd.o: dns/dns_nd.c byte.h fmt.h byte.h dns.h stralloc.h iopause.h \
+ taia.h tai.h uint64.h uint32.h
+dns_nd6.o: dns/dns_nd6.c byte.h fmt.h byte.h dns.h stralloc.h iopause.h \
+ taia.h tai.h uint64.h uint32.h haveinline.h
 dns_packet.o: dns/dns_packet.c dns.h stralloc.h iopause.h taia.h tai.h \
  uint64.h uint32.h
 dns_random.o: dns/dns_random.c dns.h stralloc.h iopause.h taia.h tai.h \
@@ -170,30 +173,31 @@ buffer_getline.o: examples/buffer_getline.c stralloc.h buffer.h io.h \
  uint64.h taia.h tai.h uint32.h errmsg.h
 byte.o: examples/byte.c byte.h buffer.h
 str.o: examples/str.c str.h buffer.h
-fmt_8long.o: fmt/fmt_8long.c fmt.h
-fmt_8longlong.o: fmt/fmt_8longlong.c fmt.h
-fmt_asn1derlength.o: fmt/fmt_asn1derlength.c fmt.h
-fmt_asn1dertag.o: fmt/fmt_asn1dertag.c fmt.h
-fmt_double.o: fmt/fmt_double.c fmt.h
-fmt_fill.o: fmt/fmt_fill.c fmt.h
-fmt_httpdate.o: fmt/fmt_httpdate.c fmt.h byte.h
-fmt_human.o: fmt/fmt_human.c fmt.h
-fmt_humank.o: fmt/fmt_humank.c fmt.h
-fmt_long.o: fmt/fmt_long.c fmt.h
-fmt_longlong.o: fmt/fmt_longlong.c fmt.h
-fmt_minus.o: fmt/fmt_minus.c fmt.h
-fmt_pad.o: fmt/fmt_pad.c fmt.h
-fmt_plusminus.o: fmt/fmt_plusminus.c fmt.h
-fmt_str.o: fmt/fmt_str.c fmt.h
-fmt_strm_internal.o: fmt/fmt_strm_internal.c fmt.h
-fmt_strn.o: fmt/fmt_strn.c fmt.h
-fmt_tohex.o: fmt/fmt_tohex.c fmt.h
-fmt_ulong.o: fmt/fmt_ulong.c fmt.h
-fmt_ulong0.o: fmt/fmt_ulong0.c fmt.h
-fmt_ulonglong.o: fmt/fmt_ulonglong.c fmt.h
-fmt_utf8.o: fmt/fmt_utf8.c fmt.h
-fmt_xlong.o: fmt/fmt_xlong.c fmt.h haveinline.h
-fmt_xlonglong.o: fmt/fmt_xlonglong.c fmt.h
+fmt_8long.o: fmt/fmt_8long.c fmt.h byte.h
+fmt_8longlong.o: fmt/fmt_8longlong.c fmt.h byte.h
+fmt_asn1derlength.o: fmt/fmt_asn1derlength.c fmt.h byte.h
+fmt_asn1dertag.o: fmt/fmt_asn1dertag.c fmt.h byte.h
+fmt_double.o: fmt/fmt_double.c fmt.h byte.h
+fmt_fill.o: fmt/fmt_fill.c fmt.h byte.h
+fmt_httpdate.o: fmt/fmt_httpdate.c fmt.h byte.h byte.h
+fmt_human.o: fmt/fmt_human.c fmt.h byte.h
+fmt_humank.o: fmt/fmt_humank.c fmt.h byte.h
+fmt_long.o: fmt/fmt_long.c fmt.h byte.h
+fmt_longlong.o: fmt/fmt_longlong.c fmt.h byte.h
+fmt_minus.o: fmt/fmt_minus.c fmt.h byte.h
+fmt_pad.o: fmt/fmt_pad.c fmt.h byte.h
+fmt_plusminus.o: fmt/fmt_plusminus.c fmt.h byte.h
+fmt_str.o: fmt/fmt_str.c fmt.h byte.h
+fmt_strm_internal.o: fmt/fmt_strm_internal.c fmt.h byte.h
+fmt_strn.o: fmt/fmt_strn.c fmt.h byte.h
+fmt_tohex.o: fmt/fmt_tohex.c fmt.h byte.h
+fmt_ulong.o: fmt/fmt_ulong.c fmt.h byte.h
+fmt_ulong0.o: fmt/fmt_ulong0.c fmt.h byte.h
+fmt_ulonglong.o: fmt/fmt_ulonglong.c fmt.h byte.h
+fmt_utf8.o: fmt/fmt_utf8.c fmt.h byte.h
+fmt_xlong.o: fmt/fmt_xlong.c fmt.h byte.h haveinline.h
+fmt_xlonglong.o: fmt/fmt_xlonglong.c fmt.h byte.h
+fmt_xmlescape.o: fmt/fmt_xmlescape.c fmt.h byte.h
 io_appendfile.o: io/io_appendfile.c io_internal.h io.h uint64.h taia.h \
  tai.h uint32.h array.h haveepoll.h havekqueue.h havedevpoll.h \
  havesigio.h
@@ -318,8 +322,8 @@ iob_prefetch.o: io/iob_prefetch.c iob_internal.h iob.h io.h uint64.h \
  taia.h tai.h uint32.h array.h
 iob_reset.o: io/iob_reset.c byte.h iob_internal.h iob.h io.h uint64.h \
  taia.h tai.h uint32.h array.h
-iob_send.o: io/iob_send.c havebsdsf.h iob_internal.h iob.h io.h uint64.h \
- taia.h tai.h uint32.h array.h
+iob_send.o: io/iob_send.c havebsdsf.h havealloca.h iob_internal.h iob.h \
+ io.h uint64.h taia.h tai.h uint32.h array.h
 iob_write.o: io/iob_write.c iob_internal.h iob.h io.h uint64.h taia.h \
  tai.h uint32.h array.h
 mmap_private.o: mmap/mmap_private.c open.h mmap.h
@@ -358,6 +362,7 @@ scan_httpdate.o: scan/scan_httpdate.c scan.h byte.h case.h
 scan_int.o: scan/scan_int.c scan.h
 scan_long.o: scan/scan_long.c scan.h
 scan_longlong.o: scan/scan_longlong.c scan.h
+scan_netstring.o: scan/scan_netstring.c scan.h
 scan_noncharsetnskip.o: scan/scan_noncharsetnskip.c scan.h
 scan_nonwhitenskip.o: scan/scan_nonwhitenskip.c scan.h
 scan_plusminus.o: scan/scan_plusminus.c scan.h
@@ -366,26 +371,26 @@ scan_uint.o: scan/scan_uint.c scan.h
 scan_ulong.o: scan/scan_ulong.c scan.h
 scan_ulonglong.o: scan/scan_ulonglong.c scan.h
 scan_ushort.o: scan/scan_ushort.c scan.h
-scan_utf8.o: scan/scan_utf8.c fmt.h
+scan_utf8.o: scan/scan_utf8.c fmt.h byte.h
 scan_whitenskip.o: scan/scan_whitenskip.c scan.h
 scan_xint.o: scan/scan_xint.c scan.h
 scan_xlong.o: scan/scan_xlong.c scan.h
 scan_xlonglong.o: scan/scan_xlonglong.c scan.h
 scan_xshort.o: scan/scan_xshort.c scan.h
-fmt_ip4.o: socket/fmt_ip4.c fmt.h ip4.h
-fmt_ip6.o: socket/fmt_ip6.c fmt.h byte.h ip4.h ip6.h byte.h uint32.h
+fmt_ip4.o: socket/fmt_ip4.c fmt.h byte.h ip4.h
+fmt_ip6.o: socket/fmt_ip6.c fmt.h byte.h byte.h ip4.h ip6.h uint32.h
 fmt_ip6_flat.o: socket/fmt_ip6_flat.c ip6.h byte.h uint32.h haveinline.h
-fmt_ip6c.o: socket/fmt_ip6c.c fmt.h byte.h ip4.h ip6.h byte.h uint32.h
+fmt_ip6c.o: socket/fmt_ip6c.c fmt.h byte.h byte.h ip4.h ip6.h uint32.h
 fmt_ip6if.o: socket/fmt_ip6if.c ip6.h byte.h uint32.h str.h fmt.h \
  socket.h uint16.h
-fmt_ip6ifc.o: socket/fmt_ip6ifc.c fmt.h byte.h ip4.h ip6.h byte.h \
+fmt_ip6ifc.o: socket/fmt_ip6ifc.c fmt.h byte.h byte.h ip4.h ip6.h \
  uint32.h
 init.o: socket/init.c
 scan_ip4.o: socket/scan_ip4.c scan.h ip4.h
 scan_ip6.o: socket/scan_ip6.c scan.h ip4.h ip6.h byte.h uint32.h
 scan_ip6_flat.o: socket/scan_ip6_flat.c scan.h
 scan_ip6if.o: socket/scan_ip6if.c ip6.h byte.h uint32.h byte.h socket.h \
- uint16.h
+ uint16.h havealloca.h
 socket_accept4.o: socket/socket_accept4.c windoze.h socket.h uint16.h \
  uint32.h havesl.h
 socket_accept6.o: socket/socket_accept6.c windoze.h byte.h socket.h \
@@ -479,10 +484,11 @@ str_start.o: str/str_start.c str.h
 stralloc_append.o: stralloc/stralloc_append.c stralloc.h
 stralloc_cat.o: stralloc/stralloc_cat.c stralloc.h str.h
 stralloc_catb.o: stralloc/stralloc_catb.c byte.h stralloc.h
-stralloc_catlong0.o: stralloc/stralloc_catlong0.c stralloc.h fmt.h
+stralloc_catlong0.o: stralloc/stralloc_catlong0.c stralloc.h fmt.h byte.h
 stralloc_catm_internal.o: stralloc/stralloc_catm_internal.c stralloc.h
 stralloc_cats.o: stralloc/stralloc_cats.c stralloc.h str.h
-stralloc_catulong0.o: stralloc/stralloc_catulong0.c stralloc.h fmt.h
+stralloc_catulong0.o: stralloc/stralloc_catulong0.c stralloc.h fmt.h \
+ byte.h
 stralloc_chomp.o: stralloc/stralloc_chomp.c stralloc.h
 stralloc_chop.o: stralloc/stralloc_chop.c stralloc.h
 stralloc_copy.o: stralloc/stralloc_copy.c stralloc.h str.h
@@ -515,41 +521,48 @@ taia_tai.o: taia/taia_tai.c taia.h tai.h uint64.h uint32.h
 taia_uint.o: taia/taia_uint.c taia.h tai.h uint64.h uint32.h
 taia_unpack.o: taia/taia_unpack.c taia.h tai.h uint64.h uint32.h
 base64.o: textcode/base64.c
-fmt_base64.o: textcode/fmt_base64.c fmt.h textcode.h haveinline.h
-fmt_cescape.o: textcode/fmt_cescape.c fmt.h textcode.h str.h haveinline.h
-fmt_foldwhitespace.o: textcode/fmt_foldwhitespace.c fmt.h textcode.h \
- str.h haveinline.h
-fmt_hexdump.o: textcode/fmt_hexdump.c fmt.h textcode.h str.h haveinline.h
-fmt_html.o: textcode/fmt_html.c fmt.h textcode.h str.h haveinline.h
-fmt_ldapescape.o: textcode/fmt_ldapescape.c fmt.h textcode.h haveinline.h \
- str.h
-fmt_ldapescape2.o: textcode/fmt_ldapescape2.c fmt.h textcode.h \
+fmt_base64.o: textcode/fmt_base64.c fmt.h byte.h textcode.h haveinline.h
+fmt_cescape.o: textcode/fmt_cescape.c fmt.h byte.h textcode.h str.h \
  haveinline.h
-fmt_quotedprintable.o: textcode/fmt_quotedprintable.c fmt.h textcode.h \
+fmt_foldwhitespace.o: textcode/fmt_foldwhitespace.c fmt.h byte.h \
+ textcode.h str.h haveinline.h
+fmt_hexdump.o: textcode/fmt_hexdump.c fmt.h byte.h textcode.h str.h \
+ haveinline.h
+fmt_html.o: textcode/fmt_html.c fmt.h byte.h textcode.h str.h \
+ haveinline.h
+fmt_ldapescape.o: textcode/fmt_ldapescape.c fmt.h byte.h textcode.h \
  haveinline.h str.h
+fmt_ldapescape2.o: textcode/fmt_ldapescape2.c fmt.h byte.h textcode.h \
+ haveinline.h
+fmt_quotedprintable.o: textcode/fmt_quotedprintable.c fmt.h byte.h \
+ textcode.h haveinline.h str.h
 fmt_to_array.o: textcode/fmt_to_array.c array.h uint64.h textcode.h
 fmt_to_sa.o: textcode/fmt_to_sa.c stralloc.h textcode.h
 fmt_tofrom_array.o: textcode/fmt_tofrom_array.c array.h uint64.h \
  textcode.h
-fmt_urlencoded.o: textcode/fmt_urlencoded.c fmt.h textcode.h str.h \
+fmt_urlencoded.o: textcode/fmt_urlencoded.c fmt.h byte.h textcode.h str.h \
  haveinline.h
-fmt_uuencoded.o: textcode/fmt_uuencoded.c fmt.h textcode.h haveinline.h
-fmt_yenc.o: textcode/fmt_yenc.c fmt.h textcode.h
+fmt_uuencoded.o: textcode/fmt_uuencoded.c fmt.h byte.h textcode.h \
+ haveinline.h
+fmt_yenc.o: textcode/fmt_yenc.c fmt.h byte.h textcode.h
 scan_base64.o: textcode/scan_base64.c textcode.h haveinline.h
-scan_cescape.o: textcode/scan_cescape.c fmt.h textcode.h scan.h
-scan_hexdump.o: textcode/scan_hexdump.c fmt.h textcode.h scan.h
-scan_html.o: textcode/scan_html.c fmt.h textcode.h haveinline.h case.h
-scan_ldapescape.o: textcode/scan_ldapescape.c fmt.h textcode.h scan.h
-scan_quotedprintable.o: textcode/scan_quotedprintable.c fmt.h textcode.h \
+scan_cescape.o: textcode/scan_cescape.c fmt.h byte.h textcode.h scan.h
+scan_hexdump.o: textcode/scan_hexdump.c fmt.h byte.h textcode.h scan.h
+scan_html.o: textcode/scan_html.c fmt.h byte.h textcode.h haveinline.h \
+ case.h
+scan_ldapescape.o: textcode/scan_ldapescape.c fmt.h byte.h textcode.h \
  scan.h
+scan_quotedprintable.o: textcode/scan_quotedprintable.c fmt.h byte.h \
+ textcode.h scan.h
 scan_to_array.o: textcode/scan_to_array.c str.h array.h uint64.h \
  textcode.h
 scan_to_sa.o: textcode/scan_to_sa.c str.h stralloc.h textcode.h
 scan_tofrom_array.o: textcode/scan_tofrom_array.c str.h array.h uint64.h \
  textcode.h
-scan_urlencoded.o: textcode/scan_urlencoded.c fmt.h textcode.h scan.h
+scan_urlencoded.o: textcode/scan_urlencoded.c fmt.h byte.h textcode.h \
+ scan.h
 scan_uuencoded.o: textcode/scan_uuencoded.c textcode.h
-scan_yenc.o: textcode/scan_yenc.c fmt.h textcode.h
+scan_yenc.o: textcode/scan_yenc.c fmt.h byte.h textcode.h
 uint16_pack.o: uint/uint16_pack.c uint16.h
 uint16_pack_big.o: uint/uint16_pack_big.c uint16.h
 uint16_read.o: uint/uint16_read.c uint16.h
@@ -573,11 +586,10 @@ iopause.o: unix/iopause.c taia.h tai.h uint64.h uint32.h iopause.h taia.h \
 ndelay_off.o: unix/ndelay_off.c ndelay.h
 ndelay_on.o: unix/ndelay_on.c ndelay.h
 winsock2errno.o: unix/winsock2errno.c
-t.o: t.c fmt.h scan.h str.h uint16.h uint32.h stralloc.h socket.h \
- buffer.h ip4.h ip6.h byte.h mmap.h open.h textcode.h dns.h iopause.h \
- taia.h tai.h uint64.h case.h errmsg.h iob.h io.h array.h safemult.h \
- iarray.h CAS.h io_internal.h haveepoll.h havekqueue.h havedevpoll.h \
- havesigio.h
+t.o: t.c fmt.h byte.h scan.h str.h uint16.h uint32.h stralloc.h socket.h \
+ buffer.h ip4.h ip6.h mmap.h open.h textcode.h dns.h iopause.h taia.h \
+ tai.h uint64.h case.h errmsg.h iob.h io.h array.h safemult.h iarray.h \
+ CAS.h io_internal.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 BYTE_OBJS=byte_chr.o byte_copy.o byte_copyr.o byte_diff.o byte_rchr.o byte_zero.o 
 FMT_OBJS=fmt_8long.o fmt_8longlong.o fmt_asn1derlength.o fmt_asn1dertag.o fmt_double.o fmt_fill.o fmt_httpdate.o fmt_human.o fmt_humank.o fmt_long.o fmt_longlong.o fmt_minus.o fmt_pad.o fmt_plusminus.o fmt_str.o fmt_strm_internal.o fmt_strn.o fmt_tohex.o fmt_ulong.o fmt_ulong0.o fmt_ulonglong.o fmt_utf8.o fmt_xlong.o fmt_xlonglong.o 
 SCAN_OBJS=scan_8int.o scan_8long.o scan_8short.o scan_asn1derlength.o scan_asn1dertag.o scan_charsetnskip.o scan_double.o scan_fromhex.o scan_httpdate.o scan_int.o scan_long.o scan_longlong.o scan_noncharsetnskip.o scan_nonwhitenskip.o scan_plusminus.o scan_short.o scan_uint.o scan_ulong.o scan_ulonglong.o scan_ushort.o scan_utf8.o scan_whitenskip.o scan_xint.o scan_xlong.o scan_xlonglong.o scan_xshort.o 
@@ -653,7 +665,7 @@ clean:
 	rm -f *.o *.a *.da *.bbg *.bb core t haveip6.h haven2i.h \
 havesl.h haveinline.h iopause.h select.h havekqueue.h haveepoll.h \
 libepoll havesigio.h havebsdsf.h havesendfile.h havescope.h havedevpoll.h \
-dep libsocket havealloca.h
+dep libsocket havealloca.h haveuint128.h
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
 uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h \
@@ -679,7 +691,7 @@ uninstall:
 	rm -f $(patsubst %.3,$(MAN3DIR)/%.3,$(notdir $(wildcard */*.3)))
 	rm -f $(LIBDIR)/libowfat.a
 
-VERSION=libowfat-0.29
+VERSION=libowfat-0.30
 CURNAME=libowfat-0.27
 
 tar: clean rename
@@ -755,6 +767,11 @@ havealloca.h: tryalloca.c
 	if $(DIET) $(CC) $(CFLAGS) -c tryalloca.c -DB >/dev/null 2>&1; then echo "#include <malloc.h>"; fi >> $@
 	-rm -f tryalloca.o
 
+haveuint128.h: tryuint128.c
+	-rm -f $@
+	if $(DIET) $(CC) $(CFLAGS) -c tryuint128.c >/dev/null 2>&1; then echo "#define HAVE_UINT128"; fi > $@
+	-rm -f tryuint128.o
+
 iopause.h: iopause.h1 iopause.h2 trypoll.c
 	-rm -f $@
 	if $(DIET) $(CC) $(CFLAGS) -o t trypoll.c >/dev/null 2>&1; then cp iopause.h2 iopause.h; else cp iopause.h1 iopause.h; fi
@@ -806,3 +823,6 @@ Makefile: GNUmakefile dep libdep
 
 windoze:
 	$(MAKE) DIET= CROSS=i686-mingw32-
+
+windoze64:
+	$(MAKE) DIET= CROSS=x86_64-mingw32-

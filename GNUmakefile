@@ -79,7 +79,7 @@ CDB_OBJS=$(patsubst cdb/%.c,%.o,$(wildcard cdb/*.c))
 
 $(BYTE_OBJS): byte.h
 $(FMT_OBJS): fmt.h
-$(SCAN_OBJS): scan.h
+$(SCAN_OBJS): scan.h haveuint128.h
 $(STR_OBJS): str.h
 $(UINT_OBJS): uint16.h uint32.h
 $(STRALLOC_OBJS): stralloc.h
@@ -161,7 +161,7 @@ clean:
 	rm -f *.o *.a *.da *.bbg *.bb core t haveip6.h haven2i.h \
 havesl.h haveinline.h iopause.h select.h havekqueue.h haveepoll.h \
 libepoll havesigio.h havebsdsf.h havesendfile.h havescope.h havedevpoll.h \
-dep libsocket havealloca.h
+dep libsocket havealloca.h haveuint128.h
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
 uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h \
@@ -263,6 +263,11 @@ havealloca.h: tryalloca.c
 	if $(DIET) $(CC) $(CFLAGS) -c tryalloca.c -DB >/dev/null 2>&1; then echo "#include <malloc.h>"; fi >> $@
 	-rm -f tryalloca.o
 
+haveuint128.h: tryuint128.c
+	-rm -f $@
+	if $(DIET) $(CC) $(CFLAGS) -c tryuint128.c >/dev/null 2>&1; then echo "#define HAVE_UINT128"; fi > $@
+	-rm -f tryuint128.o
+
 iopause.h: iopause.h1 iopause.h2 trypoll.c
 	-rm -f $@
 	if $(DIET) $(CC) $(CFLAGS) -o t trypoll.c >/dev/null 2>&1; then cp iopause.h2 iopause.h; else cp iopause.h1 iopause.h; fi
@@ -314,3 +319,6 @@ Makefile: GNUmakefile dep libdep
 
 windoze:
 	$(MAKE) DIET= CROSS=i686-mingw32-
+
+windoze64:
+	$(MAKE) DIET= CROSS=x86_64-mingw32-
