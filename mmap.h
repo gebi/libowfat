@@ -22,7 +22,7 @@ char* mmap_private(const char *filename,size_t* filesize);
 char* mmap_shared(const char *filename,size_t* filesize);
 
 /* unmap a mapped region */
-int mmap_unmap(char* mapped,size_t maplen);
+int mmap_unmap(const char* mapped,size_t maplen);
 
 #ifdef __cplusplus
 }
