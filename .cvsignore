@@ -21,3 +21,4 @@ havesendfile.h
 trysendfile
 havealloca.h
 uudecode
+haveuint128.h
