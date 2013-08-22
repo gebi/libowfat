@@ -8,6 +8,8 @@
 #include <stdint.h>
 /* for time_t: */
 #include <sys/types.h>
+/* for byte_copy */
+#include "byte.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -19,27 +21,51 @@ extern "C" {
 #define FMT_XLONG 33 /* enough space to hold 2^128 - 1 in hexadecimal, plus \0 */
 #define FMT_LEN ((char *) 0) /* convenient abbreviation */
 
-/* The formatting routines do not append \0!
- * Use them like this: buf[fmt_ulong(buf,number)]=0; */
+/* This file declares routines for formatting strings and numbers in
+ * various forms or encodings, either binary or text based.
+ *
+ * The first argument is always the destination buffer, the second
+ * argument is always the value to be formatted/encoded. The return
+ * value is always the number of bytes written in the output buffer.
+ *
+ * If you don't know how large the output will be, call the function
+ * first with NULL as destination buffer and use the length it returns
+ * to allocate the destination buffer.
+ *
+ * Note that none of these routines append a 0 terminator.  If you need
+ * 0 termination, call the functions like this:
 
-/* convert signed src integer -23 to ASCII '-','2','3', return length.
+     buf[fmt_ulong(buf,number)]=0;
+
+ */
+
+/* convert signed src integer -23 to ASCII '-','2','3', return number of
+ * bytes of value in output format (3 in this example).
  * If dest is not NULL, write result to dest */
 size_t fmt_long(char *dest,signed long src);
 
-/* convert unsigned src integer 23 to ASCII '2','3', return length.
+/* convert unsigned src integer 23 to ASCII '2','3', return number of
+ * bytes of value in output format (2 in this example).
  * If dest is not NULL, write result to dest */
 size_t fmt_ulong(char *dest,unsigned long src);
 
-/* convert unsigned src integer 0x23 to ASCII '2','3', return length.
+/* convert unsigned src integer 0x23 to ASCII '2','3', return number of
+ * bytes of value in output format (2 in this example).
  * If dest is not NULL, write result to dest */
 size_t fmt_xlong(char *dest,unsigned long src);
 
-/* convert unsigned src integer 023 to ASCII '2','3', return length.
+/* convert unsigned src integer 023 to ASCII '2','3', return number of
+ * bytes of value in output format (2 in this example).
  * If dest is not NULL, write result to dest */
 size_t fmt_8long(char *dest,unsigned long src);
 
+/* like fmt_long but for long long */
 size_t fmt_longlong(char *dest,signed long long src);
+
+/* like fmt_ulong but for unsigned long long */
 size_t fmt_ulonglong(char *dest,unsigned long long src);
+
+/* like fmt_xlong but for unsigned long long */
 size_t fmt_xlonglong(char *dest,unsigned long long src);
 
 #define fmt_uint(dest,src) fmt_ulong(dest,src)
@@ -49,6 +75,8 @@ size_t fmt_xlonglong(char *dest,unsigned long long src);
 
 /* Like fmt_ulong, but prepend '0' while length is smaller than padto.
  * Does not truncate! */
+/* fmt_ulong0(buf,23,4) -> '0','0','2','3' return 4 */
+/* fmt_ulong0(buf,234,2) -> '2','3','4', return 3 */
 size_t fmt_ulong0(char *,unsigned long src,size_t padto);
 
 #define fmt_uint0(buf,src,padto) fmt_ulong0(buf,src,padto)
@@ -67,11 +95,26 @@ size_t fmt_plusminus(char *dest,int src);
 size_t fmt_minus(char *dest,int src);
 
 /* copy str to dest until \0 byte, return number of copied bytes. */
+/* fmt_str(NULL,str) == strlen(str) */
+/* fmt_str(buf,str) == strcpy(buf,str), return strlen(str) */
+/* strcat(strcpy(buf,"foo"),"bar") can be written as
+ *   i=fmt_str(buf,"foo");
+ *   i+=fmt_str(buf+i,"bar");
+ *   buf[i]=0;
+ * This is more efficient because strcat needs to scan the string to
+ * find the end and append.
+ */
 size_t fmt_str(char *dest,const char *src);
 
 /* copy str to dest until \0 byte or limit bytes copied.
  * return number of copied bytes. */
 size_t fmt_strn(char *dest,const char *src,size_t limit);
+
+/* copy n bytes from src to dest, return n */
+static inline size_t fmt_copybytes(char* dest,const char* src,size_t n) {
+  byte_copy(dest,n,src);
+  return n;
+}
 
 /* "foo" -> "  foo"
  * write padlen-srclen spaces, if that is >= 0.  Then copy srclen
@@ -101,6 +144,13 @@ size_t fmt_httpdate(char* dest,time_t t);
 size_t fmt_utf8(char* dest,uint32_t n);	/* can store 0-0x7fffffff */
 size_t fmt_asn1derlength(char* dest,unsigned long long l);	/* 0-0x7f: 1 byte, above that 1+bytes_needed bytes */
 size_t fmt_asn1dertag(char* dest,unsigned long long l);	/* 1 byte for each 7 bits; upper bit = more bytes coming */
+
+/* '&' -> '&amp;', '<' -> '&lt;'
+ * 0 is rejected
+ * control characters except \t \r \n are written in escaped form
+ * characters from d780 to dfff and fffe and ffff and everything above 10ffff are also rejected.
+ * everything else is passed through encoded as UTF-8 */
+size_t fmt_xmlescape(char* dest,uint32_t ch);
 
 /* internal functions, may be independently useful */
 char fmt_tohex(char c);
