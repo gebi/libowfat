@@ -1,5 +1,7 @@
 0.30:
   add compiletimeassert.h
+  add haveuint128.h
+  byte.h now defines UNALIGNED_ACCESS_OK on x86
 
 0.29:
   save 8 bytes in taia.h for 64-bit systems
