@@ -11,9 +11,9 @@ reading functions will be able to read until the end of the data in the
 stralloc, then signal EOF.  The buffer does not have its own buffer
 space, it reuses the one in the stralloc.
 
-Do not touch the stralloc until your are done with the buffer!  In
+Do not touch the stralloc until you are done with the buffer!  In
 particular, do not call stralloc_free on it!
 
 Reading data from the buffer will not change the stralloc.
 .SH "SEE ALSO"
-buffer_tosa(3), buffer_init(3), buffer(3)
+buffer_tosa(3), buffer_init(3), buffer(3), buffer_frombuf(3), buffer_fromarray(3)
