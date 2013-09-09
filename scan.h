@@ -17,21 +17,45 @@ extern "C" {
 #define __pure__
 #endif
 
-/* interpret src as ASCII decimal number, write number to dest and
- * return the number of bytes that were parsed */
-size_t scan_ulong(const char *src,unsigned long *dest);
+/* This file declared functions used to decode / scan / unmarshal
+ * integer or string values from a buffer.
+ * The first argument is always the source buffer, the second argument
+ * is a pointer to the destination (where to store the result). The
+ * return value is number of bytes scanned successfully. */
 
-/* interpret src as ASCII hexadecimal number, write number to dest and
- * return the number of bytes that were parsed */
+/* Interpret src as ASCII decimal number, write number to dest and
+ * return the number of bytes that were parsed.
+ * scan_ulong("23",&i) -> i=23, return 2
+ * NB: leading + or - or space not accepted:
+ * scan_ulong("+23",&i) -> return 0
+ * scan_ulong("-23",&i) -> return 0
+ * scan_ulong(" 23",&i) -> return 0
+ * scan_ulong("23,42",&i) -> i=23, return 2
+ * NB: 023 for octal or 0x23 for hex are not supported!
+ * scan_ulong("0x23",&i) -> i=0, return 1
+ * NB: will detect integer overflow and abort on excessively large
+ * values, i.e. on a 32-bit system:
+ * scan_ulong("4294967296",&i" -> i=429496729, return 9 */
+size_t scan_ulong(const char *src,unsigned long *dest);
+size_t scan_ulongn(const char* src,size_t n,unsigned long* dest);
+
+/* Interpret src as ASCII hexadecimal number, write number to dest and
+ * return the number of bytes that were parsed.
+ * Note: leading '+' or '-' not accepted! */
 size_t scan_xlong(const char *src,unsigned long *dest);
+size_t scan_xlongn(const char *src,size_t n,unsigned long *dest);
 
 /* interpret src as ASCII octal number, write number to dest and
- * return the number of bytes that were parsed */
+ * return the number of bytes that were parsed.
+ * Note: leading '+' or '-' not accepted! */
 size_t scan_8long(const char *src,unsigned long *dest);
+size_t scan_8longn(const char *src,size_t n,unsigned long *dest);
 
 /* interpret src as signed ASCII decimal number, write number to dest
- * and return the number of bytes that were parsed */
+ * and return the number of bytes that were parsed.
+ * Note: leading spaces not accepted! */
 size_t scan_long(const char *src,signed long *dest);
+size_t scan_longn(const char *src,size_t n,signed long *dest);
 
 size_t scan_longlong(const char *src,signed long long *dest);
 size_t scan_ulonglong(const char *src,unsigned long long *dest);
@@ -84,7 +108,17 @@ size_t scan_utf8(const char* in,size_t len,uint32_t* n) __pure__;
 size_t scan_asn1derlength(const char* in,size_t len,unsigned long long* n) __pure__;
 size_t scan_asn1dertag(const char* in,size_t len,unsigned long long* n) __pure__;
 
-/* a few internal function that might be useful independently */
+/* parse a netstring, input buffer is in (len bytes).
+ * if parsing is successful:
+ *   *dest points to string and *slen is size of string
+ *   return number of bytes parsed
+ * else
+ *   return 0
+ * Note: *dest will point inside the input buffer!
+ */
+size_t scan_netstring(const char* in,size_t len,char** dest,size_t* slen) __pure__;
+
+/* internal function that might be useful independently */
 /* convert from hex ASCII, return 0 to 15 for success or -1 for failure */
 int scan_fromhex(unsigned char c);
 
