@@ -143,6 +143,12 @@ void buffer_fromsa(buffer* b,stralloc* sa);	/* read from sa */
 int buffer_tosa(buffer*b,stralloc* sa);		/* write to sa, auto-growing it */
 #endif
 
+void buffer_frombuf(buffer* b,const char* x,size_t l);	/* buffer reads from static buffer */
+
+#ifdef ARRAY_H
+void buffer_fromarray(buffer* b,array* a);	/* buffer reads from array */
+#endif
+
 #ifdef __cplusplus
 }
 #endif
