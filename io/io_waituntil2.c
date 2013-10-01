@@ -140,6 +140,20 @@ int64 io_waituntil2(int64 milliseconds) {
 	  if (e->wantwrite) y[i].events|=EPOLLOUT;
 	}
 
+	newevents=0;
+	if (!e->canread || e->wantread) {
+	  newevents|=EPOLLIN;
+	  e->kernelwantread=1;
+	} else
+	  e->kernelwantread=0;
+	if (!e->canwrite || e->wantwrite) {
+	  newevents|=EPOLLOUT;
+	  e->kernelwantwrite=1;
+	} else
+	  e->kernelwantwrite=0;
+
+	/* if we think we can not read, but the kernel tells us that we
+	 * can, put this fd in the relevant data structures */
 	if (!e->canread && (y[i].events&(EPOLLIN|EPOLLPRI|EPOLLRDNORM|EPOLLRDBAND))) {
 	  if (e->canread) {
 	    newevents &= ~EPOLLIN;
@@ -151,9 +165,22 @@ int64 io_waituntil2(int64 milliseconds) {
 	    }
 	  }
 	}
+	/* if the kernel says the fd is writable, ... */
 	if (y[i].events&EPOLLOUT) {
+	  /* Usually, if the kernel says a descriptor is writable, we
+	   * note it and do not tell the kernel not to tell us again.
+	   * The idea is that once we notify the caller that the fd is
+	   * writable, and the caller handles the event, the caller will
+	   * just ask to be notified of future write events again.  We
+	   * are trying to save the superfluous epoll_ctl syscalls.
+	   * If e->canwrite is set, then this gamble did not work out.
+	   * We told the caller, yet after the caller is done we still
+	   * got another write event.  Clearly the user is implementing
+	   * some kind of throttling and we can tell the kernel to leave
+	   * us alone for now. */
 	  if (e->canwrite) {
 	    newevents &= ~EPOLLOUT;
+	    e->kernelwantwrite=0;
 	  } else {
 	    /* If !e->wantwrite: The laziness optimization in
 	     * io_dontwantwrite hit.  We did not tell the kernel that we
@@ -168,17 +195,6 @@ int64 io_waituntil2(int64 milliseconds) {
 	  }
 	}
 
-	newevents=0;
-	if (!e->canread || e->wantread) {
-	  newevents|=EPOLLIN;
-	  e->kernelwantread=1;
-	} else
-	  e->kernelwantread=0;
-	if (!e->canwrite || e->wantwrite) {
-	  newevents|=EPOLLOUT;
-	  e->kernelwantwrite=1;
-	} else
-	  e->kernelwantwrite=0;
 	if (newevents != curevents) {
 #if 0
 	  printf("canread %d, wantread %d, kernelwantread %d, canwrite %d, wantwrite %d, kernelwantwrite %d\n",
