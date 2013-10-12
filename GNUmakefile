@@ -288,9 +288,13 @@ libsocket: trysocket.c
 	fi; fi > libsocket
 	rm -f blah trysocket
 
-socket_accept6.o socket_connect6.o socket_local6.o socket_mchopcount6.o \
-socket_mcjoin6.o socket_mcleave6.o socket_mcloop6.o socket_recv6.o \
-socket_remote6.o socket_send6.o socket_tcp6.o socket_udp6.o: haveip6.h havescope.h
+socket_accept6.o socket_bind6.o socket_connect6.o socket_local6.o \
+socket_mchopcount6.o socket_mcjoin6.o socket_mcleave6.o socket_mcloop6.o \
+socket_recv6.o socket_remote6.o socket_sctp6b.o socket_send6.o \
+socket_tcp6b.o socket_udp6.o: haveip6.h
+
+socket_accept6.o socket_connect6.o socket_local6.o socket_recv6.o \
+socket_remote6.o socket_send6.o: havescope.h
 
 socket_getifidx.o socket_getifname.o: haven2i.h
 
