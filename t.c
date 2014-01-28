@@ -29,11 +29,11 @@
 #include "io_internal.h"
 
 #define rdtscl(low) \
-     __asm__ __volatile__ ("rdtsc" : "=a" (low) : : "edx")
+     __asm__ __volatile__ ("lfence\nrdtsc" : "=a" (low) : : "edx")
 
 // #define atomic_add(mem,val) asm volatile ("lock; add%z0 %1, %0": "+m" (mem): "ir" (val))
 
-int64 writecb(int64 fd,const void* buf,uint64 n) {
+static int64 writecb(int64 fd,const void* buf,uint64 n) {
   (void)fd;
   (void)buf;
   (void)n;
@@ -48,6 +48,24 @@ int64 writecb(int64 fd,const void* buf,uint64 n) {
 }
 
 int main(int argc,char* argv[]) {
+  char buf[1024];
+  size_t l;
+  assert(fmt_jsonescape(buf,"foo\nbar\\",8)==14 && byte_equal(buf,14,"foo\\u000abar\\\\"));
+  memset(buf,0,sizeof(buf));
+  assert(scan_jsonescape("foo\\u000abar\\\\",buf,&l)==14 && l==8 && byte_equal(buf,8,"foo\nbar\\"));
+  memset(buf,0,sizeof(buf));
+  /* example from the json spec: G clef U+1D11E encoded using UTF-16 surrogates*/
+  assert(scan_jsonescape("\\uD834\\uDD1Exyz",buf,&l)==15 && l==7 && byte_equal(buf,7,"\xf4\x8d\x84\x9exyz"));
+
+/*
+	 1D11E -> 0001 1101 0001 0001 1110
+	       -> ______00 __011101 __000100 __011110
+	 as utf8: 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+	          11110000 10011101 10000100 10011110
+		  f   0    9   d    8   4    9   e
+*/
+
+#if 0
   static size_t x;
   x=23;
   atomic_add(&x,3);
@@ -55,6 +73,7 @@ int main(int argc,char* argv[]) {
   printf("%u\n",atomic_add_return(&x,-3));
   printf("%u\n",compare_and_swap(&x,26,17));
   printf("%u\n",compare_and_swap(&x,23,17));
+#endif
 
 #if 0
   atomic_add(&x,3); printf("%u\n",x);
@@ -361,7 +380,7 @@ int main(int argc,char* argv[]) {
 #endif
 #if 0
   printf("%d %d\n",strcmp("foo","bar"),str_diff("foo","bar"));
-  printf("%d %d\n",strcmp("foo","üar"),str_diff("foo","üar"));
+  printf("%d %d\n",strcmp("foo","\xfcar"),str_diff("foo","\xfcar"));
 #endif
 #if 0
   {

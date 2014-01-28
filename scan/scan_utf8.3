@@ -17,5 +17,10 @@ sequence, scan_utf8 returns 0 and does not touch \fIdest\fR.
 The length of the longest UTF-8 sequence is 5.  If the buffer is longer
 than that, and scan_utf8 fails, then the data was not a valid UTF-8
 encoded sequence.
+.SH NOTE
+fmt_utf8 and scan_utf8 implement the encoding from UTF-8, but are meant
+to be able to store integers, not just Unicode code points.  Values
+above 0x10ffff are not valid UTF-8.  If you are using this function to
+parse UTF-8, you need to reject them (see RFC 3629).
 .SH "SEE ALSO"
 fmt_utf8(3)

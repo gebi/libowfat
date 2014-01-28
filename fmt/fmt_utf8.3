@@ -15,5 +15,10 @@ number of bytes it would have written.
 
 For convenience, fmt.h defines the integer FMT_UTF8 to be big enough to
 contain every possible fmt_utf8 output.
+.SH NOTE
+fmt_utf8 and scan_utf8 implement the encoding from UTF-8, but are meant
+to be able to store integers, not just Unicode code points.  Values
+larger than 0x10ffff are not valid UTF-8 (see RFC 3629) but can be
+represented in the encoding, so fmt_utf8 will allow them.
 .SH "SEE ALSO"
 scan_utf8(3)

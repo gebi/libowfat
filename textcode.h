@@ -11,35 +11,39 @@ extern "C" {
 /* These take len bytes from src and write them in encoded form to
  * dest (if dest != NULL), returning the number of bytes written. */
 
-/* needs len/3*4 bytes */
+/* Needs len/3*4 bytes */
 size_t fmt_uuencoded(char* dest,const char* src,size_t len);
-/* needs len/3*4 bytes */
+/* Needs len/3*4 bytes */
 size_t fmt_base64(char* dest,const char* src,size_t len);
-/* worst case: len*3 */
+/* Worst case: len*3 */
 size_t fmt_quotedprintable(char* dest,const char* src,size_t len);
-/* worst case: len*3 */
+/* Worst case: len*3 */
 size_t fmt_quotedprintable2(char* dest,const char* src,size_t len,const char* escapeme);
-/* worst case: len*3 */
+/* Worst case: len*3 */
 size_t fmt_urlencoded(char* dest,const char* src,size_t len);
-/* worst case: len*3 */
+/* Worst case: len*3 */
 size_t fmt_urlencoded2(char* dest,const char* src,size_t len,const char* escapeme);
-/* worst case: len*2 */
+/* Worst case: len*2 */
 size_t fmt_yenc(char* dest,const char* src,size_t len);
-/* needs len*2 bytes */
+/* Needs len*2 bytes */
 size_t fmt_hexdump(char* dest,const char* src,size_t len);
-/* change '<' to '&lt;' and '&' to '&amp;'; worst case: len*5 */
+/* Change '<' to '&lt;' and '&' to '&amp;'; worst case: len*5 */
 size_t fmt_html(char* dest,const char* src,size_t len);
-/* change '\' to "\\", '\n' to "\n", ^A to "\x01" etc; worst case: len*4 */
+/* Change '\' to "\\", '\n' to "\n", ^A to "\x01" etc; worst case: len*4 */
 size_t fmt_cescape(char* dest,const char* src,size_t len);
-/* worst case: len*4 */
+/* Worst case: len*4 */
 size_t fmt_cescape2(char* dest,const char* src,size_t len,const char* escapeme);
-/* fold awk whitespace to '_'; this is great for writing fields with
+/* Fold whitespace to '_'; this is great for writing fields with
  * white spaces to a log file and still allow awk to do log analysis */
-/* worst case: same size */
+/* Worst case: same size */
 size_t fmt_foldwhitespace(char* dest,const char* src,size_t len);
-/* worst case: len*3 */
+/* Worst case: len*3 */
 size_t fmt_ldapescape(char* dest,const char* src,size_t len);
 size_t fmt_ldapescape2(char* dest,const char* src,size_t len,const char* escapeme);
+/* Encode JSON string from UTF-8; will backslash-escape the bare minimum.
+ * Will not verify that the input is valid UTF-8!
+ * Worst case: len*6 */
+size_t fmt_jsonescape(char* dest,const char* src,size_t len);
 
 /* These read one line from src, decoded it, and write the result to
  * dest.  The number of decoded bytes is written to destlen.  dest
@@ -54,6 +58,7 @@ size_t scan_hexdump(const char *src,char *dest,size_t *destlen);
 size_t scan_html(const char *src,char *dest,size_t *destlen);
 size_t scan_cescape(const char *src,char *dest,size_t *destlen);
 size_t scan_ldapescape(const char* src,char* dest,size_t *destlen);
+size_t scan_jsonescape(const char* src,char* dest,size_t *destlen);
 
 #ifdef STRALLOC_H
 /* WARNING: these functions _append_ to the stralloc, not overwrite! */
@@ -78,6 +83,8 @@ size_t scan_to_sa(size_t (*func)(const char*,char*,size_t*),
 #define fmt_hexdump_sa(sa,src,len) fmt_to_sa(fmt_hexdump,sa,src,len)
 #define fmt_html_sa(sa,src,len) fmt_to_sa(fmt_html,sa,src,len)
 #define fmt_cescape_sa(sa,src,len) fmt_to_sa(fmt_cescape,sa,src,len)
+#define fmt_ldapescape_sa(sa,src,len) fmt_to_sa(fmt_ldapescape,sa,src,len)
+#define fmt_jsonescape_sa(sa,src,len) fmt_to_sa(fmt_jsonescape,sa,src,len)
 
 #define fmt_quotedprintable2_sa(sa,src,len,escapeme) fmt_to_sa2(fmt_quotedprintable2,sa,src,len,escapeme)
 #define fmt_urlencoded2_sa(sa,src,len,escapeme) fmt_to_sa2(fmt_urlencoded2,sa,src,len,escapeme)
@@ -91,6 +98,8 @@ size_t scan_to_sa(size_t (*func)(const char*,char*,size_t*),
 #define scan_hexdump_sa(src,sa) scan_to_sa(scan_hexdump,src,sa)
 #define scan_html_sa(src,sa) scan_to_sa(scan_html,src,sa)
 #define scan_cescape_sa(src,sa) scan_to_sa(scan_cescape,src,sa)
+#define scan_ldapescape_sa(src,sa) scan_to_sa(scan_ldapescape,src,sa)
+#define scan_jsonescape_sa(src,sa) scan_to_sa(scan_jsonescape,src,sa)
 #endif
 
 #ifdef ARRAY_H
