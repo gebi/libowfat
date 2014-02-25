@@ -31,7 +31,7 @@ size_t scan_jsonescape(const char *src,char *dest,size_t *destlen) {
 	    i+=5;	// we want i to go up by 6, 1 is done by the for loop
 	    continue;	// write nothing!
 	  } else if (cur>=0xdc00 && cur<=0xdfff) {
-	    todo=(cur&0x3ff) | ((prev&0x3ff) << 10) + 0x100000;
+	    todo=(cur&0x3ff) | ((prev&0x3ff) << 10) | 0x100000;
 	  } else
 	    todo=cur;
 	  written+=fmt_utf8(dest?dest+written:dest,todo);
