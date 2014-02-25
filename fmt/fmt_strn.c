@@ -5,10 +5,10 @@ size_t fmt_strn(char *out,const char *in,size_t limit) {
   register const char* t=in;
   register const char* u=in+limit;
   for (;;) {
-    if (!*t) break; if (s) { *s=*t; ++s; } if (t==u) break; ++t;
-    if (!*t) break; if (s) { *s=*t; ++s; } if (t==u) break; ++t;
-    if (!*t) break; if (s) { *s=*t; ++s; } if (t==u) break; ++t;
-    if (!*t) break; if (s) { *s=*t; ++s; } if (t==u) break; ++t;
+    if (!*t || t==u) break; if (s) { *s=*t; ++s; } ++t;
+    if (!*t || t==u) break; if (s) { *s=*t; ++s; } ++t;
+    if (!*t || t==u) break; if (s) { *s=*t; ++s; } ++t;
+    if (!*t || t==u) break; if (s) { *s=*t; ++s; } ++t;
   }
   return t-in;
 }
