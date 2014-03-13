@@ -13,7 +13,7 @@ LIBS=byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a \
 buffer.a mmap.a taia.a tai.a dns.a case.a mult.a array.a io.a \
 textcode.a cdb.a
 
-all: $(LIBS) libowfat.a libsocket t
+all: ent $(LIBS) libowfat.a libsocket t
 
 CROSS=
 #CROSS=i686-mingw-
@@ -21,9 +21,13 @@ CC=$(CROSS)gcc
 CFLAGS=-pipe -W -Wall -O2 -fomit-frame-pointer
 #CFLAGS=-pipe -Os -march=pentiumpro -mcpu=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
 
+ent: ent.c
+	gcc -g -o ent ent.c
+
 # CFLAGS += -fstrict-aliasing -Wstrict-aliasing=2
 
-CFLAGS += -D_REENTRANT
+WERROR=
+CFLAGS += -D_REENTRANT $(WERROR)
 
 # startrip
 ifneq ($(DEBUG),)
@@ -326,3 +330,11 @@ windoze:
 
 windoze64:
 	$(MAKE) DIET= CROSS=x86_64-mingw32-
+
+update:
+	dl -n http://www.w3.org/TR/html5/entities.json
+
+entities.h: entities.json ent
+	./ent
+
+scan_html.o: entities.h

@@ -5,4 +5,6 @@
 int main() {
   static char ifname[IFNAMSIZ];
   char *tmp=if_indextoname(0,ifname);
+  (void)tmp;
+  return 0;
 }

@@ -5,6 +5,8 @@
 #include <malloc.h>
 #endif
 
-main() {
+int main() {
   char* c=alloca(23);
+  (void)c;
+  return 0;
 }

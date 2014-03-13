@@ -19,5 +19,12 @@ int main() {
   assert(!array_failed(&a));
   write(1,array_start(&a),array_bytes(&a)); write(1,"\n",1);
   array_trunc(&a);
+
+  strcpy(buf,"&Auml;cht fn&ouml;rdig.");
+  size_t n;
+  scan_html(buf,buf,&n);
+  buf[n]=0;
+  puts(buf);
+
   return 0;
 }

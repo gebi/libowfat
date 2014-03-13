@@ -104,4 +104,28 @@ int main() {
   zap(); assert(fmt_asn1dertag(buf,0xc2)==2 && byte_equal(buf,3,"\x81\x42_"));
 
   zap(); assert(fmt_strm(buf,"hell","o, worl","d!\n")==14 && byte_equal(buf,15,"hello, world!\n_"));
+
+  assert(fmt_escapecharxml(NULL,0xc2)==6);
+  zap(); assert(fmt_escapecharxml(buf,0xc2)==6 && byte_equal(buf,7,"&#194;_"));
+  assert(fmt_escapecharxml(NULL,0)==4);
+  zap(); assert(fmt_escapecharxml(buf,0)==4 && byte_equal(buf,5,"&#0;_"));
+
+  assert(fmt_escapecharjson(NULL,'\\')==2);	// "\\"
+  zap(); assert(fmt_escapecharjson(buf,'\\')==2 && byte_equal(buf,3,"\\\\_"));
+  assert(fmt_escapecharjson(NULL,0xc2)==6);	// "\u00c2"
+  zap(); assert(fmt_escapecharjson(buf,0xc2)==6 && byte_equal(buf,7,"\\u00c2_"));
+  assert(fmt_escapecharjson(NULL,0x1d11e)==12);	// "\ud834\xdd1e"
+  zap(); assert(fmt_escapecharjson(buf,0x1d11e)==12 && byte_equal(buf,13,"\\ud834\\udd1e_"));
+
+  assert(fmt_escapecharquotedprintable(NULL,'=')==3);	// =3d
+  zap(); assert(fmt_escapecharquotedprintable(buf,'=')==3 && byte_equal(buf,4,"=3d_"));
+  assert(fmt_escapecharquotedprintable(NULL,0xf6)==3);	// =f6
+  zap(); assert(fmt_escapecharquotedprintable(buf,0xf6)==3 && byte_equal(buf,4,"=f6_"));
+  assert(fmt_escapecharquotedprintable(NULL,0x100)==0);
+
+  assert(fmt_escapecharquotedprintableutf8(NULL,'=')==3);	// =3d
+  zap(); assert(fmt_escapecharquotedprintableutf8(buf,'=')==3 && byte_equal(buf,4,"=3d_"));
+  assert(fmt_escapecharquotedprintableutf8(NULL,0xf6)==6);	// =c3=b6
+  zap(); assert(fmt_escapecharquotedprintableutf8(buf,0xf6)==6 && byte_equal(buf,7,"=c3=b6_"));
+
 }

@@ -3,6 +3,7 @@
 #include <sys/poll.h>
 #include <signal.h>
 #include <fcntl.h>
+#include <stdio.h>
 
 int main() {
   int signum=SIGRTMIN+1;
@@ -36,4 +37,5 @@ int main() {
       }
     }
   }
+  return 0;
 }

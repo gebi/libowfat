@@ -836,3 +836,8 @@ windoze:
 
 windoze64:
 	$(MAKE) DIET= CROSS=x86_64-mingw32-
+
+entities.h: entities.json ent
+	./ent
+
+scan_html.o: entities.h

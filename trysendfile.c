@@ -55,6 +55,7 @@ int main() {
   p.trailer_length=6;
   if (send_file(&destfd,&p,0)>=0)
     printf("sent %lu bytes.\n",p.bytes_sent);
+  return 0;
 }
 #elif defined(__linux__)
 
@@ -77,6 +78,7 @@ int main() {
   off_t r=sendfile(1,fd,&o,23);
   if (r!=-1)
     printf("sent %llu bytes.\n",r);
+  return 0;
 }
 
 #else

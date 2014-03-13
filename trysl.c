@@ -7,6 +7,8 @@
 #include <netinet/in.h>
 #endif
 
-main() {
+int main() {
   socklen_t t;
+  (void)t;
+  return 0;
 }

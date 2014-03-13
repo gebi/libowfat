@@ -145,12 +145,31 @@ size_t fmt_utf8(char* dest,uint32_t n);	/* can store 0-0x7fffffff */
 size_t fmt_asn1derlength(char* dest,unsigned long long l);	/* 0-0x7f: 1 byte, above that 1+bytes_needed bytes */
 size_t fmt_asn1dertag(char* dest,unsigned long long l);	/* 1 byte for each 7 bits; upper bit = more bytes coming */
 
-/* '&' -> '&amp;', '<' -> '&lt;'
- * 0 is rejected
- * control characters except \t \r \n are written in escaped form
- * characters from d780 to dfff and fffe and ffff and everything above 10ffff are also rejected.
- * everything else is passed through encoded as UTF-8 */
-size_t fmt_xmlescape(char* dest,uint32_t ch);
+/* Marshaling helper functions.
+ * Escape one character, no matter if it needs escaping or not.
+ * The functions will reject characters that cannot be represented but
+ * not characters that the standard says should never occur.  The idea
+ * is to make these functions useful for creating bad encoding for
+ * penetration testing.
+ * Depending on the escaping method, the input character (uint32_t, a
+ * unicode codepoint) may be limited to 0x7f, 0xff or 0x10ffff. */
+
+/* XML escaping: '&' -> '&amp;', '<' -> '&lt;', 'ö' -> '&#xf6;' */
+size_t fmt_escapecharxml(char* dest,uint32_t ch);
+/* HTML escaping is the same as XML escaping. */
+size_t fmt_escapecharhtml(char* dest,uint32_t ch);
+
+/* JSON escaping: '\' -> '\\', '"' -> '\"', 'ö' -> '\u00f6' */
+size_t fmt_escapecharjson(char* dest,uint32_t ch);
+
+/* MIME quoted-printable escaping: 'ö' -> '=f6', characters > 0xff not supported */
+size_t fmt_escapecharquotedprintable(char* dest,uint32_t ch);
+
+/* MIME quoted-printable escaping with UTF-8: 'ö' -> '=c3=b6', characters > 0x7fffffff not supported */
+size_t fmt_escapecharquotedprintableutf8(char* dest,uint32_t ch);
+
+/* C escaping: '\' -> '\\', newline -> '\n', 0xc2 -> '\302' */
+size_t fmt_escapecharc(char* dest,uint32_t ch);
 
 /* internal functions, may be independently useful */
 char fmt_tohex(char c);
