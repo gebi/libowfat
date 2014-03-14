@@ -219,6 +219,9 @@ int main() {
   assert(scan_uint("4294967296",&ui)==9 && ui==429496729);
   assert(scan_ushort("65535",&us)==5 && us==0xffff);
   assert(scan_ushort("65536",&us)==4 && us==6553);
+  assert(scan_ushort("655350",&us)==5 && us==0xffff);
+  assert(scan_ushort("75535",&us)==4 && us==7553);
+
 
   assert(scan_xint("0ffffffff",&ui)==9 && ui==0xffffffff);
   assert(scan_xint("ffffffff0",&ui)==8 && ui==0xffffffff);

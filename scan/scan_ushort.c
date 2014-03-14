@@ -18,7 +18,7 @@ size_t scan_ushort(const char* src,unsigned short* dest) {
       unsigned short int n;
       /* division is very slow on most architectures */
       n=(unsigned short)(l<<3); if ((n>>3)!=l) break;
-      if (n+(l<<1) < n) break;
+      if ((unsigned short)(n+(l<<1)) < n) break;
       n=(unsigned short)(n+(l<<1));
       if ((unsigned short)(n+c) < n) break;
       l=(unsigned short)(n+c);
