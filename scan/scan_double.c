@@ -52,5 +52,5 @@ size_t scan_double(const char *in, double *dest) {
   }
 done:
   *dest=(neg?-d:d);
-  return c-in;
+  return (size_t)(c-in);
 }

@@ -3,7 +3,7 @@
 #include "byte.h"
 #include "dns.h"
 
-int dns_domain_fromdot(char **out,const char *buf,unsigned int n)
+int dns_domain_fromdot(char **out,const char *buf,size_t n)
 {
   char label[63];
   unsigned int labellen = 0; /* <= sizeof label */

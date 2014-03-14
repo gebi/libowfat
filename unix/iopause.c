@@ -20,7 +20,7 @@ void iopause(iopause_fd *x,unsigned int len,struct taia *deadline,struct taia *s
     taia_sub(&t,deadline,&t);
     d = taia_approx(&t);
     if (d > 1000.0) d = 1000.0;
-    millisecs = d * 1000.0 + 20.0;
+    millisecs = (int)(d * 1000.0 + 20.0);
   }
 
   for (i = 0;i < len;++i)

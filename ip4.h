@@ -6,8 +6,8 @@
 extern "C" {
 #endif
 
-unsigned int scan_ip4(const char *src,char *ip);
-unsigned int fmt_ip4(char *dest,const char *ip);
+size_t scan_ip4(const char *src,char *ip);
+size_t fmt_ip4(char *dest,const char *ip);
 
 /* for djb backwards compatibility */
 #define ip4_scan scan_ip4

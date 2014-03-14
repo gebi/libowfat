@@ -107,15 +107,19 @@ int stralloc_diffs(const stralloc* a,const char* b) __pure__;
 int stralloc_catulong0(stralloc* sa,unsigned long int in,size_t n);
 
 /* stralloc_catlong0 appends a '0' padded ASCII representation of in */
+/* note that the n does not include the sign:
+ * stralloc_catlong0(&sa,-10,4) -> "-0010" */
 int stralloc_catlong0(stralloc* sa,signed long int in,size_t n);
 
 /* stralloc_free frees the storage associated with sa */
 void stralloc_free(stralloc* sa);
 
 #define stralloc_catlong(sa,l) (stralloc_catlong0((sa),(l),0))
+#define stralloc_catulong(sa,l) (stralloc_catulong0((sa),(l),0))
 #define stralloc_catuint0(sa,i,n) (stralloc_catulong0((sa),(i),(n)))
 #define stralloc_catint0(sa,i,n) (stralloc_catlong0((sa),(i),(n)))
 #define stralloc_catint(sa,i) (stralloc_catlong0((sa),(i),0))
+#define stralloc_catuint(sa,i) (stralloc_catulong0((sa),(i),0))
 
 /* remove last char.  Return removed byte as unsigned char (or -1 if stralloc was empty). */
 int stralloc_chop(stralloc* sa);
@@ -129,7 +133,7 @@ int buffer_putsa(buffer* b,stralloc* sa);
 /* write stralloc to buffer and flush */
 int buffer_putsaflush(buffer* b,stralloc* sa);
 
-/* these "read token" functions return 0 if the token was complete or
+/* these "read token" functions return 1 for a complete token, 0 if
  * EOF was hit or -1 on error.  In contrast to the non-stralloc token
  * functions, the separator is also put in the stralloc; use
  * stralloc_chop or stralloc_chomp to get rid of it. */
@@ -158,9 +162,10 @@ int buffer_get_token_sa_pred(buffer* b,stralloc* sa,sa_predicate p);
 int buffer_get_new_token_sa_pred(buffer* b,stralloc* sa,sa_predicate p);
 
 
-/* make a buffer from a stralloc.
+/* make a buffer (for reading) from a stralloc.
  * Do not change the stralloc after this! */
 void buffer_fromsa(buffer* b,stralloc* sa);
+int buffer_tosa(buffer*b,stralloc* sa);		/* write to sa, auto-growing it */
 #endif
 
 #ifdef __cplusplus

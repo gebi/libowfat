@@ -50,6 +50,10 @@ static int64 writecb(int64 fd,const void* buf,uint64 n) {
 int main(int argc,char* argv[]) {
   char buf[1024];
   size_t l;
+  unsigned char c;
+  printf("%d\n",(c=scan_fromhex('.')));
+  (void)argc;
+  (void)argv;
   assert(fmt_jsonescape(buf,"foo\nbar\\",8)==14 && byte_equal(buf,14,"foo\\u000abar\\\\"));
   memset(buf,0,sizeof(buf));
   assert(scan_jsonescape("foo\\u000abar\\\\",buf,&l)==14 && l==8 && byte_equal(buf,8,"foo\nbar\\"));

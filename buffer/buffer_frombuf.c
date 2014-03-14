@@ -9,7 +9,7 @@ static ssize_t dummyreadwrite(int fd,char* buf,size_t len) {
 }
 
 void buffer_frombuf(buffer* b,const char* x,size_t l) {
-  b->x=x;
+  b->x=(char*)x;
   b->p=0;
   b->n=l;
   b->a=l;

@@ -3,7 +3,7 @@
 #include "ip4.h"
 #include "ip6.h"
 
-unsigned int fmt_ip6c(char *s,const char ip[16])
+size_t fmt_ip6c(char *s,const char ip[16])
 {
   if (ip6_isv4mapped(ip))
     return fmt_ip4(s,ip+12);

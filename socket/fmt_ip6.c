@@ -3,9 +3,10 @@
 #include "ip4.h"
 #include "ip6.h"
 
-unsigned int fmt_ip6(char *s,const char ip[16])
+size_t fmt_ip6(char *s,const char ip[16])
 {
-  unsigned long len,temp, k, pos0=0,len0=0, pos1=0, compr=0;
+  unsigned long temp;
+  size_t len, k, pos0=0,len0=0, pos1=0, compr=0;
 
   for (k=0; k<16; k+=2) {
     if (ip[k]==0 && ip[k+1]==0) {

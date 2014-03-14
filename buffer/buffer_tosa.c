@@ -4,14 +4,13 @@
 static ssize_t strallocwrite(int fd,char* buf,size_t len,void* myself) {
   buffer* b=myself;
   stralloc* sa=b->cookie;
-  sa->len+=len;
   if (stralloc_readyplus(sa,1024)==0) return 0;
   b->x=sa->s+sa->len;
   b->p=0;
   b->a=1024;
   (void)fd;
   (void)buf;
-  return len;
+  return (ssize_t)len;
 }
 
 int buffer_tosa(buffer* b,stralloc* sa) {

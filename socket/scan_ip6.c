@@ -10,10 +10,10 @@
  *   3. The last two words may be written as IPv4 address
  */
 
-unsigned int scan_ip6(const char *s,char ip[16])
+size_t scan_ip6(const char *s,char ip[16])
 {
-  unsigned int i;
-  unsigned int len=0;
+  size_t i;
+  size_t len=0;
   unsigned long u;
 
   char suffix[16];
@@ -45,8 +45,8 @@ unsigned int scan_ip6(const char *s,char ip[16])
       else
 	return 0;
     }
-    ip[prefixlen++] = (u >> 8);
-    ip[prefixlen++] = (u & 255);
+    ip[prefixlen++] = (char)(u >> 8);
+    ip[prefixlen++] = (char)u;
     s += i; len += i;
     if (prefixlen==16)
       return len;
@@ -68,7 +68,7 @@ unsigned int scan_ip6(const char *s,char ip[16])
       break;
     }
     if (suffixlen+prefixlen<=12 && s[i]=='.') {
-      int j=scan_ip4(s,suffix+suffixlen);
+      size_t j=scan_ip4(s,suffix+suffixlen);
       if (j) {
 	suffixlen+=4;
 	len+=j;
@@ -76,8 +76,8 @@ unsigned int scan_ip6(const char *s,char ip[16])
       } else
 	prefixlen=12-suffixlen;	/* make end-of-loop test true */
     }
-    suffix[suffixlen++] = (u >> 8);
-    suffix[suffixlen++] = (u & 255);
+    suffix[suffixlen++] = (char)(u >> 8);
+    suffix[suffixlen++] = (char)u;
     s += i; len += i;
     if (prefixlen+suffixlen==16)
       break;

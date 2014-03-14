@@ -17,7 +17,7 @@ bytes, buffer_get copies only that many bytes, and returns that number.
 If the string is empty, buffer_get first uses a \fBread operation\fR to
 feed data into the string. The \fBread operation\fR may indicate end of
 input, in which case buffer_get returns 0; or a read error, in which
-case buffer_get returns -1, setting \fIerrno\fR approporiately.
+case buffer_get returns -1, setting \fIerrno\fR appropriately.
 
 The preallocated space and the \fBread operation\fR are specified by
 \fIb\fR. You must initialize \fBb\fR using buffer_init before calling

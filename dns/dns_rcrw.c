@@ -32,7 +32,7 @@ static int init(stralloc *rules)
     i = 0;
     for (j = 0;j < data.len;++j)
       if (data.s[j] == '\n') {
-        if (!stralloc_catb(rules,data.s + i,j - i)) return -1;
+        if (!stralloc_catb(rules,data.s + i,(size_t)(j - i))) return -1;
         while (rules->len) {
           if (rules->s[rules->len - 1] != ' ')
           if (rules->s[rules->len - 1] != '\t')

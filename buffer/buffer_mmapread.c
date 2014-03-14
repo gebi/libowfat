@@ -10,6 +10,6 @@ int buffer_mmapread(buffer* b,const char* filename) {
   b->p=0; b->a=b->n;
   b->fd=-1;
   b->op=op;
-  b->todo=MUNMAP;
+  b->deinit=buffer_munmap;
   return 0;
 }

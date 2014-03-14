@@ -27,7 +27,9 @@ extern char* mmap_read(const char* filename,size_t * filesize) {
   int fd=open_read(filename);
   char *map;
   if (fd>=0) {
-    *filesize=lseek(fd,0,SEEK_END);
+    register off_t o=lseek(fd,0,SEEK_END);
+    if (sizeof(off_t)!=sizeof(size_t) && o > (off_t)(size_t)-1) { close(fd); return 0; }
+    *filesize=(size_t)o;
     map=mmap(0,*filesize,PROT_READ,MAP_SHARED,fd,0);
     if (map==(char*)-1)
       map=0;

@@ -4,6 +4,8 @@
 #include <stdlib.h>
 
 #include <fmt.h>
+#include <stralloc.h>
+#include <buffer.h>
 #include <scan.h>
 #include <textcode.h>
 #include <byte.h>
@@ -12,6 +14,7 @@
 #include <uint64.h>
 #include <openreadclose.h>
 #include <mmap.h>
+#include <str.h>
 
 char buf[100];
 stralloc sa;
@@ -354,6 +357,51 @@ int main() {
   assert(sa.a >= 0x2000);
   assert(stralloc_readyplus(&sa,(size_t)-1)==0);
   assert(stralloc_ready(&sa,(size_t)-1)==0);
+
+  stralloc_zero(&sa);
+  assert(stralloc_copys(&sa,"hello, "));
+  assert(stralloc_cats(&sa,"world!"));
+  assert(stralloc_diffs(&sa,"hello, world!") == 0);
+  assert(stralloc_equals(&sa,"hello, world!"));
+  assert(stralloc_0(&sa));
+  assert(str_equal(sa.s,"hello, world!"));
+  assert(stralloc_equal(&sa,&sa));
+
+  assert(stralloc_copym(&sa,"hallo",", ","welt","!\n"));
+  assert(stralloc_equals(&sa,"hallo, welt!\n"));
+
+  stralloc_zero(&sa);
+  assert(stralloc_catlong(&sa,1));
+  assert(stralloc_catint(&sa,2));
+  assert(stralloc_catulong(&sa,3));
+  assert(stralloc_catuint(&sa,4));
+  assert(stralloc_equals(&sa,"1234"));
+  assert(stralloc_catulong0(&sa,5678,6));
+  assert(stralloc_equals(&sa,"1234005678"));
+  stralloc_zero(&sa);
+  assert(stralloc_catlong0(&sa,-5678,6));
+  assert(stralloc_equals(&sa,"-005678"));
+  assert(stralloc_chop(&sa));
+  assert(stralloc_equals(&sa,"-00567"));
+  assert(stralloc_chomp(&sa)==0);
+  assert(stralloc_equals(&sa,"-00567"));
+  assert(stralloc_cats(&sa,"\r\n"));
+  assert(stralloc_equals(&sa,"-00567\r\n"));
+  assert(stralloc_chomp(&sa)==2);
+  assert(stralloc_equals(&sa,"-00567"));
+
+  stralloc_zero(&sa);
+  assert(stralloc_copys(&sa,"foo\nbar\r\nbaz"));
+  {
+    buffer b;
+    stralloc s;
+    buffer_fromsa(&b,&sa);
+    stralloc_init(&s);
+    assert(buffer_getline_sa(&b,&s)==1 && stralloc_equals(&s,"foo\n"));
+    assert(buffer_getnewline_sa(&b,&s)==1 && stralloc_equals(&s,"bar\r\n"));
+    assert(buffer_getnewline_sa(&b,&s)==0 && stralloc_equals(&s,"baz"));
+    buffer_close(&b);
+  }
 
   return 0;
 }

@@ -4,11 +4,11 @@
 #include "socket.h"
 #include "havealloca.h"
 
-unsigned int scan_ip6if(const char* src,char* ip,uint32* scope_id) {
-  int i=scan_ip6(src,ip);
+size_t scan_ip6if(const char* src,char* ip,uint32* scope_id) {
+  size_t i=scan_ip6(src,ip);
   *scope_id=0;
   if (src[i]=='%') {
-    int j;
+    size_t j;
     char* tmp;
     for (j=i+1; isalnum(src[j]); ++j) ;
     if (!src[j])

@@ -16,20 +16,22 @@ typedef struct buffer {
   size_t p;		/* current position */
   size_t n;		/* current size of string in buffer */
   size_t a;		/* allocated buffer size */
-  int fd;		/* passed as first argument to op */
   ssize_t (*op)();	/* use read(2) or write(2) */
-  enum { NOTHING, FREE, MUNMAP } todo;
-  void* cookie;
+  void* cookie;			/* used internally by the to-stralloc buffers, and for buffer chaining */
+  void (*deinit)(void*);	/* called to munmap/free cleanup, with a pointer to the buffer as argument */
+  int fd;		/* passed as first argument to op */
 } buffer;
 
-#define BUFFER_INIT(op,fd,buf,len) { (buf), 0, 0, (len), (fd), (op), NOTHING, NULL }
-#define BUFFER_INIT_FREE(op,fd,buf,len) { (buf), 0, 0, (len), (fd), (op), FREE }
+#define BUFFER_INIT(op,fd,buf,len) { (buf), 0, 0, (len), (op), NULL, NULL, (fd) }
+#define BUFFER_INIT_FREE(op,fd,buf,len) { (buf), 0, 0, (len), (op), NULL, buffer_free, (fd) }
 #define BUFFER_INIT_READ(op,fd,buf,len) BUFFER_INIT(op,fd,buf,len) /*obsolete*/
 #define BUFFER_INSIZE 8192
 #define BUFFER_OUTSIZE 8192
 
 void buffer_init(buffer* b,ssize_t (*op)(),int fd,char* y,size_t ylen);
 void buffer_init_free(buffer* b,ssize_t (*op)(),int fd,char* y,size_t ylen);
+void buffer_free(void* buf);
+void buffer_munmap(void* buf);
 int buffer_mmapread(buffer* b,const char* filename);
 void buffer_close(buffer* b);
 
@@ -56,8 +58,8 @@ int buffer_putnlflush(buffer* b); /* put \n and flush */
   )
 
 ssize_t buffer_get(buffer* b,char* x,size_t len);
-int buffer_feed(buffer* b);
-int buffer_getc(buffer* b,char* x);
+ssize_t buffer_feed(buffer* b);
+ssize_t buffer_getc(buffer* b,char* x);
 ssize_t buffer_getn(buffer* b,char* x,size_t len);
 
 /* read bytes until the destination buffer is full (len bytes), end of

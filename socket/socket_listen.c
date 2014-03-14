@@ -28,6 +28,6 @@ int socket_listen(int s,unsigned int backlog) {
   }
   return r;
 #else
-  return listen(s, backlog);
+  return listen(s, (int)backlog);
 #endif
 }

@@ -2,19 +2,19 @@
 
 void taia_pack(char *s,const struct taia *t)
 {
-  unsigned long x;
+  uint32 x;
 
   tai_pack(s,&t->sec);
   s += 8;
 
   x = t->atto;
-  s[7] = x & 255; x >>= 8;
-  s[6] = x & 255; x >>= 8;
-  s[5] = x & 255; x >>= 8;
-  s[4] = x;
+  s[7] = (char)x; x >>= 8;
+  s[6] = (char)x; x >>= 8;
+  s[5] = (char)x; x >>= 8;
+  s[4] = (char)x;
   x = t->nano;
-  s[3] = x & 255; x >>= 8;
-  s[2] = x & 255; x >>= 8;
-  s[1] = x & 255; x >>= 8;
-  s[0] = x;
+  s[3] = (char)x; x >>= 8;
+  s[2] = (char)x; x >>= 8;
+  s[1] = (char)x; x >>= 8;
+  s[0] = (char)x;
 }
