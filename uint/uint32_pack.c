@@ -2,8 +2,8 @@
 #include "uint32.h"
 
 void uint32_pack(char *out,uint32 in) {
-  *out=in&0xff; in>>=8;
-  *++out=in&0xff; in>>=8;
-  *++out=in&0xff; in>>=8;
-  *++out=in&0xff;
+  *out=(char)in; in>>=8;
+  *++out=(char)in; in>>=8;
+  *++out=(char)in; in>>=8;
+  *++out=(char)in;
 }
