@@ -4,9 +4,15 @@
 #include <byte.h>
 #include <assert.h>
 
+#include <uint16.h>
+#include <uint32.h>
+#include <uint64.h>
+
 char buf[100];
 
 void zap() { size_t i; for (i=0; i<sizeof(buf); ++i) buf[i]='_'; }
+
+void zap2() { size_t i; for (i=0; i<sizeof(buf); ++i) buf[i]=i; }
 
 int main() {
   uint32_t x;
@@ -238,6 +244,67 @@ int main() {
   assert(scan_longlong("-9223372036854775807",&ll)==20 && ll==-9223372036854775807ll);
   assert(scan_longlong("-9223372036854775808",&ll)==20 && ll==(signed long long)0x8000000000000000ull);
   assert(scan_longlong("-9223372036854775809",&ll)==19 && ll==-922337203685477580ll);
+
+  zap2();
+
+  assert(sizeof(uint16) == sizeof(uint16_t));
+  assert(sizeof(uint32) == sizeof(uint32_t));
+  assert(sizeof(uint64) == sizeof(uint64_t));
+  assert(sizeof(int16) == sizeof(int16_t));
+  assert(sizeof(int32) == sizeof(int32_t));
+  assert(sizeof(int64) == sizeof(int64_t));
+
+  assert(uint16_read(buf)==0x100);
+  assert(uint16_read(buf+1)==0x201);
+  assert(uint16_read(buf+2)==0x302);
+  assert(uint16_read(buf+3)==0x403);
+
+  assert(uint16_read_big(buf)==0x0001);
+  assert(uint16_read_big(buf+1)==0x0102);
+  assert(uint16_read_big(buf+2)==0x0203);
+  assert(uint16_read_big(buf+3)==0x0304);
+
+  assert(uint32_read(buf)==0x03020100);
+  assert(uint32_read(buf+1)==0x04030201);
+  assert(uint32_read(buf+2)==0x05040302);
+  assert(uint32_read(buf+3)==0x06050403);
+
+  assert(uint32_read_big(buf)==0x00010203);
+  assert(uint32_read_big(buf+1)==0x01020304);
+  assert(uint32_read_big(buf+2)==0x02030405);
+  assert(uint32_read_big(buf+3)==0x03040506);
+
+  assert(uint64_read(buf)==0x0706050403020100ull);
+  assert(uint64_read(buf+1)==0x0807060504030201ull);
+  assert(uint64_read(buf+2)==0x0908070605040302ull);
+  assert(uint64_read(buf+3)==0x0a09080706050403ull);
+
+  assert(uint64_read_big(buf)==0x0001020304050607ull);
+  assert(uint64_read_big(buf+1)==0x0102030405060708ull);
+  assert(uint64_read_big(buf+2)==0x0203040506070809ull);
+  assert(uint64_read_big(buf+3)==0x030405060708090aull);
+
+  {
+    uint16 us;
+    uint32 ui;
+    uint64 ul;
+    size_t i;
+    for (i=0; i<3; ++i) {
+      uint16_unpack(buf+i,&us); assert(us == uint16_read(buf+i));
+      uint32_unpack(buf+i,&ui); assert(ui == uint32_read(buf+i));
+      uint64_unpack(buf+i,&ul); assert(ul == uint64_read(buf+i));
+      uint16_unpack_big(buf+i,&us); assert(us == uint16_read_big(buf+i));
+      uint32_unpack_big(buf+i,&ui); assert(ui == uint32_read_big(buf+i));
+      uint64_unpack_big(buf+i,&ul); assert(ul == uint64_read_big(buf+i));
+
+      zap(); uint16_pack(buf+i,0xc0de); assert(buf[i+2]=='_' && uint16_read(buf+i)==0xc0de);
+      zap(); uint16_pack_big(buf+i,0xc0de); assert(buf[i+2]=='_' && uint16_read_big(buf+i)==0xc0de);
+      zap(); uint32_pack(buf+i,0xfefec0de); assert(buf[i+4]=='_' && uint32_read(buf+i)==0xfefec0de);
+      zap(); uint32_pack_big(buf+i,0xfefec0de); assert(buf[i+4]=='_' && uint32_read_big(buf+i)==0xfefec0de);
+      zap(); uint64_pack(buf+i,0xfefec0dedeadbeef); assert(buf[i+8]=='_' && uint64_read(buf+i)==0xfefec0dedeadbeef);
+      zap(); uint64_pack_big(buf+i,0xfefec0dedeadbeef); assert(buf[i+8]=='_' && uint64_read_big(buf+i)==0xfefec0dedeadbeef);
+    }
+  }
 
   return 0;
 }
