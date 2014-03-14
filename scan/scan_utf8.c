@@ -39,7 +39,7 @@ size_t scan_utf8(const char* in,size_t len,uint32_t* num) {
    * expression can be written as
    *   1 << (k*5-4+(k==2))
    */
-  m=(1<<(k*5-4+(k==2)));
+  m=((uint32_t)1<<(k*5-4+(k==2)));
   while (k>1) {
     if ((*in&0xc0)!=0x80) return 0;
     i=(i<<6) | ((*in++)&0x3f);
@@ -47,6 +47,6 @@ size_t scan_utf8(const char* in,size_t len,uint32_t* num) {
   }
   if (i<m) return 0;	/* if the encoded value was less than m, reject */
   if (num) *num=i;
-  return in-orig;
+  return (size_t)(in-orig);
 }
 

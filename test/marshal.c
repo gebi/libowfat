@@ -137,7 +137,26 @@ int main() {
   assert(fmt_escapecharquotedprintableutf8(NULL,0xf6)==6);	// =c3=b6
   zap(); assert(fmt_escapecharquotedprintableutf8(buf,0xf6)==6 && byte_equal(buf,7,"=c3=b6_"));
 
-  assert(scan_ulong("23",&ul)==2 && ul==23);
+  assert(scan_ulong("23.",&ul)==2 && ul==23);
+  assert(scan_uint("23.",&ui)==2 && ui==23);
+  assert(scan_ushort("23.",&us)==2 && us==23);
+  assert(scan_ulonglong("23.",&ull)==2 && ull==23);
+
+  assert(scan_long("23.",&l)==2 && l==23);
+  assert(scan_int("23.",&i)==2 && i==23);
+  assert(scan_short("23.",&s)==2 && s==23);
+  assert(scan_longlong("23.",&ll)==2 && ll==23);
+
+  assert(scan_8long("23.",&l)==2 && l==023);
+  assert(scan_8int("23.",&i)==2 && i==023);
+  assert(scan_8short("23.",&s)==2 && s==023);
+  assert(scan_8longlong("23.",&ll)==2 && ll==023);
+
+  assert(scan_xlong("23.",&l)==2 && l==0x23);
+  assert(scan_xint("23.",&i)==2 && i==0x23);
+  assert(scan_xshort("23.",&s)==2 && s==0x23);
+  assert(scan_xlonglong("23.",&ll)==2 && ll==0x23);
+
   assert(scan_ulong("46halbe",&ul)==2 && ul==46);
   if (sizeof(ul)==4) {
     assert(scan_ulong("4294967295",&ul)==10 && ul==0xffffffff);

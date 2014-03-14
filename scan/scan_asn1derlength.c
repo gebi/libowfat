@@ -21,5 +21,5 @@ size_t scan_asn1derlength(const char* src,size_t len,unsigned long long* length)
   src++;
   if (src+*length>max) return 0;	/* catch integer overflow */
   if ((uintptr_t)src+*length<(uintptr_t)src) return 0;	/* gcc 4.1 removes this check without the cast to uintptr_t */
-  return src-orig;
+  return (size_t)(src-orig);
 }
