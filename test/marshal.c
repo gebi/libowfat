@@ -1,14 +1,20 @@
+#include <assert.h>
+
+#include <stdio.h>
+#include <stdlib.h>
+
 #include <fmt.h>
 #include <scan.h>
 #include <textcode.h>
 #include <byte.h>
-#include <assert.h>
-
 #include <uint16.h>
 #include <uint32.h>
 #include <uint64.h>
+#include <openreadclose.h>
+#include <mmap.h>
 
 char buf[100];
+stralloc sa;
 
 void zap() { size_t i; for (i=0; i<sizeof(buf); ++i) buf[i]='_'; }
 
@@ -25,6 +31,13 @@ int main() {
   signed long l;
   signed int i;
   signed short s;
+
+  long flen;
+  char* stdiocopy;
+
+#ifdef NDEBUG
+#error This is a unit test that uses assert() or all checks, compile without -DNDEBUG!
+#endif
 
   // check utf8 encoding
   zap(); assert(fmt_utf8(NULL,12345) == 3);
@@ -305,6 +318,42 @@ int main() {
       zap(); uint64_pack_big(buf+i,0xfefec0dedeadbeef); assert(buf[i+8]=='_' && uint64_read_big(buf+i)==0xfefec0dedeadbeef);
     }
   }
+
+  {
+    char* mmapcopy;
+    FILE* f;
+    size_t mlen;
+    assert(f=fopen("test/marshal.c","rb"));
+    assert(fseek(f,0,SEEK_END)==0);
+    flen=ftell(f);
+    assert(flen>4096);
+    fseek(f,0,SEEK_SET);
+    assert(stdiocopy=malloc(flen));
+    assert(fread(stdiocopy,1,flen,f)==flen);
+    fclose(f);
+
+    assert(openreadclose("test/marshal.c",&sa,4096)==1);
+    assert(sa.len == flen);
+    assert(byte_equal(sa.s,flen,stdiocopy));
+
+    assert((mmapcopy=mmap_read("test/marshal.c",&mlen)) && mlen==flen);
+    assert(byte_equal(sa.s,flen,mmapcopy));
+    mmap_unmap(mmapcopy,mlen);
+  }
+
+  stralloc_free(&sa);
+
+  assert(stralloc_ready(&sa,0x1000));
+  assert(sa.a >= 0x1000);
+  assert(stralloc_copyb(&sa,stdiocopy,0x900));
+  assert(sa.len == 0x900);
+  assert(stralloc_catb(&sa,stdiocopy+0x900,0x700));
+  assert(sa.len == 0x1000);
+  assert(byte_equal(sa.s,0x1000,stdiocopy));
+  assert(stralloc_readyplus(&sa,0x1000));
+  assert(sa.a >= 0x2000);
+  assert(stralloc_readyplus(&sa,(size_t)-1)==0);
+  assert(stralloc_ready(&sa,(size_t)-1)==0);
 
   return 0;
 }
