@@ -15,12 +15,10 @@ int main() {
   unsigned long ul;
   unsigned int ui;
   unsigned short us;
-  unsigned char uc;
   signed long long ll;
   signed long l;
   signed int i;
   signed short s;
-  signed char c;
 
   // check utf8 encoding
   zap(); assert(fmt_utf8(NULL,12345) == 3);
@@ -172,8 +170,7 @@ int main() {
     assert(scan_long("+9223372036854775807",&l)==20 && l==0x7fffffffffffffffll);
     assert(scan_long("+9223372036854775808",&l)==19 && l==922337203685477580ll);
     assert(scan_long("-9223372036854775807",&l)==20 && l==-9223372036854775807ll);
-    x=scan_long("-9223372036854775808",&l);
-    assert(scan_long("-9223372036854775808",&l)==20 && l==0x8000000000000000);
+    assert(scan_long("-9223372036854775808",&l)==20 && l==(signed long long)0x8000000000000000ull);
     assert(scan_long("-9223372036854775809",&l)==19 && l==-922337203685477580ll);
 
   }
@@ -206,4 +203,22 @@ int main() {
   assert(scan_short("+032767",&s)==7 && s==32767);
   assert(scan_short("-32768",&s)==6 && s==-32768);
   assert(scan_short("-032769",&s)==6 && s==-3276);
+
+  assert(scan_ulonglong("18446744073709551615",&ull)==20 && ull==0xffffffffffffffffull);
+  assert(scan_ulonglong("18446744073709551616",&ull)==19 && ull==1844674407370955161ull);
+  assert(scan_xlonglong("ffffffffffffffff",&ull)==16 && ull==0xffffffffffffffffull);
+  assert(scan_xlonglong("ffffffffffffffff0",&ull)==16 && ull==0xffffffffffffffffull);
+  assert(scan_8longlong("1777777777777777777777",&ull)==22 && ull==0xffffffffffffffffull);
+  assert(scan_8longlong("17777777777777777777770",&ull)==22 && ull==0xffffffffffffffffull);
+
+  assert(scan_longlong("9223372036854775807",&ll)==19 && ll==0x7fffffffffffffffll);
+  assert(scan_longlong("09223372036854775807",&ll)==20 && ll==0x7fffffffffffffffll);
+  assert(scan_longlong("092233720368547758070",&ll)==20 && ll==0x7fffffffffffffffll);
+  assert(scan_longlong("+9223372036854775807",&ll)==20 && ll==0x7fffffffffffffffll);
+  assert(scan_longlong("+9223372036854775808",&ll)==19 && ll==922337203685477580ll);
+  assert(scan_longlong("-9223372036854775807",&ll)==20 && ll==-9223372036854775807ll);
+  assert(scan_longlong("-9223372036854775808",&ll)==20 && ll==(signed long long)0x8000000000000000ull);
+  assert(scan_longlong("-9223372036854775809",&ll)==19 && ll==-922337203685477580ll);
+
+  return 0;
 }
