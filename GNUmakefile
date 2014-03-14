@@ -18,7 +18,7 @@ all: ent $(LIBS) libowfat.a libsocket t
 CROSS=
 #CROSS=i686-mingw-
 CC=$(CROSS)gcc
-CFLAGS=-pipe -W -Wall -O2 -fomit-frame-pointer
+CFLAGS=-pipe -W -Wall -Wextra -O2 -fomit-frame-pointer
 #CFLAGS=-pipe -Os -march=pentiumpro -mcpu=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
 
 ent: ent.c
