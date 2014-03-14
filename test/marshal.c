@@ -11,6 +11,17 @@ void zap() { size_t i; for (i=0; i<sizeof(buf); ++i) buf[i]='_'; }
 int main() {
   uint32_t x;
 
+  unsigned long long ull;
+  unsigned long ul;
+  unsigned int ui;
+  unsigned short us;
+  unsigned char uc;
+  signed long long ll;
+  signed long l;
+  signed int i;
+  signed short s;
+  signed char c;
+
   // check utf8 encoding
   zap(); assert(fmt_utf8(NULL,12345) == 3);
   zap(); assert(fmt_utf8(buf,12345) == 3 && byte_equal(buf,4,"\xe3\x80\xb9_"));
@@ -128,4 +139,71 @@ int main() {
   assert(fmt_escapecharquotedprintableutf8(NULL,0xf6)==6);	// =c3=b6
   zap(); assert(fmt_escapecharquotedprintableutf8(buf,0xf6)==6 && byte_equal(buf,7,"=c3=b6_"));
 
+  assert(scan_ulong("23",&ul)==2 && ul==23);
+  assert(scan_ulong("46halbe",&ul)==2 && ul==46);
+  if (sizeof(ul)==4) {
+    assert(scan_ulong("4294967295",&ul)==10 && ul==0xffffffff);
+    assert(scan_ulong("4294967296",&ul)==9 && ul==429496729);
+    assert(scan_xlong("ffffffff",&ul)==8 && ul==0xffffffff);
+    assert(scan_xlong("ffffffff0",&ul)==8 && ul==0xffffffff);
+    assert(scan_8long("37777777777",&ul)==11 && ul==0xffffffff);
+    assert(scan_8long("377777777771",&ul)==11 && ul==0xffffffff);
+
+    assert(scan_long("2147483647",&l)==10 && l==0x7fffffff);
+    assert(scan_long("02147483647",&l)==11 && l==0x7fffffff);
+    assert(scan_long("021474836470",&l)==11 && l==0x7fffffff);
+    assert(scan_long("+2147483647",&l)==11 && l==0x7fffffff);
+    assert(scan_long("+2147483648",&l)==10 && l==214748364);
+    assert(scan_long("-2147483647",&l)==11 && l==-2147483647);
+    assert(scan_long("-2147483648",&l)==11 && l==-2147483648);
+    assert(scan_long("-2147483649",&l)==10 && l==-214748364);
+
+  } else {
+    assert(scan_ulong("18446744073709551615",&ul)==20 && ul==0xffffffffffffffffull);
+    assert(scan_ulong("18446744073709551616",&ul)==19 && ul==1844674407370955161ull);
+    assert(scan_xlong("ffffffffffffffff",&ul)==16 && ul==0xffffffffffffffffull);
+    assert(scan_xlong("ffffffffffffffff0",&ul)==16 && ul==0xffffffffffffffffull);
+    assert(scan_8long("1777777777777777777777",&ul)==22 && ul==0xffffffffffffffffull);
+    assert(scan_8long("17777777777777777777770",&ul)==22 && ul==0xffffffffffffffffull);
+
+    assert(scan_long("9223372036854775807",&l)==19 && l==0x7fffffffffffffffll);
+    assert(scan_long("09223372036854775807",&l)==20 && l==0x7fffffffffffffffll);
+    assert(scan_long("092233720368547758070",&l)==20 && l==0x7fffffffffffffffll);
+    assert(scan_long("+9223372036854775807",&l)==20 && l==0x7fffffffffffffffll);
+    assert(scan_long("+9223372036854775808",&l)==19 && l==922337203685477580ll);
+    assert(scan_long("-9223372036854775807",&l)==20 && l==-9223372036854775807ll);
+    x=scan_long("-9223372036854775808",&l);
+    assert(scan_long("-9223372036854775808",&l)==20 && l==0x8000000000000000);
+    assert(scan_long("-9223372036854775809",&l)==19 && l==-922337203685477580ll);
+
+  }
+  assert(scan_uint("4294967295",&ui)==10 && ui==0xffffffff);
+  assert(scan_uint("4294967296",&ui)==9 && ui==429496729);
+  assert(scan_ushort("65535",&us)==5 && us==0xffff);
+  assert(scan_ushort("65536",&us)==4 && us==6553);
+
+  assert(scan_xint("0ffffffff",&ui)==9 && ui==0xffffffff);
+  assert(scan_xint("ffffffff0",&ui)==8 && ui==0xffffffff);
+  assert(scan_xshort("0ffff",&us)==5 && us==0xffff);
+  assert(scan_xshort("ffff1",&us)==4 && us==0xffff);
+
+  assert(scan_8int("037777777777",&ui)==12 && ui==0xffffffff);
+  assert(scan_8int("377777777771",&ui)==11 && ui==0xffffffff);
+  assert(scan_8short("00177777",&us)==8 && us==0xffff);
+  assert(scan_8short("1777771",&us)==6 && us==0xffff);
+
+  assert(scan_int("2147483647",&i)==10 && i==0x7fffffff);
+  assert(scan_int("02147483647",&i)==11 && i==0x7fffffff);
+  assert(scan_int("021474836470",&i)==11 && i==0x7fffffff);
+  assert(scan_int("+2147483647",&i)==11 && i==0x7fffffff);
+  assert(scan_int("+2147483648",&i)==10 && i==214748364);
+  assert(scan_int("-2147483647",&i)==11 && i==-2147483647);
+  assert(scan_int("-2147483648",&i)==11 && i==-2147483648);
+  assert(scan_int("-2147483649",&i)==10 && i==-214748364);
+
+  assert(scan_short("32767",&s)==5 && s==32767);
+  assert(scan_short("32768",&s)==4 && s==3276);
+  assert(scan_short("+032767",&s)==7 && s==32767);
+  assert(scan_short("-32768",&s)==6 && s==-32768);
+  assert(scan_short("-032769",&s)==6 && s==-3276);
 }

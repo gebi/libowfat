@@ -20,7 +20,7 @@ size_t scan_ushort(const char* src,unsigned short* dest) {
       n=l<<3; if ((n>>3)!=l) break;
       if (n+(l<<1) < n) break;
       n+=l<<1;
-      if (n+c < n) break;
+      if ((unsigned short)(n+c) < n) break;
       l=n+c;
       ++tmp;
     }
