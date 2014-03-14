@@ -1,9 +1,9 @@
 #include "fmt.h"
 
 static void fmt_oct3(char* dest,uint8_t w) {
-  dest[2]=(w&7)+'0'; w>>=3;
-  dest[1]=(w&7)+'0'; w>>=3;
-  dest[0]=(w&7)+'0';
+  dest[2]=(char)((w&7)+'0'); w>>=3;
+  dest[1]=(char)((w&7)+'0'); w>>=3;
+  dest[0]=(char)((w&7)+'0');
 }
 
 size_t fmt_escapecharc(char* dest,uint32_t ch) {

@@ -8,7 +8,7 @@ size_t fmt_asn1dertag(char* dest,unsigned long long l) {
   unsigned long long t;
   for (t=l, n=1; t>0x7f; t>>=7) ++n;
   for (i=0; i<n; ++i) {
-    if (dest) dest[n-i-1]=((i!=0)<<7) | (l&0x7f);
+    if (dest) dest[n-i-1]=(char)(((i!=0)<<7) | (char)(l&0x7f));
     l>>=7;
   }
   return i;

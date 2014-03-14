@@ -13,11 +13,11 @@ size_t fmt_asn1derlength(char* dest,unsigned long long l) {
     if (!(l>>(i*8)))
       break;
   if (dest) {
-    int j=i;
-    *dest=0x80+i; ++dest;
+    size_t j=i;
+    *dest=(char)(0x80+i); ++dest;
     while (j) {
       --j;
-      *dest=((l>>(j*8))&0xff);
+      *dest=(char)((l>>(j*8))&0xff);
       ++dest;
     }
   }

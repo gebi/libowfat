@@ -22,7 +22,7 @@ size_t fmt_escapecharjson(char* dest,uint32_t ch) {
 simple:
     if (dest) {
       dest[0]='\\';
-      dest[1]=ch;
+      dest[1]=(char)ch;
     }
     return 2;
   }
@@ -31,7 +31,7 @@ simple:
     if (dest) {
       dest[0]='\\';
       dest[1]='u';
-      fmt_hex4(dest+2,0xd800 | (((ch-0x10000)>>10)&0x3ff));
+      fmt_hex4(dest+2,(uint16_t)(0xd800 | (((ch-0x10000)>>10)&0x3ff)));
       dest+=6;
     }
     ch=(ch&0x3ff)|0xdc00;
@@ -41,7 +41,7 @@ simple:
   if (dest) {
     dest[0]='\\';
     dest[1]='u';
-    fmt_hex4(dest+2,ch);
+    fmt_hex4(dest+2,(uint16_t)ch);
   }
   return n+6;
 }

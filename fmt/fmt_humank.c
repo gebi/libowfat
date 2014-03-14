@@ -20,7 +20,7 @@ size_t fmt_humank(char* dest,unsigned long long l) {
   if (!dest) return fmt_ulong(0,l)+2;
   i=fmt_ulong(dest,l/10);
   dest[i]='.';
-  dest[i+1]=(l%10)+'0';
+  dest[i+1]=(char)((l%10)+'0');
   dest[i+2]=unit;
   return i+3;
 }
