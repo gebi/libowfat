@@ -12,11 +12,11 @@ extern char** environ;
 
 static int parsetime(const char*c,struct tm* x) {
   unsigned long tmp;
-  c+=scan_ulong(c,&tmp); x->tm_hour=tmp;
+  c+=scan_ulong(c,&tmp); x->tm_hour=(int)tmp;
   if (*c!=':') return -1; ++c;
-  c+=scan_ulong(c,&tmp); x->tm_min=tmp;
+  c+=scan_ulong(c,&tmp); x->tm_min=(int)tmp;
   if (*c!=':') return -1; ++c;
-  c+=scan_ulong(c,&tmp); x->tm_sec=tmp;
+  c+=scan_ulong(c,&tmp); x->tm_sec=(int)tmp;
   if (*c!=' ') return -1;
   return 0;
 }
@@ -37,14 +37,14 @@ size_t scan_httpdate(const char *in,time_t *t) {
       }
     }
     c+=4; if (*c==' ') ++c;
-    c+=scan_ulong(c,&tmp); x.tm_mday=tmp;
+    c+=scan_ulong(c,&tmp); x.tm_mday=(int)tmp;
     ++c;
     if (parsetime(c,&x)) return 0;
     c+=9;
-    c+=scan_ulong(c,&tmp); x.tm_year=tmp-1900;
+    c+=scan_ulong(c,&tmp); x.tm_year=(int)(tmp-1900);
     goto done;
   }
-  c+=scan_ulong(c,&tmp); x.tm_mday=tmp;
+  c+=scan_ulong(c,&tmp); x.tm_mday=(int)tmp;
   while (*c==' ') ++c; // work around crappy sqlite download httpd
 //  ++c;
   for (i=0; i<12; ++i)
@@ -53,9 +53,9 @@ size_t scan_httpdate(const char *in,time_t *t) {
     }
   c+=4;
   c+=scan_ulong(c,&tmp);
-  if (tmp>1000) x.tm_year=tmp-1900; else
-    if (tmp<70) x.tm_year=tmp+100; else
-                x.tm_year=tmp;
+  if (tmp>1000) x.tm_year=(int)(tmp-1900); else
+    if (tmp<70) x.tm_year=(int)(tmp+100); else
+                x.tm_year=(int)tmp;
   ++c;
   if (parsetime(c,&x)) return 0;
   c+=9;
@@ -86,5 +86,5 @@ done:
 #endif
   }
 #endif
-  return c-in;
+  return (size_t)(c-in);
 }

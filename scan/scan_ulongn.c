@@ -4,7 +4,7 @@ size_t scan_ulongn(const char* src,size_t n,unsigned long int* dest) {
   register const char *tmp=src;
   register unsigned long int l=0;
   register unsigned char c;
-  while (n-->0 && (c=(char)(*tmp-'0'))<10) {
+  while (n-->0 && (c=(unsigned char)(*tmp-'0'))<10) {
     unsigned long int n;
     /* we want to do: l=l*10+c
      * but we need to check for integer overflow.

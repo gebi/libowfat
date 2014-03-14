@@ -9,5 +9,5 @@ size_t str_copy(char *out,const char *in) {
     if (!(*s=*t)) break; ++s; ++t;
     if (!(*s=*t)) break; ++s; ++t;
   }
-  return s-out;
+  return (size_t)(s-out);
 }

@@ -10,5 +10,5 @@ size_t str_rchr(const char *in, char needle) {
     if (!*t) break; if (*t==c) found=t; ++t;
     if (!*t) break; if (*t==c) found=t; ++t;
   }
-  return (found?found:t)-in;
+  return (size_t)((found?found:t)-in);
 }

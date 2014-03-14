@@ -11,5 +11,5 @@ size_t scan_charsetnskip(const char *s,const char *charset,size_t limit) {
     if (*i!=*t) break;
     ++t;
   }
-  return t-s;
+  return (size_t)(t-s);
 }

@@ -9,7 +9,7 @@ size_t scan_longn(const char *src,size_t n,long *dest) {
   unsigned int neg;
   int ok;
   if (!n--) return 0;
-  tmp=src; l=0; ok=neg=0;
+  tmp=src; l=0; ok=0; neg=0;
   switch (*tmp) {
   case '-': neg=1;
   case '+': ++tmp;

@@ -9,5 +9,5 @@ size_t str_chr(const char *in, char needle) {
     if (!*t || *t==c) break; ++t;
     if (!*t || *t==c) break; ++t;
   }
-  return t-in;
+  return (size_t)(t-in);
 }

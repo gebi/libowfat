@@ -9,5 +9,5 @@ size_t str_len(const char* in) {
     if (!*t) break; ++t;
     if (!*t) break; ++t;
   }
-  return t-in;
+  return (size_t)(t-in);
 }

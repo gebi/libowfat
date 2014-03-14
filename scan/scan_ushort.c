@@ -14,17 +14,17 @@ size_t scan_ushort(const char* src,unsigned short* dest) {
     register const char *tmp=src;
     register unsigned short int l=0;
     register unsigned char c;
-    while ((c=*tmp-'0')<10) {
+    while ((c=(unsigned char)(*tmp-'0'))<10) {
       unsigned short int n;
       /* division is very slow on most architectures */
-      n=l<<3; if ((n>>3)!=l) break;
+      n=(unsigned short)(l<<3); if ((n>>3)!=l) break;
       if (n+(l<<1) < n) break;
-      n+=l<<1;
+      n=(unsigned short)(n+(l<<1));
       if ((unsigned short)(n+c) < n) break;
-      l=n+c;
+      l=(unsigned short)(n+c);
       ++tmp;
     }
     if (tmp-src) *dest=l;
-    return tmp-src;
+    return (size_t)(tmp-src);
   }
 }
