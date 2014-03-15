@@ -24,3 +24,4 @@ uudecode
 haveuint128.h
 ent
 tags
+entities.h
