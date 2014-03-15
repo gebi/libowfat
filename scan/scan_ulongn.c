@@ -14,10 +14,8 @@ size_t scan_ulongn(const char* src,size_t n,unsigned long int* dest) {
      * so instead of *10 we do (l<<3) (i.e. *8) + (l<<1) (i.e. *2)
      * and check for overflow on all the intermediate steps */
     n=l<<3; if ((n>>3)!=l) break;
-    if (n+(l<<1) < n) break;
-    n+=l<<1;
-    if (n+c < n) break;
-    l=n+c;
+    if (n+(l<<1)+c < n) break;
+    l=n+(l<<1)+c;
     ++tmp;
   }
   if (tmp-src) *dest=l;

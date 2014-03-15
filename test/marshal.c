@@ -398,12 +398,22 @@ int main() {
   {
     buffer b;
     stralloc s;
+    size_t i;
     buffer_fromsa(&b,&sa);
     stralloc_init(&s);
     assert(buffer_getline_sa(&b,&s)==1 && stralloc_equals(&s,"foo\n"));
     assert(buffer_getnewline_sa(&b,&s)==1 && stralloc_equals(&s,"bar\r\n"));
     assert(buffer_getnewline_sa(&b,&s)==0 && stralloc_equals(&s,"baz"));
     buffer_close(&b);
+
+    stralloc_free(&s);
+    buffer_tosa(&b,&s);
+    for (i=0; i<100; ++i)
+      buffer_puts(&b,"foo bar baz!\n");
+    buffer_flush(&b);
+    assert(s.len==100*sizeof("foo bar baz!"));
+    for (i=0; i<100; ++i)
+      assert(byte_equal(s.s+i*sizeof("foo bar baz!"),sizeof("foo bar baz!"),"foo bar baz!\n"));
   }
 
   return 0;
