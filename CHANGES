@@ -2,6 +2,7 @@
   add compiletimeassert.h
   add haveuint128.h
   byte.h now defines UNALIGNED_ACCESS_OK on x86
+  add scan_ulongn, scan_8longn, scan_xlongn, scan_longn, scan_netstring
   change buffer to have a destructor function pointer
   SECURITY: fmt_strn would write one byte too many (returned right length though, so usually not a problem as that byte would be overwritten with \0 by the caller anyway)
   fmt_pad and fmt_fill fail more gracefully when srclen > maxlen
