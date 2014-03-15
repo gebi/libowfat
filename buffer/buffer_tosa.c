@@ -22,5 +22,6 @@ int buffer_tosa(buffer* b,stralloc* sa) {
   b->fd=0;
   b->op=strallocwrite;
   b->cookie=sa;
+  b->deinit=0;
   return 0;
 }

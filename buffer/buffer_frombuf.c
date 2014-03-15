@@ -15,4 +15,5 @@ void buffer_frombuf(buffer* b,const char* x,size_t l) {
   b->a=l;
   b->fd=0;
   b->op=dummyreadwrite;
+  b->deinit=0;
 }
