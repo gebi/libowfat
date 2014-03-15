@@ -11,6 +11,7 @@ size_t scan_ushort(const char* src,unsigned short* dest) {
      * needed */
     return scan_uint(src,(unsigned int*)dest);
   } if (sizeof(unsigned short) < sizeof(unsigned long)) {
+    /* this is the regular case */
     const char* cur;
     unsigned short l;
     for (cur=src,l=0; *cur>='0' && *cur<='9'; ++cur) {
@@ -21,20 +22,10 @@ size_t scan_ushort(const char* src,unsigned short* dest) {
     if (cur>src) *dest=l;
     return (size_t)(cur-src);
   } else {
-    register const char *tmp=src;
-    register unsigned short int l=0;
-    register unsigned char c;
-    while ((c=(unsigned char)(*tmp-'0'))<10) {
-      unsigned short int n;
-      /* division is very slow on most architectures */
-      n=(unsigned short)(l<<3); if ((n>>3)!=l) break;
-      if ((unsigned short)(n+(l<<1)) < n) break;
-      n=(unsigned short)(n+(l<<1));
-      if ((unsigned short)(n+c) < n) break;
-      l=(unsigned short)(n+c);
-      ++tmp;
-    }
-    if (tmp-src) *dest=l;
-    return (size_t)(tmp-src);
+    /* the C standard says that sizeof(short) <= sizeof(unsigned int) <=
+     * sizeof(unsigned long); this can never happen. Provoke a compile
+     * error if it does */
+    char compileerror[sizeof(unsigned long)-sizeof(unsigned short)];
+    (void)compileerror;
   }
 }

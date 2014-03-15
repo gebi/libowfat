@@ -21,20 +21,10 @@ size_t scan_uint(const char* src,unsigned int* dest) {
     if (cur>src) *dest=l;
     return (size_t)(cur-src);
   } else {
-    register const char *tmp=src;
-    register unsigned int l=0;
-    register unsigned char c;
-    while ((c=(unsigned char)(*tmp-'0'))<10) {
-      unsigned int n;
-      /* division is very slow on most architectures */
-      n=l<<3; if ((n>>3)!=l) break;
-      if (n+(l<<1) < n) break;
-      n+=l<<1;
-      if (n+c < n) break;
-      l=n+c;
-      ++tmp;
-    }
-    if (tmp-src) *dest=l;
-    return (size_t)(tmp-src);
+    /* the C standard says that sizeof(short) <= sizeof(unsigned int) <=
+     * sizeof(unsigned long); this can never happen. Provoke a compile
+     * error if it does */
+    char compileerror[sizeof(unsigned long)-sizeof(unsigned int)];
+    (void)compileerror;
   }
 }
