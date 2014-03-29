@@ -2,7 +2,12 @@
 #ifndef IARRAY_H
 #define IARRAY_H
 
-#warning DO NOT USE THIS YET.  It may look thread-safe but it is not!
+/* This header defines an indirect array for use with the io_* routines.
+ * Assumptions:
+ * - the elements are small (many fit on one page),
+ * - the platform has an atomic compare-and-swap instruction
+ * - the compiler supports it via __sync_val_compare_and_swap
+ */
 
 #include "uint64.h"
 #include <stddef.h>
@@ -12,20 +17,14 @@
 #include <pthread.h>
 #endif
 
-/* this is an indirect array; it only reallocs the indirect index, not
- * the whole array.  The actual data does not move.  So there is no need
- * to lock the array for read accesses. */
+typedef struct _iarray_page {
+  struct _iarray_page* next;
+  char data[];
+} iarray_page;
 
 typedef struct {
-  char** pages;
-  size_t elemsize,pagefence,elemperpage,bytesperpage;
-  /* pagefence is the number of pages + 1,
-   * i.e. the first out of bounds index in "pages" */
-#ifdef __MINGW32__
-  CRITICAL_SECTION cs;
-#else
-  pthread_mutex_t m;
-#endif
+  iarray_page* pages[16];
+  size_t elemsize,elemperpage,bytesperpage;
 } iarray;
 
 void iarray_init(iarray* ia,size_t elemsize);

@@ -1,59 +1,37 @@
 #include "likely.h"
 #include <stdlib.h>
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <unistd.h>
 #include "iarray.h"
+#ifdef __dietlibc__
+#include <sys/atomic.h>
+#else
+#define __CAS(ptr,oldval,newval) __sync_val_compare_and_swap(ptr,oldval,newval)
+#endif
+
+static iarray_page* new_page(size_t pagesize) {
+  void* x=mmap(0,pagesize,PROT_READ|PROT_WRITE,MAP_ANONYMOUS|MAP_PRIVATE,-1,0);
+  if (x==MAP_FAILED) return 0;
+  return (iarray_page*)x;
+}
 
 void* iarray_allocate(iarray* ia,size_t pos) {
-  size_t y;
-  /* first the easy case without locking */
-  if (__likely((y=pos/ia->elemperpage) < ia->pagefence && ia->pages[y]))
-    return ia->pages[y]+(pos%ia->elemperpage)*ia->elemsize;
-  /* the case where ia->pages == NULL is implicit */
-
-#ifdef __MINGW32__
-  EnterCriticalSection(&ia->cs);
-#else
-  pthread_mutex_lock(&ia->m);
-#endif
-
-  if (__unlikely(y >= ia->pagefence)) {
-    char** np;
-    /* The data structure is an array of pointer to pages.
-     * Each page holds at least one element of the array.
-     * Here we realloc the array of pointers.  Each element in this
-     * array is only 4 or 8 bytes, so we should allocate a few more than
-     * we need to cut down on future reallocs. */
-    size_t z=(y+512)&-512;		/* round up to multiple of 512 */
-    /* It may seem as if there can be no integer overflow in the
-     * indirect index, because then the array would not fit into the
-     * address space in the first place, but remember that this is a
-     * sparse array.  Someone might just pass in an unreasonable large
-     * index and have large elements, too */
-    if (z==0) goto unlockandfail;	/* integer overflow */
-    np=realloc(ia->pages,z*ia->bytesperpage);
-    if (!np) goto unlockandfail;
-    ia->pagefence=z;
-    ia->pages=np;
+  size_t index;
+  iarray_page** p=&ia->pages[pos%(sizeof(ia->pages)/sizeof(ia->pages[0]))];
+  iarray_page* newpage=0;
+  for (index=0; pos<index+ia->elemperpage; index+=ia->elemperpage) {
+    if (!*p) {
+      if (!newpage)
+	if (!(newpage=new_page(ia->bytesperpage))) return 0;
+      if (__CAS(p,0,newpage)==0)
+	newpage=0;
+    }
+    if (index+ia->elemperpage>pos) {
+      if (newpage) munmap(newpage,ia->bytesperpage);
+      return &(*p)->data[(pos-index)*ia->elemsize];
+    }
+    p=&(*p)->next;
   }
-
-  /* at this point we know the slot exists */
-  /* through a race between the early-out above and the
-   * pthread_mutex_lock, the page pointer to it could be non-NULL,
-   * however */
-  if (__unlikely(ia->pages[y]==0 && (ia->pages[y]=malloc(ia->bytesperpage))==0)) {
-unlockandfail:
-#ifdef __MINGW32__
-    LeaveCriticalSection(&ia->cs);
-#else
-    pthread_mutex_unlock(&ia->m);
-#endif
-    return 0;
-  }
-
-#ifdef __MINGW32__
-  LeaveCriticalSection(&ia->cs);
-#else
-  pthread_mutex_unlock(&ia->m);
-#endif
-
-  return ia->pages[y] + (pos%ia->elemperpage)*ia->elemsize;
+  return 0;	// can't happen
 }

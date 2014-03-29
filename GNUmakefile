@@ -21,8 +21,8 @@ CC=$(CROSS)gcc
 CFLAGS=-pipe -W -Wall -Wextra -O2 -fomit-frame-pointer
 #CFLAGS=-pipe -Os -march=pentiumpro -mcpu=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
 
-ent: ent.c
-	gcc -g -o ent ent.c
+ent: ent.c haveuint128.h
+	gcc -g -o ent ent.c -I.
 
 # CFLAGS += -fstrict-aliasing -Wstrict-aliasing=2
 
@@ -76,7 +76,7 @@ TAI_OBJS=$(patsubst tai/%.c,%.o,$(wildcard tai/*.c))
 TAIA_OBJS=$(patsubst taia/%.c,%.o,$(wildcard taia/*.c))
 DNS_OBJS=$(patsubst dns/%.c,%.o,$(wildcard dns/*.c))
 CASE_OBJS=$(patsubst case/%.c,%.o,$(wildcard case/*.c))
-ARRAY_OBJS=$(patsubst array/%.c,%.o,$(wildcard array/array_*.c))
+ARRAY_OBJS=$(patsubst array/%.c,%.o,$(wildcard array/*.c))
 MULT_OBJS=$(patsubst mult/%.c,%.o,$(wildcard mult/*.c))
 IO_OBJS=$(patsubst io/%.c,%.o,$(wildcard io/*.c))
 CDB_OBJS=$(patsubst cdb/%.c,%.o,$(wildcard cdb/*.c))
@@ -139,7 +139,7 @@ $(TAIA_OBJS) $(TAI_OBJS) $(CASE_OBJS) $(ARRAY_OBJS) $(MULT_OBJS) \
 $(IO_OBJS) $(CDB_OBJS)
 
 libowfat.a: $(ALL_OBJS)
-	$(CROSS)ar cr $@ $(ALL_OBJS)
+	$(CROSS)ar cru $@ $(ALL_OBJS)
 	-$(CROSS)ranlib $@
 
 CFLAGS+=-I.
@@ -148,7 +148,7 @@ CFLAGS+=-I.
 	$(DIET) $(CC) -c $< $(CFLAGS)
 
 %.a:
-	ar cr $@ $^
+	ar cru $@ $^
 	-ranlib $@
 
 t.o: t.c fmt.h scan.h str.h uint16.h uint32.h stralloc.h socket.h \

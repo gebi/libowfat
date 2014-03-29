@@ -1,12 +1,11 @@
 #include "iarray.h"
 
 void* iarray_get(iarray* ia,size_t pos) {
-  char* x;
-  size_t y;
-  if (!ia->pages) return 0;
-  y=pos/ia->elemperpage;
-  if (y>=ia->pagefence) return 0;
-  x=ia->pages[y];
-  if (!x) return 0;
-  return x+(pos%ia->elemperpage)*ia->elemsize;
+  size_t index;
+  iarray_page* p=ia->pages[pos%(sizeof(ia->pages)/sizeof(ia->pages[0]))];
+  for (index=0; p; p=p->next, index+=ia->elemperpage) {
+    if (pos>=index && pos<index+ia->elemperpage)
+      return &p->data[(pos-index)*ia->elemsize];
+  }
+  return 0;
 }
