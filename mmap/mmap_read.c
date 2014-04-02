@@ -8,7 +8,7 @@
 #include "open.h"
 #include "mmap.h"
 
-extern char* mmap_read(const char* filename,size_t * filesize) {
+extern const char* mmap_read(const char* filename,size_t * filesize) {
 #ifdef __MINGW32__
   HANDLE fd,m;
   char* map;

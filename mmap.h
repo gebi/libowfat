@@ -10,7 +10,7 @@ extern "C" {
 
 /* open file for reading, mmap whole file, close file, write length of
  * map in filesize and return pointer to map. */
-char* mmap_read(const char *filename,size_t* filesize);
+const char* mmap_read(const char *filename,size_t* filesize);
 
 /* open file for writing, mmap whole file privately (copy on write),
  * close file, write length of map in filesize and return pointer to
