@@ -6,12 +6,14 @@
   change buffer to have a destructor function pointer
   SECURITY: fmt_strn would write one byte too many (returned right length though, so usually not a problem as that byte would be overwritten with \0 by the caller anyway)
   fmt_pad and fmt_fill fail more gracefully when srclen > maxlen
-  You can now say $ make WERROR=-Werror (compiling t.c will fail but that's not part of the library)
+  You can now say $ make WERROR=-Werror (compiling t.c may fail but that's strictly speaking not part of the library)
   scan_html now decodes HTML entities based on the actual w3c list (from entities.json, say gmake update to fetch the current version)
   added fmt_escapechar* to fmt.h (implement various escaping mechanisms also found in textcode but for a single char not a whole string, and they always escape, not just when they think it's needed)
   scan_ushort was supposed to abort early and return 5 when attempting to parse "65536", because the result does not fit.  It did not.  Now it does.
   scan_*long, scan_*int, scan_*short now properly abort if the number would not fit
   SECURITY: check for integer overflow in stralloc_ready
+  switch io_fds from array to newly implemented (hopefully thread-safe) iarray
+  switch epoll from level triggering to edge triggering
 
 0.29:
   save 8 bytes in taia.h for 64-bit systems

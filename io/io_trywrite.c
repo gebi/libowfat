@@ -19,7 +19,7 @@
  * stuff on I/O batches. */
 
 int64 io_trywrite(int64 d,const char* buf,int64 len) {
-  io_entry* e=array_get(&io_fds,sizeof(io_entry),d);
+  io_entry* e=iarray_get(&io_fds,d);
   int r;
   if (!e) { errno=EBADF; return -3; }
   if (!e->nonblock) {
@@ -75,7 +75,7 @@ int64 io_trywrite(int64 d,const char* buf,int64 len) {
   long r;
   struct itimerval old,new;
   struct pollfd p;
-  io_entry* e=array_get(&io_fds,sizeof(io_entry),d);
+  io_entry* e=iarray_get(&io_fds,d);
   io_sigpipe();
   if (!e) { errno=EBADF; return -3; }
   if (!e->nonblock) {

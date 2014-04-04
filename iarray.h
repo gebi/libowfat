@@ -24,12 +24,13 @@ typedef struct _iarray_page {
 
 typedef struct {
   iarray_page* pages[16];
-  size_t elemsize,elemperpage,bytesperpage;
+  size_t elemsize,elemperpage,bytesperpage,len;
 } iarray;
 
 void iarray_init(iarray* ia,size_t elemsize);
 void* iarray_get(iarray* ia,size_t pos);
 void* iarray_allocate(iarray* ia,size_t pos);
+size_t iarray_length(iarray* ia);
 
 /* WARNING: do not use the array during or after iarray_free, make sure
  * no threads are potentially doing anything with the iarray while it is

@@ -86,7 +86,7 @@ _syscall4(int,sendfile,int,out,int,in,long *,offset,unsigned long,count)
 
 int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
   off_t o=off;
-  io_entry* e=array_get(&io_fds,sizeof(io_entry),s);
+  io_entry* e=iarray_get(&io_fds,s);
   off_t i;
   uint64 done=0;
   /* What a spectacularly broken design for sendfile64.
@@ -118,7 +118,7 @@ int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
 #include <mswsock.h>
 
 int64 io_sendfile(int64 out,int64 in,uint64 off,uint64 bytes) {
-  io_entry* e=array_get(&io_fds,sizeof(io_entry),out);
+  io_entry* e=iarray_get(&io_fds,out);
   if (!e) { errno=EBADF; return -3; }
   if (e->sendfilequeued==1) {
     /* we called TransmitFile, and it returned. */

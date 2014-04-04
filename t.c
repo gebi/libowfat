@@ -51,6 +51,7 @@ int main(int argc,char* argv[]) {
   char buf[1024];
   size_t l;
   unsigned char c;
+  (void)writecb;
   printf("%d\n",(c=scan_fromhex('.')));
   (void)argc;
   (void)argv;

@@ -12,7 +12,7 @@ extern void io_dontwantwrite_really(int64 d,io_entry* e);
 
 void io_close(int64 d) {
   io_entry* e;
-  if ((e=array_get(&io_fds,sizeof(io_entry),d))) {
+  if ((e=iarray_get(&io_fds,d))) {
     e->inuse=0;
     e->cookie=0;
     if (e->kernelwantread) io_dontwantread_really(d,e);

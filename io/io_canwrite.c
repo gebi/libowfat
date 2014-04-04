@@ -10,7 +10,7 @@ int64 io_canwrite() {
   if (first_writeable==-1)
 #ifdef HAVE_SIGIO
   {
-    if (alt_firstwrite>=0 && (e=array_get(&io_fds,sizeof(io_entry),alt_firstwrite)) && e->canwrite) {
+    if (alt_firstwrite>=0 && (e=iarray_get(&io_fds,alt_firstwrite)) && e->canwrite) {
       debug_printf(("io_canwrite: normal write queue is empty, swapping in alt write queue (starting with %ld)\n",alt_firstwrite));
       first_writeable=alt_firstwrite;
       alt_firstwrite=-1;
@@ -22,7 +22,7 @@ int64 io_canwrite() {
 #endif
   for (;;) {
     int64 r;
-    e=array_get(&io_fds,sizeof(io_entry),first_writeable);
+    e=iarray_get(&io_fds,first_writeable);
     if (!e) break;
     r=first_writeable;
     first_writeable=e->next_write;

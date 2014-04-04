@@ -35,16 +35,6 @@ void io_wantread_really(int64 d,io_entry* e) {
   assert(!e->kernelwantread);
   newfd=!e->kernelwantwrite;
   io_wanted_fds+=newfd;
-#ifdef HAVE_EPOLL
-  if (io_waitmode==EPOLL) {
-    struct epoll_event x;
-    byte_zero(&x,sizeof(x));	// to shut up valgrind
-    x.events=EPOLLIN;
-    if (e->kernelwantwrite) x.events|=EPOLLOUT;
-    x.data.fd=d;
-    epoll_ctl(io_master,e->kernelwantwrite?EPOLL_CTL_MOD:EPOLL_CTL_ADD,d,&x);
-  }
-#endif
 #ifdef HAVE_KQUEUE
   if (io_waitmode==KQUEUE) {
     struct kevent kev;
@@ -63,15 +53,25 @@ void io_wantread_really(int64 d,io_entry* e) {
     write(io_master,&x,sizeof(x));
   }
 #endif
-#ifdef HAVE_SIGIO
-  if (io_waitmode==_SIGIO) {
+#if defined(HAVE_SIGIO) || defined(HAVE_EPOLL)
+  if (io_waitmode==_SIGIO || io_waitmode==EPOLL) {
     struct pollfd p;
-    p.fd=d;
-    p.events=POLLIN;
-    switch (poll(&p,1,0)) {
-    case 1: e->canread=1; break;
-    case 0: e->canread=0; break;
-    case -1: return;
+    if (io_waitmode==EPOLL && !e->epolladded) {
+      struct epoll_event x;
+      byte_zero(&x,sizeof(x));	// shut up valgrind
+      x.events=EPOLLIN|EPOLLOUT|EPOLLET;
+      x.data.fd=d;
+      epoll_ctl(io_master,EPOLL_CTL_ADD,d,&x);
+      e->epolladded=1;
+    }
+    if (e->canread==0) {
+      p.fd=d;
+      p.events=POLLIN;
+      switch (poll(&p,1,0)) {
+      case 1: e->canread=1; break;
+//      case 0: e->canread=0; break;
+      case -1: return;
+      }
     }
     if (e->canread) {
       debug_printf(("io_wantread: enqueueing %lld in normal read queue (next is %ld)\n",d,first_readable));
@@ -113,7 +113,7 @@ queueread:
 }
 
 void io_wantread(int64 d) {
-  io_entry* e=array_get(&io_fds,sizeof(io_entry),d);
+  io_entry* e=iarray_get(&io_fds,d);
   if (!e || e->wantread) return;
   if (e->canread) {
     e->next_read=first_readable;

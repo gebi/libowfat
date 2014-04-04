@@ -47,6 +47,7 @@ int main() {
 	  buffer_putulong(buffer_2,n);
 	  buffer_puts(buffer_2,")");
 	  if (io_fd(n)) {
+	    io_nonblock(n);
 	    io_wantread(n);
 	  } else {
 	    buffer_puts(buffer_2,", but io_fd failed.");

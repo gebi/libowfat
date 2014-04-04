@@ -11,7 +11,7 @@
 
 int64 io_waitwrite(int64 d,const char* buf,int64 len) {
   long r;
-  io_entry* e=array_get(&io_fds,sizeof(io_entry),d);
+  io_entry* e=iarray_get(&io_fds,d);
   if (!e) { errno=EBADF; return -3; }
   if (e->nonblock) {
     unsigned long i=0;
@@ -32,7 +32,7 @@ int64 io_waitwrite(int64 d,const char* buf,int64 len) {
 int64 io_waitwrite(int64 d,const char* buf,int64 len) {
   long r;
   struct pollfd p;
-  io_entry* e=array_get(&io_fds,sizeof(io_entry),d);
+  io_entry* e=iarray_get(&io_fds,d);
   io_sigpipe();
   if (!e) { errno=EBADF; return -3; }
   if (e->nonblock) {

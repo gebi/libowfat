@@ -17,7 +17,7 @@ static iarray_page* new_page(size_t pagesize) {
 }
 
 void* iarray_allocate(iarray* ia,size_t pos) {
-  size_t index;
+  size_t index,prevlen=ia->len;
   iarray_page** p=&ia->pages[pos%(sizeof(ia->pages)/sizeof(ia->pages[0]))];
   iarray_page* newpage=0;
   for (index=0; pos<index+ia->elemperpage; index+=ia->elemperpage) {
@@ -28,7 +28,11 @@ void* iarray_allocate(iarray* ia,size_t pos) {
 	newpage=0;
     }
     if (index+ia->elemperpage>pos) {
+      size_t l;
       if (newpage) munmap(newpage,ia->bytesperpage);
+      do {
+	l=__CAS(&ia->len,prevlen,pos);
+      } while (l<pos);
       return &(*p)->data[(pos-index)*ia->elemsize];
     }
     p=&(*p)->next;

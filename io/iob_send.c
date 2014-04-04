@@ -17,7 +17,7 @@ int64 iob_send(int64 s,io_batch* b) {
 
   if (b->bytesleft==0) return 0;
   sent=-1;
-  e=array_get(&io_fds,sizeof(io_entry),s);
+  e=iarray_get(&io_fds,s);
   if (!e) { errno=EBADF; return -3; }
   if (!(x=array_get(&b->b,sizeof(iob_entry),b->next)))
     return -3;		/* can't happen error */

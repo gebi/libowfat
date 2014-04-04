@@ -4,6 +4,7 @@
 
 #include "io.h"
 #include "array.h"
+#include "iarray.h"
 #ifdef __MINGW32__
 #include "socket.h"
 my_extern HANDLE io_comport;
@@ -36,6 +37,7 @@ my_extern HANDLE io_comport;
 
 typedef struct {
   tai6464 timeout;
+  int fd;
   unsigned int wantread:1;	/* does the app want to read/write? */
   unsigned int wantwrite:1;
   unsigned int canread:1;	/* do we know we can read/write? */
@@ -44,6 +46,7 @@ typedef struct {
   unsigned int inuse:1;		/* internal consistency checking */
   unsigned int kernelwantread:1;	/* did we tell the kernel we want to read/write? */
   unsigned int kernelwantwrite:1;
+  unsigned int epolladded:1;
 #ifdef __MINGW32__
   unsigned int readqueued:2;
   unsigned int writequeued:2;
@@ -71,7 +74,7 @@ typedef struct {
 extern int io_multithreaded;
 extern int io_sockets[2];
 
-my_extern array io_fds;
+my_extern iarray io_fds;
 my_extern uint64 io_wanted_fds;
 my_extern array io_pollfds;
 

@@ -4,6 +4,6 @@
 
 void io_setcookie(int64 d,void* cookie) {
   io_entry* e;
-  if ((e=array_get(&io_fds,sizeof(io_entry),d)))
+  if ((e=iarray_get(&io_fds,d)))
     e->cookie=cookie;
 }
