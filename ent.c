@@ -84,10 +84,10 @@ char* heap;
 uint32_t* marshaled;
 char* data;
 
-size_t marshalhelper(struct letters* s) {
+void marshalhelper(struct letters* s) {
   size_t i;
   uint32_t myindex=used;
-  if (!s) return 0;
+  if (!s) return;
   used+=s->n;
   assert(used<nodes+2);
   for (i=1; i!=0; ++i) {	// start at 1, go to 256, then access modulo 256; effect: sort but put 0 last
