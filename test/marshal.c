@@ -139,6 +139,7 @@ int main() {
   ull=-1; assert(scan_asn1dertag("\x80\x42_",3,&ull)==0 && ull==-1);	// non-minimal encoding
   ull=-1; assert(scan_asn1dertag("\x80_",1,&ull)==0 && ull==-1);	// incomplete sequence
   ull=-1; assert(scan_asn1dertag("\x82\x80_",2,&ull)==0 && ull==-1);	// incomplete sequence
+  ull=-1; assert(scan_asn1dertag("\xff\xff\xff\xff\xff\xff\xff\xff\xff\x7f",10,&ull)==0 && ull==-1);	// value too large
 
   ull=-1; assert(scan_asn1derlength("\x00_",2,&ull)==1 && ull==0);
   ull=-1; assert(scan_asn1derlengthvalue("\x81\xc2_",3,&ull)==2 && ull==0xc2);
