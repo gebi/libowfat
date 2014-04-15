@@ -1,12 +1,12 @@
 .TH scan_asn1derlength 3
 .SH NAME
-scan_asn1derlength \- decode an unsigned integer from ASN.1 DER length encoding
+scan_asn1derlengthvalue \- decode an unsigned integer from ASN.1 DER length encoding
 .SH SYNTAX
 .B #include <scan.h>
 
-size_t \fBscan_asn1derlength\fP(const char *\fIsrc\fR,size_t \fIlen\fR,unsigned long long *\fIdest\fR);
+size_t \fBscan_asn1derlengthvalue\fP(const char *\fIsrc\fR,size_t \fIlen\fR,unsigned long long *\fIdest\fR);
 .SH DESCRIPTION
-scan_asn1derlength decodes an unsigned integer in ASN.1 DER length encoding
+scan_asn1derlengthvalue decodes an unsigned integer in ASN.1 DER length encoding
 from a memory area holding binary data.  It writes the decode value in
 \fIdest\fR and returns the number of bytes it read from \fIsrc\fR.
 
@@ -22,10 +22,8 @@ sizeof(*dest)+1.
 This implementation will reject values that are not encoded in the
 minimum amount of bytes.
 
-In addition to reading the length value, this implementation will also
-validate the length value. If the length value is so large that the data
-would not fit in the source buffer, it will return a failure.  If you
-only want to parse the length value without this check, use
-scan_asn1derlengthvalue() instead.
+If you need to decode the length value so you can parse actual ASN.1
+tag/length/value structures, please consider using scan_asn1derlength
+instead, as it will do additional checking for you.
 .SH "SEE ALSO"
 fmt_asn1derlength(3), scan_asn1derlengthvalue(3)

@@ -9,6 +9,7 @@ size_t scan_asn1dertag(const char* src,size_t len,unsigned long long* length) {
       *length=l;
       return n+1;
     }
+    if (n==0 && !l) return 0;	// DER says: must be encoded minimally
   }
   return 0;
 }

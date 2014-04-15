@@ -134,6 +134,22 @@ int main() {
   assert(fmt_asn1dertag(NULL,0xc2)==2);
   zap(); assert(fmt_asn1dertag(buf,0xc2)==2 && byte_equal(buf,3,"\x81\x42_"));
 
+  ull=-1; assert(scan_asn1dertag("\x00_",2,&ull)==1 && ull==0);
+  ull=-1; assert(scan_asn1dertag("\x81\x42_",3,&ull)==2 && ull==0xc2);
+  ull=-1; assert(scan_asn1dertag("\x80\x42_",3,&ull)==0 && ull==-1);	// non-minimal encoding
+  ull=-1; assert(scan_asn1dertag("\x80_",1,&ull)==0 && ull==-1);	// incomplete sequence
+  ull=-1; assert(scan_asn1dertag("\x82\x80_",2,&ull)==0 && ull==-1);	// incomplete sequence
+
+  ull=-1; assert(scan_asn1derlength("\x00_",2,&ull)==1 && ull==0);
+  ull=-1; assert(scan_asn1derlengthvalue("\x81\xc2_",3,&ull)==2 && ull==0xc2);
+  ull=-1; assert(scan_asn1derlengthvalue("\x82\x12\x34_",4,&ull)==3 && ull==0x1234);
+  ull=-1; assert(scan_asn1derlengthvalue("\x82\x00\x34_",4,&ull)==0 && ull==-1);	// non-minimal encoding
+  ull=-1; assert(scan_asn1derlengthvalue("\x81\x12_",3,&ull)==0 && ull==-1);	// non-minimal encoding
+  ull=-1; assert(scan_asn1derlengthvalue("\xff_",1,&ull)==0 && ull==-1);	// incomplete sequence
+  ull=-1; assert(scan_asn1derlengthvalue("\xff_",200,&ull)==0 && ull==-1);	// incomplete sequence
+
+  ull=-1; assert(scan_asn1derlength("\x10_",1,&ull)==0 && ull==-1);	// not enough space in buffer for length
+
   zap(); assert(fmt_strm(buf,"hell","o, worl","d!\n")==14 && byte_equal(buf,15,"hello, world!\n_"));
 
   assert(fmt_escapecharxml(NULL,0xc2)==6);
@@ -326,7 +342,7 @@ int main() {
   }
 
   {
-    char* mmapcopy;
+    const char* mmapcopy;
     FILE* f;
     size_t mlen;
     assert(f=fopen("test/marshal.c","rb"));
