@@ -26,7 +26,7 @@ ssize_t socket_recv6(int s,char *buf,size_t len,char ip[16],uint16 *port,uint32 
   if ((r = recvfrom(s,buf,len,0,(struct sockaddr *) &si,&Len))<0) return winsock2errno(-1);
 
 #ifdef LIBC_HAS_IP6
-  if (noipv6) {
+  if (noipv6 || si.sin6_family==AF_INET || si.sin6_family==PF_INET) {
     struct sockaddr_in *si4=(struct sockaddr_in *)&si;
     if (ip) {
       byte_copy(ip,12,V4mappedprefix);

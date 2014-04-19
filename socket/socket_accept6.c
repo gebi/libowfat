@@ -87,7 +87,7 @@ incoming:
 #endif
 
 #ifdef LIBC_HAS_IP6
-  if (sa.sin6_family==AF_INET) {
+  if (noipv6 || sa.sin6_family==AF_INET || sa.sin6_family==PF_INET) {
     struct sockaddr_in *sa4=(struct sockaddr_in*)&sa;
     if (ip) {
       byte_copy(ip,12,V4mappedprefix);

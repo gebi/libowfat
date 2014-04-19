@@ -24,7 +24,7 @@ int socket_local6(int s,char ip[16],uint16 *port,uint32 *scope_id)
 
   if (getsockname(s,(void*) &si,&len) == -1) return winsock2errno(-1);
 #ifdef LIBC_HAS_IP6
-  if (si.sin6_family==AF_INET) {
+  if (noipv6 || si.sin6_family==AF_INET || si.sin6_family==PF_INET) {
     struct sockaddr_in *si4=(void*)&si;
     if (ip) {
       byte_copy(ip,12,V4mappedprefix);
