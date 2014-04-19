@@ -148,6 +148,7 @@ int main() {
   ull=-1; assert(scan_asn1derlengthvalue("\x81\x12_",3,&ull)==0 && ull==-1);	// non-minimal encoding
   ull=-1; assert(scan_asn1derlengthvalue("\xff_",1,&ull)==0 && ull==-1);	// incomplete sequence
   ull=-1; assert(scan_asn1derlengthvalue("\xff_",200,&ull)==0 && ull==-1);	// incomplete sequence
+  ull=-1; assert(scan_asn1derlengthvalue("\x89\x12\x23\x34\x45\x56\x67\x78\x89_",200,&ull)==0 && ull==-1);	// value too large
 
   ull=-1; assert(scan_asn1derlength("\x10_",1,&ull)==0 && ull==-1);	// not enough space in buffer for length
 
