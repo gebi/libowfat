@@ -143,6 +143,7 @@ int main() {
 
   ull=-1; assert(scan_asn1derlength("\x00_",2,&ull)==1 && ull==0);
   ull=-1; assert(scan_asn1derlengthvalue("\x81\xc2_",3,&ull)==2 && ull==0xc2);
+  ull=-1; assert(scan_asn1derlengthvalue("\x82\x12\x34_",2,&ull)==0 && ull==-1);
   ull=-1; assert(scan_asn1derlengthvalue("\x82\x12\x34_",4,&ull)==3 && ull==0x1234);
   ull=-1; assert(scan_asn1derlengthvalue("\x82\x00\x34_",4,&ull)==0 && ull==-1);	// non-minimal encoding
   ull=-1; assert(scan_asn1derlengthvalue("\x81\x12_",3,&ull)==0 && ull==-1);	// non-minimal encoding
