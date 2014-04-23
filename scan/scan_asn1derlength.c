@@ -12,7 +12,7 @@ size_t scan_asn1derlengthvalue(const char* src,size_t len,unsigned long long* va
   c&=0x7f;
   if (!c) return 0;	/* length 0x80 means indefinite length encoding, not supported here */
   l=(unsigned char)src[1];
-  if (l==0) return 0;	/* not minimally encoded: 0x81 0x00 instead of 0x00 */
+  if (l==0) return 0;	/* not minimally encoded: 0x82 0x00 0xc2 instead of 0x81 0xc2 */
   if (c>sizeof(l)) return 0;	/* too many bytes, does not fit into target integer type */
   if (c+1>len) return 0;	/* not enough data in input buffer */
   for (i=2; i<=c; ++i)
