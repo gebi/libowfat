@@ -5,7 +5,7 @@ size_t scan_asn1derlengthvalue(const char* src,size_t len,unsigned long long* va
   unsigned int i,c=*src;
   unsigned long long l;
   if ((c&0x80)==0) {
-    *value=c&0x7f;
+    *value=c;
     return 1;
   }
   /* Highest bit set: lower 7 bits is the length of the length value in bytes. */
