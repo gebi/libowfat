@@ -8,7 +8,7 @@ void io_wantwrite_really(int64 d, io_entry* e);
 int64 io_canwrite() {
   io_entry* e;
   if (first_writeable==-1)
-#ifdef HAVE_SIGIO
+#if defined(HAVE_SIGIO) || defined(HAVE_EPOLL)
   {
     if (alt_firstwrite>=0 && (e=iarray_get(&io_fds,alt_firstwrite)) && e->canwrite) {
       debug_printf(("io_canwrite: normal write queue is empty, swapping in alt write queue (starting with %ld)\n",alt_firstwrite));
@@ -35,7 +35,7 @@ int64 io_canwrite() {
                         e->canwrite
 #endif
       				   ) {
-#ifdef HAVE_SIGIO
+#if defined(HAVE_SIGIO) || defined(HAVE_EPOLL)
       e->next_write=alt_firstwrite;
       alt_firstwrite=r;
       debug_printf(("io_canwrite: enqueue %ld in alt write queue (next is %ld)\n",alt_firstwrite,e->next_write));

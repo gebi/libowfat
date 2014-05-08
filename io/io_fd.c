@@ -46,7 +46,8 @@ int io_master;
 #if defined(HAVE_SIGIO)
 int io_signum;
 sigset_t io_ss;
-
+#endif
+#if defined(HAVE_SIGIO) || defined(HAVE_EPOLL)
 long alt_firstread;
 long alt_firstwrite;
 #endif
@@ -97,8 +98,10 @@ static io_entry* io_fd_internal(int64 d) {
       if (io_master!=-1) io_waitmode=DEVPOLL;
     }
 #endif
-#if defined(HAVE_SIGIO)
+#if defined(HAVE_SIGIO) || defined(HAVE_EPOLL)
     alt_firstread=alt_firstwrite=-1;
+#endif
+#if defined(HAVE_SIGIO)
     if (io_waitmode==UNDECIDED) {
       io_signum=SIGRTMIN+1;
       if (sigemptyset(&io_ss)==0 &&

@@ -106,7 +106,7 @@ int64 io_trywrite(int64 d,const char* buf,int64 len) {
   }
   if (r==-1 || r==0) {
     e->canwrite=0;
-#ifdef HAVE_SIGIO
+#if defined(HAVE_SIGIO) || defined(HAVE_EPOLL)
     if (d==alt_firstwrite) {
       debug_printf(("io_trywrite: dequeueing %ld from alt write queue (next is %ld)\n",d,e->next_write));
       alt_firstwrite=e->next_write;

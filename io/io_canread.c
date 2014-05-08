@@ -12,7 +12,7 @@ void io_wantread_really(int64 d, io_entry* e);
 int64 io_canread() {
   io_entry* e;
   if (first_readable==-1)
-#ifdef HAVE_SIGIO
+#if defined(HAVE_SIGIO) || defined(HAVE_EPOLL)
   {
     if (alt_firstread>=0 && (e=iarray_get(&io_fds,alt_firstread)) && e->canread) {
       debug_printf(("io_canread: normal read queue is empty, swapping in alt read queue (starting with %ld)\n",alt_firstread));
@@ -44,11 +44,11 @@ int64 io_canread() {
 			e->canread
 #endif
 				  ) {
-#ifdef HAVE_SIGIO
+#if defined(HAVE_SIGIO) || defined(HAVE_EPOLL)
       e->next_read=alt_firstread;
       alt_firstread=r;
       debug_printf(("io_canread: enqueue %ld in alt read queue (next is %ld)\n",alt_firstread,e->next_read));
-      if (io_waitmode!=_SIGIO)
+      if (io_waitmode!=_SIGIO && io_waitmode!=EPOLL)
 #endif
 	e->canread=0;
       if (!e->kernelwantread)

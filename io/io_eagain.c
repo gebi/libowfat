@@ -5,7 +5,7 @@ void io_eagain(int64 d) {
   if (e) {
     if (e->wantread) e->canread=0;
     if (e->wantwrite) e->canwrite=0;
-#ifdef HAVE_SIGIO
+#if defined(HAVE_SIGIO) || defined(HAVE_EPOLL)
     if (d==alt_firstread) {
       debug_printf(("io_eagain: dequeueing %lld from alt read queue (next is %ld)\n",d,e->next_read));
       alt_firstread=e->next_read;
