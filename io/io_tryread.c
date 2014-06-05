@@ -86,7 +86,7 @@ int64 io_tryread(int64 d,char* buf,int64 len) {
   if (!e) { errno=EBADF; return -3; }
   if (!e->nonblock) {
     p.fd=d;
-    if (p.fd != d) { errno=EBADF; return -3; }	/* catch overflow */
+    if (p.fd!=d) { errno=EBADF; return -3; }	/* catch integer truncation */
     p.events=POLLIN;
     switch (poll(&p,1,0)) {
     case -1: return -3;
@@ -110,7 +110,7 @@ int64 io_tryread(int64 d,char* buf,int64 len) {
     if (errno!=EAGAIN)
       r=-3;
   }
-  if (r==-1 || r==0) {
+  if (r!=len) {
     e->canread=0;
 #if defined(HAVE_SIGIO) || defined(HAVE_EPOLL)
     if (d==alt_firstread) {

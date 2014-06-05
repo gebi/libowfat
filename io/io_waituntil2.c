@@ -125,8 +125,15 @@ int64 io_waituntil2(int64 milliseconds) {
     int n;
     struct epoll_event y[100];
     io_entry* e;
-    if (alt_firstread>=0 && (e=iarray_get(&io_fds,alt_firstread)) && e->canread) return 1;
-    if (alt_firstwrite>=0 && (e=iarray_get(&io_fds,alt_firstwrite)) && e->canwrite) return 1;
+    if (alt_firstread>=0 && (e=iarray_get(&io_fds,alt_firstread)) && e->canread) {
+//      write(1,"r",1);
+      return 1;
+    }
+    if (alt_firstwrite>=0 && (e=iarray_get(&io_fds,alt_firstwrite)) && e->canwrite) {
+//      write(1,"w",1);
+      return 1;
+    }
+//    write(1,".",1);
     if ((n=epoll_wait(io_master,y,100,milliseconds))==-1) return -1;
     for (i=0; i<n; ++i) {
       e=iarray_get(&io_fds,y[i].data.fd);

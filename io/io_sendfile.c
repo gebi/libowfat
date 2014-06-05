@@ -14,8 +14,14 @@
 int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
   off_t sbytes;
   int r=sendfile(fd,s,off,n,0,&sbytes,0);
-  if (r==-1)
+  if (r==-1) {
+    io_entry* e=iarray_get(&io_fds,s);
+    if (e) {
+      e->canwrite=0;
+      e->next_write=-1;
+    }
     return (errno==EAGAIN?(sbytes?sbytes:-1):-3);
+  }
   return n;
 }
 
@@ -31,6 +37,13 @@ int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
 int64 io_sendfile(int64 out,int64 in,uint64 off,uint64 bytes) {
   long long r=sendfile64(out,in,off,bytes,0,0);
   if (r==-1 && errno!=EAGAIN) r=-3;
+  if (r!=bytes) {
+    io_entry* e=iarray_get(&io_fds,s);
+    if (e) {
+      e->canwrite=0;
+      e->next_write=-1;
+    }
+  }
   return r;
 }
 
@@ -45,6 +58,13 @@ int64 io_sendfile(int64 out,int64 in,uint64 off,uint64 bytes) {
   off64_t o=off;
   long long r=sendfile64(out,in,&o,bytes);
   if (r==-1 && errno!=EAGAIN) r=-3;
+  if (r!=bytes) {
+    io_entry* e=iarray_get(&io_fds,s);
+    if (e) {
+      e->canwrite=0;
+      e->next_write=-1;
+    }
+  }
   return r;
 }
 
@@ -65,9 +85,16 @@ int64 io_sendfile(int64 out,int64 in,uint64 off,uint64 bytes) {
   p.file_bytes=bytes;
   p.trailer_data=0;
   p.trailer_length=0;
-  if (send_file(&destfd,&p,0)>=0)
+  if (send_file(&destfd,&p,0)>=0) {
+    if (p.bytes_sent != bytes) {
+      io_entry* e=iarray_get(&io_fds,s);
+      if (e) {
+	e->canwrite=0;
+	e->next_write=-1;
+      }
+    }
     return p.bytes_sent;
-  if (errno==EAGAIN)
+  } if (errno==EAGAIN)
     return -1;
   else
     return -3;
@@ -99,14 +126,16 @@ int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
       n-=todo;
       if (n==0) return done;
       continue;
-    } else if (i==-1) {
+    } else {
       if (e) {
 	e->canwrite=0;
 	e->next_write=-1;
       }
-      return (errno==EAGAIN?-1:-3);
-    } else
-      return done+i;
+      if (i==-1)
+	return (errno==EAGAIN?-1:-3);
+      else
+	return done+i;
+    }
   }
   return 0;
 }

@@ -237,6 +237,7 @@ eagain:
 	  goto abort;
 	}
       }
+      io_eagain(s);
     } else break;
   }
 abort:

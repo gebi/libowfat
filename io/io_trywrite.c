@@ -104,7 +104,7 @@ int64 io_trywrite(int64 d,const char* buf,int64 len) {
     if (errno!=EAGAIN)
       r=-3;
   }
-  if (r==-1 || r==0) {
+  if (r!=len) {
     e->canwrite=0;
 #if defined(HAVE_SIGIO) || defined(HAVE_EPOLL)
     if (d==alt_firstwrite) {
