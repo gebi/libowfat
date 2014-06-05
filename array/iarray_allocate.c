@@ -18,24 +18,35 @@ static iarray_page* new_page(size_t pagesize) {
 
 void* iarray_allocate(iarray* ia,size_t pos) {
   size_t index,prevlen=ia->len;
+  /* first, find the linked list of pages */
   iarray_page** p=&ia->pages[pos%(sizeof(ia->pages)/sizeof(ia->pages[0]))];
+  /* this is here so we don't munmap and then re-mmap pages when a
+   * certain path makes it necessary to mmap several pages into the
+   * linked list and we are competing with another thread that does the
+   * same thing */
   iarray_page* newpage=0;
-  for (index=0; pos<index+ia->elemperpage; index+=ia->elemperpage) {
+  /* since we have a fan-out of 16, on page 0 the elements are 0, 16, 32, ...
+   * so we divide pos by the fan-out here */
+  size_t realpos=pos;
+  pos /= sizeof(ia->pages)/sizeof(ia->pages[0]);
+  /* now walk the linked list of pages until we reach the one we want */
+  for (index=0; ; index+=ia->elemperpage) {
     if (!*p) {
       if (!newpage)
 	if (!(newpage=new_page(ia->bytesperpage))) return 0;
       if (__CAS(p,0,newpage)==0)
 	newpage=0;
     }
-    if (index+ia->elemperpage>pos) {
-      size_t l;
-      if (newpage) munmap(newpage,ia->bytesperpage);
-      do {
-	l=__CAS(&ia->len,prevlen,pos);
-      } while (l<pos);
-      return &(*p)->data[(pos-index)*ia->elemsize];
-    }
+    if (index+ia->elemperpage>pos)
+      break;
     p=&(*p)->next;
   }
-  return 0;	// can't happen
+  if (newpage) munmap(newpage,ia->bytesperpage);
+  {
+    size_t l;
+    do {
+      l=__CAS(&ia->len,prevlen,realpos);
+    } while (l<realpos);
+  }
+  return &(*p)->data[(pos-index)*ia->elemsize];
 }

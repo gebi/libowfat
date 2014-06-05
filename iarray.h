@@ -17,6 +17,18 @@
 #include <pthread.h>
 #endif
 
+/* The basic data structure is a static array of pointers to pages.
+ * Each page also contains a next pointer to form a linked list.
+ * To get to element n, you take n % the number of elements in the
+ * static array (iarray->pages) to get to the list of pages that
+ * contains it. Then keep going to the next page until you are on the
+ * right page.
+ * Note: The elements on each page are not contiguous. If the fanout is
+ * 16, the indices on page 0 are 0, 16, 32, ...
+ * To get to element 0, you'd go to iarray->pages[0].data,
+ * to get to element 1, you'd go to iarray->pages[1].data,
+ * to get to element 16, you'd go to iarray->pages[0].data+iarray->elemsize.
+ */
 typedef struct _iarray_page {
   struct _iarray_page* next;
   char data[];
