@@ -182,7 +182,7 @@ int64 iob_send(int64 s,io_batch* b) {
 	  sent=-3;
 	else {
 eagain:
-	  io_eagain(s);
+	  io_eagain_write(s);
 	  return -1;
 	}
       }
@@ -201,7 +201,7 @@ eagain:
 	sent=writev(s,v,headers);
       if (sent==-1) {
 	if (errno==EAGAIN) {
-	  io_eagain(s);
+	  io_eagain_write(s);
 	  return -1;
 	}
 	sent=-3;
@@ -237,7 +237,7 @@ eagain:
 	  goto abort;
 	}
       }
-      io_eagain(s);
+      io_eagain_write(s);
     } else break;
   }
 abort:

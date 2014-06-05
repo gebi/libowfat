@@ -64,8 +64,10 @@ int64 io_waituntil2(int64 milliseconds);
 void io_check();
 
 /* signal that read/accept/whatever returned EAGAIN */
-/* needed for SIGIO */
-void io_eagain(int64 d);
+/* needed for SIGIO and epoll */
+void io_eagain(int64 d);  /* do not use, API was a bad idea */
+void io_eagain_read(int64 d);	/* use these ones */
+void io_eagain_write(int64 d);
 
 /* return next descriptor from io_wait that can be read from */
 int64 io_canread();

@@ -235,7 +235,7 @@ int main() {
 	  buffer_putnlflush(buffer_2);
 	}
 	if (errno==EAGAIN)
-	  io_eagain(s);
+	  io_eagain_read(s);
 	else
 	  carp("socket_accept6");
       } else {
@@ -285,7 +285,7 @@ emerge:
       struct http_data* h=io_getcookie(i);
       int64 r=iob_send(i,&h->iob);
 /*      printf("iob_send returned %lld\n",r); */
-      if (r==-1) io_eagain(i); else
+      if (r==-1) io_eagain_write(i); else
       if (r<=0) {
 	array_trunc(&h->r);
 	iob_reset(&h->iob);
