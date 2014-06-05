@@ -66,6 +66,7 @@ void io_check();
 /* signal that read/accept/whatever returned EAGAIN */
 /* needed for SIGIO and epoll */
 void io_eagain(int64 d);  /* do not use, API was a bad idea */
+#define HAVE_EAGAIN_READWRITE
 void io_eagain_read(int64 d);	/* use these ones */
 void io_eagain_write(int64 d);
 
