@@ -82,6 +82,7 @@ extern int noipv6;
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
+#ifndef EWOULDBLOCK
 #define EWOULDBLOCK WSAEWOULDBLOCK
 #define EINPROGRESS WSAEINPROGRESS
 #define EALREADY WSAEALREADY
@@ -118,6 +119,7 @@ extern int noipv6;
 #define ESTALE WSAESTALE
 #define EREMOTE WSAEREMOTE
 #define EDISCON WSAEDISCON
+#endif
 
 #endif
 

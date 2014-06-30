@@ -11,7 +11,11 @@
 #endif
 
 static iarray_page* new_page(size_t pagesize) {
+#ifdef __MINGW32__
+  void* x=malloc(pagesize);
+#else
   void* x=mmap(0,pagesize,PROT_READ|PROT_WRITE,MAP_ANONYMOUS|MAP_PRIVATE,-1,0);
+#endif
   if (x==MAP_FAILED) return 0;
   return (iarray_page*)x;
 }
@@ -41,7 +45,12 @@ void* iarray_allocate(iarray* ia,size_t pos) {
       break;
     p=&(*p)->next;
   }
-  if (newpage) munmap(newpage,ia->bytesperpage);
+  if (newpage)
+#ifdef __MINGW32__
+    free(newpage);
+#else
+    munmap(newpage,ia->bytesperpage);
+#endif
   {
     size_t l;
     do {

@@ -100,6 +100,8 @@ $(MULT_OBJS): uint64.h uint32.h uint16.h safemult.h
 $(IO_OBJS): uint64.h array.h io.h io_internal.h taia.h tai.h haveepoll.h havekqueue.h havesigio.h havebsdsf.h havedevpoll.h havesendfile.h
 $(CDB_OBJS): cdb.h uint32.h
 
+mult64.o: haveuint128.h
+
 
 iob_addbuf.o iob_addfile.o iob_new.o iob_reset.o iob_send.o: iob_internal.h iob.h
 
