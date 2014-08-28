@@ -40,6 +40,16 @@ void io_wantwrite_really(int64 d, io_entry* e) {
   assert(!e->kernelwantwrite);	/* we should not be here if we already told the kernel we want to write */
   newfd=(!e->kernelwantread);
   io_wanted_fds+=newfd;
+#ifdef HAVE_EPOLL
+  if (io_waitmode==EPOLL) {
+    struct epoll_event x;
+    byte_zero(&x,sizeof(x));	// to shut up valgrind
+    x.events=EPOLLOUT;
+    if (e->kernelwantread) x.events|=EPOLLIN;
+    x.data.fd=d;
+    epoll_ctl(io_master,e->kernelwantread?EPOLL_CTL_MOD:EPOLL_CTL_ADD,d,&x);
+  }
+#endif
 #ifdef HAVE_KQUEUE
   if (io_waitmode==KQUEUE) {
     struct kevent kev;
@@ -58,25 +68,15 @@ void io_wantwrite_really(int64 d, io_entry* e) {
     write(io_master,&x,sizeof(x));
   }
 #endif
-#if defined(HAVE_SIGIO) || defined(HAVE_EPOLL)
-  if (io_waitmode==_SIGIO || io_waitmode==EPOLL) {
+#ifdef HAVE_SIGIO
+  if (io_waitmode==_SIGIO) {
     struct pollfd p;
-    if (io_waitmode==EPOLL && !e->epolladded) {
-      struct epoll_event x;
-      byte_zero(&x,sizeof(x));	// shut up valgrind
-      x.events=EPOLLIN|EPOLLOUT|EPOLLET;
-      x.data.fd=d;
-      epoll_ctl(io_master,EPOLL_CTL_ADD,d,&x);
-      e->epolladded=1;
-    }
-    if (e->canwrite==0) {
-      p.fd=d;
-      p.events=POLLOUT;
-      switch (poll(&p,1,0)) {
-      case 1: e->canwrite=1; break;
-//      case 0: e->canwrite=0; break;
-      case -1: return;
-      }
+    p.fd=d;
+    p.events=POLLOUT;
+    switch (poll(&p,1,0)) {
+    case 1: e->canwrite=1; break;
+    case 0: e->canwrite=0; break;
+    case -1: return;
     }
     if (e->canwrite) {
       debug_printf(("io_wantwrite: enqueueing %lld in normal write queue before %ld\n",d,first_readable));

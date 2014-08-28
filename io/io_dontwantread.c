@@ -30,6 +30,16 @@ void io_dontwantread_really(int64 d, io_entry* e) {
   assert(e->kernelwantread);
   newfd=!e->kernelwantwrite;
   io_wanted_fds-=newfd;
+#ifdef HAVE_EPOLL
+  if (io_waitmode==EPOLL) {
+    struct epoll_event x;
+    byte_zero(&x,sizeof(x));   // to shut up valgrind
+    x.events=0;
+    if (e->kernelwantwrite) x.events|=EPOLLOUT;
+    x.data.fd=d;
+    epoll_ctl(io_master,e->kernelwantwrite?EPOLL_CTL_MOD:EPOLL_CTL_DEL,d,&x);
+  }
+#endif
 #ifdef HAVE_KQUEUE
   if (io_waitmode==KQUEUE) {
     struct kevent kev;

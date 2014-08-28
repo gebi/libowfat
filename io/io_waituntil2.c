@@ -124,44 +124,106 @@ int64 io_waituntil2(int64 milliseconds) {
   if (io_waitmode==EPOLL) {
     int n;
     struct epoll_event y[100];
-    io_entry* e;
-    if (alt_firstread>=0 && (e=iarray_get(&io_fds,alt_firstread)) && e->canread) {
-//      write(1,"r",1);
-      return 1;
-    }
-    if (alt_firstwrite>=0 && (e=iarray_get(&io_fds,alt_firstwrite)) && e->canwrite) {
-//      write(1,"w",1);
-      return 1;
-    }
-//    write(1,".",1);
     if ((n=epoll_wait(io_master,y,100,milliseconds))==-1) return -1;
     for (i=0; i<n; ++i) {
-      e=iarray_get(&io_fds,y[i].data.fd);
+      io_entry* e=iarray_get(&io_fds,y[i].data.fd);
       if (e) {
+	int curevents=0,newevents;
+	if (e->kernelwantread) curevents |= EPOLLIN;
+	if (e->kernelwantwrite) curevents |= EPOLLOUT;
+
+#ifdef DEBUG
+	if ((y[i].events&(EPOLLIN|EPOLLPRI|EPOLLRDNORM|EPOLLRDBAND)) && !e->kernelwantread)
+	  printf("got unexpected read event on fd #%d\n",y[i].data.fd);
+	if ((y[i].events&EPOLLOUT) && !e->kernelwantwrite)
+	  printf("got unexpected write event on fd #%d\n",y[i].data.fd);
+#endif
+
 	if (y[i].events&(POLLERR|POLLHUP)) {
 	  /* error; signal whatever app is looking for */
 	  if (e->wantread) y[i].events|=POLLIN;
 	  if (e->wantwrite) y[i].events|=POLLOUT;
 	}
-	if (y[i].events&POLLIN && !e->canread) {
-	  debug_printf(("io_waituntil2: enqueueing %ld in normal read queue before %ld\n",info.si_fd,first_readable));
-	  e->canread=1;
-	  e->next_read=first_readable;
-	  first_readable=y[i].data.fd;
+
+	newevents=0;
+	if (!e->canread || e->wantread) {
+	  newevents|=EPOLLIN;
+	  e->kernelwantread=1;
+	} else
+	  e->kernelwantread=0;
+	if (!e->canwrite || e->wantwrite) {
+	  newevents|=EPOLLOUT;
+	  e->kernelwantwrite=1;
+	} else
+	  e->kernelwantwrite=0;
+
+	/* if we think we can not read, but the kernel tells us that we
+	 * can, put this fd in the relevant data structures */
+	if (!e->canread && (y[i].events&(EPOLLIN|EPOLLPRI|EPOLLRDNORM|EPOLLRDBAND))) {
+	  if (e->canread) {
+	    newevents &= ~EPOLLIN;
+	  } else {
+	    e->canread=1;
+	    if (e->wantread) {
+	      e->next_read=first_readable;
+	      first_readable=y[i].data.fd;
+	    }
+	  }
 	}
-	if (y[i].events&POLLOUT && !e->canwrite) {
-	  debug_printf(("io_waituntil2: enqueueing %ld in normal write queue before %ld\n",info.si_fd,first_writeable));
-	  e->canwrite=1;
-	  e->next_write=first_writeable;
-	  first_writeable=y[i].data.fd;
+
+	/* if the kernel says the fd is writable, ... */
+	if (y[i].events&EPOLLOUT) {
+	  /* Usually, if the kernel says a descriptor is writable, we
+	   * note it and do not tell the kernel not to tell us again.
+	   * The idea is that once we notify the caller that the fd is
+	   * writable, and the caller handles the event, the caller will
+	   * just ask to be notified of future write events again.  We
+	   * are trying to save the superfluous epoll_ctl syscalls.
+	   * If e->canwrite is set, then this gamble did not work out.
+	   * We told the caller, yet after the caller is done we still
+	   * got another write event.  Clearly the user is implementing
+	   * some kind of throttling and we can tell the kernel to leave
+	   * us alone for now. */
+	  if (e->canwrite) {
+	    newevents &= ~EPOLLOUT;
+	    e->kernelwantwrite=0;
+	  } else {
+	    /* If !e->wantwrite: The laziness optimization in
+	     * io_dontwantwrite hit.  We did not tell the kernel that we
+	     * are no longer interested in writing to save the syscall.
+	     * Now we know we could write if we wanted; remember that
+	     * and then go on. */
+	    e->canwrite=1;
+	    if (e->wantwrite) {
+	      e->next_write=first_writeable;
+	      first_writeable=y[i].data.fd;
+	    }
+	  }
+	}
+
+	if (newevents != curevents) {
+#if 0
+	  printf("canread %d, wantread %d, kernelwantread %d, canwrite %d, wantwrite %d, kernelwantwrite %d\n",
+		 e->canread,e->wantread,e->kernelwantread,e->canwrite,e->wantwrite,e->kernelwantwrite);
+	  printf("newevents: read %d write %d\n",!!(newevents&EPOLLIN),!!(newevents&EPOLLOUT));
+#endif
+	  y[i].events=newevents;
+	  if (newevents) {
+	    epoll_ctl(io_master,EPOLL_CTL_MOD,y[i].data.fd,y+i);
+	  } else {
+	    epoll_ctl(io_master,EPOLL_CTL_DEL,y[i].data.fd,y+i);
+	    --io_wanted_fds;
+	  }
 	}
       } else {
+#if 0
 #ifdef __dietlibc__
 	char buf[FMT_ULONG];
 	buf[fmt_ulong(buf,y[i].data.fd)]=0;
 	__write2("got epoll event on invalid fd ");
 	__write2(buf);
 	__write2("!\n");
+#endif
 #endif
 	epoll_ctl(io_master,EPOLL_CTL_DEL,y[i].data.fd,y+i);
       }
