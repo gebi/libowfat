@@ -6,7 +6,7 @@ stralloc_copym \- copy string(s) to a stralloc
 
 int \fBstralloc_copym\fP(stralloc* \fIsa\fR,const char* \fIs\fR, ...);
 .SH DESCRIPTION
-stralloc_cats copies \\0-terminated strings from \fIs\fR... to \fIsa\fR,
+stralloc_copym copies \\0-terminated strings from \fIs\fR... to \fIsa\fR,
 allocating space if necessary, and returns 1.  If there is data in the
 \fIsa\fR, it is cleared first.
 
