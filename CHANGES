@@ -15,6 +15,7 @@
   switch io_fds from array to newly implemented (hopefully thread-safe) iarray
   switch epoll from level triggering to edge triggering
   introduce io_eagain_read and io_eagain_write (discontinue using io_eagain plz)
+  fix buffer_get
 
 0.29:
   save 8 bytes in taia.h for 64-bit systems
