@@ -27,8 +27,15 @@ size_t fmt_urlencoded2(char* dest,const char* src,size_t len,const char* escapem
 size_t fmt_yenc(char* dest,const char* src,size_t len);
 /* Needs len*2 bytes */
 size_t fmt_hexdump(char* dest,const char* src,size_t len);
-/* Change '<' to '&lt;' and '&' to '&amp;'; worst case: len*5 */
+/* Change '<' to '&lt;' and '&' to '&amp;' and '\n' to '<br>'; worst case: len*5 */
+/* This is meant for outputting text that goes between tags */
 size_t fmt_html(char* dest,const char* src,size_t len);
+/* Change '<' to '&lt;' and '&' to '&amp;' and '"' to '&quot;'; worst case: len*6 */
+/* This is meant for outputting text that goes in a tag argument between double quotes*/
+size_t fmt_html_tagarg(char* dest,const char* src,size_t len);
+/* Change '<' to '&lt;' and '&' to '&amp;'; worst case: len*5 */
+size_t fmt_xml(char* dest,const char* src,size_t len);
+
 /* Change '\' to "\\", '\n' to "\n", ^A to "\x01" etc; worst case: len*4 */
 size_t fmt_cescape(char* dest,const char* src,size_t len);
 /* Worst case: len*4 */
