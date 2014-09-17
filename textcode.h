@@ -57,19 +57,24 @@ size_t fmt_base85(char* dest,const char* src,size_t len);
 /* These read one line from src, decode it, and write the result to
  * dest.  The number of decoded bytes is written to destlen.  dest
  * should be able to hold strlen(src) bytes as a rule of thumb. */
-size_t scan_uuencoded(const char *src,char *dest,size_t *destlen);
-size_t scan_base64(const char *src,char *dest,size_t *destlen);
-size_t scan_quotedprintable(const char *src,char *dest,size_t *destlen);
-size_t scan_urlencoded(const char *src,char *dest,size_t *destlen);
-size_t scan_urlencoded2(const char *src,char *dest,size_t *destlen);
-size_t scan_yenc(const char *src,char *dest,size_t *destlen);
-size_t scan_hexdump(const char *src,char *dest,size_t *destlen);
-size_t scan_html(const char *src,char *dest,size_t *destlen);
-size_t scan_cescape(const char *src,char *dest,size_t *destlen);
-size_t scan_ldapescape(const char* src,char* dest,size_t *destlen);
-size_t scan_jsonescape(const char* src,char* dest,size_t *destlen);
+size_t scan_uuencoded(const char* src,char* dest,size_t* destlen);
+size_t scan_base64(const char* src,char* dest,size_t* destlen);
+size_t scan_quotedprintable(const char* src,char* dest,size_t* destlen);
+size_t scan_urlencoded(const char* src,char* dest,size_t* destlen);
+size_t scan_urlencoded2(const char* src,char* dest,size_t* destlen);
+size_t scan_yenc(const char* src,char* dest,size_t* destlen);
+size_t scan_hexdump(const char* src,char* dest,size_t* destlen);
+/* decodes all html5-standardized &foo; escapes, and also
+ * "<br>" to "\n" and "<p>" to "\n\n", leaves the rest of the tags alone */
+size_t scan_html(const char* src,char* dest,size_t* destlen);
+/* decodes all html5-standardized &foo; escapes, but leaves all tags
+ * alone */
+size_t scan_html_tagarg(const char* src,char* dest,size_t* destlen);
+size_t scan_cescape(const char* src,char* dest,size_t* destlen);
+size_t scan_ldapescape(const char* src,char* dest,size_t* destlen);
+size_t scan_jsonescape(const char* src,char* dest,size_t* destlen);
 
-size_t scan_base85(const char* src,char* dest,size_t *destlen);
+size_t scan_base85(const char* src,char* dest,size_t* destlen);
 
 #ifdef STRALLOC_H
 /* WARNING: these functions _append_ to the stralloc, not overwrite! */

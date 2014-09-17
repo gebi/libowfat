@@ -13,7 +13,11 @@ size_t fmt_html(char* dest,const char* src,size_t len) {
     case '<': seq="&lt;"; goto doit;
     case '>': seq="&gt;"; goto doit;
     case '\n':
-	seq="<br>";
+	if (i<len && s[i+1]=='\n') {
+	  seq="<p>";
+	  ++i;
+	} else
+	  seq="<br>";
       doit:
 	written+=fmt_str(dest?dest+written:0,seq);
 	break;

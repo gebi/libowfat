@@ -25,7 +25,7 @@ static const char* lookup(size_t ofs,const char* t) {
   return NULL;
 }
 
-size_t scan_html(const char *src,char *dest,size_t *destlen) {
+static size_t scan_html_inner(const char *src,char *dest,size_t *destlen,int flag) {
   register const unsigned char* s=(const unsigned char*) src;
   size_t written=0,i;
   for (i=0; s[i]; ++i) {
@@ -58,7 +58,7 @@ size_t scan_html(const char *src,char *dest,size_t *destlen) {
 	continue;
       } else
 	dest[written]='&';
-    } else if (s[i]=='<') {
+    } else if (flag && s[i]=='<') {
       if (case_starts((const char*)s+i+1,"br>")) {
 	dest[written]='\n';
 	i+=3;
@@ -74,4 +74,12 @@ size_t scan_html(const char *src,char *dest,size_t *destlen) {
   }
   *destlen=written;
   return i;
+}
+
+size_t scan_html_tagarg(const char *src,char *dest,size_t *destlen) {
+  return scan_html_inner(src,dest,destlen,1);
+}
+
+size_t scan_html(const char *src,char *dest,size_t *destlen) {
+  return scan_html_inner(src,dest,destlen,0);
 }
