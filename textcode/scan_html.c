@@ -66,7 +66,8 @@ size_t scan_html(const char *src,char *dest,size_t *destlen) {
 	dest[written]='\n'; ++written;
 	dest[written]='\n';
 	i+=3;
-      }
+      } else
+	dest[written]=s[i];
     } else
       dest[written]=s[i];
     ++written;
