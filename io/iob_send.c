@@ -127,6 +127,9 @@ int64 iob_send(int64 s,io_batch* b) {
   int64 sent;
   long i;
   long headers;
+#ifdef MSG_MORE
+  int docork;
+#endif
 #ifdef HAVE_BSDSENDFILE
   long trailers;
 #endif
@@ -188,6 +191,45 @@ eagain:
       }
     }
 #else
+    /* Linux has two ways to coalesce sent data; either setsockopt
+     * TCP_CORK or sendto/sendmsg with MSG_MORE. MSG_MORE saves syscalls
+     * in one scenario: when there is n buffers and then possibly one
+     * file to send.  If there is more buffers after the file, then we
+     * need to use TCP_CORK to prevent the TCP push after the file. */
+#ifdef MSG_MORE
+    if (e+i==last)
+      docork=-1;	/* no files, only buffer, so no need for TCP_CORK or MSG_MORE */
+    else
+      docork=!(e+i+1==last);
+    if (docork>0)
+      setsockopt(s,IPPROTO_TCP,TCP_CORK,(int[]){ 1 },sizeof(int));
+    if (headers) {
+      if (docork<0) {	/* write+writev */
+	if (headers==1)	/* cosmetics for strace */
+	  sent=write(s,v[0].iov_base,v[0].iov_len);
+	else
+	  sent=writev(s,v,headers);
+      } else {
+	if (headers==1)	/* cosmetics for strace */
+	  sent=sendto(s,v[0].iov_base,v[0].iov_len,MSG_MORE, NULL, 0);
+	else {
+	  struct msghdr msg;
+	  memset(&msg,0,sizeof(msg));
+	  msg.msg_iov=v;
+	  msg.msg_iovlen=headers;
+	  sent=sendmsg(s,&msg,MSG_MORE);
+	}
+      }
+      if (sent==-1) {
+	if (errno==EAGAIN) {
+	  io_eagain_write(s);
+	  return -1;
+	}
+	sent=-3;
+      }
+    } else
+      sent=io_sendfile(s,e->fd,e->offset,e->n);
+#else	/* !MSG_MORE */
 #ifdef TCP_CORK
     if (b->bufs && b->files && !b->next) {
       static int one=1;
@@ -208,16 +250,23 @@ eagain:
       }
     } else
       sent=io_sendfile(s,e->fd,e->offset,e->n);
+#endif	/* !MSG_MORE */
 #endif
     if (sent>0)
       total+=sent;
     else
       return total?total:(uint64)sent;
     if ((uint64)sent==b->bytesleft) {
+#ifdef MSG_MORE
+      if (docork==1) {
+#endif
 #ifdef TCP_CORK
-      if (b->bufs && b->files) {
-	static int zero=0;
-	setsockopt(s,IPPROTO_TCP,TCP_CORK,&zero,sizeof(zero));
+	if (b->bufs && b->files) {
+	  static int zero=0;
+	  setsockopt(s,IPPROTO_TCP,TCP_CORK,&zero,sizeof(zero));
+	}
+#endif
+#ifdef MSG_MORE
       }
 #endif
       iob_reset(b);
