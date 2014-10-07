@@ -5,7 +5,7 @@ socket_send4 \- send a UDP datagram
 .B #include <socket.h>
 
 ssize_t \fBsocket_send4\fP(int \fIs\fR, const char* \fIbuf\fR, size_t \fIlen\fR,
-                 const char \fIip\fR[4],uint16 \fIport\fR);
+                     const char \fIip\fR[4],uint16 \fIport\fR);
 .SH DESCRIPTION
 socket_send4 sends \fIlen\fR bytes starting at \fIbuf\fR in a UDP
 datagram over the socket \fIs\fR to UDP port \fIport\fR on IP address

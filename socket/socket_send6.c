@@ -13,7 +13,7 @@
 #include "ip4.h"
 #include "havescope.h"
 
-ssize_t socket_send6(int s,const char *buf,size_t len,const char ip[16],uint16 port,uint32 scope_id)
+ssize_t socket_send6_flag(int s,const char *buf,size_t len,const char ip[16],uint16 port,uint32 scope_id,int flag)
 {
 #ifdef LIBC_HAS_IP6
   struct sockaddr_in6 si;
@@ -41,9 +41,13 @@ ssize_t socket_send6(int s,const char *buf,size_t len,const char ip[16],uint16 p
 #else
   si.sin6_scope_id=0;
 #endif
-  return winsock2errno(sendto(s,buf,len,0,(void*) &si,sizeof si));
+  return winsock2errno(sendto(s,buf,len,flag,(void*) &si,sizeof si));
 #else
   errno=EPROTONOSUPPORT;
   return -1;
 #endif
+}
+
+ssize_t socket_send6(int s,const char *buf,size_t len,const char ip[16],uint16 port,uint32 scope_id) {
+  return socket_send6_flag(s,buf,len,ip,port,scope_id,0);
 }

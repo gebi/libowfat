@@ -17,6 +17,7 @@
   introduce io_eagain_read and io_eagain_write (discontinue using io_eagain plz)
   fix buffer_get
   add fmt_html_tagarg, fmt_xml, scan_html_tagarg
+  add socket_fastopen, socket_fastopen_connect4, socket_fastopen_connect6 and socket_quickack
 
 0.29:
   save 8 bytes in taia.h for 64-bit systems

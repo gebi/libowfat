@@ -1,19 +1,29 @@
-.TH socket_connect4 3
+.TH socket_fastopen_connect4 3
 .SH NAME
-socket_connect4 \- attempt to make a TCP connection
+socket_fastopen_connect4 \- make a TCP connection and send some data
 .SH SYNTAX
 .B #include <socket.h>
 
-int \fBsocket_connect4\fP(int \fIs\fR,const char \fIip\fR[4],uint16 \fIport\fR);
+ssize_t \fBsocket_fastopen_connect4\fP(int \fIs\fR,const char \fIip\fR[4],uint16 \fIport\fR,
+                                 const char* \fIbuf\fR,size_t \fIlen\fR);
 .SH DESCRIPTION
-socket_connect4 attempts to make a connection from TCP socket \fIs\fR to
-TCP port \fIport\fR on IP address \fIip\fR.
+socket_fastopen_connect4 attempts to make a connection from TCP socket \fIs\fR to
+TCP port \fIport\fR on IP address \fIip\fR.  If that succeeds, it
+attempts to send \fIlen\fR bytes from \fIbuf\fR.
+
+The difference to calling socket_connect4 followed by write is that, on
+platforms supporting TCP Fast Open, socket_fastopen_connect4 will send
+the first data packet in the third packet of the TCP handshake, saving
+one useless ACK packet in network traffic.
+
+This is only useful for protocols where the client sends the first
+bytes.
 
 socket_connect4 may return
 .sp 1
 .IP \(bu
-0, to indicate that the connection succeeded (and succeeded immediately,
-if the socket is non-blocking)
+>=0, to indicate that the connection succeeded and this many bytes were
+sent.
 .IP \(bu
 -1, setting errno to error_inprogress or error_wouldblock, to indicate
 that the socket is non-blocking
@@ -42,7 +52,7 @@ effect as first calling socket_bind4 with IP address 0.0.0.0 and port 0.
 
   \fIs\fR = socket_tcp4();
   socket_bind4(s,ip,p);
-  socket_connect4(s,ip,p);
+  socket_fastopen_connect4(s,ip,p,"hello",5);
 
 .SH "SEE ALSO"
-socket_connect6(3), socket_fastopen_connect4(3)
+socket_connect4(3), socket_fastopen_connect6(3), socket_fastopen(3)
