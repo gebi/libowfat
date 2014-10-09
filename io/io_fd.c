@@ -53,12 +53,18 @@ long alt_firstwrite;
 #endif
 
 /* put d on internal data structure, return 1 on success, 0 on error */
-static io_entry* io_fd_internal(int64 d) {
+static io_entry* io_fd_internal(int64 d,int flags) {
   io_entry* e;
 #ifndef __MINGW32__
   long r;
-  if ((r=fcntl(d,F_GETFL,0)) == -1)
-    return 0;	/* file descriptor not open */
+  if ((flags&(IO_FD_BLOCK|IO_FD_NONBLOCK))==0) {
+    if ((r=fcntl(d,F_GETFL,0)) == -1)
+      return 0;	/* file descriptor not open */
+  } else
+    if (flags&IO_FD_NONBLOCK)
+      r=O_NDELAY;
+    else
+      r=0;
 #endif
   /* Problem: we might be the first to use io_fds. We need to make sure
    * we are the only ones to initialize it.  So set io_fds_inited to 2
@@ -146,12 +152,18 @@ static io_entry* io_fd_internal(int64 d) {
 }
 
 int io_fd(int64 d) {
-  io_entry* e=io_fd_internal(d);
+  io_entry* e=io_fd_internal(d,0);
   return !!e;
 }
 
 int io_fd_canwrite(int64 d) {
-  io_entry* e=io_fd_internal(d);
+  io_entry* e=io_fd_internal(d,0);
   if (e) e->canwrite=1;
+  return !!e;
+}
+
+int io_fd_flags(int64 d,int flags) {
+  io_entry* e=io_fd_internal(d,flags);
+  if (e && (flags&IO_FD_CANWRITE)) e->canwrite=1;
   return !!e;
 }

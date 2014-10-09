@@ -21,6 +21,8 @@
   on Linux, in iob_send, if MSG_MORE is defined, and the request type
     lends itself to it, used sendto/sendmsg with MSG_MORE instead of
     TCP_CORK (saves two syscalls)
+  add io_fd_flags so the caller can tell io_fd whether the socket is blocking
+    (saves one fcntl syscall)
 
 0.29:
   save 8 bytes in taia.h for 64-bit systems

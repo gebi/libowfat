@@ -78,9 +78,19 @@ int64 io_canwrite();
 /* return next descriptor with expired timeout */
 int64 io_timeouted();
 
+/* 1 means: have IO_FD_CANWRITE, IO_FD_BLOCK and IO_FD_NONBLOCK,
+ * will be incremented if API is extended in the future */
+#define HAVE_IO_FD_FLAGS 1
+enum io_fd_flags {
+  IO_FD_CANWRITE=1,	/* new TCP connection, we know it's writable */
+  IO_FD_BLOCK=2,	/* skip the fcntl, assume fd is set to blocking */
+  IO_FD_NONBLOCK=4,	/* skip the fcntl, assume fd is set to non-blocking */
+};
+
 /* put d on internal data structure, return 1 on success, 0 on error */
 int io_fd(int64 d);		/* use this for sockets before you called connect() or accept() */
 int io_fd_canwrite(int64 d);	/* use this for connected sockets (assumes socket is writable) */
+int io_fd_flags(int64 d,int flags);	/* can be used to tell io_fd to skip one syscall */
 
 void io_setcookie(int64 d,void* cookie);
 void* io_getcookie(int64 d);
