@@ -117,6 +117,7 @@ int64 iob_send(int64 s,io_batch* b) {
 #include <netinet/tcp.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include "havealloca.h"
 #include "iob_internal.h"
 
