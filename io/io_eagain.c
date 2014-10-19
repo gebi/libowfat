@@ -9,10 +9,12 @@ void io_eagain(int64 d) {
     if (d==alt_firstread) {
       debug_printf(("io_eagain: dequeueing %lld from alt read queue (next is %ld)\n",d,e->next_read));
       alt_firstread=e->next_read;
+      e->next_read=-1;
     }
     if (d==alt_firstwrite) {
       debug_printf(("io_eagain: dequeueing %lld from alt write queue (next is %ld)\n",d,e->next_write));
       alt_firstwrite=e->next_write;
+      e->next_write=-1;
     }
 #endif
   }

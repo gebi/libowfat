@@ -110,9 +110,9 @@ int64 io_trywrite(int64 d,const char* buf,int64 len) {
     if (d==alt_firstwrite) {
       debug_printf(("io_trywrite: dequeueing %ld from alt write queue (next is %ld)\n",d,e->next_write));
       alt_firstwrite=e->next_write;
+      e->next_write=-1;
     }
 #endif
-    e->next_write=-1;
   }
   return r;
 }

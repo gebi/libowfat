@@ -7,7 +7,7 @@ io_fd_canwrite \- prepare descriptor for io_wait
 int \fBio_fd\fP(int64 fd);
 int \fBio_fd_canwrite\fP(int64 fd);
 .SH DESCRIPTION
-io_fd_canwrite is just like io_fd, except that assumes the descriptor
+io_fd_canwrite is just like io_fd, except that it assumes the descriptor
 is writable, which may save a syscall or two.  This assumption is true
 in most cases, because the kernel buffers writes.  Noteworthy cases in
 which you need to use io_fd instead of io_fd_canwrite are unconnected

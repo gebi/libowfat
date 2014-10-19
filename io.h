@@ -78,6 +78,9 @@ int64 io_canwrite();
 /* return next descriptor with expired timeout */
 int64 io_timeouted();
 
+/* is this fd over its timeout? */
+int io_timedout(int64 d);
+
 /* 1 means: have IO_FD_CANWRITE, IO_FD_BLOCK and IO_FD_NONBLOCK,
  * will be incremented if API is extended in the future */
 #define HAVE_IO_FD_FLAGS 1
@@ -124,10 +127,22 @@ int64 io_receivefd(int64 sock);
 
 int io_starteventloopthread(unsigned int threads);
 
+#define HAVE_IO_QUEUEFORREAD
+/* Artificially queue a file descriptor as readable.
+ * The next call to io_canread will return this descriptor. */
+int io_queueforread(int64 d);
+/* Artificially queue a file descriptor as writable.
+ * The next call to io_canread will return this descriptor. */
+int io_queueforwrite(int64 d);
+
 typedef int64 (*io_write_callback)(int64 s,const void* buf,uint64 n);
 
 /* used internally, but hey, who knows */
 int64 io_mmapwritefile(int64 out,int64 in,uint64 off,uint64 bytes,io_write_callback writecb);
+
+/* only needed for debugging, will print some stats into the buffer to
+ * aid in debugging the state machine if a descriptor loops or so */
+unsigned int io_debugstring(int64 s,char* buf,unsigned int bufsize);
 
 #ifdef __MINGW32__
 #include_next <io.h>

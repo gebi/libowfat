@@ -37,7 +37,6 @@ my_extern HANDLE io_comport;
 
 typedef struct {
   tai6464 timeout;
-  int fd;
   unsigned int wantread:1;	/* does the app want to read/write? */
   unsigned int wantwrite:1;
   unsigned int canread:1;	/* do we know we can read/write? */

@@ -8,8 +8,8 @@ void io_eagain_write(int64 d) {
     if (d==alt_firstwrite) {
       debug_printf(("io_eagain: dequeueing %lld from alt write queue (next is %ld)\n",d,e->next_write));
       alt_firstwrite=e->next_write;
+      e->next_write=-1;
     }
 #endif
-    e->next_write=-1;
   }
 }
