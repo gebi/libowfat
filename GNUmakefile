@@ -31,7 +31,7 @@ CFLAGS += -D_REENTRANT $(WERROR)
 
 # startrip
 ifneq ($(DEBUG),)
-CFLAGS=-pipe -Wall -g
+CFLAGS=-pipe -Wall -g -Og
 endif
 path = $(subst :, ,$(PATH))
 diet_path = $(foreach dir,$(path),$(wildcard $(dir)/diet))

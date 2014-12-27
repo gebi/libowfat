@@ -297,7 +297,7 @@ invalidpart:
       if (!(tmp=strstr(line," end="))) goto invalidpart;
       c=tmp[5+scan_ulong(tmp+5,&endoffset)];
       if (c!=' ' && c!=0) goto invalidpart;
-      --offset; --endoffset;
+      if (offset>0) --offset; --endoffset;
       if (endoffset<offset || endoffset>totalsize) goto invalidpart;
       lseek(ofd,offset,SEEK_SET);
       continue;
@@ -315,13 +315,15 @@ invalidpart:
 	gotcrc=1;
       } else if (part==1) {
 	tmp=strstr(line," crc32=");
-	if (!tmp) goto invalidpart;
+	if (!tmp)
+	  goto invalidpart;
 	if (!scan_xlong(tmp+7,&wantedcrc))
 	  goto invalidpart;
 	wantedcrc &= 0xfffffffful;
 	gotcrc=1;
 	endoffset=totalsize;
-      } else goto invalidpart;
+      } else
+	goto invalidpart;
       stralloc_init(&out);
       stralloc_0(&yencpart);
       stralloc_ready(&out,yencpart.len);
