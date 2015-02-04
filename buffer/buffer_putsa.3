@@ -6,9 +6,9 @@ buffer_putsa \- write stralloc to buffer
 .B #include <stralloc.h>
 .B #include <buffer.h>
 
-int \fBbuffer_putsa\fP(buffer* \fIb\fR,stralloc* \fIx\fR);
+int \fBbuffer_putsa\fP(buffer* \fIb\fR,const stralloc* \fIx\fR);
 .SH DESCRIPTION
-buffer_putsa is equivalent to buffer_put(b,x.sa,x.len).
+buffer_putsa is equivalent to buffer_put(b,x.s,x.len).
 .SH "RETURN VALUE"
 0 if everything is fine, -1 on error (setting \fIerrno\fR).
 .SH "SEE ALSO"

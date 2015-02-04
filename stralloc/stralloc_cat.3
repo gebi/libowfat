@@ -4,7 +4,7 @@ stralloc_cat \- append data to a stralloc
 .SH SYNTAX
 .B #include <stralloc.h>
 
-int \fBstralloc_cat\fP(stralloc* \fIsato\fR,stralloc* \fIsafrom\fR);
+int \fBstralloc_cat\fP(stralloc* \fIsato\fR,const stralloc* \fIsafrom\fR);
 .SH DESCRIPTION
 stralloc_cat appends the string stored in \fIsafrom\fR to \fIsa\fR. It
 is the same as

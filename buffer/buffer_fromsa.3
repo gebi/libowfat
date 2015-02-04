@@ -4,7 +4,7 @@ buffer_fromsa \- initialize buffer structure from stralloc
 .SH SYNTAX
 .B #include <buffer.h>
 
-void \fBbuffer_fromsa\fR(buffer* \fIb\fR,stralloc* \fIsa\fR);
+void \fBbuffer_fromsa\fR(buffer* \fIb\fR,const stralloc* \fIsa\fR);
 .SH DESCRIPTION
 buffer_fromsa makes a virtual read buffer from a stralloc.  The buffer
 reading functions will be able to read until the end of the data in the

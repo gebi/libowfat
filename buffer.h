@@ -107,9 +107,9 @@ extern buffer *buffer_2;
 
 #ifdef STRALLOC_H
 /* write stralloc to buffer */
-int buffer_putsa(buffer* b,stralloc* sa);
+int buffer_putsa(buffer* b,const stralloc* sa);
 /* write stralloc to buffer and flush */
-int buffer_putsaflush(buffer* b,stralloc* sa);
+int buffer_putsaflush(buffer* b,const stralloc* sa);
 
 /* these "read token" functions return 0 if the token was complete or
  * EOF was hit or -1 on error.  In contrast to the non-stralloc token
@@ -141,7 +141,7 @@ int buffer_get_new_token_sa_pred(buffer* b,stralloc* sa,sa_predicate p);
 
 /* make a buffer from a stralloc.
  * Do not change the stralloc after this! */
-void buffer_fromsa(buffer* b,stralloc* sa);	/* read from sa */
+void buffer_fromsa(buffer* b,const stralloc* sa);	/* read from sa */
 int buffer_tosa(buffer*b,stralloc* sa);		/* write to sa, auto-growing it */
 #endif
 

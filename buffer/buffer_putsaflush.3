@@ -6,9 +6,9 @@ buffer_putsa \- write stralloc to buffer and flush
 .B #include <stralloc.h>
 .B #include <buffer.h>
 
-int \fBbuffer_putsaflush\fP(buffer* \fIb\fR,const char* \fIx\fR);
+int \fBbuffer_putsaflush\fP(buffer* \fIb\fR,const stralloc* \fIx\fR);
 .SH DESCRIPTION
-buffer_putsaflush is equivalent to buffer_putflush(b,x.sa,x.len).
+buffer_putsaflush is equivalent to buffer_putflush(b,x.s,x.len).
 .SH "RETURN VALUE"
 0 if everything is fine, -1 on error (setting \fIerrno\fR).
 .SH "SEE ALSO"

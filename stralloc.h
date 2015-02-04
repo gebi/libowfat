@@ -76,7 +76,7 @@ int stralloc_catm_internal(stralloc* sa,...);
 #define stralloc_copym(sa,...) (stralloc_zero(sa), stralloc_catm_internal(sa,__VA_ARGS__,(char*)0))
 
 /* stralloc_cat is analogous to stralloc_copy */
-int stralloc_cat(stralloc* sa,stralloc* in);
+int stralloc_cat(stralloc* sa,const stralloc* in);
 
 /* stralloc_append adds one byte in[0] to the end of the string stored
  * in sa. It is the same as stralloc_catb(&sa,in,1). */
@@ -129,9 +129,9 @@ int stralloc_chomp(stralloc* sa);
 
 #ifdef BUFFER_H
 /* write stralloc to buffer */
-int buffer_putsa(buffer* b,stralloc* sa);
+int buffer_putsa(buffer* b,const stralloc* sa);
 /* write stralloc to buffer and flush */
-int buffer_putsaflush(buffer* b,stralloc* sa);
+int buffer_putsaflush(buffer* b,const stralloc* sa);
 
 /* these "read token" functions return 1 for a complete token, 0 if
  * EOF was hit or -1 on error.  In contrast to the non-stralloc token
@@ -164,7 +164,7 @@ int buffer_get_new_token_sa_pred(buffer* b,stralloc* sa,sa_predicate p);
 
 /* make a buffer (for reading) from a stralloc.
  * Do not change the stralloc after this! */
-void buffer_fromsa(buffer* b,stralloc* sa);
+void buffer_fromsa(buffer* b,const stralloc* sa);
 int buffer_tosa(buffer*b,stralloc* sa);		/* write to sa, auto-growing it */
 #endif
 
