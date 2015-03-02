@@ -24,6 +24,8 @@
   add io_fd_flags so the caller can tell io_fd whether the socket is blocking
     (saves one fcntl syscall)
   more constness for stralloc and buffer
+  mmap_read/mmap_shared on zero length files no longer fail but return a
+    zero length buffer
 
 0.29:
   save 8 bytes in taia.h for 64-bit systems
