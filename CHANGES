@@ -26,6 +26,7 @@
   more constness for stralloc and buffer
   mmap_read/mmap_shared on zero length files no longer fail but return a
     zero length buffer
+  if SOCK_NONBLOCK is defined, use it instead of socket+fcntl
 
 0.29:
   save 8 bytes in taia.h for 64-bit systems
