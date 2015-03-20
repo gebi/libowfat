@@ -6,14 +6,15 @@
 #endif
 #include "socket.h"
 #include "ndelay.h"
+#include <errno.h>
 
 int socket_tcp4(void) {
+  int s;
 #ifdef SOCK_NONBLOCK
-  return socket(PF_INET,SOCK_STREAM|SOCK_NONBLOCK,IPPROTO_TCP);
-#else
-  int s=socket_tcp4b();
+  if ((s=socket(PF_INET,SOCK_STREAM|SOCK_NONBLOCK,IPPROTO_TCP))>-1 || errno!=EINVAL) return -1;
+#endif
+  s=socket_tcp4b();
   if (s==-1) return -1;
   if (ndelay_on(s) == -1) { close(s); return -1; }
   return s;
-#endif
 }
