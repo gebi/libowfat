@@ -760,7 +760,7 @@ CURNAME=libowfat-0.30
 
 tar: clean rename
 	rm -f dep libdep
-	cd ..; tar cvvf $(VERSION).tar.bz2 --use=bzip2 --exclude CVS $(VERSION)
+	cd ..; tar cvvf $(VERSION).tar.xz --use=xz --exclude CVS $(VERSION)
 
 rename:
 	if test $(CURNAME) != $(VERSION); then cd .. && mv $(CURNAME) $(VERSION); fi
