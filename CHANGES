@@ -28,6 +28,7 @@
     zero length buffer
   if SOCK_NONBLOCK is defined, use it instead of socket+fcntl
   ... but if errno==EINVAL still fall back to socket+fcntl (Robert Henney)
+  SECURITY: fix botched integer overflow handling logic in stralloc_ready (Giorgio)
 
 0.29:
   save 8 bytes in taia.h for 64-bit systems
