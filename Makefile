@@ -609,8 +609,8 @@ fmt_yenc.o: textcode/fmt_yenc.c fmt.h byte.h textcode.h
 scan_base64.o: textcode/scan_base64.c textcode.h haveinline.h
 scan_cescape.o: textcode/scan_cescape.c fmt.h byte.h textcode.h scan.h
 scan_hexdump.o: textcode/scan_hexdump.c fmt.h byte.h textcode.h scan.h
-scan_html.o: textcode/scan_html.c entities.h fmt.h byte.h textcode.h \
- haveinline.h scan.h case.h str.h
+scan_html.o: textcode/scan_html.c fmt.h byte.h textcode.h haveinline.h \
+ scan.h case.h str.h
 scan_jsonescape.o: textcode/scan_jsonescape.c fmt.h byte.h textcode.h \
  scan.h
 scan_ldapescape.o: textcode/scan_ldapescape.c fmt.h byte.h textcode.h \
@@ -728,7 +728,7 @@ clean:
 	rm -f *.o *.a *.da *.bbg *.bb core t haveip6.h haven2i.h \
 havesl.h haveinline.h iopause.h select.h havekqueue.h haveepoll.h \
 libepoll havesigio.h havebsdsf.h havesendfile.h havescope.h havedevpoll.h \
-dep libsocket havealloca.h haveuint128.h
+dep libsocket havealloca.h haveuint128.h entities.h ent
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
 uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h \
