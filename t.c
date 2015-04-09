@@ -23,6 +23,8 @@
 #include "iob.h"
 #include "safemult.h"
 #include "iarray.h"
+#include "critbit.h"
+#include <assert.h>
 
 #include "CAS.h"
 
@@ -47,7 +49,47 @@ static int64 writecb(int64 fd,const void* buf,uint64 n) {
   return -1;
 }
 
+static int ret0(const char* s,void* foo) {
+  (void)foo;
+  assert(strcmp(s,"fnord")==0);
+  return 0;
+}
+
+static int ret1(const char* s,void* foo) {
+  static int i;
+  (void)foo;
+  switch (i) {
+  case 0: assert(strcmp(s,"fnord")==0); break;
+  case 1: assert(strcmp(s,"fnord2")==0); break;
+  default: return -1;
+  }
+  ++i;
+  return 1;
+}
+
 int main(int argc,char* argv[]) {
+  static critbit0_tree t;
+  assert(critbit0_insert(&t,"fnord")==2);
+  assert(critbit0_insert(&t,"fnord2")==2);
+  assert(critbit0_insert(&t,"fnord2")==1);
+  assert(critbit0_contains(&t,"foo")==0);
+  assert(critbit0_contains(&t,"fnord")==1);
+  assert(critbit0_allprefixed(&t,"fnord",ret1,NULL)==1);
+  assert(critbit0_allprefixed(&t,"fnord",ret0,NULL)==0);
+  assert(critbit0_delete(&t,"fnord2")==1);
+  assert(critbit0_delete(&t,"foo")==0);
+#if 0
+  int s = socket_tcp6();
+#endif
+#if 0
+  iarray i;
+  iarray_init(&i,sizeof(size_t));
+  printf("%p\n",iarray_get(&i,0));
+  printf("%p\n",iarray_allocate(&i,0));
+  printf("%p\n",iarray_allocate(&i,0));
+  printf("%p\n",iarray_get(&i,0));
+#endif
+#if 0
   char buf[1024];
   size_t l;
   unsigned char c;
@@ -70,6 +112,7 @@ int main(int argc,char* argv[]) {
 		  f   0    9   d    8   4    9   e
 */
 
+#endif
 #if 0
   static size_t x;
   x=23;

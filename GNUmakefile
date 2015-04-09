@@ -11,7 +11,7 @@ MAN3DIR=${prefix}/man/man3
 
 LIBS=byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a \
 buffer.a mmap.a taia.a tai.a dns.a case.a mult.a array.a io.a \
-textcode.a cdb.a
+textcode.a cdb.a critbit.a
 
 all: ent $(LIBS) libowfat.a libsocket t
 
@@ -58,7 +58,7 @@ endif
 # to build without diet libc support, use $ make DIET=
 # see http://www.fefe.de/dietlibc/ for details about the diet libc
 
-VPATH=str:byte:fmt:scan:uint:open:stralloc:unix:socket:buffer:mmap:textcode:taia:tai:dns:case:array:mult:io:cdb
+VPATH=str:byte:fmt:scan:uint:open:stralloc:unix:socket:buffer:mmap:textcode:taia:tai:dns:case:array:mult:io:cdb:critbit
 
 BYTE_OBJS=$(patsubst byte/%.c,%.o,$(wildcard byte/*.c))
 FMT_OBJS=$(patsubst fmt/%.c,%.o,$(wildcard fmt/*.c))
@@ -80,6 +80,7 @@ ARRAY_OBJS=$(patsubst array/%.c,%.o,$(wildcard array/*.c))
 MULT_OBJS=$(patsubst mult/%.c,%.o,$(wildcard mult/*.c))
 IO_OBJS=$(patsubst io/%.c,%.o,$(wildcard io/*.c))
 CDB_OBJS=$(patsubst cdb/%.c,%.o,$(wildcard cdb/*.c))
+CRITBIT_OBJS=$(patsubst critbit/%.c,%.o,$(wildcard critbit/*.c))
 
 $(BYTE_OBJS): byte.h
 $(FMT_OBJS): fmt.h
@@ -99,6 +100,7 @@ $(ARRAY_OBJS): uint64.h array.h
 $(MULT_OBJS): uint64.h uint32.h uint16.h safemult.h
 $(IO_OBJS): uint64.h array.h io.h io_internal.h taia.h tai.h haveepoll.h havekqueue.h havesigio.h havebsdsf.h havedevpoll.h havesendfile.h
 $(CDB_OBJS): cdb.h uint32.h
+$(CRITBIT_OBJS): critbit.h
 
 mult64.o: haveuint128.h
 
@@ -133,12 +135,13 @@ array.a: $(ARRAY_OBJS)
 mult.a: $(MULT_OBJS)
 io.a: $(IO_OBJS)
 cdb.a: $(CDB_OBJS)
+critbit.a: $(CRITBIT_OBJS)
 
 ALL_OBJS=$(DNS_OBJS) $(BYTE_OBJS) $(FMT_OBJS) $(SCAN_OBJS) \
 $(STR_OBJS) $(UINT_OBJS) $(OPEN_OBJS) $(STRALLOC_OBJS) $(UNIX_OBJS) \
 $(SOCKET_OBJS) $(BUFFER_OBJS) $(MMAP_OBJS) $(TEXTCODE_OBJS) \
 $(TAIA_OBJS) $(TAI_OBJS) $(CASE_OBJS) $(ARRAY_OBJS) $(MULT_OBJS) \
-$(IO_OBJS) $(CDB_OBJS)
+$(IO_OBJS) $(CDB_OBJS) $(CRITBIT_OBJS)
 
 libowfat.a: $(ALL_OBJS)
 	$(CROSS)ar cru $@ $(ALL_OBJS)
