@@ -37,7 +37,7 @@ dontescape:
     if (written>((size_t)-1)/2) return (size_t)-1;
   }
   if (linelen) {
-    if (dest) dest[written]='\n'; ++written; linelen=0;
+    if (dest) dest[written]='\n'; ++written;
   }
   return written;
 }

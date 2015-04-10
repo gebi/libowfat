@@ -9,7 +9,6 @@ int str_diff(const char* a, const char* b) {
   register const unsigned char* s=(const unsigned char*)a;
   register const unsigned char* t=(const unsigned char*)b;
   register int j;
-  j=0;
   for (;;) {
     if ((j=(*s-*t))) break; if (!*t) break; ++s; ++t;
     if ((j=(*s-*t))) break; if (!*t) break; ++s; ++t;

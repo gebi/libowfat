@@ -53,7 +53,6 @@ int dns_domain_fromdot(char **out,const char *buf,size_t n)
     name[namelen++] = labellen;
     byte_copy(name + namelen,labellen,label);
     namelen += labellen;
-    labellen = 0;
   }
 
   if (namelen + 1 > sizeof name) return 0;

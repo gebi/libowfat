@@ -5,15 +5,14 @@ int64 iob_write(int64 s,io_batch* b,io_write_callback cb) {
   uint64 total;
   int64 sent;
   long i;
-  int thatsit;
 
   if (b->bytesleft==0) return 0;
   last=(iob_entry*)(((char*)array_start(&b->b))+array_bytes(&b->b));
   total=0;
   if (!(e=array_get(&b->b,sizeof(iob_entry),b->next)))
     return -3;		/* can't happen error */
-  thatsit=0;
   for (i=0; e+i<last; ++i) {
+    int thatsit;
     if (!e[i].n) continue;
     if (e[i].type==FROMFILE)
       sent=io_mmapwritefile(s,e[i].fd,e[i].offset,e[i].n,cb);
