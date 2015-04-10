@@ -21,6 +21,9 @@ returns 1 if all keys with the given prefix were handled.
 
 If \fIhandle\fR returns something else, the search stops and
 critbit0_allprefixed returns -1.
+.SH "NOTE"
+This function uses recursion to traverse the tree. It may require
+nontrivial amounts of available stack space.
 .SH "RETURN VALUE"
 1 if all keys were found and handled (or if there were no keys with that
 prefix).

@@ -10,6 +10,9 @@ void \fBcritbit0_clear\fP(critbit0_tree* \fIcb\fR);
 .SH DESCRIPTION
 critbit0_clear deletes all keys in \fIcb\fR and frees all memory
 associated with it.
+.SH "NOTE"
+This function uses recursion to traverse the tree. It may require
+nontrivial amounts of available stack space.
 .SH "RETURN VALUE"
 none.
 .SH "SEE ALSO"
