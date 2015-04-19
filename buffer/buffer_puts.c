@@ -1,3 +1,4 @@
+#define __LIBOWFAT_INTERNAL
 #include "str.h"
 #include "buffer.h"
 
