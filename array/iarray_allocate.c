@@ -1,8 +1,10 @@
 #include "likely.h"
 #include <stdlib.h>
+#ifndef __MINGW32__
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <unistd.h>
+#endif
 #include "iarray.h"
 #ifdef __dietlibc__
 #include <sys/atomic.h>
@@ -13,10 +15,11 @@
 static iarray_page* new_page(size_t pagesize) {
 #ifdef __MINGW32__
   void* x=malloc(pagesize);
+  if (x==0) return 0;
 #else
   void* x=mmap(0,pagesize,PROT_READ|PROT_WRITE,MAP_ANONYMOUS|MAP_PRIVATE,-1,0);
-#endif
   if (x==MAP_FAILED) return 0;
+#endif
   return (iarray_page*)x;
 }
 

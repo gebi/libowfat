@@ -1,7 +1,11 @@
 #include "socket.h"
+#ifdef __MINGW32__
+#include <windows.h>
+#else
 #include <sys/types.h>
-#include <sys/socket.h>
 #include <unistd.h>
+#include <sys/socket.h>
+#endif
 #include <errno.h>
 
 ssize_t socket_fastopen_connect6(int s,const char* ip,uint16 port,uint32_t scope_id,const char* buf,size_t len) {

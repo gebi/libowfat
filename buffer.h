@@ -6,6 +6,8 @@
 #include <stddef.h>
 /* for ssize_t: */
 #include <sys/types.h>
+/* for strlen */
+#include <string.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -47,8 +49,8 @@ int buffer_putsflush(buffer* b,const char* x);
 /* as a little gcc-specific hack, if somebody calls buffer_puts with a
  * constant string, where we know its length at compile-time, call
  * buffer_put with the known length instead */
-#define buffer_puts(b,s) (__builtin_constant_p(s) ? buffer_put(b,s,sizeof(s)-1) : buffer_puts(b,s))
-#define buffer_putsflush(b,s) (__builtin_constant_p(s) ? buffer_putflush(b,s,sizeof(s)-1) : buffer_putsflush(b,s))
+#define buffer_puts(b,s) (__builtin_constant_p(s) ? buffer_put(b,s,strlen(s)) : buffer_puts(b,s))
+#define buffer_putsflush(b,s) (__builtin_constant_p(s) ? buffer_putflush(b,s,strlen(s)) : buffer_putsflush(b,s))
 #endif
 
 int buffer_putm_internal(buffer*b,...);

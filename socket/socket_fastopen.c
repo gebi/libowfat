@@ -1,7 +1,9 @@
 #include "socket.h"
+#ifndef __MINGW32__
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/tcp.h>
+#endif
 #include <errno.h>
 
 int socket_fastopen(int s) {
