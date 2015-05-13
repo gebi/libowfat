@@ -137,6 +137,9 @@ size_t fmt_humank(char* dest,unsigned long long l);
 /* "Sun, 06 Nov 1994 08:49:37 GMT" */
 size_t fmt_httpdate(char* dest,time_t t);
 
+/* "2014-05-27T19:22:16.247Z" */
+size_t fmt_iso8601(char* dest,time_t t);
+
 #define FMT_UTF8 5
 #define FMT_ASN1LENGTH 17 /* enough space to hold 2^128-1 */
 #define FMT_ASN1TAG 19 /* enough space to hold 2^128-1 */
