@@ -8,6 +8,8 @@
 #include <stdint.h>
 /* for time_t: */
 #include <sys/types.h>
+/* for struct timespec: */
+#include <time.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -102,6 +104,10 @@ size_t scan_noncharsetnskip(const char *in,const char *charset,size_t limit) __p
  *   "Sun Nov  6 08:49:37 1994"
  */
 size_t scan_httpdate(const char *in,time_t *t) __pure__;
+
+/* try to parse ASCII ISO-8601 date; does not understand time zones. */
+/* example date: "2014-05-27T19:22:16Z" */
+size_t scan_iso8601(const char* in,struct timespec* t) __pure__;
 
 /* some variable length encodings for integers */
 size_t scan_utf8(const char* in,size_t len,uint32_t* n) __pure__;
