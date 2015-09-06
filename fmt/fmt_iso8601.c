@@ -14,8 +14,7 @@ size_t fmt_iso8601(char* dest,time_t t) {
 
   if (dest==0) return sizeof("2014-05-27T19:22:16Z")-1;
   /* "2014-05-27T19:22:16Z" */
-  i=fmt_2digits(dest,(x->tm_year+1900)/100);
-  i+=fmt_2digits(dest+i,(x->tm_year+1900)%100);
+  i=fmt_ulong(dest,(x->tm_year+1900));
   dest[i++]='-';
   i+=fmt_2digits(dest+i,x->tm_mon+1);
   dest[i++]='-';

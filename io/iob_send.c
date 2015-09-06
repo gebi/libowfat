@@ -134,6 +134,9 @@ int64 iob_send(int64 s,io_batch* b) {
 #ifdef HAVE_BSDSENDFILE
   long trailers;
 #endif
+#ifdef TCP_CORK
+  int corked=0;
+#endif
 
   if (b->bytesleft==0) return 0;
   last=(iob_entry*)(((char*)array_start(&b->b))+array_bytes(&b->b));
@@ -202,8 +205,10 @@ eagain:
       docork=-1;	/* no files, only buffer, so no need for TCP_CORK or MSG_MORE */
     else
       docork=!(e+i+1==last);
-    if (docork>0)
+    if (docork>0) {
       setsockopt(s,IPPROTO_TCP,TCP_CORK,(int[]){ 1 },sizeof(int));
+      corked=1;
+    }
     if (headers) {
       if (docork<0) {	/* write+writev */
 	if (headers==1)	/* cosmetics for strace */
@@ -233,8 +238,8 @@ eagain:
 #else	/* !MSG_MORE */
 #ifdef TCP_CORK
     if (b->bufs && b->files && !b->next) {
-      static int one=1;
-      setsockopt(s,IPPROTO_TCP,TCP_CORK,&one,sizeof(one));
+      setsockopt(s,IPPROTO_TCP,TCP_CORK,(int[]){ 1 },sizeof(int));
+      corked=1;
     }
 #endif
     if (headers) {
@@ -249,8 +254,9 @@ eagain:
 	}
 	sent=-3;
       }
-    } else
+    } else {
       sent=io_sendfile(s,e->fd,e->offset,e->n);
+    }
 #endif	/* !MSG_MORE */
 #endif
     if (sent>0)
@@ -258,18 +264,6 @@ eagain:
     else
       return total?total:(uint64)sent;
     if ((uint64)sent==b->bytesleft) {
-#ifdef MSG_MORE
-      if (docork==1) {
-#endif
-#ifdef TCP_CORK
-	if (b->bufs && b->files) {
-	  static int zero=0;
-	  setsockopt(s,IPPROTO_TCP,TCP_CORK,&zero,sizeof(zero));
-	}
-#endif
-#ifdef MSG_MORE
-      }
-#endif
       iob_reset(b);
       break;
     } else if (sent>0) {
@@ -291,6 +285,10 @@ eagain:
     } else break;
   }
 abort:
+#ifdef TCP_CORK
+  if (corked)
+    setsockopt(s,IPPROTO_TCP,TCP_CORK,(int[]){ 0 },sizeof(int));
+#endif
   return total;
 }
 
