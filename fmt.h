@@ -10,6 +10,8 @@
 #include <sys/types.h>
 /* for byte_copy */
 #include "byte.h"
+/* for add_of */
+#include "rangecheck.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -143,10 +145,43 @@ size_t fmt_iso8601(char* dest,time_t t);
 #define FMT_UTF8 5
 #define FMT_ASN1LENGTH 17 /* enough space to hold 2^128-1 */
 #define FMT_ASN1TAG 19 /* enough space to hold 2^128-1 */
+
 /* some variable length encodings for integers */
 size_t fmt_utf8(char* dest,uint32_t n);	/* can store 0-0x7fffffff */
 size_t fmt_asn1derlength(char* dest,unsigned long long l);	/* 0-0x7f: 1 byte, above that 1+bytes_needed bytes */
 size_t fmt_asn1dertag(char* dest,unsigned long long l);	/* 1 byte for each 7 bits; upper bit = more bytes coming */
+size_t fmt_varint(char* dest,unsigned long long l);	/* protocol buffers encoding; like asn1dertag but little endian */
+size_t fmt_pb_tag(char* dest,size_t fieldno,unsigned char type);	/* protocol buffer tag */
+size_t fmt_pb_type0_int(char* dest,signed long long l);	/* protocol buffers encoding: type 0 integer */
+size_t fmt_pb_type1_double(char* dest,double d);	/* protocol buffers encoding: double (64-bit little endian blob) */
+size_t fmt_pb_type1_fixed64(char* dest,uint64_t l);	/* protocol buffers encoding: 64-bit little endian blob */
+size_t fmt_pb_type2_string(char* dest,const char* s,size_t l);	/* protocol buffers encoding: varint length + blob */
+size_t fmt_pb_type5_float(char* dest,float f);		/* protocol buffers encoding: float (32-bit little endian blob) */
+size_t fmt_pb_type5_fixed32(char* dest,uint32_t l);	/* protocol buffers encoding: 32-bit little endian blob */
+
+static inline size_t fmt_pb_int(char* dest,size_t fieldno,signed long long l) {
+  size_t n=fmt_pb_tag(dest,fieldno,0);
+  return n+fmt_pb_type0_int(dest?dest+n:0,l);
+}
+
+static inline size_t fmt_pb_double(char* dest,size_t fieldno,double d) {
+  size_t n=fmt_pb_tag(dest,fieldno,1);
+  return n+fmt_pb_type1_double(dest?dest+n:0,d);
+}
+
+static inline size_t fmt_pb_float(char* dest,size_t fieldno,float f) {
+  size_t n=fmt_pb_tag(dest,fieldno,5);
+  return n+fmt_pb_type5_float(dest?dest+n:0,f);
+}
+
+static inline size_t fmt_pb_string(char* dest,size_t fieldno,const char* s,size_t l) {
+  size_t n=fmt_pb_tag(dest,fieldno,2);
+  size_t m;
+  if (add_of(m,fmt_pb_type2_string(NULL,s,l),n)) return 0;
+  return n+fmt_pb_type2_string(dest?dest+n:0,s,l);
+}
+
+size_t fmt_netstring(char* dest,const char* src,size_t len);
 
 /* Marshaling helper functions.
  * Escape one character, no matter if it needs escaping or not.

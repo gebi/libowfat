@@ -20,6 +20,6 @@ size_t scan_netstring(const char* in,size_t len,char** dest,size_t* slen) {
       in[n+l+1]!=',')
     return 0;
   *dest=(char*)in+n+1;
-  *slen=n;
+  *slen=l;
   return n+2+l;
 }
