@@ -114,6 +114,36 @@ size_t scan_utf8(const char* in,size_t len,uint32_t* n) __pure__;
 size_t scan_asn1derlength(const char* in,size_t len,unsigned long long* n) __pure__;
 size_t scan_asn1dertag(const char* in,size_t len,unsigned long long* n) __pure__;
 
+/* Google protocol buffers */
+/* A protocol buffer is a sequence of (tag,value).
+ * Parse each tag with scan_pb_tag, then look at the field number to see
+ *   which field in your struct is being sent. Integers must have type
+ *   0, double type 1, strings type 2 and floats type 5. However, you
+ *   have to check this yourself.
+ */ 
+size_t scan_varint(const char* in,size_t len, unsigned long long* n) __pure__;	/* internal */
+size_t scan_pb_tag(const char* in,size_t len, size_t* fieldno,unsigned char* type) __pure__;
+
+/* Then, depending on the field number, validate the type and call the
+ * corresponding of these functions to parse the value */
+size_t scan_pb_type0_int(const char* in,size_t len,unsigned long long* l) __pure__;
+size_t scan_pb_type0_sint(const char* in,size_t len,signed long long* l) __pure__;
+size_t scan_pb_type1_double(const char* in,size_t len,double* d) __pure__;
+size_t scan_pb_type1_fixed64(const char* in,size_t len,uint64_t* b) __pure__;
+/* NOTE: scan_pb_type2_stringlen only parses the length of the string,
+ * not the string itself. It will return the number of bytes parsed in
+ * the length, then set slen to the value of the length integer it just
+ * read, and let string point to the next byte (where the actual string
+ * starts). To advance in the protocol buffer, you'll have to skip the
+ * return value of this function + slen bytes.
+ * This is done so you can detect too large strings and abort the
+ * parsing early without having to read and allocate memory for the rest
+ * (potentially gigabytes) of the data announced by one unreasonable
+ * string length value. */
+size_t scan_pb_type2_stringlen(const char* in,size_t len,const char** string, size_t* slen) __pure__;
+size_t scan_pb_type5_float(const char* in,size_t len,float* f) __pure__;
+size_t scan_pb_type5_fixed32(const char* in,size_t len,uint32_t* b) __pure__;
+
 /* parse a netstring, input buffer is in (len bytes).
  * if parsing is successful:
  *   *dest points to string and *slen is size of string

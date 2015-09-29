@@ -68,6 +68,19 @@ static int ret1(const char* s,void* foo) {
 }
 
 int main(int argc,char* argv[]) {
+  char buf[100];
+  assert(fmt_varint(buf,1)==1 && buf[0]==1);
+  fmt_varint(buf,300);
+  assert(fmt_varint(buf,300)==2 && buf[0]==(char)0xac && buf[1]==0x02);
+#if 0
+  const char buf[]="fnord\n";
+  buffer_puts(buffer_1,buf);
+  strcpy((char*)buf,"foo\n");
+  buffer_puts(buffer_1,buf);
+  buffer_puts(buffer_1,"bar\n");
+  buffer_flush(buffer_1);
+#endif
+#if 0
   static critbit0_tree t;
   assert(critbit0_insert(&t,"fnord")==2);
   assert(critbit0_insert(&t,"fnord2")==2);
@@ -78,6 +91,7 @@ int main(int argc,char* argv[]) {
   assert(critbit0_allprefixed(&t,"fnord",ret0,NULL)==0);
   assert(critbit0_delete(&t,"fnord2")==1);
   assert(critbit0_delete(&t,"foo")==0);
+#endif
 #if 0
   int s = socket_tcp6();
 #endif
