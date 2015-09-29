@@ -1,3 +1,11 @@
+#if defined(__GNUC__) && (__GNUC__ >= 5)
+
+#include "uint64.h"
+
+int umult64(uint64 a,uint64 b,uint64* c) { return !__builtin_mul_overflow(a,b,c); }
+
+#else
+
 #include "haveuint128.h"
 
 #if defined(__x86_64__) && defined(__OPTIMIZE__)
@@ -56,6 +64,8 @@ int umult64(uint64 a,uint64 b,uint64* c) {
   }
   return 1;
 }
+
+#endif
 
 #endif
 

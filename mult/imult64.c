@@ -1,3 +1,11 @@
+#if defined(__GNUC__) && (__GNUC__ >= 5)
+
+#include "uint64.h"
+
+int imult64( int64 a, int64 b, int64* c) { return !__builtin_mul_overflow(a,b,c); }
+
+#else
+
 #if defined(__x86_64__) && defined(__OPTIMIZE__)
 
 /* WARNING: this only works if compiled with -fomit-frame-pointer */
@@ -42,6 +50,8 @@ int imult64(int64 a,int64 b,int64* c) {
   *c=(neg?-d:d);
   return 1;
 }
+
+#endif
 
 #endif
 
