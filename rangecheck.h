@@ -147,11 +147,21 @@ int range_str4inbuf(const void* buf,size_t len,const void* stringstart);
 
 #define assign(dest,src) ({ typeof(src) __x=(src); typeof(dest) __y=__x; (__x==__y && ((__x<1) == (__y<1))?(void)((dest)=__y),0:1); })
 
+/* gcc 5 now has nice builtins we can use instead */
+#if defined(__GNUC__) && (__GNUC__ >= 5)
+
+#define add_of(c,a,b) __builtin_add_overflow(a,b,&c)
+#define sub_of(c,a,b) __builtin_sub_overflow(a,b,&c)
+
+#else
+
 /* if a+b is defined and does not have an integer overflow, do c=a+b and
  * return 0.  Otherwise, return 1. */
-#define add_of(c,a,b) ({ typeof(a) __a=a; typeof(b) __b=b; (__b)<1?((__MIN(typeof(c))-(__b)<=(__a))?assign(c,__a+__b):1) : ((__MAX(typeof(c))-(__b)>=(__a))?assign(c,__a+__b):1); })
+#define add_of(c,a,b) ({ typeof(a) __a=a; typeof(b) __b=b; (__b)<1?((__MIN(typeof(a+b))-(__b)<=(__a))?assign(c,__a+__b):1) : ((__MAX(typeof(c))-(__b)>=(__a))?assign(c,__a+__b):1); })
 
-#define sub_of(c,a,b) ({ typeof(a) __a=a; typeof(b) __b=b; (__b)<1?((__MAX(typeof(c))+(__b)>=(__a))?assign(c,__a-__b):1) : ((__MIN(typeof(c))+(__b)<=(__a))?assign(c,__a-__b):1); })
+#define sub_of(c,a,b) ({ typeof(a) __a=a; typeof(b) __b=b; (__b)<1?((__MAX(typeof(a+b))+__b>=__a)?assign(c,__a-__b):1) : ((__MIN(typeof(c))+__b<=__a)?assign(c,__a-__b):1); })
+
+#endif
 
 #undef __static
 

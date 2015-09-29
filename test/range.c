@@ -177,7 +177,7 @@ void check_intof() {
     a=0; assert(add_of(a,UINT_MAX-3,4)==1);
     a=0; assert(add_of(a,2,-3)==1);
     a=23; assert(add_of(a,2,-2)==0 && a==0);
-    a=0; assert(add_of(a,(int)0x80000000,(int)-2147483648)==0 && a==0);
+    a=23; assert(sub_of(a,(int)0x80000000,(int)-2147483648)==0 && a==0);
     a=0; assert(add_of(a,(int)0x7fffffff,(int)-2147483648)==1);
     a=0; assert(add_of(a,1,UINT_MAX)==1);
 
