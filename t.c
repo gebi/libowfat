@@ -68,10 +68,13 @@ static int ret1(const char* s,void* foo) {
 }
 
 int main(int argc,char* argv[]) {
+  int s=socket_udp6();
+#if 0
   char buf[100];
   assert(fmt_varint(buf,1)==1 && buf[0]==1);
   fmt_varint(buf,300);
   assert(fmt_varint(buf,300)==2 && buf[0]==(char)0xac && buf[1]==0x02);
+#endif
 #if 0
   const char buf[]="fnord\n";
   buffer_puts(buffer_1,buf);

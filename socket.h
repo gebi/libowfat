@@ -14,9 +14,11 @@ extern "C" {
 int socket_tcp4(void);
 int socket_tcp4b(void);
 int socket_udp4(void);
+int socket_udp4b(void);
 int socket_tcp6(void);
 int socket_tcp6b(void);
 int socket_udp6(void);
+int socket_udp6b(void);
 
 int socket_sctp4(void);
 int socket_sctp4b(void);

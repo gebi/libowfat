@@ -20,7 +20,7 @@
 #define EPROTONOSUPPORT EAFNOSUPPORT
 #endif
 
-int socket_udp6(void)
+int socket_udp6b(void)
 {
 #ifdef LIBC_HAS_IP6
   int s;
@@ -43,9 +43,14 @@ compat:
     winsock2errno(setsockopt(s,IPPROTO_IPV6,IPV6_V6ONLY,(void*)&zero,sizeof(zero)));
   }
 #endif
-  if (ndelay_on(s) == -1) { close(s); return -1; }
   return s;
 #else
-  return socket_udp();
+  return socket_udp4b();
 #endif
+}
+
+int socket_udp6(void) {
+  int s=socket_udp6b();
+  if (s!=-1 && ndelay_on(s) == -1) { close(s); return -1; }
+  return s;
 }
