@@ -7,7 +7,7 @@
 #include <errno.h>
 
 int socket_fastopen(int s) {
-#ifdef TCP_FASTOPEN
+#if defined(SOL_TCP) && defined(TCP_FASTOPEN)
   return setsockopt(s,SOL_TCP,TCP_FASTOPEN,(int[]){ 5 }, sizeof(int));
 #else
 #ifdef ENOPROTOOPT

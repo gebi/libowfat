@@ -29,5 +29,11 @@ string:
 }
 
 #ifdef __GNUC__
+#ifdef __APPLE__
+size_t fmt_escapecharhtml(char* dest,uint32_t ch) {
+  return fmt_escapecharxml(dest,ch);
+}
+#else
 size_t fmt_escapecharhtml(char* dest,uint32_t ch) __attribute__((__alias__("fmt_escapecharxml")));
+#endif
 #endif
