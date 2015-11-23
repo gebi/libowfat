@@ -2,6 +2,7 @@
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <errno.h>
+#include <unistd.h>
 #endif
 #include "buffer.h"
 
