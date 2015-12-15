@@ -158,12 +158,12 @@ int main() {
     size_t ul;
     if (!isspace(buf[0])) continue;
     for (s=buf; *s && *s!='"'; ++s) ;	// skip whitespace
-    if (!*s=='"') continue;
+    if (!(*s=='"')) continue;
     ++s;
     entity=s;
     if (*entity!='&') continue; ++entity; ++s;
     for (; *s && *s!='"'; ++s) ;	// skip to end of entity
-    if (!*s=='"') continue;
+    if (!(*s=='"')) continue;
     if (s[-1]!=';') continue;
     s[-1]=0; ++s;
     s=strchr(s,'[');
