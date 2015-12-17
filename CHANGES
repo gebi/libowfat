@@ -1,4 +1,5 @@
 0.31:
+  special case buffer_get_token with token length 1 through memccpy (almost 4x speedup)
 
 0.30:
   add compiletimeassert.h
