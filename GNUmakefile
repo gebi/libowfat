@@ -153,8 +153,8 @@ CFLAGS+=-I.
 	$(DIET) $(CC) -c $< $(CFLAGS)
 
 %.a:
-	ar cru $@ $^
-	-ranlib $@
+	$(CROSS)ar cru $@ $^
+	-$(CROSS)ranlib $@
 
 t.o: t.c fmt.h scan.h str.h uint16.h uint32.h stralloc.h socket.h \
   buffer.h ip4.h ip6.h byte.h mmap.h open.h textcode.h dns.h iopause.h \
