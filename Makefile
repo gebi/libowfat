@@ -88,7 +88,7 @@ buffer_init_free.o: buffer/buffer_init_free.c buffer.h
 buffer_mmapread.o: buffer/buffer_mmapread.c buffer.h mmap.h
 buffer_munmap.o: buffer/buffer_munmap.c buffer.h
 buffer_peek.o: buffer/buffer_peek.c buffer.h
-buffer_put.o: buffer/buffer_put.c byte.h buffer.h
+buffer_put.o: buffer/buffer_put.c buffer.h
 buffer_put8long.o: buffer/buffer_put8long.c buffer.h fmt.h byte.h
 buffer_putalign.o: buffer/buffer_putalign.c byte.h buffer.h
 buffer_puterror.o: buffer/buffer_puterror.c buffer.h
@@ -198,10 +198,27 @@ fmt_fill.o: fmt/fmt_fill.c fmt.h byte.h
 fmt_httpdate.o: fmt/fmt_httpdate.c fmt.h byte.h byte.h
 fmt_human.o: fmt/fmt_human.c fmt.h byte.h
 fmt_humank.o: fmt/fmt_humank.c fmt.h byte.h
+fmt_iso8601.o: fmt/fmt_iso8601.c fmt.h byte.h byte.h
 fmt_long.o: fmt/fmt_long.c fmt.h byte.h
 fmt_longlong.o: fmt/fmt_longlong.c fmt.h byte.h
 fmt_minus.o: fmt/fmt_minus.c fmt.h byte.h
+fmt_netstring.o: fmt/fmt_netstring.c fmt.h byte.h rangecheck.h
 fmt_pad.o: fmt/fmt_pad.c fmt.h byte.h
+fmt_pb_double.o: fmt/fmt_pb_double.c fmt.h byte.h
+fmt_pb_float.o: fmt/fmt_pb_float.c fmt.h byte.h
+fmt_pb_int.o: fmt/fmt_pb_int.c fmt.h byte.h
+fmt_pb_sint.o: fmt/fmt_pb_sint.c fmt.h byte.h
+fmt_pb_string.o: fmt/fmt_pb_string.c fmt.h byte.h rangecheck.h
+fmt_pb_tag.o: fmt/fmt_pb_tag.c fmt.h byte.h
+fmt_pb_type0_sint.o: fmt/fmt_pb_type0_sint.c fmt.h byte.h
+fmt_pb_type1_double.o: fmt/fmt_pb_type1_double.c fmt.h byte.h \
+ compiletimeassert.h
+fmt_pb_type1_fixed64.o: fmt/fmt_pb_type1_fixed64.c fmt.h byte.h uint64.h
+fmt_pb_type2_string.o: fmt/fmt_pb_type2_string.c fmt.h byte.h \
+ rangecheck.h
+fmt_pb_type5_fixed32.o: fmt/fmt_pb_type5_fixed32.c fmt.h byte.h uint32.h
+fmt_pb_type5_float.o: fmt/fmt_pb_type5_float.c fmt.h byte.h \
+ compiletimeassert.h
 fmt_plusminus.o: fmt/fmt_plusminus.c fmt.h byte.h
 fmt_str.o: fmt/fmt_str.c fmt.h byte.h
 fmt_strm_internal.o: fmt/fmt_strm_internal.c fmt.h byte.h
@@ -211,6 +228,7 @@ fmt_ulong.o: fmt/fmt_ulong.c fmt.h byte.h
 fmt_ulong0.o: fmt/fmt_ulong0.c fmt.h byte.h
 fmt_ulonglong.o: fmt/fmt_ulonglong.c fmt.h byte.h
 fmt_utf8.o: fmt/fmt_utf8.c fmt.h byte.h
+fmt_varint.o: fmt/fmt_varint.c fmt.h byte.h
 fmt_xlong.o: fmt/fmt_xlong.c fmt.h byte.h haveinline.h
 fmt_xlonglong.o: fmt/fmt_xlonglong.c fmt.h byte.h
 fmt_xmlescape.o: fmt/fmt_xmlescape.c fmt.h byte.h
@@ -372,18 +390,17 @@ mmap_private.o: mmap/mmap_private.c open.h mmap.h
 mmap_read.o: mmap/mmap_read.c open.h mmap.h
 mmap_shared.o: mmap/mmap_shared.c open.h mmap.h
 mmap_unmap.o: mmap/mmap_unmap.c open.h mmap.h
-imult16.o: mult/imult16.c safemult.h uint16.h uint32.h uint64.h
-imult32.o: mult/imult32.c safemult.h uint16.h uint32.h uint64.h
-imult64.o: mult/imult64.c safemult.h uint16.h uint32.h uint64.h
+imult16.o: mult/imult16.c uint16.h
+imult32.o: mult/imult32.c uint32.h
+imult64.o: mult/imult64.c uint64.h
 range_arrayinbuf.o: mult/range_arrayinbuf.c rangecheck.h safemult.h \
  uint16.h uint32.h uint64.h
 range_str2inbuf.o: mult/range_str2inbuf.c rangecheck.h
 range_str4inbuf.o: mult/range_str4inbuf.c rangecheck.h
 range_strinbuf.o: mult/range_strinbuf.c rangecheck.h
-umult16.o: mult/umult16.c safemult.h uint16.h uint32.h uint64.h
-umult32.o: mult/umult32.c safemult.h uint16.h uint32.h uint64.h
-umult64.o: mult/umult64.c haveuint128.h safemult.h uint16.h uint32.h \
- uint64.h
+umult16.o: mult/umult16.c uint16.h
+umult32.o: mult/umult32.c uint32.h
+umult64.o: mult/umult64.c uint64.h
 open_append.o: open/open_append.c open.h
 open_excl.o: open/open_excl.c open.h
 open_read.o: open/open_read.c open.h
@@ -405,12 +422,23 @@ scan_double.o: scan/scan_double.c scan.h
 scan_fromhex.o: scan/scan_fromhex.c scan.h
 scan_httpdate.o: scan/scan_httpdate.c scan.h byte.h case.h
 scan_int.o: scan/scan_int.c scan.h
+scan_iso8601.o: scan/scan_iso8601.c scan.h byte.h case.h
 scan_long.o: scan/scan_long.c scan.h
 scan_longlong.o: scan/scan_longlong.c scan.h
 scan_longn.o: scan/scan_longn.c scan.h
 scan_netstring.o: scan/scan_netstring.c scan.h
 scan_noncharsetnskip.o: scan/scan_noncharsetnskip.c scan.h
 scan_nonwhitenskip.o: scan/scan_nonwhitenskip.c scan.h
+scan_pb_tag.o: scan/scan_pb_tag.c scan.h
+scan_pb_type0_sint.o: scan/scan_pb_type0_sint.c scan.h
+scan_pb_type1_double.o: scan/scan_pb_type1_double.c scan.h \
+ compiletimeassert.h
+scan_pb_type1_fixed64.o: scan/scan_pb_type1_fixed64.c scan.h uint64.h
+scan_pb_type2_stringlen.o: scan/scan_pb_type2_stringlen.c scan.h \
+ rangecheck.h
+scan_pb_type5_fixed32.o: scan/scan_pb_type5_fixed32.c scan.h uint32.h
+scan_pb_type5_float.o: scan/scan_pb_type5_float.c scan.h \
+ compiletimeassert.h
 scan_plusminus.o: scan/scan_plusminus.c scan.h
 scan_short.o: scan/scan_short.c scan.h
 scan_uint.o: scan/scan_uint.c scan.h
@@ -419,6 +447,7 @@ scan_ulonglong.o: scan/scan_ulonglong.c scan.h
 scan_ulongn.o: scan/scan_ulongn.c scan.h haveuint128.h
 scan_ushort.o: scan/scan_ushort.c scan.h
 scan_utf8.o: scan/scan_utf8.c fmt.h byte.h
+scan_varint.o: scan/scan_varint.c scan.h
 scan_whitenskip.o: scan/scan_whitenskip.c scan.h
 scan_xint.o: scan/scan_xint.c scan.h
 scan_xlong.o: scan/scan_xlong.c scan.h
@@ -740,16 +769,16 @@ errmsg.h cdb.h cdb_make.h rangecheck.h iarray.h va_narg.h isset.h \
 compiletimeassert.h critbit.h
 
 install-inc:
-	install -d $(INCLUDEDIR)
-	install -m 644 $(INCLUDES) $(INCLUDEDIR)
+	install -d $(DESTDIR)$(INCLUDEDIR)
+	install -m 644 $(INCLUDES) $(DESTDIR)$(INCLUDEDIR)
 
 install-lib: libowfat.a
-	install -d $(LIBDIR)
-	install -m 644 libowfat.a $(LIBDIR)
+	install -d $(DESTDIR)$(LIBDIR)
+	install -m 644 libowfat.a $(DESTDIR)$(LIBDIR)
 
 install-man:
-	install -d $(MAN3DIR)
-	install -m 644 $(wildcard */*.3) $(MAN3DIR)
+	install -d $(DESTDIR)$(MAN3DIR)
+	install -m 644 $(wildcard */*.3) $(DESTDIR)$(MAN3DIR)
 
 install: install-inc install-man install-lib
 

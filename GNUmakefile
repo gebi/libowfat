@@ -179,16 +179,16 @@ errmsg.h cdb.h cdb_make.h rangecheck.h iarray.h va_narg.h isset.h \
 compiletimeassert.h critbit.h
 
 install-inc:
-	install -d $(INCLUDEDIR)
-	install -m 644 $(INCLUDES) $(INCLUDEDIR)
+	install -d $(DESTDIR)$(INCLUDEDIR)
+	install -m 644 $(INCLUDES) $(DESTDIR)$(INCLUDEDIR)
 
 install-lib: libowfat.a
-	install -d $(LIBDIR)
-	install -m 644 libowfat.a $(LIBDIR)
+	install -d $(DESTDIR)$(LIBDIR)
+	install -m 644 libowfat.a $(DESTDIR)$(LIBDIR)
 
 install-man:
-	install -d $(MAN3DIR)
-	install -m 644 $(wildcard */*.3) $(MAN3DIR)
+	install -d $(DESTDIR)$(MAN3DIR)
+	install -m 644 $(wildcard */*.3) $(DESTDIR)$(MAN3DIR)
 
 install: install-inc install-man install-lib
 
