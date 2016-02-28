@@ -18,16 +18,29 @@ all: ent $(LIBS) libowfat.a libsocket t
 CROSS=
 #CROSS=i686-mingw-
 CC=$(CROSS)gcc
-CFLAGS=-pipe -W -Wall -Wextra -O2 -fomit-frame-pointer
+WERROR=
+WARN=-W -Wall -Wextra $(WERROR)
+
+# Use the second version if you are building for a binary that is only
+# supposed to run on this machine. It tells gcc to use CPU instructions
+# that are specific to the CPU the code is compiled on.
+NATIVE=
+#NATIVE=-march=native -mtune=native
+
+OPT_REG=-O2 -fomit-leaf-frame-pointer
+OPT_PLUS=-O3 -fomit-leaf-frame-pointer $(NATIVE)
+
+DEFINE=-D_REENTRANT
+
+CFLAGS=-pipe $(WARN) $(DEFINE) $(OPT_REG)
+CFLAGS_OPT=-pipe $(WARN) $(DEFINE) $(OPT_PLUS)
+
 #CFLAGS=-pipe -Os -march=pentiumpro -mcpu=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
 
 ent: ent.c haveuint128.h
 	gcc -g -o ent ent.c -I.
 
 # CFLAGS += -fstrict-aliasing -Wstrict-aliasing=2
-
-WERROR=
-CFLAGS += -D_REENTRANT $(WERROR)
 
 # startrip
 ifneq ($(DEBUG),)
@@ -148,6 +161,9 @@ libowfat.a: $(ALL_OBJS)
 	-$(CROSS)ranlib $@
 
 CFLAGS+=-I.
+
+%.o: byte/%.c
+	$(DIET) $(CC) -c $< $(CFLAGS_OPT)
 
 %.o: %.c
 	$(DIET) $(CC) -c $< $(CFLAGS)

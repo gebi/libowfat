@@ -19,16 +19,29 @@ all: ent $(LIBS) libowfat.a libsocket t
 CROSS=
 #CROSS=i686-mingw-
 CC=$(CROSS)gcc
-CFLAGS=-pipe -W -Wall -Wextra -O2 -fomit-frame-pointer
+WERROR=
+WARN=-W -Wall -Wextra $(WERROR)
+
+# Use the second version if you are building for a binary that is only
+# supposed to run on this machine. It tells gcc to use CPU instructions
+# that are specific to the CPU the code is compiled on.
+NATIVE=
+#NATIVE=-march=native -mtune=native
+
+OPT_REG=-O2 -fomit-leaf-frame-pointer
+OPT_PLUS=-O3 -fomit-leaf-frame-pointer $(NATIVE)
+
+DEFINE=-D_REENTRANT
+
+CFLAGS=-pipe $(WARN) $(DEFINE) $(OPT_REG)
+CFLAGS_OPT=-pipe $(WARN) $(DEFINE) $(OPT_PLUS)
+
 #CFLAGS=-pipe -Os -march=pentiumpro -mcpu=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
 
 ent: ent.c haveuint128.h
 	gcc -g -o ent ent.c -I.
 
 # CFLAGS += -fstrict-aliasing -Wstrict-aliasing=2
-
-WERROR=
-CFLAGS += -D_REENTRANT $(WERROR)
 
 array_allocate.o: array/array_allocate.c likely.h safemult.h uint16.h \
  uint32.h uint64.h array.h byte.h
@@ -638,8 +651,8 @@ fmt_yenc.o: textcode/fmt_yenc.c fmt.h byte.h textcode.h
 scan_base64.o: textcode/scan_base64.c textcode.h haveinline.h
 scan_cescape.o: textcode/scan_cescape.c fmt.h byte.h textcode.h scan.h
 scan_hexdump.o: textcode/scan_hexdump.c fmt.h byte.h textcode.h scan.h
-scan_html.o: textcode/scan_html.c entities.h fmt.h byte.h textcode.h \
- haveinline.h scan.h case.h str.h
+scan_html.o: textcode/scan_html.c fmt.h byte.h textcode.h haveinline.h \
+ scan.h case.h str.h
 scan_jsonescape.o: textcode/scan_jsonescape.c fmt.h byte.h textcode.h \
  scan.h
 scan_ldapescape.o: textcode/scan_ldapescape.c fmt.h byte.h textcode.h \
@@ -738,6 +751,9 @@ libowfat.a: $(ALL_OBJS)
 	-$(CROSS)ranlib $@
 
 CFLAGS+=-I.
+
+%.o: byte/%.c
+	$(DIET) $(CC) -c $< $(CFLAGS_OPT)
 
 %.o:
 	$(DIET) $(CC) -c $< $(CFLAGS)

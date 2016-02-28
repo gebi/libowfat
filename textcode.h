@@ -15,6 +15,7 @@ extern "C" {
 size_t fmt_uuencoded(char* dest,const char* src,size_t len);
 /* Needs len/3*4 bytes */
 size_t fmt_base64(char* dest,const char* src,size_t len);
+size_t fmt_base64url(char* dest,const char* src,size_t len);
 /* Worst case: len*3 */
 size_t fmt_quotedprintable(char* dest,const char* src,size_t len);
 /* Worst case: len*3 */
@@ -59,6 +60,7 @@ size_t fmt_base85(char* dest,const char* src,size_t len);
  * should be able to hold strlen(src) bytes as a rule of thumb. */
 size_t scan_uuencoded(const char* src,char* dest,size_t* destlen);
 size_t scan_base64(const char* src,char* dest,size_t* destlen);
+size_t scan_base64url(const char* src,char* dest,size_t* destlen);
 size_t scan_quotedprintable(const char* src,char* dest,size_t* destlen);
 size_t scan_urlencoded(const char* src,char* dest,size_t* destlen);
 size_t scan_urlencoded2(const char* src,char* dest,size_t* destlen);
@@ -93,6 +95,7 @@ size_t scan_to_sa(size_t (*func)(const char*,char*,size_t*),
 
 #define fmt_uuencoded_sa(sa,src,len) fmt_to_sa(fmt_uuencoded,sa,src,len)
 #define fmt_base64_sa(sa,src,len) fmt_to_sa(fmt_base64,sa,src,len)
+#define fmt_base64url_sa(sa,src,len) fmt_to_sa(fmt_base64url,sa,src,len)
 #define fmt_quotedprintable_sa(sa,src,len) fmt_to_sa(fmt_quotedprintable,sa,src,len)
 #define fmt_urlencoded_sa(sa,src,len) fmt_to_sa(fmt_urlencoded,sa,src,len)
 #define fmt_yenc_sa(sa,src,len) fmt_to_sa(fmt_yenc,sa,src,len)
@@ -108,6 +111,7 @@ size_t scan_to_sa(size_t (*func)(const char*,char*,size_t*),
 
 #define scan_uuencoded_sa(src,sa) scan_to_sa(scan_uuencoded,src,sa)
 #define scan_base64_sa(src,sa) scan_to_sa(scan_base64,src,sa)
+#define scan_base64url_sa(src,sa) scan_to_sa(scan_base64url,src,sa)
 #define scan_quotedprintable_sa(src,sa) scan_to_sa(scan_quotedprintable,src,sa)
 #define scan_urlencoded_sa(src,sa) scan_to_sa(scan_urlencoded,src,sa)
 #define scan_yenc_sa(src,sa) scan_to_sa(scan_yenc,src,sa)
@@ -139,6 +143,7 @@ size_t scan_tofrom_array(size_t (*func)(const char*,char*,size_t*),
 #endif
 
 extern const char base64[64];
+extern const char base64url[64];
 
 #ifdef __cplusplus
 }
