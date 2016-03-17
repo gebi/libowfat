@@ -1,6 +1,6 @@
 #include "errmsg.h"
 #include "errmsg_int.h"
-#include <str.h>
+#include "str.h"
 
 #ifdef __MINGW32__
 

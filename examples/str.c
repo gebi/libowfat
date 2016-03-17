@@ -1,5 +1,5 @@
-#include <str.h>
-#include <buffer.h>
+#include "str.h"
+#include "buffer.h"
 
 /*
  * The str_* functions have a pretty similar functionality to the byte_* ones

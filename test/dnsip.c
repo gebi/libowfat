@@ -1,9 +1,9 @@
 #include <dns.h>
 #include <ip4.h>
-#include <buffer.h>
+#include "buffer.h"
 #include <errno.h>
 #include <string.h>
-#include <errmsg.h>
+#include "errmsg.h"
 
 int main(int argc,char* argv[]) {
   static char seed[128];

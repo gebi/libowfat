@@ -1,5 +1,5 @@
-#include <fmt.h>
-#include <buffer.h>
+#include "fmt.h"
+#include "buffer.h"
 
 int main() {
   char buf[1024];

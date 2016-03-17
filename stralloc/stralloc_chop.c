@@ -1,4 +1,4 @@
-#include <stralloc.h>
+#include "stralloc.h"
 
 int stralloc_chop(stralloc* sa) {
   if (sa->len==0) return -1;

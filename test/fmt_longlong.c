@@ -1,7 +1,7 @@
-#include <fmt.h>
-#include <str.h>
+#include "fmt.h"
+#include "str.h"
 #include <assert.h>
-#include <scan.h>
+#include "scan.h"
 #include <byte.h>
 
 int main() {

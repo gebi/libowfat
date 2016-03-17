@@ -1,6 +1,6 @@
-#include <scan.h>
-#include <fmt.h>
-#include <buffer.h>
+#include "scan.h"
+#include "fmt.h"
+#include "buffer.h"
 #include <assert.h>
 
 int main() {

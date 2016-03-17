@@ -1,9 +1,9 @@
 #include <cdb.h>
-#include <buffer.h>
+#include "buffer.h"
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
-#include <errmsg.h>
+#include "errmsg.h"
 
 #ifndef O_BINARY
 #define O_BINARY 0

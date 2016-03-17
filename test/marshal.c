@@ -3,10 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <fmt.h>
-#include <stralloc.h>
-#include <buffer.h>
-#include <scan.h>
+#include "fmt.h"
+#include "stralloc.h"
+#include "buffer.h"
+#include "scan.h"
 #include <textcode.h>
 #include <byte.h>
 #include <uint16.h>
@@ -14,7 +14,7 @@
 #include <uint64.h>
 #include <openreadclose.h>
 #include <mmap.h>
-#include <str.h>
+#include "str.h"
 
 char buf[100];
 stralloc sa;

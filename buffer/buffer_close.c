@@ -1,4 +1,4 @@
-#include <buffer.h>
+#include "buffer.h"
 #include <unistd.h>
 
 void buffer_close(buffer* b) {

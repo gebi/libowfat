@@ -29,7 +29,7 @@
 #endif
 
 #ifdef __dietlibc__
-#include <fmt.h>
+#include "fmt.h"
 #include <write12.h>
 #endif
 

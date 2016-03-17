@@ -1,7 +1,7 @@
-#include <stralloc.h>
-#include <buffer.h>
-#include <io.h>
-#include <errmsg.h>
+#include "stralloc.h"
+#include "buffer.h"
+#include "io.h"
+#include "errmsg.h"
 #include <unistd.h>
 
 int main() {

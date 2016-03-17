@@ -1,4 +1,4 @@
-#include <buffer.h>
+#include "buffer.h"
 
 int main() {
   buffer input;
