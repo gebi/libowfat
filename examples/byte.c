@@ -1,5 +1,5 @@
-#include <byte.h>
-#include <buffer.h>
+#include "byte.h"
+#include "buffer.h"
 
 /*
  * The functions that are beginning with byte_ offer some handy functions, to
