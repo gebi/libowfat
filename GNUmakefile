@@ -28,8 +28,8 @@ WARN=-W -Wall -Wextra $(WERROR)
 NATIVE=
 #NATIVE=-march=native -mtune=native
 
-OPT_REG=-O2 -fomit-leaf-frame-pointer
-OPT_PLUS=-O3 -fomit-leaf-frame-pointer $(NATIVE)
+OPT_REG=-O2 $(OLFP)
+OPT_PLUS=-O3 $(OLFP) $(NATIVE)
 
 DEFINE=-D_REENTRANT
 
@@ -60,8 +60,10 @@ DIET:=$(strip $(diet_path))
 endif
 gcc_path = $(foreach dir,$(path),$(wildcard $(dir)/gcc))
 ifeq ($(strip $(gcc_path)),)
+OLFP=-fomit-frame-pointer
 CC=clang
 else
+OLFP=-fomit-leaf-frame-pointer
 CC=gcc
 endif
 
@@ -168,7 +170,7 @@ libowfat.a: $(ALL_OBJS)
 	-$(CROSS)ranlib $@
 
 CFLAGS+=-I.
-CFLAGS_OPS+=-I.
+CFLAGS_OPT+=-I.
 
 %.o: byte/%.c
 	$(DIET) $(CCC) -c $< $(CFLAGS_OPT)
