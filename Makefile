@@ -18,7 +18,8 @@ all: ent $(LIBS) libowfat.a libsocket t
 
 CROSS=
 #CROSS=i686-mingw-
-CC=$(CROSS)gcc
+CC=gcc
+CCC=$(CROSS)$(CC)
 WERROR=
 WARN=-W -Wall -Wextra $(WERROR)
 
@@ -39,7 +40,7 @@ CFLAGS_OPT=-pipe $(WARN) $(DEFINE) $(OPT_PLUS)
 #CFLAGS=-pipe -Os -march=pentiumpro -mcpu=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
 
 ent: ent.c haveuint128.h
-	gcc -g -o ent ent.c -I.
+	$(CC) -g -o ent ent.c -I.
 
 # CFLAGS += -fstrict-aliasing -Wstrict-aliasing=2
 
@@ -757,10 +758,10 @@ CFLAGS+=-I.
 CFLAGS_OPS+=-I.
 
 %.o: byte/%.c
-	$(DIET) $(CC) -c $< $(CFLAGS_OPT)
+	$(DIET) $(CCC) -c $< $(CFLAGS_OPT)
 
 %.o:
-	$(DIET) $(CC) -c $< $(CFLAGS)
+	$(DIET) $(CCC) -c $< $(CFLAGS)
 
 %.a:
 	$(CROSS)ar cru $@ $^
@@ -773,7 +774,7 @@ t.o: t.c fmt.h scan.h str.h uint16.h uint32.h stralloc.h socket.h \
   havesigio.h CAS.h
 
 t: t.o libowfat.a libsocket
-	$(DIET) $(CC) -g -o $@ t.o libowfat.a `cat libsocket` -lpthread
+	$(DIET) $(CCC) -g -o $@ t.o libowfat.a `cat libsocket` -lpthread
 
 .PHONY: all clean tar install rename
 clean:
@@ -819,53 +820,53 @@ rename:
 
 haveip6.h: tryip6.c
 	-rm -f $@
-	if $(DIET) $(CC) $(CFLAGS) -c tryip6.c >/dev/null 2>&1; then echo "#define LIBC_HAS_IP6"; fi > $@
+	if $(DIET) $(CCC) $(CFLAGS) -c tryip6.c >/dev/null 2>&1; then echo "#define LIBC_HAS_IP6"; fi > $@
 	-rm -f tryip6.o
 
 havescope.h: tryscope.c
 	-rm -f $@
-	if $(DIET) $(CC) $(CFLAGS) -c tryscope.c >/dev/null 2>&1; then echo "#define LIBC_HAS_SCOPE_ID"; fi > $@
+	if $(DIET) $(CCC) $(CFLAGS) -c tryscope.c >/dev/null 2>&1; then echo "#define LIBC_HAS_SCOPE_ID"; fi > $@
 	-rm -f tryscope.o
 
 haven2i.h: tryn2i.c
 	-rm -f $@
-	if $(DIET) $(CC) $(CFLAGS) -o t tryn2i.c >/dev/null 2>&1; then echo "#define HAVE_N2I"; fi > $@
+	if $(DIET) $(CCC) $(CFLAGS) -o t tryn2i.c >/dev/null 2>&1; then echo "#define HAVE_N2I"; fi > $@
 	-rm -f t
 
 havesl.h: trysl.c
 	-rm -f $@
-	if ! $(DIET) $(CC) $(CFLAGS) -o t trysl.c >/dev/null 2>&1; then echo "typedef int socklen_t;"; fi > $@
+	if ! $(DIET) $(CCC) $(CFLAGS) -o t trysl.c >/dev/null 2>&1; then echo "typedef int socklen_t;"; fi > $@
 	-rm -f t
 
 haveinline.h: tryinline.c
 	-rm -f $@
-	if ! $(DIET) $(CC) $(CFLAGS) -c tryinline.c >/dev/null 2>&1; then echo "#define inline"; fi > $@
+	if ! $(DIET) $(CCC) $(CFLAGS) -c tryinline.c >/dev/null 2>&1; then echo "#define inline"; fi > $@
 	-rm -f tryinline.o
 
 havekqueue.h: trykqueue.c
 	-rm -f $@
-	if $(DIET) $(CC) $(CFLAGS) -c trykqueue.c >/dev/null 2>&1; then echo "#define HAVE_KQUEUE"; fi > $@
+	if $(DIET) $(CCC) $(CFLAGS) -c trykqueue.c >/dev/null 2>&1; then echo "#define HAVE_KQUEUE"; fi > $@
 	-rm -f trykqueue.o
 
 havebsdsf.h: trybsdsf.c
 	-rm -f $@
-	if $(DIET) $(CC) $(CFLAGS) -o trybsdsf trybsdsf.c >/dev/null 2>&1; then echo "#define HAVE_BSDSENDFILE"; fi > $@
+	if $(DIET) $(CCC) $(CFLAGS) -o trybsdsf trybsdsf.c >/dev/null 2>&1; then echo "#define HAVE_BSDSENDFILE"; fi > $@
 	-rm -f trybsdsf.o trybsdsf
 
 havesendfile.h: trysendfile.c
 	-rm -f $@
-	if $(DIET) $(CC) $(CFLAGS) -c trysendfile.c >/dev/null 2>&1; then echo "#define HAVE_SENDFILE"; fi > $@
+	if $(DIET) $(CCC) $(CFLAGS) -c trysendfile.c >/dev/null 2>&1; then echo "#define HAVE_SENDFILE"; fi > $@
 	-rm -f trysendfile.o
 
 haveepoll.h: tryepoll.c
 	-rm -f $@
-	if $(DIET) $(CC) $(CFLAGS) -o tryepoll tryepoll.c >/dev/null 2>&1; then echo "#define HAVE_EPOLL 1"; else \
-	if $(DIET) $(CC) $(CFLAGS) -o tryepoll tryepoll.c -lepoll >/dev/null 2>&1; then echo "#define HAVE_EPOLL 2"; fi; fi > $@
+	if $(DIET) $(CCC) $(CFLAGS) -o tryepoll tryepoll.c >/dev/null 2>&1; then echo "#define HAVE_EPOLL 1"; else \
+	if $(DIET) $(CCC) $(CFLAGS) -o tryepoll tryepoll.c -lepoll >/dev/null 2>&1; then echo "#define HAVE_EPOLL 2"; fi; fi > $@
 	-rm -f tryepoll
 
 havedevpoll.h: trydevpoll.c
 	-rm -f $@
-	if $(DIET) $(CC) $(CFLAGS) -c trydevpoll.c >/dev/null 2>&1; then echo "#define HAVE_DEVPOLL"; fi > $@
+	if $(DIET) $(CCC) $(CFLAGS) -c trydevpoll.c >/dev/null 2>&1; then echo "#define HAVE_DEVPOLL"; fi > $@
 	-rm -f trydevpoll.o
 
 libepoll: haveepoll.h
@@ -873,38 +874,38 @@ libepoll: haveepoll.h
 
 havesigio.h: trysigio.c
 	-rm -f $@
-	if $(DIET) $(CC) $(CFLAGS) -c trysigio.c >/dev/null 2>&1; then echo "#define HAVE_SIGIO"; fi > $@
+	if $(DIET) $(CCC) $(CFLAGS) -c trysigio.c >/dev/null 2>&1; then echo "#define HAVE_SIGIO"; fi > $@
 	-rm -f trysigio.o
 
 havealloca.h: tryalloca.c
 	-rm -f $@
 	echo "#include <stdlib.h>" > $@
-	if $(DIET) $(CC) $(CFLAGS) -c tryalloca.c -DA >/dev/null 2>&1; then echo "#include <alloca.h>"; fi >> $@
-	if $(DIET) $(CC) $(CFLAGS) -c tryalloca.c -DB >/dev/null 2>&1; then echo "#include <malloc.h>"; fi >> $@
+	if $(DIET) $(CCC) $(CFLAGS) -c tryalloca.c -DA >/dev/null 2>&1; then echo "#include <alloca.h>"; fi >> $@
+	if $(DIET) $(CCC) $(CFLAGS) -c tryalloca.c -DB >/dev/null 2>&1; then echo "#include <malloc.h>"; fi >> $@
 	-rm -f tryalloca.o
 
 haveuint128.h: tryuint128.c
 	-rm -f $@
-	if $(DIET) $(CC) $(CFLAGS) -c tryuint128.c >/dev/null 2>&1; then echo "#define HAVE_UINT128"; fi > $@
+	if $(DIET) $(CCC) $(CFLAGS) -c tryuint128.c >/dev/null 2>&1; then echo "#define HAVE_UINT128"; fi > $@
 	-rm -f tryuint128.o
 
 iopause.h: iopause.h1 iopause.h2 trypoll.c
 	-rm -f $@
-	if $(DIET) $(CC) $(CFLAGS) -o t trypoll.c >/dev/null 2>&1; then cp iopause.h2 iopause.h; else cp iopause.h1 iopause.h; fi
+	if $(DIET) $(CCC) $(CFLAGS) -o t trypoll.c >/dev/null 2>&1; then cp iopause.h2 iopause.h; else cp iopause.h1 iopause.h; fi
 	-rm -f t
 
 select.h: select.h1 select.h2 trysysel.c
 	-rm -f $@
-	if $(DIET) $(CC) $(CFLAGS) -c trysysel.c >/dev/null 2>&1; then cp select.h2 select.h; else cp select.h1 select.h; fi
+	if $(DIET) $(CCC) $(CFLAGS) -c trysysel.c >/dev/null 2>&1; then cp select.h2 select.h; else cp select.h1 select.h; fi
 	-rm -f trysysel.o
 
 libsocket: trysocket.c
-	if $(DIET) $(CC) $(CFLAGS) -o trysocket trysocket.c >/dev/null 2>&1; then echo ""; else \
-	if $(DIET) $(CC) $(CFLAGS) -o trysocket trysocket.c -lsocket >/dev/null 2>&1; then echo "-lsocket"; else \
-	if $(DIET) $(CC) $(CFLAGS) -o trysocket trysocket.c -lsocket -lnsl >/dev/null 2>&1; then echo "-lsocket -lnsl"; \
+	if $(DIET) $(CCC) $(CFLAGS) -o trysocket trysocket.c >/dev/null 2>&1; then echo ""; else \
+	if $(DIET) $(CCC) $(CFLAGS) -o trysocket trysocket.c -lsocket >/dev/null 2>&1; then echo "-lsocket"; else \
+	if $(DIET) $(CCC) $(CFLAGS) -o trysocket trysocket.c -lsocket -lnsl >/dev/null 2>&1; then echo "-lsocket -lnsl"; \
 	fi; fi; fi > blah
-	if $(DIET) $(CC) $(CFLAGS) -o trysocket trysendfile.c `cat blah`>/dev/null 2>&1; then cat blah; else \
-	if $(DIET) $(CC) $(CFLAGS) -o trysocket trysendfile.c -lsendfile `cat blah` >/dev/null 2>&1; then echo "-lsendfile"; cat blah; \
+	if $(DIET) $(CCC) $(CFLAGS) -o trysocket trysendfile.c `cat blah`>/dev/null 2>&1; then cat blah; else \
+	if $(DIET) $(CCC) $(CFLAGS) -o trysocket trysendfile.c -lsendfile `cat blah` >/dev/null 2>&1; then echo "-lsendfile"; cat blah; \
 	fi; fi > libsocket
 	rm -f blah trysocket
 
@@ -927,7 +928,7 @@ dns_nd6.o fmt_xlong.o scan_xlong.o fmt_ip6_flat.o $(TEXTCODE_OBJS): haveinline.h
 iob_send.o scan_ip6if.o: havealloca.h
 
 dep: haveip6.h haven2i.h havesl.h haveinline.h iopause.h select.h haveepoll.h havekqueue.h havedevpoll.h havescope.h havesigio.h havebsdsf.h havesendfile.h havealloca.h haveuint128.h entities.h
-	gcc -I. -MM `ls */*.c | grep -v test` t.c | sed -e 's@ \./@ @g' > dep
+	$(CC) -I. -MM `ls */*.c | grep -v test` t.c | sed -e 's@ \./@ @g' > dep
 
 libdep:
 	for i in $(LIBS); do (echo -n $$i|tr a-z A-Z|sed 's/.A$$/_OBJS=/'; echo $${i%.a}/*.c|sed -e 's@[^/]*/\([^.]*\)\.c@\1.o @g'); done > libdep
