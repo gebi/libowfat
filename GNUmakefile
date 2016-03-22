@@ -28,8 +28,8 @@ WARN=-W -Wall -Wextra $(WERROR)
 NATIVE=
 #NATIVE=-march=native -mtune=native
 
-OPT_REG=-O2 $(OLFP)
-OPT_PLUS=-O3 $(OLFP) $(NATIVE)
+OPT_REG=-O2
+OPT_PLUS=-O3 $(NATIVE)
 
 DEFINE=-D_REENTRANT
 
@@ -60,10 +60,8 @@ DIET:=$(strip $(diet_path))
 endif
 gcc_path = $(foreach dir,$(path),$(wildcard $(dir)/gcc))
 ifeq ($(strip $(gcc_path)),)
-OLFP=-fomit-frame-pointer
 CC=clang
 else
-OLFP=-fomit-leaf-frame-pointer
 CC=gcc
 endif
 
