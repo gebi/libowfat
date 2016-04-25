@@ -5,7 +5,7 @@ size_t scan_varint(const char* in,size_t len, unsigned long long* n) {
   unsigned long long l;
   if (len==0) return 0;
   for (l=0, i=0; i<len; ++i) {
-    l+=(in[i]&0x7f) << (i*7);
+    l+=(unsigned long long)(in[i]&0x7f) << (i*7);
     if (!(in[i]&0x80)) {
       *n=l;
       return i+1;
