@@ -46,7 +46,7 @@ size_t scan_asn1derlengthvalue(const char* src,size_t len,unsigned long long* va
 size_t scan_asn1derlength(const char* src,size_t len,unsigned long long* value) {
   unsigned long long l;
   size_t i=scan_asn1derlengthvalue(src,len,&l);
-  if (l > len-i) return 0;		/* make sure data would fit into buffer */
+  if (!i || l > len-i) return 0;		/* make sure data would fit into buffer */
   *value=l;
   return i;
 }
