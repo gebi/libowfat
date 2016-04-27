@@ -15,7 +15,8 @@ size_t fmt_quotedprintable2(char* dest,const char* src,size_t len,const char* es
       }
       written+=3;
     } else {
-      if (dest) dest[written]=s[i]; ++written;
+      if (dest) dest[written]=s[i];
+      ++written;
     }
     /* in case someone gives us malicious input */
     if (written>((size_t)-1)/2) return (size_t)-1;

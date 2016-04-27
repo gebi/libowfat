@@ -12,7 +12,8 @@ size_t scan_ip4(const char *s,char ip[4])
     len+=(j=scan_ulong(s,&u))+1;
     if (!j || u>255) return 0;
     ip[i]=(char)u; s+=j;
-    if (i<3 && *s!='.') return 0; ++s;
+    if (i<3 && *s!='.') return 0;
+    ++s;
   }
   return len-1;
 }

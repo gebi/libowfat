@@ -10,7 +10,8 @@ size_t fmt_yenc(char* dest,const char* src,size_t len) {
     switch (c) {
     case ' ':	/* escape space at line ending */
       if (linelen==253) {
-	if (dest) dest[written]='\n'; ++written; linelen=0;
+	if (dest) dest[written]='\n';
+	++written; linelen=0;
       }
       goto dontescape;
     case 'F':	/* escape "^From " */
@@ -22,22 +23,26 @@ size_t fmt_yenc(char* dest,const char* src,size_t len) {
     case '\n':
     case '\r':
     case '=':
-      if (dest) dest[written]='='; ++written;
+      if (dest) dest[written]='=';
+      ++written;
       c+=64;
       /* fall through */
     default:
 dontescape:
       ++linelen;
-      if (dest) dest[written]=c; ++written;
+      if (dest) dest[written]=c;
+      ++written;
       if (linelen>253) {
-	if (dest) dest[written]='\n'; ++written; linelen=0;
+	if (dest) dest[written]='\n';
+	++written; linelen=0;
       }
     }
     /* in case someone gives us malicious input */
     if (written>((size_t)-1)/2) return (size_t)-1;
   }
   if (linelen) {
-    if (dest) dest[written]='\n'; ++written;
+    if (dest) dest[written]='\n';
+    ++written;
   }
   return written;
 }

@@ -8,6 +8,10 @@ size_t fmt_varint(char* dest,unsigned long long l) {
   for (i=0; l; ++i, l>>=7) {
     if (dest) dest[i]=(l&0x7f) | ((!!(l&~0x7f))<<7);
   }
+  if (!i) {	/* l was 0 */
+    if (dest) dest[0]=0;
+    ++i;
+  }
   return i;
 }
 

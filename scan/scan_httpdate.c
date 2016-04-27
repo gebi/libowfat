@@ -13,9 +13,11 @@ extern char** environ;
 static int parsetime(const char*c,struct tm* x) {
   unsigned long tmp;
   c+=scan_ulong(c,&tmp); x->tm_hour=(int)tmp;
-  if (*c!=':') return -1; ++c;
+  if (*c!=':') return -1;
+  ++c;
   c+=scan_ulong(c,&tmp); x->tm_min=(int)tmp;
-  if (*c!=':') return -1; ++c;
+  if (*c!=':') return -1;
+  ++c;
   c+=scan_ulong(c,&tmp); x->tm_sec=(int)tmp;
   if (*c!=' ') return -1;
   return 0;

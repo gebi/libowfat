@@ -16,7 +16,8 @@ size_t fmt_uuencoded(char* dest,const char* src,size_t len) {
     {
       register unsigned int diff;
       if (len>45) { i=15; diff=45; } else { i=(len+2)/3; diff=len; }
-      if (orig) *dest=enc(diff); ++dest;
+      if (orig) *dest=enc(diff);
+      ++dest;
       len-=diff;
     }
     for (; i; --i) {
@@ -31,7 +32,8 @@ size_t fmt_uuencoded(char* dest,const char* src,size_t len) {
       }
       dest+=4; s+=3;
     }
-    if (orig) *dest='\n'; ++dest;
+    if (orig) *dest='\n';
+    ++dest;
   }
   return dest-orig;
 }

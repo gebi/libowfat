@@ -10,10 +10,14 @@ int str_diff(const char* a, const char* b) {
   register const unsigned char* t=(const unsigned char*)b;
   register int j;
   for (;;) {
-    if ((j=(*s-*t))) break; if (!*t) break; ++s; ++t;
-    if ((j=(*s-*t))) break; if (!*t) break; ++s; ++t;
-    if ((j=(*s-*t))) break; if (!*t) break; ++s; ++t;
-    if ((j=(*s-*t))) break; if (!*t) break; ++s; ++t;
+    if ((j=(*s-*t)) || !*t) break;
+                                   ++s; ++t;
+    if ((j=(*s-*t)) || !*t) break;
+                                   ++s; ++t;
+    if ((j=(*s-*t)) || !*t) break;
+                                   ++s; ++t;
+    if ((j=(*s-*t)) || !*t) break;
+                                   ++s; ++t;
   }
   return j;
 }

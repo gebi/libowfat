@@ -7,10 +7,14 @@ size_t byte_chr(const void* haystack, size_t len, char needle) {
   register const char* s=haystack;
   register const char* t=s+len;
   for (;;) {
-    if (s==t) break; if (*s==c) break; ++s;
-    if (s==t) break; if (*s==c) break; ++s;
-    if (s==t) break; if (*s==c) break; ++s;
-    if (s==t) break; if (*s==c) break; ++s;
+    if (s==t || *s==c) break;
+                              ++s;
+    if (s==t || *s==c) break;
+                              ++s;
+    if (s==t || *s==c) break;
+                              ++s;
+    if (s==t || *s==c) break;
+                              ++s;
   }
   return (size_t)(s-(const char*)haystack);
 }

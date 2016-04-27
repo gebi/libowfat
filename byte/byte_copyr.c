@@ -7,9 +7,13 @@ void byte_copyr(void* out, size_t len, const void* in) {
   register const char* t=in;
   register const char* u=t+len;
   for (;;) {
-    if (t>=u) break; --u; --s; *s=*u;
-    if (t>=u) break; --u; --s; *s=*u;
-    if (t>=u) break; --u; --s; *s=*u;
-    if (t>=u) break; --u; --s; *s=*u;
+    if (t>=u) break;
+                     --u; --s; *s=*u;
+    if (t>=u) break;
+                     --u; --s; *s=*u;
+    if (t>=u) break;
+                     --u; --s; *s=*u;
+    if (t>=u) break;
+                     --u; --s; *s=*u;
   }
 }
