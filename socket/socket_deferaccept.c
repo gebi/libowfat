@@ -20,5 +20,8 @@ void socket_deferaccept(int s,enum defermode mode) {
   memset(&afa,0,sizeof(afa));
   strcpy(afa.af_name,mode==HTTPIN?"httpreader":"dataready");
   setsockopt(s, SOL_SOCKET, SO_ACCEPTFILTER, &afa, sizeof(afa));
+#else
+  (void)s;
+  (void)mode;
 #endif
 }
