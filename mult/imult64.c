@@ -6,28 +6,6 @@ int imult64( int64 a, int64 b, int64* c) { return !__builtin_mul_overflow(a,b,c)
 
 #else
 
-#if defined(__x86_64__) && defined(__OPTIMIZE__)
-
-/* WARNING: this only works if compiled with -fomit-frame-pointer */
-void imult64() {
-  asm volatile(
-    "xchgq %rdx,%rsi\n"
-    "movq %rdi,%rax\n"
-    "imulq %rdx\n"
-    "jc 1f\n"	/* overflow */
-    "movq %rax,(%rsi)\n"
-    "xorq %rax,%rax\n"
-    "inc %rax\n"
-    "ret\n"
-    "1:\n"
-    "xorq %rax,%rax\n"
-    /* the closing ret is renerated by gcc */
-    );
-}
-
-
-#else
-
 #include "safemult.h"
 
 #if defined(__GNUC__) && (defined(__x86_64__) || defined(__ia64__) || defined(__powerpc64__) || defined(__alpha__) || defined(__mips64__) || defined(__sparc64__))
@@ -50,8 +28,6 @@ int imult64(int64 a,int64 b,int64* c) {
   *c=(neg?-d:d);
   return 1;
 }
-
-#endif
 
 #endif
 
