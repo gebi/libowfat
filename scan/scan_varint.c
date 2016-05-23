@@ -14,4 +14,10 @@ size_t scan_varint(const char* in,size_t len, unsigned long long* n) {
   return 0;
 }
 
+#ifdef __ELF__
 size_t scan_pb_type0_int(const char* dest,size_t len,unsigned long long* l) __attribute__((alias("scan_varint")));
+#else
+size_t scan_pb_type0_int(const char* dest,size_t len,unsigned long long* l) {
+  return scan_varint(dest,len,l);
+}
+#endif
