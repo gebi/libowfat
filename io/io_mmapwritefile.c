@@ -8,12 +8,13 @@
 #include <sys/mman.h>
 #endif
 #include <errno.h>
+#include "havepread.h"
 
 #define BUFSIZE 16384
 
 int64 io_mmapwritefile(int64 out,int64 in,uint64 off,uint64 bytes,io_write_callback writecb) {
   char buf[BUFSIZE];
-  int n,m;
+  ssize_t n,m;
   uint64 sent=0;
   io_entry* e=iarray_get(&io_fds,out);
   if (e) {
@@ -92,12 +93,20 @@ int64 io_mmapwritefile(int64 out,int64 in,uint64 off,uint64 bytes,io_write_callb
     return sent;
   }
 readwrite:
+#ifndef HAVE_PREAD
   if (lseek(in,off,SEEK_SET) != (off_t)off)
     return -1;
+#endif
   while (bytes>0) {
     char* tmp=buf;
+#ifdef HAVE_PREAD
+    if ((n=pread(in,tmp,(bytes<BUFSIZE)?bytes:BUFSIZE,off))<=0)
+      return (sent?(int64)sent:-1);
+    off+=n;
+#else
     if ((n=read(in,tmp,(bytes<BUFSIZE)?bytes:BUFSIZE))<=0)
       return (sent?(int64)sent:-1);
+#endif
     while (n>0) {
       if ((m=writecb(out,tmp,n))<0) {
 	if (m==-1) {

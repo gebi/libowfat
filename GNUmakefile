@@ -133,6 +133,8 @@ dns_rcip.o dns_rcrw.o openreadclose.o: openreadclose.h
 
 iob_send.o scan_ip6if.o: havealloca.h
 
+cdb.o io_mmapwritefile.o: havepread.h
+
 # stoprip
 
 byte.a: $(BYTE_OBJS)
@@ -194,7 +196,7 @@ clean:
 	rm -f *.o *.a *.da *.bbg *.bb core t haveip6.h haven2i.h \
 havesl.h haveinline.h iopause.h select.h havekqueue.h haveepoll.h \
 libepoll havesigio.h havebsdsf.h havesendfile.h havescope.h havedevpoll.h \
-dep libsocket havealloca.h haveuint128.h entities.h ent
+dep libsocket havealloca.h haveuint128.h entities.h ent havepread.h
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
 uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h \
@@ -301,6 +303,11 @@ haveuint128.h: tryuint128.c
 	-rm -f $@
 	if $(DIET) $(CCC) $(CFLAGS) -c tryuint128.c >/dev/null 2>&1; then echo "#define HAVE_UINT128"; fi > $@
 	-rm -f tryuint128.o
+
+havepread.h: trypread.c
+	-rm -f $@
+	if $(DIET) $(CCC) $(CFLAGS) -c trypread.c >/dev/null 2>&1; then echo "#define HAVE_PREAD"; fi > $@
+	-rm -f trypread.o
 
 iopause.h: iopause.h1 iopause.h2 trypoll.c
 	-rm -f $@
