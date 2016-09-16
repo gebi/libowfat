@@ -20,7 +20,7 @@ extern const char* mmap_readat(const char* filename,size_t * filesize,int dirfd)
   char *map;
   if (fd>=0) {
     register off_t o=lseek(fd,0,SEEK_END);
-    if (sizeof(off_t)!=sizeof(size_t) && o > (off_t)(size_t)-1) { close(fd); return 0; }
+    if (o==0 || (sizeof(off_t)!=sizeof(size_t) && o > (off_t)(size_t)-1)) { close(fd); return 0; }
     *filesize=(size_t)o;
     if (o>0) {
       map=mmap(0,*filesize,PROT_READ,MAP_SHARED,fd,0);
