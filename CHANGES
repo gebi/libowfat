@@ -2,6 +2,9 @@
   special case buffer_get_token with token length 1 through memccpy (almost 4x speedup)
   test for pread and use it instead of lseek+read in cdb and io_mmapwritefile
   add mmap_readat (like mmap_read but open by fd, not by name)
+  add fmt_iso8601 and scan_iso8601 (time_t -> "2014-05-27T19:22:16Z")
+  add fmt_netstring and scan_netstring (http://cr.yp.to/proto/netstrings.txt)
+  add (fmt|scan)_varint and (fmt|scan)_pb_* (binary marshaling ala protocol buffers)
 
 0.30:
   add compiletimeassert.h
