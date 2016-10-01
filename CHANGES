@@ -1,6 +1,7 @@
 0.31:
   special case buffer_get_token with token length 1 through memccpy (almost 4x speedup)
   test for pread and use it instead of lseek+read in cdb and io_mmapwritefile
+  add mmap_readat (like mmap_read but open by fd, not by name)
 
 0.30:
   add compiletimeassert.h
