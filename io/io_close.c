@@ -11,6 +11,8 @@
 extern void io_dontwantread_really(int64 d,io_entry* e);
 extern void io_dontwantwrite_really(int64 d,io_entry* e);
 
+long first_deferred=-1;
+
 void io_close(int64 d) {
   io_entry* e;
   if ((e=iarray_get(&io_fds,d))) {
@@ -27,6 +29,7 @@ void io_close(int64 d) {
 #endif
       e->mmapped=0;
     }
+#if 1
     if (e->next_read!=-1 || e->next_write!=-1) {
       /* There are still outstanding events. If we close the fd, between
        * now and when those events are handled, another accept() or
@@ -35,10 +38,15 @@ void io_close(int64 d) {
        * So we don't actually close the fd now, but we will mark it as
        * closed. */
 //      fprintf(stderr,"io_close(%d) DEFERRED!\n",d);
-      e->closed=1;
+      if (e->closed==0) {
+	e->closed=1;
+	e->next_defer=first_deferred;
+	first_deferred=d;
+      }
       return;
     } else
       e->closed=0;
+#endif
   }
 //  fprintf(stderr,"io_close(%d)\n",d);
   close(d);
