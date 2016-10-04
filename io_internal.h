@@ -46,6 +46,7 @@ typedef struct {
   unsigned int kernelwantread:1;	/* did we tell the kernel we want to read/write? */
   unsigned int kernelwantwrite:1;
   unsigned int epolladded:1;
+  unsigned int closed:1;	/* io_close called, but close deferred because of outstanding events */
 #ifdef __MINGW32__
   unsigned int readqueued:2;
   unsigned int writequeued:2;
@@ -79,6 +80,8 @@ my_extern array io_pollfds;
 
 my_extern long first_readable;
 my_extern long first_writeable;
+
+my_extern long first_deferred;
 
 my_extern enum __io_waitmode {
   UNDECIDED,

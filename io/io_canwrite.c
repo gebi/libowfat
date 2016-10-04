@@ -27,6 +27,16 @@ int64 io_canwrite() {
     r=first_writeable;
     first_writeable=e->next_write;
     e->next_write=-1;
+
+    if (e->closed) {
+      /* The fd was previously closed, but there were still open events on it.
+       * To prevent race conditions, we did not actually close the fd
+       * but only marked it as closed, so we can skip this event here
+       * and really closed it now. */
+      io_close(r);
+      continue;
+    }
+
     debug_printf(("io_canwrite: dequeue %lld from normal write queue (next is %ld)\n",r,first_writeable));
     if (e->wantwrite &&
 #ifdef __MINGW32__

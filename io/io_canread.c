@@ -33,6 +33,15 @@ int64 io_canread() {
     e->next_read=-1;
     debug_printf(("io_canread: dequeue %lld from normal read queue (next is %ld)\n",r,first_readable));
 
+    if (e->closed) {
+      /* The fd was previously closed, but there were still open events on it.
+       * To prevent race conditions, we did not actually close the fd
+       * but only marked it as closed, so we can skip this event here
+       * and really closed it now. */
+      io_close(r);
+      continue;
+    }
+
 #ifdef __MINGW32__
 //    printf("event on %d: wr %d rq %d aq %d\n",(int)r,e->wantread,e->readqueued,e->acceptqueued);
 #endif
