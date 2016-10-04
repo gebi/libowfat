@@ -57,6 +57,7 @@ typedef struct {
 #endif
   long next_read;
   long next_write;
+  long next_defer;
   void* cookie;
   void* mmapped;
   long maplen;
