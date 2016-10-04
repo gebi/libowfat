@@ -113,11 +113,17 @@ int64 io_tryread(int64 d,char* buf,int64 len) {
   if (r!=len) {
     e->canread=0;
 #if defined(HAVE_SIGIO)
-    if (d==alt_firstread) {
-      debug_printf(("io_tryread: dequeueing %ld from alt read queue (next is %ld)\n",d,e->next_read));
-      alt_firstread=e->next_read;
-      e->next_read=-1;
-    }
+#if 0
+    debug_printf(("io_tryread: dequeueing %ld from alt read queue (next is %ld)\n",d,alt_firstread));
+    alt_firstread=e->next_read;
+    e->next_read=-1;
+#else
+    if (d==alt_curread) alt_curread=-1;
+  } else {
+    debug_printf(("io_tryread: enqueueing %ld into alt read queue (next is %ld)\n",d,alt_firstread));
+    e->next_read=alt_firstread;
+    alt_firstread=d;
+#endif
 #endif
   }
   return r;

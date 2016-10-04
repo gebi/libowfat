@@ -5,6 +5,7 @@
 #else
 #include <sys/mman.h>
 #endif
+#include <stdio.h>
 #include "io_internal.h"
 
 extern void io_dontwantread_really(int64 d,io_entry* e);
@@ -33,10 +34,12 @@ void io_close(int64 d) {
        * happen for everybody.
        * So we don't actually close the fd now, but we will mark it as
        * closed. */
+//      fprintf(stderr,"io_close(%d) DEFERRED!\n",d);
       e->closed=1;
       return;
     } else
       e->closed=0;
   }
+//  fprintf(stderr,"io_close(%d)\n",d);
   close(d);
 }

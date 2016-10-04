@@ -110,8 +110,8 @@ my_extern int io_master;
 my_extern int io_signum;
 my_extern sigset_t io_ss;
 
-my_extern long alt_firstread;
-my_extern long alt_firstwrite;
+my_extern long alt_firstread, alt_firstwrite;
+my_extern long alt_curread, alt_curwrite;
 #endif
 
 int64 io_waituntil2(int64 milliseconds);
