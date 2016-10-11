@@ -1,4 +1,5 @@
 0.32:
+  remove OpenBSD #warning (obsd maintainer says no longer needed)
 
 0.31:
   special case buffer_get_token with token length 1 through memccpy (almost 4x speedup)
