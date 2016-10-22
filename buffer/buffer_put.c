@@ -1,8 +1,5 @@
 #include <string.h>
 #include "buffer.h"
-#ifdef __x86_64__
-#include <x86intrin.h>
-#endif
 
 extern int buffer_stubborn(ssize_t (*op)(),int fd,const char* buf, size_t len,void* cookie);
 
