@@ -35,7 +35,7 @@
 
 // #define atomic_add(mem,val) asm volatile ("lock; add%z0 %1, %0": "+m" (mem): "ir" (val))
 
-static int64 writecb(int64 fd,const void* buf,uint64 n) {
+int64 writecb(int64 fd,const void* buf,uint64 n) {
   (void)fd;
   (void)buf;
   (void)n;
@@ -49,13 +49,13 @@ static int64 writecb(int64 fd,const void* buf,uint64 n) {
   return -1;
 }
 
-static int ret0(const char* s,void* foo) {
+int ret0(const char* s,void* foo) {
   (void)foo;
   assert(strcmp(s,"fnord")==0);
   return 0;
 }
 
-static int ret1(const char* s,void* foo) {
+int ret1(const char* s,void* foo) {
   static int i;
   (void)foo;
   switch (i) {
@@ -68,7 +68,20 @@ static int ret1(const char* s,void* foo) {
 }
 
 int main(int argc,char* argv[]) {
+  (void)argc;
+  (void)argv;
+#if 1
+  char buf[1024];
+  size_t n;
+
+  scan_base64("eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9",buf,&n);
+  write(1,buf,n); write(1,"\n",1);
+  scan_base64("eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ",buf,&n);
+  write(1,buf,n); write(1,"\n",1);
+#endif
+#if 0
   int s=socket_udp6();
+#endif
 #if 0
   char buf[100];
   assert(fmt_varint(buf,1)==1 && buf[0]==1);
