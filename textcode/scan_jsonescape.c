@@ -15,6 +15,11 @@ size_t scan_jsonescape(const char *src,char *dest,size_t *destlen) {
 	if (prev!=(unsigned int)-1) return 0; // lead surrogate not followed by tail surrogate
 	// c='\\';	// c already is backslash
 	break;
+      case 'n': c='\n'; break;
+      case 'r': c='\r'; break;
+      case 'b': c='\b'; break;
+      case 'f': c='\f'; break;
+      case 't': c='\t'; break;
       case 'u':
 	{
 	  size_t j;
