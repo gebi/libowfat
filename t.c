@@ -70,7 +70,7 @@ int ret1(const char* s,void* foo) {
 int main(int argc,char* argv[]) {
   (void)argc;
   (void)argv;
-#if 1
+#if 0
   char buf[1024];
   size_t n;
 
@@ -119,15 +119,14 @@ int main(int argc,char* argv[]) {
   printf("%p\n",iarray_allocate(&i,0));
   printf("%p\n",iarray_get(&i,0));
 #endif
-#if 0
+#if 1
   char buf[1024];
   size_t l;
   unsigned char c;
   (void)writecb;
-  printf("%d\n",(c=scan_fromhex('.')));
   (void)argc;
   (void)argv;
-  assert(fmt_jsonescape(buf,"foo\nbar\\",8)==14 && byte_equal(buf,14,"foo\\u000abar\\\\"));
+  assert(fmt_jsonescape(buf,"foo\nbar\\",8)==10 && byte_equal(buf,10,"foo\\nbar\\\\"));
   memset(buf,0,sizeof(buf));
   assert(scan_jsonescape("foo\\u000abar\\\\",buf,&l)==14 && l==8 && byte_equal(buf,8,"foo\nbar\\"));
   memset(buf,0,sizeof(buf));
