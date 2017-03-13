@@ -225,7 +225,7 @@ install-man:
 	install -d $(DESTDIR)$(MAN3DIR)
 	install -m 644 $(wildcard */*.3) $(DESTDIR)$(MAN3DIR)
 
-install: install-inc install-man install-lib
+install: headers install-inc install-man install-lib
 
 uninstall:
 	rm -f $(patsubst %.h,$(INCLUDEDIR)/%.h,$(INCLUDES))
