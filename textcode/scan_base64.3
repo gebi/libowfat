@@ -1,0 +1,34 @@
+.TH scan_base64 3
+.SH NAME
+scan_base64 \- decode base64 encoded data
+.SH SYNTAX
+.B #include <textcode.h>
+
+size_t \fBscan_base64\fP(const char *\fIsrc\fR,char *\fIdest\fR,size_t* \fIdestlen\fR);
+
+.SH DESCRIPTION
+scan_base64 decodes base64 encoded data from src into dest.
+It will stop when it encountes any non-valid input characters.
+It will then write the number of decoded bytes in dest into *destlen,
+and return the number of bytes decoded from src.
+
+Note that real world base64 encoded data is sometimes permitted to
+contain whitespace characters or new lines. This function will not allow
+those and return the decoded data until then.
+
+base64 works by taking 3 bytes of binary input and converting them into
+4 bytes of printable ASCII. If the input ends in the middle of a base64
+4-byte-tuple, scan_base64 will disregard it.
+
+Many base64 variants demand padding in the last block. Some don't. This
+implementation will consume padding if it is there, but will not
+complain if it is not.
+
+.SH "RETURN VALUE"
+scan_base64 returns the number of bytes successfully scanned and
+processed from src.
+.SH EXAMPLES
+scan_base64("Zm5vcmQ=",buf,&i) -> return 8, i=5, buf="fnord"
+
+.SH "SEE ALSO"
+scan_xlong(3), scan_8long(3), fmt_ulong(3)
