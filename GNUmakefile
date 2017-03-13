@@ -13,7 +13,7 @@ LIBS=byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a \
 buffer.a mmap.a taia.a tai.a dns.a case.a mult.a array.a io.a \
 textcode.a cdb.a critbit.a
 
-all: ent $(LIBS) libowfat.a libsocket t
+all: headers ent $(LIBS) libowfat.a libsocket t
 
 CROSS=
 #CROSS=i686-mingw-
@@ -204,9 +204,18 @@ openreadclose.h readclose.h ndelay.h array.h io.h safemult.h iob.h havealloca.h 
 errmsg.h cdb.h cdb_make.h rangecheck.h iarray.h va_narg.h isset.h \
 compiletimeassert.h critbit.h
 
+libowfat:
+	-mkdir libowfat
+
+.PHONY: headers
+headers: libowfat $(patsubst %.h,libowfat/%.h,$(INCLUDES))
+
+libowfat/%.h: %.h
+	ln -f $< $@
+
 install-inc:
-	install -d $(DESTDIR)$(INCLUDEDIR)
-	install -m 644 $(INCLUDES) $(DESTDIR)$(INCLUDEDIR)
+	install -d $(DESTDIR)$(INCLUDEDIR)/libowfat
+	install -m 644 $(INCLUDES) $(DESTDIR)$(INCLUDEDIR)/libowfat
 
 install-lib: libowfat.a
 	install -d $(DESTDIR)$(LIBDIR)
@@ -220,6 +229,8 @@ install: install-inc install-man install-lib
 
 uninstall:
 	rm -f $(patsubst %.h,$(INCLUDEDIR)/%.h,$(INCLUDES))
+	rm -f $(INCLUDEDIR)/libowfat/*.h
+	rmdir -f $(INCLUDEDIR)/libowfat
 	rm -f $(patsubst %.3,$(MAN3DIR)/%.3,$(notdir $(wildcard */*.3)))
 	rm -f $(LIBDIR)/libowfat.a
 
