@@ -23,7 +23,7 @@ size_t scan_base64(const char *src,char *dest,size_t *destlen) {
       int equal=(*s=='=');
       while (*s=='=' && ((s-(const unsigned char*)src)&3)) ++s;
       tmp &= ((1<<bits)-1);
-      if (!tmp || equal) { j=i; orig=s; }
+      if (!tmp || equal) { j=i; orig=(const char*)s; }
       break;
     }
     tmp=(tmp<<6)|a; bits+=6;
@@ -32,7 +32,7 @@ size_t scan_base64(const char *src,char *dest,size_t *destlen) {
       bits-=8;
       if (dest) dest[i]=(tmp>>bits);
       ++i;
-      if (!bits) { j=i; orig=s; }
+      if (!bits) { j=i; orig=(const char*)s; }
     }
   }
   if (destlen) *destlen=j;
