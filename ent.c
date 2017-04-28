@@ -207,7 +207,7 @@ int main() {
   {
     FILE* f=fopen("entities.h","w");
     size_t i;
-    fprintf(f,"struct {\n  uint32_t tab[%lu];\n  char data[%lu];\n} entities = {\n  {",marshaled[0],datasize);
+    fprintf(f,"struct {\n  uint32_t tab[%u];\n  char data[%lu];\n} entities = {\n  {",marshaled[0],datasize);
     for (i=0; i<marshaled[0]; ++i) {
       if (i%8 == 0) fprintf(f,"\n    ");
       fprintf(f,"0x%x,",marshaled[i]);
