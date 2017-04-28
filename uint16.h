@@ -18,11 +18,11 @@ static inline void uint16_pack(char* out,uint16 in) {
 }
 
 static inline void uint16_unpack(const char *in,uint16* out) {
-  *out=*(uint16*)in;
+  *out=*(const uint16*)in;
 }
 
 static inline uint16 uint16_read(const char* in) {
-  return *(uint16*)in;
+  return *(const uint16*)in;
 }
 
 void uint16_pack_big(char *out,uint16 in);
