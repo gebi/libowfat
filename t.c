@@ -126,6 +126,7 @@ int main(int argc,char* argv[]) {
   (void)writecb;
   (void)argc;
   (void)argv;
+  (void)c;
   assert(fmt_jsonescape(buf,"foo\nbar\\",8)==10 && byte_equal(buf,10,"foo\\nbar\\\\"));
   memset(buf,0,sizeof(buf));
   assert(scan_jsonescape("foo\\u000abar\\\\",buf,&l)==14 && l==8 && byte_equal(buf,8,"foo\nbar\\"));

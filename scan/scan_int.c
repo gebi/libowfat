@@ -10,7 +10,7 @@ size_t scan_int(const char* src,int* dest) {
   int ok;
   tmp=src; l=0; ok=0; neg=0;
   switch (*tmp) {
-  case '-': neg=1;
+  case '-': neg=1; /* fall through */
   case '+': ++tmp;
   }
   while ((c=(unsigned char)(*tmp-'0'))<10) {
