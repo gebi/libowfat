@@ -9,3 +9,13 @@ size_t fmt_ulong(char *dest,unsigned long i) {
       *--dest = (char)((tmp%10)+'0');
   return len;
 }
+
+#ifdef UNITTEST
+#include <assert.h>
+#include <string.h>
+
+int main() {
+  char buf[100];
+  assert(fmt_ulong(buf,12345)==5 && !memcmp(buf,"12345",5));
+}
+#endif
