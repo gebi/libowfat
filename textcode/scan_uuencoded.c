@@ -36,6 +36,7 @@ int main() {
   assert(scan_uuencoded("&9FYO<F0*",buf,&i)==9 && i==6 && !memcmp(buf,"fnord\n",7));
   memset(buf,0,100);
   assert(scan_uuencoded("%9FYO<F0`",buf,&i)==9 && i==5 && !memcmp(buf,"fnord",6));
+  return 0;
 }
 
 #endif

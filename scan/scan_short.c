@@ -15,6 +15,10 @@ size_t scan_short(const char* src,short* dest) {
   }
   while ((c=(unsigned char)(*tmp-'0'))<10) {
     unsigned short int n;
+#if defined(__GNUC__) && (__GNUC__ >= 5)
+    if (__builtin_mul_overflow(l,10,&n) || __builtin_add_overflow(n,c,&n))
+      break;
+#else
     /* we want to do: l=l*10+c
      * but we need to check for integer overflow.
      * to check whether l*10 overflows, we could do
@@ -27,6 +31,7 @@ size_t scan_short(const char* src,short* dest) {
     n=(unsigned short)(n+(l<<1));
     if (n+c < n) break;
     n=(unsigned short)(n+c);
+#endif
     if (n > maxshort+neg) break;
     l=(short)n;
     ++tmp;

@@ -80,6 +80,7 @@ int main() {
   assert(fmt_escapecharc(buf,'1')==4 && !memcmp(buf,"\\001",2));
   assert(fmt_escapecharc(buf,0xfefe)==6 && !memcmp(buf,"\\ufefe",6));
   assert(fmt_escapecharc(buf,0xfefec0de)==10 && !memcmp(buf,"\\Ufefec0de",10));
+  return 0;
 }
 
 #endif

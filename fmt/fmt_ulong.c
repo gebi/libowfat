@@ -17,5 +17,6 @@ size_t fmt_ulong(char *dest,unsigned long i) {
 int main() {
   char buf[100];
   assert(fmt_ulong(buf,12345)==5 && !memcmp(buf,"12345",5));
+  return 0;
 }
 #endif

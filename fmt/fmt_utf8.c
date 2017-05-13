@@ -25,3 +25,4 @@ size_t fmt_utf8(char *dest,uint32_t n) {
   return 0;
 }
 
+/* unit tested via scan/scan_utf8.c */

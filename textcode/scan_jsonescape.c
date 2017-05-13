@@ -101,5 +101,6 @@ int main() {
   assert(scan_jsonescape("a\\ud834\\udd1eb",buf,&l)==14 && l==6 && !memcmp(buf,"a\xf0\x9d\x84\x9e""b",6));
   /* how about some incorrect UTF-8? */
   assert(scan_jsonescape("a\xc0\xaf",buf,&l)==1 && l==1 && !memcmp(buf,"a",1));
+  return 0;
 }
 #endif

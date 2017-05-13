@@ -9,3 +9,13 @@ size_t scan_utf8_sem(const char* in,size_t len,uint32_t* num) {
   }
   return r;
 }
+
+#ifdef UNITTEST
+#include <assert.h>
+
+int main() {
+  /* rest of scan_utf8 tested in scan_utf8.c unit tests */
+  assert(scan_utf8_sem("\xed\xa0\x80",4,&l)==0);
+  return 0;
+}
+#endif
