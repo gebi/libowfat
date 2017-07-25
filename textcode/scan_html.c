@@ -25,9 +25,15 @@ static const char* lookup(size_t ofs,const char* t) {
   return NULL;
 }
 
-static size_t scan_html_inner(const char *src,char *dest,size_t *destlen,int flag) {
+enum htmlmode {	/* <a href="http://example.com/&quot;foo">libowfat&lt;home</a> */
+  OUTSIDE,	/*                                        ^^^^^^^^^^^^^^^^ -> `libowfat<home` */
+  TAGARG,	/*         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -> `http://example.com/"foo´ */
+};
+
+static size_t scan_html_inner(const char *src,char *dest,size_t *destlen,enum htmlmode mode) {
   register const unsigned char* s=(const unsigned char*) src;
   size_t written=0,i;
+  int dq=0;
   for (i=0; s[i]; ++i) {
     if (s[i]=='&') {
       const char* utf8;
@@ -58,7 +64,8 @@ static size_t scan_html_inner(const char *src,char *dest,size_t *destlen,int fla
 	continue;
       } else
 	dest[written]='&';
-    } else if (flag && s[i]=='<') {
+    } else if (s[i]=='<') {
+      if (mode == OUTSIDE) break;
       if (case_starts((const char*)s+i+1,"br>")) {
 	dest[written]='\n';
 	i+=3;
@@ -68,7 +75,12 @@ static size_t scan_html_inner(const char *src,char *dest,size_t *destlen,int fla
 	i+=3;
       } else
 	dest[written]=s[i];
-    } else
+    } else if (s[i]=='"' && mode==TAGARG) {
+      if (i==0) { dq=1; continue; }
+      break;
+    } else if (mode==TAGARG && !dq && (s[i]==' ' || s[i]=='\t' || s[i]=='\n'))
+      break;
+    else
       dest[written]=s[i];
     ++written;
   }
@@ -77,9 +89,22 @@ static size_t scan_html_inner(const char *src,char *dest,size_t *destlen,int fla
 }
 
 size_t scan_html_tagarg(const char *src,char *dest,size_t *destlen) {
-  return scan_html_inner(src,dest,destlen,1);
+  return scan_html_inner(src,dest,destlen,TAGARG);
 }
 
 size_t scan_html(const char *src,char *dest,size_t *destlen) {
-  return scan_html_inner(src,dest,destlen,0);
+  return scan_html_inner(src,dest,destlen,OUTSIDE);
 }
+
+#ifdef UNITTEST
+#include <assert.h>
+
+int main() {
+  char* html="<a href=\"http://example.com/&quot;foo\">libowfat&lt;home</a>";
+  char buf[100];
+  size_t destlen;
+  assert(scan_html(html,buf,&destlen)==0 && destlen==0);
+  assert(scan_html(strchr(html,'>')+1,buf,&destlen)==16 && destlen==13 && !memcmp(buf,"libowfat<home",13));
+  assert(scan_html_tagarg(strchr(html,'"')+1,buf,&destlen)==28 && destlen==23 && !memcmp(buf,"http://example.com/\"foo",23));
+}
+#endif
