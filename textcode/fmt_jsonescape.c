@@ -47,7 +47,7 @@ escape:
 	  if (dest) {
 	    dest[written  ]='\\';
 	    dest[written+1]='u';
-	    fmt_xlong(dest+written+2,0xd800 + ((u>>10) & 0x3ff));
+	    fmt_xlong(dest+written+2,0xd800 + ((u>>10) & 0x3bf));
 	    dest[written+6]='\\';
 	    dest[written+7]='u';
 	    fmt_xlong(dest+written+8,0xdc00 + (u & 0x3ff));
@@ -82,6 +82,6 @@ int main() {
   /* test escaping of unprintable characters */
   assert(fmt_jsonescape(buf,"\001x",2)==7 && !memcmp(buf,"\\u0001x",7));
   /* test conversion of large UTF-8 chars to UTF-16 surrogate pairs (poop emoji) */
-  assert(fmt_jsonescape(buf,"\xf0\x9f\x92\xa9x",5)==13 && !memcmp(buf,"\\ud87d\\udca9x",13));
+  assert(fmt_jsonescape(buf,"\xf0\x9f\x92\xa9x",5)==13 && !memcmp(buf,"\\ud83d\\udca9x",13));
 }
 #endif
