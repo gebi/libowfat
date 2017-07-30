@@ -7,12 +7,13 @@ size_t scan_ldapescape(const char *src,char *dest,size_t *destlen) {
   size_t written=0,i;
   for (i=0; s[i]; ++i) {
     if (s[i]=='\\') {
+      unsigned char c;
       int j=scan_fromhex(s[i+1]);
       if (j<0) break;
-      if (dest) dest[written]=j<<4;
+      c=j<<4;
       j=scan_fromhex(s[i+2]);
       if (j<0) break;
-      if (dest) dest[written]|=j;
+      if (dest) dest[written]=c|j;
       i+=2;
     } else {
       if (dest) dest[written]=s[i];
