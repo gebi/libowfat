@@ -15,7 +15,7 @@ static inline int dec(unsigned char x) {
 size_t scan_base64url(const char *src,char *dest,size_t *destlen) {
   unsigned short tmp=0,bits=0;
   register const unsigned char* s=(const unsigned char*) src;
-  size_t i,j=0;
+  size_t i;
   for (i=0;;) {
     int a=dec(*s);
     if (a<0) break;	/* base64url does not have padding */
