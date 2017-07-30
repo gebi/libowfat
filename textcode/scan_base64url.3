@@ -12,7 +12,7 @@ and +, which can cause problems in URLs, so base64url uses - and _
 instead; also base64url does not use = padding at the end).
 
 scan_base64url decodes base64url encoded data from src into dest.
-It will stop when it encountes any non-valid input characters.
+It will stop when it encounters any non-valid input characters.
 It will then write the number of decoded bytes in dest into *destlen,
 and return the number of bytes decoded from src.
 
