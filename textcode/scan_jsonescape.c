@@ -73,6 +73,10 @@ abort:
 #ifdef UNITTEST
 #include <assert.h>
 #include <string.h>
+#undef UNITTEST
+#include <scan/scan_fromhex.c>
+#include <scan/scan_utf8.c>
+#include <fmt/fmt_utf8.c>
 
 int main() {
   char buf[100];
@@ -105,3 +109,5 @@ int main() {
   return 0;
 }
 #endif
+
+
