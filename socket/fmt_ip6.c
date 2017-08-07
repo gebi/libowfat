@@ -11,7 +11,7 @@ size_t fmt_ip6(char *s,const char ip[16])
   for (k=0; k<16; k+=2) {
     if (ip[k]==0 && ip[k+1]==0) {
       if (!compr) {
-	if (k==14 || (ip[k+2]==0 && ip[k+3]==0)) {
+	if (k<=14 && ip[k+2]==0 && ip[k+3]==0) {
 	  compr=1;
 	  pos1=k;
 	}
