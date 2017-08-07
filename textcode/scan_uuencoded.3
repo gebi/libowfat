@@ -23,7 +23,7 @@ input, and it will decode all the bytes in it.
 uuencoded data can contain bytes from 0x21 to 0x96, which means it is
 not "string safe" (can contain single and double quotes and backslash).
 
-dest can be NULL. destlen can be NULL.
+dest can be NULL. destlen can be NULL. dest can be src.
 
 .SH "RETURN VALUE"
 scan_uuencoded returns the number of bytes successfully scanned and

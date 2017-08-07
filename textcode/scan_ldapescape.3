@@ -16,11 +16,9 @@ equivalent, i.e. \0a to new-line and \5c to backslash.
 scan_cescape will then write the number of bytes in dest into *destlen,
 and return the number of bytes decoded from src.
 
-dest can be NULL. destlen can be NULL.
+dest can be NULL. destlen can be NULL. dest can be src.
 
-To make sure dest is large enough, either allocate strlen(src)+1 bytes
-or call scan_ldapescape twice, the first time with dest == NULL (*destlen
-will still be written).
+The decoded data need at most as much space as the encoded data used.
 
 .SH "RETURN VALUE"
 scan_ldapescape returns the number of bytes successfully parsed

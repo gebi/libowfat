@@ -20,7 +20,7 @@ Many base64 variants demand padding in the last block. Some don't. This
 implementation will consume padding if it is there, but will not
 complain if it is not.
 
-dest can be NULL. destlen can be NULL.
+dest can be NULL. destlen can be NULL. dest can be src.
 
 .SH "RETURN VALUE"
 scan_base64url returns the number of bytes successfully scanned and

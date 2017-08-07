@@ -16,7 +16,7 @@ Note that real world hexdump data is sometimes permitted to
 contain whitespace characters or new lines. This function will not allow
 those and return the decoded data until then.
 
-dest can be NULL. destlen can be NULL.
+dest can be NULL. destlen can be NULL. dest can be src.
 
 .SH "RETURN VALUE"
 scan_hexdump returns the number of bytes successfully scanned and

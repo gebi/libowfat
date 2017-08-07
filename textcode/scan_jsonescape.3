@@ -14,7 +14,7 @@ characters or a double quote that was not escaped.
 It will then write the number of bytes in dest into *destlen,
 and return the number of bytes decoded from src.
 
-dest can be NULL. destlen can be NULL.
+dest can be NULL. destlen can be NULL. dest can be src.
 
 To make sure dest is large enough, either allocate strlen(src)+1 bytes
 or call scan_jsonescape twice, the first time with dest == NULL (*destlen

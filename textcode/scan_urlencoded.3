@@ -19,7 +19,7 @@ In "http://example.com/a+b?c+d", only the second plus can be decoded
 as a space character. If you want + decoded to space, use
 scan_urlencoded2.
 
-dest can be NULL. destlen can be NULL.
+dest can be NULL. destlen can be NULL. dest can be src.
 
 .SH "RETURN VALUE"
 scan_urlencoded returns the number of bytes successfully scanned and
