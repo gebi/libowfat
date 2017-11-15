@@ -2,6 +2,7 @@
   remove OpenBSD #warning (obsd maintainer says no longer needed)
   move headers to <libowfat/> upon install
   fix fmt_ip6 (Erwin Hoffmann)
+  add MSG_ZEROCOPY support (only used for buffers >8k)
 
 0.31:
   special case buffer_get_token with token length 1 through memccpy (almost 4x speedup)
