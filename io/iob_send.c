@@ -224,6 +224,9 @@ eagain:
 #ifdef MSG_ZEROCOPY
       static int nozerocopy;
       int dozerocopy=1;
+#else
+      const int nozerocopy=0;
+      const int dozerocopy=1;
 #endif
       if (nozerocopy && dozerocopy==0 && docork<0) {	/* write+writev */
 	if (headers==1)	/* cosmetics for strace */
