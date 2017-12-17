@@ -17,7 +17,7 @@ all: headers ent $(LIBS) libowfat.a libsocket t
 
 CROSS=
 #CROSS=i686-mingw-
-CC=gcc
+CC?=gcc
 CCC=$(CROSS)$(CC)
 WERROR=
 WARN=-W -Wall -Wextra $(WERROR)
