@@ -1,3 +1,4 @@
+#define _POSIX_SOURCE
 #include <sys/types.h>
 #ifndef __MINGW32__
 #include <unistd.h>
