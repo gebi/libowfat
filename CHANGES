@@ -3,6 +3,7 @@
   move headers to <libowfat/> upon install
   fix fmt_ip6 (Erwin Hoffmann)
   add MSG_ZEROCOPY support (only used for buffers >8k)
+  use write in buffer_put for a slight perf improvement
 
 0.31:
   special case buffer_get_token with token length 1 through memccpy (almost 4x speedup)
