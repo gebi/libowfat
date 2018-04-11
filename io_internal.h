@@ -133,3 +133,7 @@ struct eventpacket {
 };
 
 #define debug_printf(x)
+
+struct iom_entry {
+  void* cookie;
+};

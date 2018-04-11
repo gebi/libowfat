@@ -39,7 +39,7 @@ int iom_wait(iomux_t* c,int64* s,unsigned int* revents,unsigned long timeout) {
       r=epoll_wait(c->ctx, ee, freeslots, timeout);
       if (r<=0) {
 	/* we ran into a timeout, so let someone else take over */
-	c->working=0;
+	if (__sync_val_compare_and_swap(&c->working,1,0)==-2) return -2;
 #ifdef __dietlibc__
 	cnd_broadcast(&c->sem);
 #else
@@ -68,7 +68,7 @@ int iom_wait(iomux_t* c,int64* s,unsigned int* revents,unsigned long timeout) {
       int r=kevent(c->ctx, 0, 0, &kev, freeslots, &ts);
       if (r<=0) {
 	/* we ran into a timeout, so let someone else take over */
-	c->working=0;
+	if (__sync_val_compare_and_swap(&c->working,1,0)==-2) return -2;
 #ifdef __dietlibc__
 	cnd_broadcast(&c->sem);
 #else
@@ -97,7 +97,7 @@ int iom_wait(iomux_t* c,int64* s,unsigned int* revents,unsigned long timeout) {
 	 Either there are other events left, or we need one of them to
 	 wake up and call epoll_wait/kevent next, because we aren't
 	 doing it anymore */
-      c->working=0;
+      if (__sync_val_compare_and_swap(&c->working,1,0)==-2) return -2;
 #ifdef __dietlibc__
       cnd_signal(&c->sem);
 #else
