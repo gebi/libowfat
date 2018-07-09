@@ -177,7 +177,7 @@ enum {
   IOM_WRITE=2,
   IOM_ERROR=4
 };
-/* return -1 if error, or | of IOM_READ, IOM_WRITE or IOM_ERROR */
+/* return -1 if error, events can be IOM_READ or IOM_WRITE */
 int iom_add(iomux_t* c,int64 s,unsigned int events);
 
 /* Blocking wait for single event, timeout in milliseconds */
