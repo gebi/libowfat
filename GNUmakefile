@@ -15,6 +15,9 @@ textcode.a cdb.a critbit.a
 
 all: headers ent $(LIBS) libowfat.a libsocket t
 
+pic pie:
+	$(MAKE) CC="gcc -fPIC" LDFLAGS="-fpie"
+
 CROSS=
 #CROSS=i686-mingw-
 CC?=gcc

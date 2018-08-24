@@ -16,6 +16,9 @@ textcode.a cdb.a critbit.a
 
 all: headers ent $(LIBS) libowfat.a libsocket t
 
+pic pie:
+	$(MAKE) CC="gcc -fPIC" LDFLAGS="-fpie"
+
 CROSS=
 #CROSS=i686-mingw-
 CC?=gcc
@@ -401,6 +404,17 @@ iob_send.o: io/iob_send.c havebsdsf.h havealloca.h io_internal.h io.h \
  havedevpoll.h havesigio.h iob_internal.h iob.h
 iob_write.o: io/iob_write.c iob_internal.h iob.h io.h uint64.h taia.h \
  tai.h uint32.h array.h
+iom_abort.o: io/iom_abort.c io_internal.h io.h uint64.h taia.h tai.h \
+ uint32.h array.h iarray.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h
+iom_add.o: io/iom_add.c io_internal.h io.h uint64.h taia.h tai.h uint32.h \
+ array.h iarray.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+iom_init.o: io/iom_init.c io_internal.h io.h uint64.h taia.h tai.h \
+ uint32.h array.h iarray.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h
+iom_wait.o: io/iom_wait.c io_internal.h io.h uint64.h taia.h tai.h \
+ uint32.h array.h iarray.h haveepoll.h havekqueue.h havedevpoll.h \
+ havesigio.h
 mmap_private.o: mmap/mmap_private.c open.h mmap.h
 mmap_read.o: mmap/mmap_read.c open.h mmap.h
 mmap_readat.o: mmap/mmap_readat.c open.h mmap.h
@@ -706,7 +720,7 @@ t.o: t.c fmt.h byte.h scan.h str.h uint16.h uint32.h stralloc.h socket.h \
  havesigio.h
 BYTE_OBJS=byte_chr.o byte_copy.o byte_copyr.o byte_diff.o byte_equal_notimingattack.o byte_rchr.o byte_zero.o 
 FMT_OBJS=fmt_8long.o fmt_8longlong.o fmt_asn1derlength.o fmt_asn1dertag.o fmt_double.o fmt_escapecharc.o fmt_escapecharhtml.o fmt_escapecharjson.o fmt_escapecharquotedprintable.o fmt_escapecharquotedprintableutf8.o fmt_escapecharxml.o fmt_fill.o fmt_httpdate.o fmt_human.o fmt_humank.o fmt_iso8601.o fmt_long.o fmt_longlong.o fmt_minus.o fmt_netstring.o fmt_pad.o fmt_pb_double.o fmt_pb_float.o fmt_pb_int.o fmt_pb_sint.o fmt_pb_string.o fmt_pb_tag.o fmt_pb_type0_sint.o fmt_pb_type1_double.o fmt_pb_type1_fixed64.o fmt_pb_type2_string.o fmt_pb_type5_fixed32.o fmt_pb_type5_float.o fmt_plusminus.o fmt_str.o fmt_strm_internal.o fmt_strn.o fmt_tohex.o fmt_ulong.o fmt_ulong0.o fmt_ulonglong.o fmt_utf8.o fmt_varint.o fmt_xlong.o fmt_xlonglong.o fmt_xmlescape.o 
-SCAN_OBJS=scan_8int.o scan_8long.o scan_8longlong.o scan_8longn.o scan_8short.o scan_asn1derlength.o scan_asn1dertag.o scan_charsetnskip.o scan_double.o scan_fromhex.o scan_httpdate.o scan_int.o scan_iso8601.o scan_long.o scan_longlong.o scan_longn.o scan_netstring.o scan_noncharsetnskip.o scan_nonwhitenskip.o scan_pb_tag.o scan_pb_type0_sint.o scan_pb_type1_double.o scan_pb_type1_fixed64.o scan_pb_type2_stringlen.o scan_pb_type5_fixed32.o scan_pb_type5_float.o scan_plusminus.o scan_short.o scan_uint.o scan_ulong.o scan_ulonglong.o scan_ulongn.o scan_ushort.o scan_utf8.o scan_utf8_sem.o scan_varint.o scan_whitenskip.o scan_xint.o scan_xlong.o scan_xlonglong.o scan_xlongn.o scan_xshort.o 
+SCAN_OBJS=scan_8int.o scan_8long.o scan_8longlong.o scan_8longn.o scan_8short.o scan_asn1derlength.o scan_asn1dertag.o scan_charsetnskip.o scan_double.o scan_fromhex.o scan_httpdate.o scan_int.o scan_iso8601.o scan_long.o scan_longlong.o scan_longn.o scan_netstring.o scan_noncharsetnskip.o scan_nonwhitenskip.o scan_pb_tag.o scan_pb_type0_sint.o scan_pb_type1_double.o scan_pb_type1_fixed64.o scan_pb_type2_stringlen.o scan_pb_type5_fixed32.o scan_pb_type5_float.o scan_plusminus.o scan_short.o scan_uint.o scan_ulong.o scan_ulonglong.o scan_ulongn.o scan_ushort.o scan_utf8.o scan_varint.o scan_whitenskip.o scan_xint.o scan_xlong.o scan_xlonglong.o scan_xlongn.o scan_xshort.o 
 STR_OBJS=str_chr.o str_copy.o str_diff.o str_diffn.o str_len.o str_rchr.o str_start.o 
 UINT_OBJS=uint16_pack.o uint16_pack_big.o uint16_read.o uint16_read_big.o uint16_unpack.o uint16_unpack_big.o uint32_pack.o uint32_pack_big.o uint32_read.o uint32_read_big.o uint32_unpack.o uint32_unpack_big.o uint64_pack.o uint64_pack_big.o uint64_read.o uint64_read_big.o uint64_unpack.o uint64_unpack_big.o 
 OPEN_OBJS=open_append.o open_excl.o open_read.o open_rw.o open_trunc.o open_write.o openreadclose.o readclose.o 
@@ -824,7 +838,7 @@ uninstall:
 	rm -f $(LIBDIR)/libowfat.a
 
 VERSION=libowfat-0.32
-CURNAME=libowfat-0.32
+CURNAME=libowfat-0.31
 
 tar: clean rename
 	rm -f dep libdep
