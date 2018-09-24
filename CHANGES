@@ -3,7 +3,7 @@
   move headers to <libowfat/> upon install
   fix fmt_ip6 (Erwin Hoffmann)
   add MSG_ZEROCOPY support (only used for buffers >8k)
-  use write in buffer_put for a slight perf improvement
+  use writev in buffer_put for a slight perf improvement
   add experimental iom API for multithreaded I/O multiplexing (in io.h)
 
 0.31:
