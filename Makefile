@@ -775,7 +775,7 @@ t.o: t.c fmt.h byte.h scan.h str.h uint16.h uint32.h stralloc.h socket.h \
  havesigio.h
 BYTE_OBJS=byte_chr.o byte_copy.o byte_copyr.o byte_diff.o byte_equal_notimingattack.o byte_rchr.o byte_zero.o 
 FMT_OBJS=fmt_8long.o fmt_8longlong.o fmt_asn1derlength.o fmt_asn1dertag.o fmt_double.o fmt_escapecharc.o fmt_escapecharhtml.o fmt_escapecharjson.o fmt_escapecharquotedprintable.o fmt_escapecharquotedprintableutf8.o fmt_escapecharxml.o fmt_fill.o fmt_httpdate.o fmt_human.o fmt_humank.o fmt_iso8601.o fmt_long.o fmt_longlong.o fmt_minus.o fmt_netstring.o fmt_pad.o fmt_pb_double.o fmt_pb_float.o fmt_pb_int.o fmt_pb_sint.o fmt_pb_string.o fmt_pb_tag.o fmt_pb_type0_sint.o fmt_pb_type1_double.o fmt_pb_type1_fixed64.o fmt_pb_type2_string.o fmt_pb_type5_fixed32.o fmt_pb_type5_float.o fmt_plusminus.o fmt_str.o fmt_strm_internal.o fmt_strn.o fmt_tohex.o fmt_ulong.o fmt_ulong0.o fmt_ulonglong.o fmt_utf8.o fmt_varint.o fmt_xlong.o fmt_xlonglong.o fmt_xmlescape.o 
-SCAN_OBJS=scan_8int.o scan_8long.o scan_8longlong.o scan_8longn.o scan_8short.o scan_asn1derlength.o scan_asn1dertag.o scan_charsetnskip.o scan_double.o scan_fromhex.o scan_httpdate.o scan_int.o scan_iso8601.o scan_long.o scan_longlong.o scan_longn.o scan_netstring.o scan_noncharsetnskip.o scan_nonwhitenskip.o scan_pb_tag.o scan_pb_type0_sint.o scan_pb_type1_double.o scan_pb_type1_fixed64.o scan_pb_type2_stringlen.o scan_pb_type5_fixed32.o scan_pb_type5_float.o scan_plusminus.o scan_short.o scan_uint.o scan_ulong.o scan_ulonglong.o scan_ulongn.o scan_ushort.o scan_utf8.o scan_varint.o scan_whitenskip.o scan_xint.o scan_xlong.o scan_xlonglong.o scan_xlongn.o scan_xshort.o 
+SCAN_OBJS=scan_8int.o scan_8long.o scan_8longlong.o scan_8longn.o scan_8short.o scan_asn1derlength.o scan_asn1dertag.o scan_charsetnskip.o scan_double.o scan_fromhex.o scan_httpdate.o scan_int.o scan_iso8601.o scan_long.o scan_longlong.o scan_longn.o scan_netstring.o scan_noncharsetnskip.o scan_nonwhitenskip.o scan_pb_tag.o scan_pb_type0_sint.o scan_pb_type1_double.o scan_pb_type1_fixed64.o scan_pb_type2_stringlen.o scan_pb_type5_fixed32.o scan_pb_type5_float.o scan_plusminus.o scan_short.o scan_uint.o scan_ulong.o scan_ulonglong.o scan_ulongn.o scan_ushort.o scan_utf8.o scan_utf8_sem.o scan_varint.o scan_whitenskip.o scan_xint.o scan_xlong.o scan_xlonglong.o scan_xlongn.o scan_xshort.o 
 STR_OBJS=str_chr.o str_copy.o str_diff.o str_diffn.o str_len.o str_rchr.o str_start.o 
 UINT_OBJS=uint16_pack.o uint16_pack_big.o uint16_read.o uint16_read_big.o uint16_unpack.o uint16_unpack_big.o uint32_pack.o uint32_pack_big.o uint32_read.o uint32_read_big.o uint32_unpack.o uint32_unpack_big.o uint64_pack.o uint64_pack_big.o uint64_read.o uint64_read_big.o uint64_unpack.o uint64_unpack_big.o 
 OPEN_OBJS=open_append.o open_excl.o open_read.o open_rw.o open_trunc.o open_write.o openreadclose.o readclose.o 
@@ -790,7 +790,7 @@ DNS_OBJS=dns_dfd.o dns_domain.o dns_dtda.o dns_ip.o dns_ip6.o dns_ipq.o dns_ipq6
 CASE_OBJS=case_diffb.o case_diffs.o case_lowerb.o case_lowers.o case_starts.o 
 MULT_OBJS=imult16.o imult32.o imult64.o range_arrayinbuf.o range_str2inbuf.o range_str4inbuf.o range_strinbuf.o umult16.o umult32.o umult64.o 
 ARRAY_OBJS=array_allocate.o array_bytes.o array_cat.o array_cat0.o array_catb.o array_cate.o array_cats.o array_cats0.o array_equal.o array_fail.o array_get.o array_length.o array_reset.o array_start.o array_trunc.o array_truncate.o iarray_allocate.o iarray_free.o iarray_get.o iarray_init.o iarray_length.o 
-IO_OBJS=io_appendfile.o io_block.o io_canread.o io_canwrite.o io_check.o io_close.o io_closeonexec.o io_createfile.o io_debugstring.o io_dontwantread.o io_dontwantwrite.o io_eagain.o io_eagain_read.o io_eagain_write.o io_fd.o io_finishandshutdown.o io_getcookie.o io_mmapwritefile.o io_nonblock.o io_passfd.o io_pipe.o io_readfile.o io_readwritefile.o io_receivefd.o io_sendfile.o io_setcookie.o io_sigpipe.o io_socketpair.o io_timedout.o io_timeout.o io_timeouted.o io_tryread.o io_tryreadtimeout.o io_trywrite.o io_trywritetimeout.o io_wait.o io_waitread.o io_waituntil.o io_waituntil2.o io_waitwrite.o io_wantread.o io_wantwrite.o iob_addbuf.o iob_addbuf_free.o iob_addbuf_internal.o iob_addbuf_munmap.o iob_addfile.o iob_addfile_close.o iob_adds.o iob_adds_free.o iob_bytesleft.o iob_free.o iob_new.o iob_prefetch.o iob_reset.o iob_send.o iob_write.o 
+IO_OBJS=io_appendfile.o io_block.o io_canread.o io_canwrite.o io_check.o io_close.o io_closeonexec.o io_createfile.o io_debugstring.o io_dontwantread.o io_dontwantwrite.o io_eagain.o io_eagain_read.o io_eagain_write.o io_fd.o io_finishandshutdown.o io_getcookie.o io_mmapwritefile.o io_nonblock.o io_passfd.o io_pipe.o io_readfile.o io_readwritefile.o io_receivefd.o io_sendfile.o io_setcookie.o io_sigpipe.o io_socketpair.o io_timedout.o io_timeout.o io_timeouted.o io_tryread.o io_tryreadtimeout.o io_trywrite.o io_trywritetimeout.o io_wait.o io_waitread.o io_waituntil.o io_waituntil2.o io_waitwrite.o io_wantread.o io_wantwrite.o iob_addbuf.o iob_addbuf_free.o iob_addbuf_internal.o iob_addbuf_munmap.o iob_addfile.o iob_addfile_close.o iob_adds.o iob_adds_free.o iob_bytesleft.o iob_free.o iob_new.o iob_prefetch.o iob_reset.o iob_send.o iob_write.o iom_abort.o iom_add.o iom_init.o iom_wait.o 
 TEXTCODE_OBJS=base64.o base64url.o fmt_base64.o fmt_base64url.o fmt_cescape.o fmt_foldwhitespace.o fmt_hexdump.o fmt_html.o fmt_html_tagarg.o fmt_jsonescape.o fmt_ldapescape.o fmt_ldapescape2.o fmt_quotedprintable.o fmt_to_array.o fmt_to_sa.o fmt_tofrom_array.o fmt_urlencoded.o fmt_uuencoded.o fmt_xml.o fmt_yenc.o scan_base64.o scan_base64url.o scan_cescape.o scan_hexdump.o scan_html.o scan_jsonescape.o scan_ldapescape.o scan_quotedprintable.o scan_to_array.o scan_to_sa.o scan_tofrom_array.o scan_urlencoded.o scan_uuencoded.o scan_yenc.o 
 CDB_OBJS=cdb.o cdb_hash.o cdb_make.o cdb_traverse.o 
 CRITBIT_OBJS=critbit.o 
@@ -891,9 +891,9 @@ uninstall:
 	rm -f $(LIBDIR)/libowfat.a
 
 VERSION=libowfat-0.33
+CURNAME=libowfat-0.32
 
-
-tar: Makefile clean rename
+tar: clean rename
 	rm -f dep libdep
 	cd ..; tar cvvf $(VERSION).tar.xz --use=xz --exclude CVS $(VERSION)
 
@@ -1027,7 +1027,7 @@ Makefile: GNUmakefile dep libdep
 	sed -e '1,/stoprip/d' -e 's/ %.c$$//' \
 	    -e 's/^VERSION=.*/'VERSION=$(VERSION)/ \
 	    -e 's/^CURNAME=.*/'CURNAME=$(CURNAME)/ \
-	    -e 's/ Makefile//' < GNUmakefile >> $@
+	    -e 's///' < GNUmakefile >> $@
 
 windoze:
 	$(MAKE) DIET= CROSS=i686-mingw32-
