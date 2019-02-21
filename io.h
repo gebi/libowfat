@@ -144,7 +144,9 @@ int64 io_mmapwritefile(int64 out,int64 in,uint64 off,uint64 bytes,io_write_callb
  * aid in debugging the state machine if a descriptor loops or so */
 unsigned int io_debugstring(int64 s,char* buf,unsigned int bufsize);
 
-#ifdef __dietlibc__
+#ifdef __MINGW32__
+#include <mcfgthread/c11thread.h>
+#elif defined(__dietlibc__)
 #include <threads.h>
 #else
 #include <pthread.h>
@@ -159,7 +161,7 @@ typedef struct iomux {
   struct {
     int fd, events;
   } q[SLOTS];
-#ifdef __dietlibc__
+#if defined(__MINGW32__) || defined(__dietlibc__)
   mtx_t mtx;
   cnd_t sem;
 #else

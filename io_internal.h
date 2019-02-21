@@ -2,9 +2,9 @@
 #define my_extern extern
 #endif
 
-#include "io.h"
-#include "array.h"
-#include "iarray.h"
+#include "libowfat/io.h"
+#include "libowfat/array.h"
+#include "libowfat/iarray.h"
 #ifdef __MINGW32__
 #include "socket.h"
 my_extern HANDLE io_comport;

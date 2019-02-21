@@ -18,6 +18,9 @@ all: headers ent $(LIBS) libowfat.a libsocket t
 pic pie:
 	$(MAKE) CC="gcc -fPIC" LDFLAGS="-fpie"
 
+picx32 piex32:
+	$(MAKE) CC="gcc -mx32 -fPIC" LDFLAGS="-fpie"
+
 CROSS=
 #CROSS=i686-mingw-
 CC?=gcc
@@ -192,7 +195,7 @@ t.o: t.c fmt.h scan.h str.h uint16.h uint32.h stralloc.h socket.h \
   havesigio.h CAS.h
 
 t: t.o libowfat.a libsocket
-	$(DIET) $(CCC) -g -o $@ t.o libowfat.a `cat libsocket` -lpthread
+	$(DIET) $(CCC) -g -o $@ t.o libowfat.a `cat libsocket` -lpthread $(LDFLAGS)
 
 .PHONY: all clean tar install rename
 clean:
