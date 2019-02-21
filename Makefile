@@ -866,7 +866,7 @@ libowfat:
 	-mkdir libowfat
 
 .PHONY: headers
-headers: libowfat
+headers: libowfat $(INCLUDES)
 	ln -f $(INCLUDES) libowfat/
 
 install-inc:
@@ -891,9 +891,9 @@ uninstall:
 	rm -f $(LIBDIR)/libowfat.a
 
 VERSION=libowfat-0.33
-CURNAME=libowfat-0.32
 
-tar: clean rename
+
+tar: Makefile clean rename
 	rm -f dep libdep
 	cd ..; tar cvvf $(VERSION).tar.xz --use=xz --exclude CVS $(VERSION)
 
@@ -1027,7 +1027,7 @@ Makefile: GNUmakefile dep libdep
 	sed -e '1,/stoprip/d' -e 's/ %.c$$//' \
 	    -e 's/^VERSION=.*/'VERSION=$(VERSION)/ \
 	    -e 's/^CURNAME=.*/'CURNAME=$(CURNAME)/ \
-	    -e 's///' < GNUmakefile >> $@
+	    -e 's/ Makefile//' < GNUmakefile >> $@
 
 windoze:
 	$(MAKE) DIET= CROSS=i686-mingw32-

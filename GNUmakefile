@@ -214,7 +214,7 @@ libowfat:
 	-mkdir libowfat
 
 .PHONY: headers
-headers: libowfat
+headers: libowfat $(INCLUDES)
 	ln -f $(INCLUDES) libowfat/
 
 install-inc:
