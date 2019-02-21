@@ -214,10 +214,8 @@ libowfat:
 	-mkdir libowfat
 
 .PHONY: headers
-headers: libowfat $(patsubst %.h,libowfat/%.h,$(INCLUDES))
-
-libowfat/%.h: %.h
-	ln -f $< $@
+headers: libowfat
+	ln -f $(INCLUDES) libowfat/
 
 install-inc:
 	install -d $(DESTDIR)$(INCLUDEDIR)/libowfat
