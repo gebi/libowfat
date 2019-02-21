@@ -65,7 +65,8 @@ int iom_wait(iomux_t* c,int64* s,unsigned int* revents,unsigned long timeout) {
 #elif defined(HAVE_KQUEUE)
       struct kevent kev[SLOTS];
       struct timespec ts = { .tv_sec=timeout/1000, .tv_nsec=(timeout%1000)*1000000 };
-      int r=kevent(c->ctx, 0, 0, &kev, freeslots, &ts);
+      int r=kevent(c->ctx, 0, 0, kev, freeslots, &ts);
+      int i;
       if (r<=0) {
 	/* we ran into a timeout, so let someone else take over */
 	if (__sync_val_compare_and_swap(&c->working,1,0)==-2) return -2;
@@ -82,7 +83,7 @@ int iom_wait(iomux_t* c,int64* s,unsigned int* revents,unsigned long timeout) {
 	        (kev[i].filter == EVFILT_WRITE ? IOM_WRITE : 0);
 	if (i+1==r) {
 	  /* return last event instead of enqueueing it */
-	  *s=kev.ident;
+	  *s=kev[i].ident;
 	  *revents=e;
 	} else {
 	  c->q[c->h].fd=kev[i].ident;
