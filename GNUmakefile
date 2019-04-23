@@ -199,7 +199,7 @@ t: t.o libowfat.a libsocket
 
 .PHONY: all clean tar install rename
 clean:
-	rm -f *.o *.a *.da *.bbg *.bb core t haveip6.h haven2i.h \
+	rm -f *.o *.obj *.a *.lib *.da *.bbg *.bb core t haveip6.h haven2i.h \
 havesl.h haveinline.h iopause.h select.h havekqueue.h haveepoll.h \
 libepoll havesigio.h havebsdsf.h havesendfile.h havescope.h havedevpoll.h \
 dep libsocket havealloca.h haveuint128.h entities.h ent havepread.h

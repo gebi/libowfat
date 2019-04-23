@@ -53,6 +53,11 @@ extern "C" {
 #define __unlikely(foo) __expect((foo),0)
 #endif
 
+#if !defined(__likely)
+#define __likely(foo) (foo)
+#define __unlikely(foo) (foo)
+#endif
+
 /* return 0 for range error / overflow, 1 for ok */
 
 /* we assume the normal case is that the checked value is in range */

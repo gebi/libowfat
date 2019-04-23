@@ -7,7 +7,11 @@
 /* for uint32_t */
 #include <stdint.h>
 /* for time_t: */
+#ifdef _WIN32
+#include <time.h>
+#else
 #include <sys/types.h>
+#endif
 /* for byte_copy */
 #include "byte.h"
 
@@ -150,8 +154,11 @@ size_t fmt_iso8601(char* dest,time_t t) __pure__;
 
 /* some variable length encodings for integers */
 size_t fmt_utf8(char* dest,uint32_t n) __pure__;	/* can store 0-0x7fffffff */
+size_t fmt_utf8_scratch(char* dest,uint32_t n) __pure__;	/* same, but is allowed to overwrite up to 7 additional bytes */
 size_t fmt_asn1derlength(char* dest,unsigned long long l) __pure__;	/* 0-0x7f: 1 byte, above that 1+bytes_needed bytes */
+size_t fmt_asn1derlength_scratch(char* dest,unsigned long long l) __pure__;	/* same, but is allowed to overwrite up to 7 additional bytes */
 size_t fmt_asn1dertag(char* dest,unsigned long long l) __pure__;	/* 1 byte for each 7 bits; upper bit = more bytes coming */
+size_t fmt_asn1dertag_scratch(char* dest,unsigned long long l) __pure__;/* same, but is allowed to overwrite up to 7 additional bytes */
 
 /* Google Protocol Buffers, https://developers.google.com/protocol-buffers/docs/encoding */
 size_t fmt_varint(char* dest,unsigned long long l) __pure__;	/* protocol buffers encoding; like asn1dertag but little endian */
