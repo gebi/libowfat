@@ -72,8 +72,13 @@ size_t scan_html(const char* src,char* dest,size_t* destlen);
 /* decodes all html5-standardized &foo; escapes, but leaves all tags
  * alone */
 size_t scan_html_tagarg(const char* src,char* dest,size_t* destlen);
+/* Decodes escaped C string text, turning e.g. \n into newline */
 size_t scan_cescape(const char* src,char* dest,size_t* destlen);
+/* Decodes escaped LDIF text, turning e.g. \5C into \ */
 size_t scan_ldapescape(const char* src,char* dest,size_t* destlen);
+/* Decodes escaped JSON strings (like \"\r\n\u0013), turns escaped
+ * surrogate pairs into UTF-8. Expects input to be valid UTF-8. Ends at
+ * \0 or unescaped double quote. */
 size_t scan_jsonescape(const char* src,char* dest,size_t* destlen);
 
 size_t scan_base85(const char* src,char* dest,size_t* destlen);
