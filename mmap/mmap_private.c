@@ -12,7 +12,7 @@ char* mmap_private(const char* filename,size_t * filesize) {
 #ifdef _WIN32
   HANDLE fd,m;
   char* map;
-  fd=CreateFile(filename,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ|FILE_SHARE_WRITE|FILE_SHARE_DELETE,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
+  fd=CreateFile(filename,GENERIC_READ,FILE_SHARE_READ|FILE_SHARE_WRITE|FILE_SHARE_DELETE,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
   if (fd==INVALID_HANDLE_VALUE)
     return 0;
   m=CreateFileMapping(fd,0,PAGE_WRITECOPY,0,0,NULL);
