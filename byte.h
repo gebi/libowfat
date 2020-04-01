@@ -9,24 +9,36 @@
 extern "C" {
 #endif
 
+/* dietlibc defines these in sys/cdefs.h, which is included from stddef.h */
 #ifndef __pure__
 #define __pure__
 #endif
 
+#ifndef __writememsz__
+#define __writememsz__(a,b)
+#define __readmemsz__(a,b)
+#endif
+
 /* byte_chr returns the smallest integer i between 0 and len-1
  * inclusive such that one[i] equals needle, or len if not found. */
+__readmemsz__(1,2)
 size_t byte_chr(const void* haystack, size_t len, char needle) __pure__;
 
 /* byte_rchr returns the largest integer i between 0 and len-1 inclusive
  * such that one[i] equals needle, or len if not found. */
+__readmemsz__(1,2)
 size_t byte_rchr(const void* haystack,size_t len,char needle) __pure__;
 
 /* byte_copy copies in[0] to out[0], in[1] to out[1], ... and in[len-1]
  * to out[len-1]. */
+__writememsz__(1,2)
+__readmemsz__(3,2)
 void byte_copy(void* out, size_t len, const void* in);
 
 /* byte_copyr copies in[len-1] to out[len-1], in[len-2] to out[len-2],
  * ... and in[0] to out[0] */
+__writememsz__(1,2)
+__readmemsz__(3,2)
 void byte_copyr(void* out, size_t len, const void* in);
 
 /* byte_diff returns negative, 0, or positive, depending on whether the
@@ -34,13 +46,18 @@ void byte_copyr(void* out, size_t len, const void* in);
  * than, equal to, or greater than the string b[0], b[1], ...,
  * b[len-1]. When the strings are different, byte_diff does not read
  * bytes past the first difference. */
+__readmemsz__(1,2)
+__readmemsz__(3,2)
 int byte_diff(const void* a, size_t len, const void* b) __pure__;
 
 /* byte_zero sets the bytes out[0], out[1], ..., out[len-1] to 0 */
+__writememsz__(1,2)
 void byte_zero(void* out, size_t len);
 
 #define byte_equal(s,n,t) (!byte_diff((s),(n),(t)))
 
+__readmemsz__(1,2)
+__readmemsz__(3,2)
 int byte_equal_notimingattack(const void* a, size_t len,const void* b) __pure__;
 
 #if defined(__i386__) || defined(__x86_64__)

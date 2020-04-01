@@ -13,6 +13,13 @@
 extern "C" {
 #endif
 
+/* dietlibc defines these in sys/cdefs.h, which is included from stddef.h */
+#ifndef __writememsz__
+#define __writememsz__(a,b)
+#define __readmemsz__(a,b)
+#define __readmem__(a)
+#endif
+
 typedef struct buffer {
   char *x;		/* actual buffer space */
   size_t p;		/* current position */
@@ -30,7 +37,9 @@ typedef struct buffer {
 #define BUFFER_INSIZE 8192
 #define BUFFER_OUTSIZE 8192
 
+__writememsz__(4,5)
 void buffer_init(buffer* b,ssize_t (*op)(),int fd,char* y,size_t ylen);
+__writememsz__(4,5)
 void buffer_init_free(buffer* b,ssize_t (*op)(),int fd,char* y,size_t ylen);
 void buffer_free(void* buf);
 void buffer_munmap(void* buf);
@@ -38,11 +47,17 @@ int buffer_mmapread(buffer* b,const char* filename);
 void buffer_close(buffer* b);
 
 int buffer_flush(buffer* b);
+__readmemsz__(2,3)
 int buffer_put(buffer* b,const char* x,size_t len);
+__readmemsz__(2,3)
 int buffer_putalign(buffer* b,const char* x,size_t len);
+__readmemsz__(2,3)
 int buffer_putflush(buffer* b,const char* x,size_t len);
+__readmem__(2)
 int buffer_puts(buffer* b,const char* x);
+__readmem__(2)
 int buffer_putsalign(buffer* b,const char* x);
+__readmem__(2)
 int buffer_putsflush(buffer* b,const char* x);
 
 #if defined(__GNUC__) && !defined(__LIBOWFAT_INTERNAL)
@@ -53,8 +68,8 @@ int buffer_putsflush(buffer* b,const char* x);
 #define buffer_putsflush(b,s) (__builtin_constant_p(s) ? buffer_putflush(b,s,strlen(s)) : buffer_putsflush(b,s))
 #endif
 
-int buffer_putm_internal(buffer*b,...);
-int buffer_putm_internal_flush(buffer*b,...);
+int buffer_putm_internal(buffer* b,...);
+int buffer_putm_internal_flush(buffer* b,...);
 #define buffer_putm(b,...) buffer_putm_internal(b,__VA_ARGS__,(char*)0)
 #define buffer_putmflush(b,...) buffer_putm_internal_flush(b,__VA_ARGS__,(char*)0)
 
@@ -67,16 +82,21 @@ int buffer_putnlflush(buffer* b); /* put \n and flush */
     : buffer_put((s),&(c),1) \
   )
 
+__writememsz__(2,3)
 ssize_t buffer_get(buffer* b,char* x,size_t len);
 ssize_t buffer_feed(buffer* b);
 ssize_t buffer_getc(buffer* b,char* x);
+__writememsz__(2,3)
 ssize_t buffer_getn(buffer* b,char* x,size_t len);
 
 /* read bytes until the destination buffer is full (len bytes), end of
  * file is reached or the read char is in charset (setlen bytes).  An
  * empty line when looking for \n will write '\n' to x and return 0.  If
  * EOF is reached, \0 is written to the buffer */
+__writememsz__(2,3)
+__readmemsz__(4,5)
 ssize_t buffer_get_token(buffer* b,char* x,size_t len,const char* charset,size_t setlen);
+__writememsz__(2,3)
 ssize_t buffer_getline(buffer* b,char* x,size_t len);
 
 /* this predicate is given the string as currently read from the buffer
@@ -84,6 +104,7 @@ ssize_t buffer_getline(buffer* b,char* x,size_t len);
 typedef int (*string_predicate)(const char* x,size_t len);
 
 /* like buffer_get_token but the token ends when your predicate says so */
+__writememsz__(2,3)
 ssize_t buffer_get_token_pred(buffer* b,char* x,size_t len,string_predicate p);
 
 char *buffer_peek(buffer* b);
@@ -133,11 +154,13 @@ int buffer_putsaflush(buffer* b,const stralloc* sa);
  * data is available. */
 
 /* read token from buffer to stralloc */
+__readmemsz__(3,4)
 int buffer_get_token_sa(buffer* b,stralloc* sa,const char* charset,size_t setlen);
 /* read line from buffer to stralloc */
 int buffer_getline_sa(buffer* b,stralloc* sa);
 
 /* same as buffer_get_token_sa but empty sa first */
+__readmemsz__(3,4)
 int buffer_get_new_token_sa(buffer* b,stralloc* sa,const char* charset,size_t setlen);
 /* same as buffer_getline_sa but empty sa first */
 int buffer_getnewline_sa(buffer* b,stralloc* sa);
@@ -155,6 +178,7 @@ void buffer_fromsa(buffer* b,const stralloc* sa);	/* read from sa */
 int buffer_tosa(buffer*b,stralloc* sa);		/* write to sa, auto-growing it */
 #endif
 
+__readmemsz__(2,3)
 void buffer_frombuf(buffer* b,const char* x,size_t l);	/* buffer reads from static buffer */
 
 #ifdef ARRAY_H

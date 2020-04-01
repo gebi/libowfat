@@ -8,8 +8,14 @@
 extern "C" {
 #endif
 
+/* dietlibc defines these in sys/cdefs.h, which is included from stddef.h */
 #ifndef __pure__
 #define __pure__
+#endif
+
+#ifndef __writememsz__
+#define __writememsz__(a,b)
+#define __readmemsz__(a,b)
 #endif
 
 /* stralloc is the internal data structure all functions are working on.
@@ -46,6 +52,7 @@ int stralloc_readyplus(stralloc* sa,size_t len);
 /* stralloc_copyb copies the string buf[0], buf[1], ..., buf[len-1] into
  * sa, allocating space if necessary, and returns 1. If it runs out of
  * memory, stralloc_copyb leaves sa alone and returns 0. */
+__readmemsz__(2,3)
 int stralloc_copyb(stralloc* sa,const char* buf,size_t len);
 
 /* stralloc_copys copies a \0-terminated string from buf into sa,
@@ -62,6 +69,7 @@ int stralloc_copy(stralloc* sa,const stralloc* sa2);
  * returns 1. If sa is unallocated, stralloc_catb is the same as
  * stralloc_copyb. If it runs out of memory, stralloc_catb leaves sa
  * alone and returns 0. */
+__readmemsz__(2,3)
 int stralloc_catb(stralloc* sa,const char* in,size_t len);
 
 /* stralloc_cats is analogous to stralloc_copys */
@@ -161,11 +169,13 @@ int buffer_putsaflush(buffer* b,const stralloc* sa);
  * data is available. */
 
 /* read token from buffer to stralloc */
+__readmemsz__(3,4)
 int buffer_get_token_sa(buffer* b,stralloc* sa,const char* charset,size_t setlen);
 /* read line from buffer to stralloc */
 int buffer_getline_sa(buffer* b,stralloc* sa);
 
 /* same as buffer_get_token_sa but empty sa first */
+__readmemsz__(3,4)
 int buffer_get_new_token_sa(buffer* b,stralloc* sa,const char* charset,size_t setlen);
 /* same as buffer_getline_sa but empty sa first */
 int buffer_getnewline_sa(buffer* b,stralloc* sa);

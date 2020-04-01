@@ -15,8 +15,14 @@
 extern "C" {
 #endif
 
+/* dietlibc defines these in sys/cdefs.h, which is included from stddef.h */
 #ifndef __pure__
 #define __pure__
+#endif
+
+#ifndef __writememsz__
+#define __writememsz__(a,b)
+#define __readmemsz__(a,b)
 #endif
 
 /* This file declared functions used to decode / scan / unmarshal
@@ -39,24 +45,28 @@ extern "C" {
  * values, i.e. on a 32-bit system:
  * scan_ulong("4294967296",&i" -> i=429496729, return 9 */
 size_t scan_ulong(const char *src,unsigned long *dest);
+__readmemsz__(1,2)
 size_t scan_ulongn(const char* src,size_t n,unsigned long* dest);
 
 /* Interpret src as ASCII hexadecimal number, write number to dest and
  * return the number of bytes that were parsed.
  * Note: leading '+' or '-' not accepted! */
 size_t scan_xlong(const char *src,unsigned long *dest);
+__readmemsz__(1,2)
 size_t scan_xlongn(const char *src,size_t n,unsigned long *dest);
 
 /* interpret src as ASCII octal number, write number to dest and
  * return the number of bytes that were parsed.
  * Note: leading '+' or '-' not accepted! */
 size_t scan_8long(const char *src,unsigned long *dest);
+__readmemsz__(1,2)
 size_t scan_8longn(const char *src,size_t n,unsigned long *dest);
 
 /* interpret src as signed ASCII decimal number, write number to dest
  * and return the number of bytes that were parsed.
  * Note: leading spaces not accepted! */
 size_t scan_long(const char *src,signed long *dest);
+__readmemsz__(1,2)
 size_t scan_longn(const char *src,size_t n,signed long *dest);
 
 size_t scan_longlong(const char *src,signed long long *dest);
@@ -84,17 +94,21 @@ size_t scan_double(const char *in, double *dest);
 size_t scan_plusminus(const char *src,signed int *dest);
 
 /* return the highest integer n<=limit so that isspace(in[i]) for all 0<=i<=n */
+__readmemsz__(1,2)
 size_t scan_whitenskip(const char *in,size_t limit) __pure__;
 
 /* return the highest integer n<=limit so that !isspace(in[i]) for all 0<=i<=n */
+__readmemsz__(1,2)
 size_t scan_nonwhitenskip(const char *in,size_t limit) __pure__;
 
 /* return the highest integer n<=limit so that in[i] is element of
  * charset (ASCIIZ string) for all 0<=i<=n */
+__readmemsz__(1,3)
 size_t scan_charsetnskip(const char *in,const char *charset,size_t limit) __pure__;
 
 /* return the highest integer n<=limit so that in[i] is not element of
  * charset (ASCIIZ string) for all 0<=i<=n */
+__readmemsz__(1,3)
 size_t scan_noncharsetnskip(const char *in,const char *charset,size_t limit) __pure__;
 
 /* try to parse ASCII GMT date; does not understand time zones. */
@@ -153,6 +167,7 @@ size_t scan_pb_type5_fixed32(const char* in,size_t len,uint32_t* b) __pure__;
  *   return 0
  * Note: *dest will point inside the input buffer!
  */
+__readmemsz__(1,2)
 size_t scan_netstring(const char* in,size_t len,char** dest,size_t* slen) __pure__;
 
 /* internal function that might be useful independently */
