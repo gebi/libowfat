@@ -234,7 +234,7 @@ eagain:
 	else
 	  sent=writev(s,v,headers);
       } else {
-#ifdef MSG_ZEROCOPY
+#if defined(MSG_ZEROCOPY) && defined(SO_ZEROCOPY)
 	  if (!nozerocopy && sum>=8*1024) {
 	    /* MSG_ZEROCOPY has page table management overhead,
 	     * it only pays off after 8k or so */
