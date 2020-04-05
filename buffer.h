@@ -16,7 +16,11 @@ extern "C" {
 /* dietlibc defines these in sys/cdefs.h, which is included from stddef.h */
 #ifndef __writememsz__
 #define __writememsz__(a,b)
+#endif
+#ifndef __readmemsz__
 #define __readmemsz__(a,b)
+#endif
+#ifndef __readmem__
 #define __readmem__(a)
 #endif
 
