@@ -25,6 +25,7 @@
 #include "iarray.h"
 #include "critbit.h"
 #include <assert.h>
+#include "compiletimeassert.h"
 
 #include "CAS.h"
 
@@ -70,6 +71,7 @@ int ret1(const char* s,void* foo) {
 int main(int argc,char* argv[]) {
   (void)argc;
   (void)argv;
+  compiletimeassert(sizeof(char) < sizeof(int));
 #if 0
   char buf[1024];
   size_t n;
