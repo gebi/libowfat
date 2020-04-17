@@ -1,7 +1,11 @@
 
-#if __STDC_VERSION__ >= 201112L
+#if __STDC_VERSION__ >= 201710L
 
 #define compiletimeassert(cond) _Static_assert(cond)
+
+#elif __STDC_VERSION__ >= 201112L
+
+#define compiletimeassert(cond) _Static_assert(cond,"")
 
 #else
 
