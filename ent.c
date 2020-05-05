@@ -36,10 +36,16 @@ struct letters {
 struct letters* d;
 size_t nodes,datasize;
 
+void nomem() {
+  fprintf(stderr, "memory allocation failure!\n");
+  exit(1);
+}
+
 void addword(struct letters** s,const char* t, void* pointer) {
   size_t i;
   if (!*s) {
     *s=malloc(sizeof(**s));
+    if (!*s) nomem();
     memset(*s,0,sizeof(**s));
     (*s)->liste[0].c='?';
   }
@@ -122,7 +128,7 @@ void marshalhelper(struct letters* s) {
 void marshal(struct letters* s) {
   fprintf(stderr,"nodes=%lu, datasize=%lu\n",nodes,datasize);
   heap=malloc((nodes+1)*sizeof(uint32_t)+datasize);
-  if (!heap) return;
+  if (!heap) nomem();
   marshaled=(uint32_t*)heap;
   marshaled[0]=nodes+1;
   data=heap+(nodes+1)*sizeof(uint32_t);
@@ -175,6 +181,7 @@ int main() {
 #endif
     ++s;
     *cur=malloc(sizeof(**cur));
+    if (!*cur) nomem();
     (*cur)->next=0;
     if (!((*cur)->entity=strdup(entity))) return 1;
     ul=0;
