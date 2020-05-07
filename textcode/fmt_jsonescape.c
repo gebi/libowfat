@@ -3,6 +3,7 @@
 #include "textcode.h"
 #include "str.h"
 #include "scan.h"
+#include "case.h"
 #include "haveinline.h"
 
 /* src is UTF-8 encoded */
@@ -12,6 +13,13 @@ size_t fmt_jsonescape(char* dest,const char* src,size_t len) {
   char c;
   for (i=0; i<len; ++i) {
     switch (s[i]) {
+    case '<':
+      /* If you are outputting the json inside a <script> tag in HTML,
+       * and the string is attacker controlled and contains "</script>",
+       * that would allow cross site scripting. So we escape that here. */
+      if (len-i>=9 && case_equalb(s+i+1,8,"/script>"))
+	goto unicodeescape;
+      goto noneed;
     case '\\':
     case '"':
       c=s[i];
@@ -29,6 +37,7 @@ escape:
     case '\f': c='f'; goto escape;
     default:
       if (s[i]<' ') {
+unicodeescape:
 	if (dest) {
 	  dest[written]='\\';
 	  dest[written+1]='u';
@@ -68,6 +77,7 @@ escape:
 	i+=j-1;	/* -1 because the for loop will also add 1 */
 	break;
       } else {
+noneed:
 	if (dest) dest[written]=s[i];
 	++written;
       }
@@ -94,5 +104,6 @@ int main() {
    * anymore. This test will fail now:
   assert(fmt_jsonescape(buf,"\xf0\x9f\x92\xa9x",5)==13 && !memcmp(buf,"\\ud83d\\udca9x",13)); */
   assert(fmt_jsonescape(buf,"a\x81x",3)==4 && !memcmp(buf,"a\xc2\x81x",4));
+  assert(fmt_jsonescape(buf,"</Script>",9)==14 && !memcmp(buf,"\\u003c/Script>",14));
 }
 #endif
