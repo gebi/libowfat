@@ -274,7 +274,7 @@ int64 io_waituntil2(int64 milliseconds) {
 	  e->next_read=first_readable;
 	  first_readable=y[n].ident;
 	}
-	if ((y[n].filter==EVFILT_WRITE)) {
+	if (y[n].filter==EVFILT_WRITE) {
 	  e->canwrite=1;
 #ifdef DEBUG
 	  assert(e->next_write==-1);
