@@ -5,6 +5,7 @@
 #include "scan.h"
 #include <assert.h>
 
+#define INTERNAL
 #include "scan/scan_ulong.c"
 #include "scan/scan_ulongn.c"
 #include "fmt/fmt_utf8.c"
@@ -23,7 +24,7 @@ struct entity {
 }* root,** cur=&root;
 
 struct letter {
-  char c;
+  unsigned char c;
   struct letters* weiter;
   uint32_t marshaled;	// lower 8 bits: char. rest: ofs from start of marshaled blob
 };
@@ -126,14 +127,14 @@ void marshalhelper(struct letters* s) {
 }
 
 void marshal(struct letters* s) {
-  fprintf(stderr,"nodes=%lu, datasize=%lu\n",nodes,datasize);
+  fprintf(stderr,"nodes=%zu, datasize=%zu\n",nodes,datasize);
   heap=malloc((nodes+1)*sizeof(uint32_t)+datasize);
   if (!heap) nomem();
   marshaled=(uint32_t*)heap;
   marshaled[0]=nodes+1;
   data=heap+(nodes+1)*sizeof(uint32_t);
   marshalhelper(s);
-  fprintf(stderr,"actually used: %lu nodes, %lu bytes data\n",used,useddata);
+  fprintf(stderr,"actually used: %zu nodes, %zu bytes data\n",used,useddata);
 }
 
 char* lookup(char* ds,size_t ofs,const char* t) {
@@ -168,7 +169,8 @@ int main() {
     if (!(*s=='"')) continue;
     ++s;
     entity=s;
-    if (*entity!='&') continue; ++entity; ++s;
+    if (*entity!='&') continue;
+    ++entity; ++s;
     for (; *s && *s!='"'; ++s) ;	// skip to end of entity
     if (!(*s=='"')) continue;
     if (s[-1]!=';') continue;
@@ -216,7 +218,7 @@ int main() {
   {
     FILE* f=fopen("entities.h","w");
     size_t i;
-    fprintf(f,"struct {\n  uint32_t tab[%u];\n  char data[%lu];\n} entities = {\n  {",marshaled[0],datasize);
+    fprintf(f,"struct {\n  uint32_t tab[%u];\n  char data[%zu];\n} entities = {\n  {",marshaled[0],datasize);
     for (i=0; i<marshaled[0]; ++i) {
       if (i%8 == 0) fprintf(f,"\n    ");
       fprintf(f,"0x%x,",marshaled[i]);

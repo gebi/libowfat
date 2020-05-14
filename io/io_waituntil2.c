@@ -35,6 +35,7 @@
 
 #ifdef DEBUG
 #include <stdio.h>
+#include <assert.h>
 #endif
 
 #ifndef EPOLLRDNORM
@@ -132,7 +133,13 @@ int64 io_waituntil2(int64 milliseconds) {
 	first_deferred=-1;	// can't happen
     }
   }
+  /* if no interest in events has been registered, then return
+   * immediately */
   if (!io_wanted_fds) return 0;
+
+  /* only actually wait if all previous events have been dequeued */
+  if (first_readable!=-1 || first_writeable!=-1) return 0;
+
 #ifdef HAVE_EPOLL
   if (io_waitmode==EPOLL) {
     int n;
@@ -261,11 +268,17 @@ int64 io_waituntil2(int64 milliseconds) {
 	}
 	if (!e->canread && (y[n].filter==EVFILT_READ)) {
 	  e->canread=1;
+#ifdef DEBUG
+	  assert(e->next_read==-1);
+#endif
 	  e->next_read=first_readable;
 	  first_readable=y[n].ident;
 	}
-	if (!e->canwrite && (y[n].filter==EVFILT_WRITE)) {
+	if ((y[n].filter==EVFILT_WRITE)) {
 	  e->canwrite=1;
+#ifdef DEBUG
+	  assert(e->next_write==-1);
+#endif
 	  e->next_write=first_writeable;
 	  first_writeable=y[i].ident;
 	}

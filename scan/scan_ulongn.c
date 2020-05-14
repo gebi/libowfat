@@ -1,5 +1,7 @@
 #include "scan.h"
+#ifndef INTERNAL
 #include "haveuint128.h"
+#endif
 
 size_t scan_ulongn(const char* src,size_t n,unsigned long int* dest) {
   register const char *tmp=src;
