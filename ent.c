@@ -128,8 +128,12 @@ void marshalhelper(struct letters* s) {
 
 void marshal(struct letters* s) {
   fprintf(stderr,"nodes=%zu, datasize=%zu\n",nodes,datasize);
-  heap=malloc((nodes+1)*sizeof(uint32_t)+datasize);
-  if (!heap) nomem();
+  {
+    size_t l;
+    heap=malloc(l=(nodes+1)*sizeof(uint32_t)+datasize);
+    if (!heap) nomem();
+    memset(heap,0,l);
+  }
   marshaled=(uint32_t*)heap;
   marshaled[0]=nodes+1;
   data=heap+(nodes+1)*sizeof(uint32_t);

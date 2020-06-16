@@ -6,8 +6,8 @@ size_t scan_jsonescape(const char *src,char *dest,size_t *destlen) {
   register const unsigned char* s=(const unsigned char*) src;
   size_t written=0,i;
   char c;
-  unsigned int prev,cur,todo;
-  prev=cur=(unsigned int)-1;
+  unsigned int prev,todo;
+  prev=(unsigned int)-1;
   for (i=0; s[i]; ++i) {
     if (s[i]=='"') {
       if (prev!=(unsigned int)-1) goto abort;
@@ -27,6 +27,7 @@ size_t scan_jsonescape(const char *src,char *dest,size_t *destlen) {
       case 'u':
 	{
 	  size_t j;
+	  unsigned int cur;
 	  for (cur=j=0; j<4; ++j) {
 	    char x=scan_fromhex(s[i+2+j]);
 	    if (x<0) goto abort;	// not hex -> invalid input
