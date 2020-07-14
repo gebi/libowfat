@@ -390,3 +390,11 @@ entities.h: entities.json ent
 	./ent
 
 scan_html.o: entities.h
+
+sa1:
+	$(MAKE) clean
+	scan-build $(MAKE) DIET= -j8
+
+sa2:
+	$(MAKE) clean
+	$(MAKE) DIET= CC="gcc -fanalyzer" -j8
