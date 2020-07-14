@@ -2,7 +2,8 @@
 #ifndef UINT16_H
 #define UINT16_H
 
-#include <inttypes.h>
+#include <inttypes.h>	// uint16_t, int16_t
+#include <stddef.h>	// size_t
 
 #ifdef __cplusplus
 extern "C" {
@@ -57,6 +58,28 @@ uint16 uint16_read(const char *in);
 uint16 uint16_read_big(const char *in);
 
 #endif
+
+static inline size_t fmt_uint16(char* out, uint16 in) {
+  if (out) uint16_pack(out,in);
+  return 2;
+}
+
+static inline size_t fmt_uint16_big(char* out, uint16 in) {
+  if (out) uint16_pack_big(out,in);
+  return 2;
+}
+
+static inline size_t scan_uint16(const char* in, size_t len, uint16_t* b) {
+  if (len<2) return 0;
+  *b = uint16_read(in);
+  return 2;
+}
+
+static inline size_t scan_uint16_big(const char* in, size_t len, uint16_t* b) {
+  if (len<2) return 0;
+  *b = uint16_read_big(in);
+  return 2;
+}
 
 #ifdef __cplusplus
 }
