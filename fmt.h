@@ -120,7 +120,7 @@ size_t fmt_strn(char *dest,const char *src,size_t limit) __pure__;
 
 /* copy n bytes from src to dest, return n */
 static inline size_t fmt_copybytes(char* dest,const char* src,size_t n) {
-  byte_copy(dest,n,src);
+  if (dest) byte_copy(dest,n,src);
   return n;
 }
 
@@ -130,7 +130,7 @@ static inline size_t fmt_copybytes(char* dest,const char* src,size_t n) {
  * since we are technically passing a string, sizeof will include the
  * finishing 0 byte which we neither need nor want */
 static inline size_t fmt_copybytes_sizeof_minus1(char* dest,const char* src) {
-  byte_copy(dest,sizeof(src)-1,src);
+  if (dest) byte_copy(dest,sizeof(src)-1,src);
   return sizeof(src)-1;
 }
 
