@@ -46,9 +46,12 @@ int cdb_make_addend(struct cdb_make *c,unsigned long int keylen,unsigned long in
   head->hp[head->num].p = c->pos;
   ++head->num;
   ++c->numentries;
-  if (posplus(c,8) == -1) return -1;
-  if (posplus(c,keylen) == -1) return -1;
-  if (posplus(c,datalen) == -1) return -1;
+  if (posplus(c,8) == -1 ||
+      posplus(c,keylen) == -1 ||
+      posplus(c,datalen) == -1) {
+    free(head);
+    return -1;
+  }
   return 0;
 }
 
