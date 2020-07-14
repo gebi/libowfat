@@ -124,6 +124,16 @@ static inline size_t fmt_copybytes(char* dest,const char* src,size_t n) {
   return n;
 }
 
+/* copy sizeof(src)-1 bytes from src to dest, return sizeof(src)-1 */
+/* this is for
+ *   fmt_copybytes_sizeof_minus1(dest, "\x01\x02\x03\x04");
+ * since we are technically passing a string, sizeof will include the
+ * finishing 0 byte which we neither need nor want */
+static inline size_t fmt_copybytes_sizeof_minus1(char* dest,const char* src) {
+  byte_copy(dest,sizeof(src)-1,src);
+  return sizeof(src)-1;
+}
+
 /* "foo" -> "  foo"
  * write padlen-srclen spaces, if that is >= 0.  Then copy srclen
  * characters from src.  Truncate only if total length is larger than
