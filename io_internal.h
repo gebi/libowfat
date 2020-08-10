@@ -83,7 +83,7 @@ my_extern array io_pollfds;
 my_extern long first_readable;
 my_extern long first_writeable;
 
-my_extern long first_deferred;
+extern long first_deferred;
 
 my_extern enum __io_waitmode {
   UNDECIDED,
