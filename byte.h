@@ -56,6 +56,22 @@ void byte_zero(void* out, size_t len);
 
 #define byte_equal(s,n,t) (!byte_diff((s),(n),(t)))
 
+/* Return 1 iff (b,blen) is a prefix of (a,alen), 0 otherwise.
+ * Will abort early on mismatch */
+__readmemsz__(1,2)
+__readmemsz__(3,4)
+int byte_start(const void* a,size_t alen,const void* b,size_t blen) __pure__;
+
+/* equivalent to byte_start(a,alen,str,strlen(str)) */
+__readmemsz__(1,2)
+__readmem__(3)
+int byte_starts(const void* a,size_t alen,const char* str) __pure__;
+
+#if defined(__GNUC__) && !defined(__LIBOWFAT_INTERNAL)
+/* If str is a string constant, strlen will be done at compile time */
+#define byte_starts(a,alen,str) (__builtin_constant_p(str) ? byte_start(a,alen,str,strlen(str)) : byte_starts(a,alen,str))
+#endif
+
 __readmemsz__(1,2)
 __readmemsz__(3,2)
 int byte_equal_notimingattack(const void* a, size_t len,const void* b) __pure__;

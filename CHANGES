@@ -1,4 +1,6 @@
 0.33:
+  add byte_start, byte_starts
+  add a man page for byte_equal_notimingattack
 
 0.32:
   remove OpenBSD #warning (obsd maintainer says no longer needed)
