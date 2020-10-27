@@ -19,6 +19,10 @@ extern "C" {
 #define __readmemsz__(a,b)
 #endif
 
+#ifndef __readmem__
+#define __readmem__(a)
+#endif
+
 /* byte_chr returns the smallest integer i between 0 and len-1
  * inclusive such that one[i] equals needle, or len if not found. */
 __readmemsz__(1,2)
