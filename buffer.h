@@ -41,16 +41,51 @@ typedef struct buffer {
 #define BUFFER_INSIZE 8192
 #define BUFFER_OUTSIZE 8192
 
+/* Initialize a buffer with an existing memory area, which the buffer
+ * will NOT take ownership of (i.e. won't free the memory when it's done */
 __writememsz__(4,5)
 void buffer_init(buffer* b,ssize_t (*op)(),int fd,char* y,size_t ylen);
+
+/* Initialize a buffer with an existing memory area, which the buffer
+ * WILL take ownership of (it will call free() on it when it's done) */
 __writememsz__(4,5)
 void buffer_init_free(buffer* b,ssize_t (*op)(),int fd,char* y,size_t ylen);
+
+/* Initialize a buffer without actual I/O.
+ * You give it a pre-existing memory area.
+ * When reading from this buffer, it will simply return the data from
+ * that memory area. If it reaches the end, it will signal EOF and never
+ * actually attempt to read from any actual file.
+ * Does not take ownership. Useful for testing. */
+void buffer_init_staticcontents(buffer* b,char* y,size_t ylen);
+
+/* Same but the buffer takes ownership of the static buffer and frees it
+ * in buffer_close. */
+void buffer_init_staticcontents_free(buffer* b,char* y,size_t ylen);
+
+
+/* Set buffer->deinit to this if you want buffer_close() to call free() on
+ * the associated memory buffer */
 void buffer_free(void* buf);
+
+/* Set buffer->deinit to this if you want buffer_close() to call munmap() on
+ * the associated memory buffer */
 void buffer_munmap(void* buf);
+
+/* Initialize a buffer so it will read from this file by memory mapping
+ * the whole thing. */
 int buffer_mmapread(buffer* b,const char* filename);
+
+/* Indicate you are done with a buffer.
+ * If the buffer has an associated memory map or buffer it owns, it will
+ * free that memory. This will NOT call free() on b itself! */
 void buffer_close(buffer* b);
 
+/* Flush the buffer. This is only meaningful for write buffers and will
+ * cause a write() syscall (or whatever you set as buffer->op) for all
+ * the data in the buffer. */
 int buffer_flush(buffer* b);
+
 __readmemsz__(2,3)
 int buffer_put(buffer* b,const char* x,size_t len);
 __readmemsz__(2,3)

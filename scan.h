@@ -25,7 +25,7 @@ extern "C" {
 #define __readmemsz__(a,b)
 #endif
 
-/* This file declared functions used to decode / scan / unmarshal
+/* This file declares functions used to decode / scan / unmarshal
  * integer or string values from a buffer.
  * The first argument is always the source buffer, the second argument
  * is a pointer to the destination (where to store the result). The
