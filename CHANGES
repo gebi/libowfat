@@ -1,6 +1,10 @@
 0.33:
   add byte_start, byte_starts
   add a man page for byte_equal_notimingattack
+  buffer_seek is no longer limited to the current buffer contents
+  add automated way to run unit test: make check
+  add parse.h
+  add bytestream abstraction for parsing data from a buffer or a file
 
 0.32:
   remove OpenBSD #warning (obsd maintainer says no longer needed)
