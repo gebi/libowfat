@@ -26,6 +26,8 @@ size_t scan_netstring(const char* in,size_t len,char** dest,size_t* slen) {
 
 #ifdef UNITTEST
 #include <assert.h>
+
+#undef UNITTEST
 #include "scan_ulongn.c"
 
 int main() {

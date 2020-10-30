@@ -29,7 +29,7 @@ int main() {
   assert(scan_8longlong("1234",&i)==4 && i==01234);
   assert(scan_8longlong("12345678",&i)==7 && i==01234567);
   assert(scan_8longlong("1777777777777777777777",&i)==22 && i==0xffffffffffffffffull);
-  assert(scan_8longlong("2000000000000000000000",&i)==21 && i==200000000000000000000ull);
+  assert(scan_8longlong("2000000000000000000000",&i)==21 && i==0200000000000000000000ull);
   assert(scan_8longlong("-4",&i)==0 && i==0);
   assert(scan_8longlong("01234",&i)==5 && i==01234);
   return 0;
