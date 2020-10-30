@@ -401,6 +401,16 @@ sa2:
 	$(MAKE) DIET= CC="gcc -fanalyzer" -j8
 
 UNITTESTS=$(shell grep -l UNITTEST */*.c)
+TESTS=$(patsubst %.c,test_%,$(notdir $(UNITTESTS)))
 
-check: haveuint128.h haveinline.h entities.h
+test_%: %.c
+	$(CC) -g -o $@ $< -DUNITTEST -I. -fprofile-arcs -ftest-coverage $(LDFLAGS)
+	./$@
+	rm -f $@
+
+test_scan_html: entities.h
+
+check2: haveuint128.h haveinline.h entities.h
 	for i in $(UNITTESTS); do $(CC) -Wall -fprofile-arcs -ftest-coverage -g -o t -DUNITTEST $$i -I. $(LDFLAGS) && ./t || echo FAIL $$i ; done
+
+check: haveuint128.h haveinline.h $(TESTS)

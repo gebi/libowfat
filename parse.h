@@ -89,6 +89,22 @@ int bs_capacitycheck(struct bytestream* bs,size_t capacity);
 /* Like bs_capacitycheck but will set stream to error state on fail */
 int bs_capacityassert(struct bytestream* bs,size_t capacity);
 
+/* Return number of bytes left before limit, or 0 on error. */
+/* If the backend is an iobuf without limit, return max size_t value. */
+size_t bs_capacityleft(struct bytestream* bs);
+
+/* Assert there are no more bytes left in a bytestream. */
+/* Useful to make sure that you parsed the whole packet
+ * and there were no slack bytes in the end.
+ * Return 1 if there really were no more bytes in the stream.
+ * If there ARE bytes left, will set error flag in stream and return 0 */
+int bs_nomoredataassert(struct bytestream* bs);
+
+/* Consume all bytes left before limit */
+/* Useful for nested structs or when the backing store is an iobuf */
+/* Return number of bytes consumed */
+size_t bs_consumeleftovers(struct bytestream* bs);
+
 /* Read n bytes from stream. Return n.
  * Set stream to error state if not enough space or I/O error. */
 ssize_t prs_readblob(struct bytestream* bs,unsigned char* dest,size_t destlen);

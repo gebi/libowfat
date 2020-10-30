@@ -148,7 +148,7 @@ __writememsz__(2,3)
 ssize_t buffer_get_token_pred(buffer* b,char* x,size_t len,string_predicate p);
 
 char *buffer_peek(buffer* b);
-void buffer_seek(buffer* b,size_t len);
+ssize_t buffer_seek(buffer* b,size_t len);
 
 #define buffer_PEEK(s) ( (s)->x + (s)->p )
 #define buffer_SEEK(s,len) ( (s)->p += (len) )
