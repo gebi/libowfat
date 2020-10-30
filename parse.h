@@ -85,6 +85,12 @@ int bs_err(struct bytestream* bs);
 
 /* Can we read this much more bytes from the bytestream? */
 int bs_capacitycheck(struct bytestream* bs,size_t capacity);
+/* Like bs_capacitycheck but will set stream to error state on fail */
+int bs_capacityassert(struct bytestream* bs,size_t capacity);
+
+/* Read n bytes from stream. Return n.
+ * Set stream to error state if not enough space or I/O error. */
+size_t prs_readblob(struct bytestream* bs,unsigned char* dest,size_t destlen);
 
 uint16_t prs_u16(struct bytestream* bs);
 uint16_t prs_u16_big(struct bytestream* bs);
