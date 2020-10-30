@@ -90,7 +90,7 @@ int bs_capacityassert(struct bytestream* bs,size_t capacity);
 
 /* Read n bytes from stream. Return n.
  * Set stream to error state if not enough space or I/O error. */
-size_t prs_readblob(struct bytestream* bs,unsigned char* dest,size_t destlen);
+ssize_t prs_readblob(struct bytestream* bs,unsigned char* dest,size_t destlen);
 
 uint16_t prs_u16(struct bytestream* bs);
 uint16_t prs_u16_big(struct bytestream* bs);
