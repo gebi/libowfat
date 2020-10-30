@@ -125,6 +125,7 @@ __writememsz__(2,3)
 ssize_t buffer_get(buffer* b,char* x,size_t len);
 ssize_t buffer_feed(buffer* b);
 ssize_t buffer_getc(buffer* b,char* x);
+ssize_t buffer_peekc(buffer* b,char* x);
 __writememsz__(2,3)
 ssize_t buffer_getn(buffer* b,char* x,size_t len);
 
