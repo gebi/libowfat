@@ -36,3 +36,48 @@ ssize_t prs_readblob(struct bytestream* bs,unsigned char* dest,size_t destlen) {
 
     return r;
 }
+
+#ifdef UNITTEST
+#include <assert.h>
+
+#undef UNITTEST
+#include "buffer/bs_get.c"
+#include "buffer/bs_err.c"
+#include "buffer/bs_capacityassert.c"
+#include "buffer/bs_init_iobuf_size.c"
+#include "buffer/bs_init_membuf.c"
+
+#include "buffer/buffer_get.c"
+#include "buffer/buffer_getc.c"
+#include "buffer/buffer_feed.c"
+#include "buffer/buffer_stubborn2.c"
+#include "byte/byte_copy.c"
+#include "open/open_read.c"
+
+int main() {
+  struct bytestream bs = BS_FROM_MEMBUF("\x34\x12", 2);
+  char buf[42];
+  assert(prs_readblob(&bs, buf, 2) == 2);
+  assert(bs_err(&bs) == 0);
+  assert(!memcmp(buf,"\x34\x12",2));
+
+  assert(prs_readblob(&bs, buf, 1) == -1);
+  assert(bs_err(&bs));
+
+  // now try to provoke integer overflow
+  bs_init_membuf(&bs, "\x34\x12", 2);
+  assert(bs_get(&bs) == 0x34);
+  assert(prs_readblob(&bs, buf, (size_t)-1) == -1);
+  // a bad implementation would add 0xffffffff to the 1 we already read and wrap to 0
+  // our code makes sure not to wrap and also limits the length of the
+  // blob to max_ssize_t (0x7fffffff).
+  assert(bs_err(&bs));
+
+  int fd = open_read("Makefile");
+  assert(fd!=-1);
+  buffer b = BUFFER_INIT(read, fd, buf+32, 10);
+  bs_init_iobuf_size(&bs, &b, 100);
+  assert(prs_readblob(&bs, buf, 20) == 20);	// make sure we can read a 20 byte blob at once even if the iobuf buffer size is smaller
+  // strace will show two read calls here
+}
+#endif

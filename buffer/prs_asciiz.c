@@ -45,6 +45,7 @@ ssize_t prs_asciiz(struct bytestream* bs, char* dest, size_t len) {
 #undef UNITTEST
 #include "buffer/bs_init_membuf.c"
 #include "buffer/bs_get.c"
+#include "buffer/bs_err.c"
 #include "buffer/bs_peek.c"
 
 // we use membuf here, mock buffer stuff away

@@ -9,6 +9,13 @@ void bs_init_membuf(struct bytestream* bs,const unsigned char* membuf,size_t len
 
 #ifdef UNITTEST
 #include <assert.h>
+
+#undef UNITTEST
+#include "buffer/bs_get.c"
+#include "buffer/bs_err.c"
+
+ssize_t buffer_getc(buffer* b,char* c) { return -1; }
+
 int main() {
   static struct bytestream bs;
   bs_init_membuf(&bs, "fnord\n", 6);

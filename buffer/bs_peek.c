@@ -40,6 +40,17 @@ unsigned char bs_peek(struct bytestream* bs) {
 #ifdef UNITTEST
 #include <assert.h>
 
+#undef UNITTEST
+#include "buffer/bs_err.c"
+#include "buffer/bs_get.c"
+#include "buffer/buffer_init_staticcontents.c"
+#include "buffer/bs_init_iobuf.c"
+#include "buffer/bs_init_iobuf_size.c"
+#include "buffer/buffer_peekc.c"
+#include "buffer/buffer_getc.c"
+#include "buffer/buffer_feed.c"
+#include "buffer/buffer_stubborn2.c"
+
 int main() {
   struct bytestream bs = BS_FROM_MEMBUF("fx", 1);
 

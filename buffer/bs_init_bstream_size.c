@@ -19,6 +19,7 @@ void bs_init_bstream_size(struct bytestream* bs,struct bytestream* other,size_t 
 
 #undef UNITTEST
 #include "buffer/bs_get.c"
+#include "buffer/bs_err.c"
 #include "buffer/bs_capacityassert.c"
 #include "buffer/bs_init_membuf.c"
 

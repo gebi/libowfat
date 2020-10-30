@@ -38,12 +38,17 @@ unsigned char bs_get(struct bytestream* bs) {
   return r;
 }
 
-int bs_err(struct bytestream* bs) {
-  return (bs->cur > bs->max);
-}
-
 #ifdef UNITTEST
 #include <assert.h>
+
+#undef UNITTEST
+#include "buffer/bs_err.c"
+#include "buffer/buffer_init_staticcontents.c"
+#include "buffer/bs_init_iobuf.c"
+#include "buffer/bs_init_iobuf_size.c"
+#include "buffer/buffer_getc.c"
+#include "buffer/buffer_feed.c"
+#include "buffer/buffer_stubborn2.c"
 
 int main() {
   struct bytestream bs = BS_FROM_MEMBUF("fnord\nx", 6);
