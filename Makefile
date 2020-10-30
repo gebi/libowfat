@@ -74,6 +74,32 @@ iarray_free.o: array/iarray_free.c iarray.h uint64.h
 iarray_get.o: array/iarray_get.c iarray.h uint64.h
 iarray_init.o: array/iarray_init.c iarray.h uint64.h
 iarray_length.o: array/iarray_length.c iarray.h uint64.h
+bs_capacityassert.o: buffer/bs_capacityassert.c parse.h libowfat/buffer.h \
+ libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+bs_capacitycheck.o: buffer/bs_capacitycheck.c parse.h libowfat/buffer.h \
+ libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+bs_capacityleft.o: buffer/bs_capacityleft.c parse.h libowfat/buffer.h \
+ libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+bs_consumeleftovers.o: buffer/bs_consumeleftovers.c parse.h \
+ libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+bs_err.o: buffer/bs_err.c parse.h libowfat/buffer.h libowfat/uint16.h \
+ libowfat/uint32.h libowfat/uint64.h
+bs_get.o: buffer/bs_get.c parse.h libowfat/buffer.h libowfat/uint16.h \
+ libowfat/uint32.h libowfat/uint64.h
+bs_init_bstream_size.o: buffer/bs_init_bstream_size.c parse.h \
+ libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+bs_init_iobuf.o: buffer/bs_init_iobuf.c parse.h libowfat/buffer.h \
+ libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+bs_init_iobuf_size.o: buffer/bs_init_iobuf_size.c parse.h \
+ libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+bs_init_membuf.o: buffer/bs_init_membuf.c parse.h libowfat/buffer.h \
+ libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+bs_nomoredataassert.o: buffer/bs_nomoredataassert.c parse.h \
+ libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+bs_peek.o: buffer/bs_peek.c parse.h libowfat/buffer.h libowfat/uint16.h \
+ libowfat/uint32.h libowfat/uint64.h
+bs_skip.o: buffer/bs_skip.c parse.h libowfat/buffer.h libowfat/uint16.h \
+ libowfat/uint32.h libowfat/uint64.h
 buffer_0.o: buffer/buffer_0.c buffer.h
 buffer_0small.o: buffer/buffer_0small.c buffer.h
 buffer_1.o: buffer/buffer_1.c buffer.h
@@ -105,9 +131,14 @@ buffer_getn.o: buffer/buffer_getn.c byte.h buffer.h
 buffer_getnewline_sa.o: buffer/buffer_getnewline_sa.c stralloc.h buffer.h
 buffer_init.o: buffer/buffer_init.c buffer.h
 buffer_init_free.o: buffer/buffer_init_free.c buffer.h
+buffer_init_staticcontents.o: buffer/buffer_init_staticcontents.c \
+ buffer.h mmap.h
+buffer_init_staticcontents_free.o: \
+ buffer/buffer_init_staticcontents_free.c buffer.h mmap.h
 buffer_mmapread.o: buffer/buffer_mmapread.c buffer.h mmap.h
 buffer_munmap.o: buffer/buffer_munmap.c buffer.h
 buffer_peek.o: buffer/buffer_peek.c buffer.h
+buffer_peekc.o: buffer/buffer_peekc.c byte.h buffer.h
 buffer_put.o: buffer/buffer_put.c buffer.h
 buffer_put8long.o: buffer/buffer_put8long.c buffer.h fmt.h byte.h
 buffer_putalign.o: buffer/buffer_putalign.c byte.h buffer.h
@@ -140,12 +171,32 @@ errmsg_puts.o: buffer/errmsg_puts.c errmsg.h errmsg_int.h str.h
 errmsg_warn.o: buffer/errmsg_warn.c errmsg.h errmsg_int.h str.h
 errmsg_warnsys.o: buffer/errmsg_warnsys.c errmsg.h errmsg_int.h str.h
 errmsg_write.o: buffer/errmsg_write.c errmsg.h errmsg_int.h
+prs_asciiz.o: buffer/prs_asciiz.c parse.h libowfat/buffer.h \
+ libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+prs_asciiz_fixedlen.o: buffer/prs_asciiz_fixedlen.c parse.h \
+ libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+prs_readblob.o: buffer/prs_readblob.c parse.h libowfat/buffer.h \
+ libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+prs_u16.o: buffer/prs_u16.c parse.h libowfat/buffer.h libowfat/uint16.h \
+ libowfat/uint32.h libowfat/uint64.h
+prs_u16_big.o: buffer/prs_u16_big.c parse.h libowfat/buffer.h \
+ libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+prs_u32.o: buffer/prs_u32.c parse.h libowfat/buffer.h libowfat/uint16.h \
+ libowfat/uint32.h libowfat/uint64.h
+prs_u32_big.o: buffer/prs_u32_big.c parse.h libowfat/buffer.h \
+ libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+prs_u64.o: buffer/prs_u64.c parse.h libowfat/buffer.h libowfat/uint16.h \
+ libowfat/uint32.h libowfat/uint64.h
+prs_u64_big.o: buffer/prs_u64_big.c parse.h libowfat/buffer.h \
+ libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
 byte_chr.o: byte/byte_chr.c byte.h
 byte_copy.o: byte/byte_copy.c byte.h
 byte_copyr.o: byte/byte_copyr.c byte.h
 byte_diff.o: byte/byte_diff.c byte.h
 byte_equal_notimingattack.o: byte/byte_equal_notimingattack.c byte.h
 byte_rchr.o: byte/byte_rchr.c byte.h
+byte_start.o: byte/byte_start.c byte.h
+byte_starts.o: byte/byte_starts.c byte.h
 byte_zero.o: byte/byte_zero.c byte.h
 case_diffb.o: case/case_diffb.c case.h
 case_diffs.o: case/case_diffs.c case.h
@@ -706,7 +757,7 @@ fmt_html.o: textcode/fmt_html.c fmt.h byte.h textcode.h str.h \
 fmt_html_tagarg.o: textcode/fmt_html_tagarg.c fmt.h byte.h textcode.h \
  str.h haveinline.h
 fmt_jsonescape.o: textcode/fmt_jsonescape.c fmt.h byte.h textcode.h str.h \
- scan.h haveinline.h
+ scan.h case.h haveinline.h
 fmt_ldapescape.o: textcode/fmt_ldapescape.c fmt.h byte.h textcode.h \
  haveinline.h str.h
 fmt_ldapescape2.o: textcode/fmt_ldapescape2.c fmt.h byte.h textcode.h \
@@ -770,12 +821,13 @@ winsock2errno.o: unix/winsock2errno.c
 t.o: t.c fmt.h byte.h scan.h str.h uint16.h uint32.h stralloc.h socket.h \
  buffer.h ip4.h ip6.h mmap.h open.h textcode.h dns.h iopause.h taia.h \
  tai.h uint64.h case.h errmsg.h iob.h libowfat/io.h libowfat/uint64.h \
- libowfat/taia.h libowfat/array.h safemult.h iarray.h critbit.h CAS.h \
- io_internal.h libowfat/iarray.h haveepoll.h havekqueue.h havedevpoll.h \
- havesigio.h
+ libowfat/taia.h libowfat/array.h safemult.h iarray.h critbit.h \
+ compiletimeassert.h parse.h libowfat/buffer.h libowfat/uint16.h \
+ libowfat/uint32.h libowfat/uint64.h CAS.h io_internal.h \
+ libowfat/iarray.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 BYTE_OBJS=byte_chr.o byte_copy.o byte_copyr.o byte_diff.o byte_equal_notimingattack.o byte_rchr.o byte_zero.o 
 FMT_OBJS=fmt_8long.o fmt_8longlong.o fmt_asn1derlength.o fmt_asn1dertag.o fmt_double.o fmt_escapecharc.o fmt_escapecharhtml.o fmt_escapecharjson.o fmt_escapecharquotedprintable.o fmt_escapecharquotedprintableutf8.o fmt_escapecharxml.o fmt_fill.o fmt_httpdate.o fmt_human.o fmt_humank.o fmt_iso8601.o fmt_long.o fmt_longlong.o fmt_minus.o fmt_netstring.o fmt_pad.o fmt_pb_double.o fmt_pb_float.o fmt_pb_int.o fmt_pb_sint.o fmt_pb_string.o fmt_pb_tag.o fmt_pb_type0_sint.o fmt_pb_type1_double.o fmt_pb_type1_fixed64.o fmt_pb_type2_string.o fmt_pb_type5_fixed32.o fmt_pb_type5_float.o fmt_plusminus.o fmt_str.o fmt_strm_internal.o fmt_strn.o fmt_tohex.o fmt_ulong.o fmt_ulong0.o fmt_ulonglong.o fmt_utf8.o fmt_varint.o fmt_xlong.o fmt_xlonglong.o fmt_xmlescape.o 
-SCAN_OBJS=scan_8int.o scan_8long.o scan_8longlong.o scan_8longn.o scan_8short.o scan_asn1derlength.o scan_asn1dertag.o scan_charsetnskip.o scan_double.o scan_fromhex.o scan_httpdate.o scan_int.o scan_iso8601.o scan_long.o scan_longlong.o scan_longn.o scan_netstring.o scan_noncharsetnskip.o scan_nonwhitenskip.o scan_pb_tag.o scan_pb_type0_sint.o scan_pb_type1_double.o scan_pb_type1_fixed64.o scan_pb_type2_stringlen.o scan_pb_type5_fixed32.o scan_pb_type5_float.o scan_plusminus.o scan_short.o scan_uint.o scan_ulong.o scan_ulonglong.o scan_ulongn.o scan_ushort.o scan_utf8.o scan_varint.o scan_whitenskip.o scan_xint.o scan_xlong.o scan_xlonglong.o scan_xlongn.o scan_xshort.o 
+SCAN_OBJS=scan_8int.o scan_8long.o scan_8longlong.o scan_8longn.o scan_8short.o scan_asn1derlength.o scan_asn1dertag.o scan_charsetnskip.o scan_double.o scan_fromhex.o scan_httpdate.o scan_int.o scan_iso8601.o scan_long.o scan_longlong.o scan_longn.o scan_netstring.o scan_noncharsetnskip.o scan_nonwhitenskip.o scan_pb_tag.o scan_pb_type0_sint.o scan_pb_type1_double.o scan_pb_type1_fixed64.o scan_pb_type2_stringlen.o scan_pb_type5_fixed32.o scan_pb_type5_float.o scan_plusminus.o scan_short.o scan_uint.o scan_ulong.o scan_ulonglong.o scan_ulongn.o scan_ushort.o scan_utf8.o scan_utf8_sem.o scan_varint.o scan_whitenskip.o scan_xint.o scan_xlong.o scan_xlonglong.o scan_xlongn.o scan_xshort.o 
 STR_OBJS=str_chr.o str_copy.o str_diff.o str_diffn.o str_len.o str_rchr.o str_start.o 
 UINT_OBJS=uint16_pack.o uint16_pack_big.o uint16_read.o uint16_read_big.o uint16_unpack.o uint16_unpack_big.o uint32_pack.o uint32_pack_big.o uint32_read.o uint32_read_big.o uint32_unpack.o uint32_unpack_big.o uint64_pack.o uint64_pack_big.o uint64_read.o uint64_read_big.o uint64_unpack.o uint64_unpack_big.o 
 OPEN_OBJS=open_append.o open_excl.o open_read.o open_rw.o open_trunc.o open_write.o openreadclose.o readclose.o 
@@ -790,7 +842,7 @@ DNS_OBJS=dns_dfd.o dns_domain.o dns_dtda.o dns_ip.o dns_ip6.o dns_ipq.o dns_ipq6
 CASE_OBJS=case_diffb.o case_diffs.o case_lowerb.o case_lowers.o case_starts.o 
 MULT_OBJS=imult16.o imult32.o imult64.o range_arrayinbuf.o range_str2inbuf.o range_str4inbuf.o range_strinbuf.o umult16.o umult32.o umult64.o 
 ARRAY_OBJS=array_allocate.o array_bytes.o array_cat.o array_cat0.o array_catb.o array_cate.o array_cats.o array_cats0.o array_equal.o array_fail.o array_get.o array_length.o array_reset.o array_start.o array_trunc.o array_truncate.o iarray_allocate.o iarray_free.o iarray_get.o iarray_init.o iarray_length.o 
-IO_OBJS=io_appendfile.o io_block.o io_canread.o io_canwrite.o io_check.o io_close.o io_closeonexec.o io_createfile.o io_debugstring.o io_dontwantread.o io_dontwantwrite.o io_eagain.o io_eagain_read.o io_eagain_write.o io_fd.o io_finishandshutdown.o io_getcookie.o io_mmapwritefile.o io_nonblock.o io_passfd.o io_pipe.o io_readfile.o io_readwritefile.o io_receivefd.o io_sendfile.o io_setcookie.o io_sigpipe.o io_socketpair.o io_timedout.o io_timeout.o io_timeouted.o io_tryread.o io_tryreadtimeout.o io_trywrite.o io_trywritetimeout.o io_wait.o io_waitread.o io_waituntil.o io_waituntil2.o io_waitwrite.o io_wantread.o io_wantwrite.o iob_addbuf.o iob_addbuf_free.o iob_addbuf_internal.o iob_addbuf_munmap.o iob_addfile.o iob_addfile_close.o iob_adds.o iob_adds_free.o iob_bytesleft.o iob_free.o iob_new.o iob_prefetch.o iob_reset.o iob_send.o iob_write.o 
+IO_OBJS=io_appendfile.o io_block.o io_canread.o io_canwrite.o io_check.o io_close.o io_closeonexec.o io_createfile.o io_debugstring.o io_dontwantread.o io_dontwantwrite.o io_eagain.o io_eagain_read.o io_eagain_write.o io_fd.o io_finishandshutdown.o io_getcookie.o io_mmapwritefile.o io_nonblock.o io_passfd.o io_pipe.o io_readfile.o io_readwritefile.o io_receivefd.o io_sendfile.o io_setcookie.o io_sigpipe.o io_socketpair.o io_timedout.o io_timeout.o io_timeouted.o io_tryread.o io_tryreadtimeout.o io_trywrite.o io_trywritetimeout.o io_wait.o io_waitread.o io_waituntil.o io_waituntil2.o io_waitwrite.o io_wantread.o io_wantwrite.o iob_addbuf.o iob_addbuf_free.o iob_addbuf_internal.o iob_addbuf_munmap.o iob_addfile.o iob_addfile_close.o iob_adds.o iob_adds_free.o iob_bytesleft.o iob_free.o iob_new.o iob_prefetch.o iob_reset.o iob_send.o iob_write.o iom_abort.o iom_add.o iom_init.o iom_wait.o 
 TEXTCODE_OBJS=base64.o base64url.o fmt_base64.o fmt_base64url.o fmt_cescape.o fmt_foldwhitespace.o fmt_hexdump.o fmt_html.o fmt_html_tagarg.o fmt_jsonescape.o fmt_ldapescape.o fmt_ldapescape2.o fmt_quotedprintable.o fmt_to_array.o fmt_to_sa.o fmt_tofrom_array.o fmt_urlencoded.o fmt_uuencoded.o fmt_xml.o fmt_yenc.o scan_base64.o scan_base64url.o scan_cescape.o scan_hexdump.o scan_html.o scan_jsonescape.o scan_ldapescape.o scan_quotedprintable.o scan_to_array.o scan_to_sa.o scan_tofrom_array.o scan_urlencoded.o scan_uuencoded.o scan_yenc.o 
 CDB_OBJS=cdb.o cdb_hash.o cdb_make.o cdb_traverse.o 
 CRITBIT_OBJS=critbit.o 
@@ -854,13 +906,14 @@ clean:
 	rm -f *.o *.obj *.a *.lib *.da *.bbg *.bb core t haveip6.h haven2i.h \
 havesl.h haveinline.h iopause.h select.h havekqueue.h haveepoll.h \
 libepoll havesigio.h havebsdsf.h havesendfile.h havescope.h havedevpoll.h \
-dep libsocket havealloca.h haveuint128.h entities.h ent havepread.h
+dep libsocket havealloca.h haveuint128.h entities.h ent havepread.h \
+*.gcda *.gcno
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
 uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h \
 openreadclose.h readclose.h ndelay.h array.h io.h safemult.h iob.h havealloca.h \
 errmsg.h cdb.h cdb_make.h rangecheck.h iarray.h va_narg.h isset.h \
-compiletimeassert.h critbit.h
+compiletimeassert.h critbit.h parse.h
 
 libowfat:
 	-mkdir libowfat
@@ -1033,7 +1086,7 @@ windoze:
 	$(MAKE) DIET= CROSS=i686-mingw32-
 
 windoze64:
-	$(MAKE) DIET= CROSS=x86_64-mingw32-
+	$(MAKE) DIET= CROSS=x86_64-w64-mingw32-
 
 update:
 	dl -n http://www.w3.org/TR/html5/entities.json
@@ -1042,3 +1095,26 @@ entities.h: entities.json ent
 	./ent
 
 scan_html.o: entities.h
+
+sa1:
+	$(MAKE) clean
+	scan-build $(MAKE) DIET= -j8
+
+sa2:
+	$(MAKE) clean
+	$(MAKE) DIET= CC="gcc -fanalyzer" -j8
+
+UNITTESTS=$(shell grep -l UNITTEST */*.c)
+TESTS=$(patsubst %.c,test_%,$(notdir $(UNITTESTS)))
+
+test_%:
+	$(CC) -g -o $@ $< -DUNITTEST -I. -fprofile-arcs -ftest-coverage $(LDFLAGS)
+	./$@
+	rm -f $@
+
+test_scan_html: entities.h
+
+check2: haveuint128.h haveinline.h entities.h
+	for i in $(UNITTESTS); do $(CC) -Wall -fprofile-arcs -ftest-coverage -g -o t -DUNITTEST $$i -I. $(LDFLAGS) && ./t || echo FAIL $$i ; done
+
+check: haveuint128.h haveinline.h $(TESTS)
