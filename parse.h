@@ -105,6 +105,9 @@ int bs_nomoredataassert(struct bytestream* bs);
 /* Return number of bytes consumed */
 size_t bs_consumeleftovers(struct bytestream* bs);
 
+/* Skip n bytes, return number skipped (or 0 if error) */
+size_t bs_skip(struct bytestream* bs, size_t n);
+
 /* Read n bytes from stream. Return n.
  * Set stream to error state if not enough space or I/O error. */
 ssize_t prs_readblob(struct bytestream* bs,unsigned char* dest,size_t destlen);
