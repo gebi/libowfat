@@ -43,7 +43,7 @@ int main() {
   assert(bs_get(&bs) == 0x78);		// and we should not have overstepped
 
   // now check the range checking in bs_init_bstream_size itself
-  bs_init_membuf(&bs, "\x12\x34\x56\x78", 4);
+  bs_init_membuf(&bs, (const unsigned char*)"\x12\x34\x56\x78", 4);
 
   bs_init_bstream_size(&sub, &bs, 4);	// tight fit
   assert(bs_err(&sub) == 0);

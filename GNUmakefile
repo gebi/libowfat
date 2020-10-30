@@ -202,7 +202,8 @@ clean:
 	rm -f *.o *.obj *.a *.lib *.da *.bbg *.bb core t haveip6.h haven2i.h \
 havesl.h haveinline.h iopause.h select.h havekqueue.h haveepoll.h \
 libepoll havesigio.h havebsdsf.h havesendfile.h havescope.h havedevpoll.h \
-dep libsocket havealloca.h haveuint128.h entities.h ent havepread.h
+dep libsocket havealloca.h haveuint128.h entities.h ent havepread.h \
+*.gcda *.gcno
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
 uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h \
@@ -402,4 +403,4 @@ sa2:
 UNITTESTS=$(shell grep -l UNITTEST */*.c)
 
 check: haveuint128.h haveinline.h entities.h
-	for i in $(UNITTESTS); do $(DIET) $(CCC) -g -o t -DUNITTEST $$i -I. $(LDFLAGS) && ./t || echo FAIL $$i ; done
+	for i in $(UNITTESTS); do $(CC) -Wall -fprofile-arcs -ftest-coverage -g -o t -DUNITTEST $$i -I. $(LDFLAGS) && ./t || echo FAIL $$i ; done

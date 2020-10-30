@@ -26,6 +26,7 @@
 #include "critbit.h"
 #include <assert.h>
 #include "compiletimeassert.h"
+#include "parse.h"
 
 #include "CAS.h"
 
@@ -71,7 +72,12 @@ int ret1(const char* s,void* foo) {
 int main(int argc,char* argv[]) {
   (void)argc;
   (void)argv;
+  struct bytestream bs1 = BS_FROM_MEMBUF("fnord", 5);
+  struct bytestream bs2 = BS_FROM_BUFFER(buffer_0);
+#if 0
   compiletimeassert(sizeof(char) < sizeof(int));
+  io_wait();
+#endif
 #if 0
   char buf[1024];
   size_t n;
@@ -121,7 +127,7 @@ int main(int argc,char* argv[]) {
   printf("%p\n",iarray_allocate(&i,0));
   printf("%p\n",iarray_get(&i,0));
 #endif
-#if 1
+#if 0
   char buf[1024];
   size_t l;
   unsigned char c;

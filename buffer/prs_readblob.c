@@ -56,7 +56,7 @@ ssize_t prs_readblob(struct bytestream* bs,unsigned char* dest,size_t destlen) {
 
 int main() {
   struct bytestream bs = BS_FROM_MEMBUF("\x34\x12", 2);
-  char buf[42];
+  unsigned char buf[42];
   assert(prs_readblob(&bs, buf, 2) == 2);
   assert(bs_err(&bs) == 0);
   assert(!memcmp(buf,"\x34\x12",2));
@@ -65,7 +65,7 @@ int main() {
   assert(bs_err(&bs));
 
   // now try to provoke integer overflow
-  bs_init_membuf(&bs, "\x34\x12", 2);
+  bs_init_membuf(&bs, (const unsigned char*)"\x34\x12", 2);
   assert(bs_get(&bs) == 0x34);
   assert(prs_readblob(&bs, buf, (size_t)-1) == -1);
   // a bad implementation would add 0xffffffff to the 1 we already read and wrap to 0

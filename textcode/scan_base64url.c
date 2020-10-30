@@ -38,7 +38,7 @@ size_t scan_base64url(const char *src,char *dest,size_t *destlen) {
 
 int main() {
   char buf[100];
-  size_t i,l;
+  size_t l;
   /* check that we don't consume padding */
   memset(buf,0,10); assert(scan_base64url("Zm5vcmQ=",buf,&l)==7 && l==5 && !memcmp(buf,"fnord",6));
   /* check that we don't insist on the padding */

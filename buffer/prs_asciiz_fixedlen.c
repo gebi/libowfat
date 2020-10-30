@@ -50,7 +50,7 @@ int main() {
   assert(!memcmp(buf,"fnord\n\0\0",8));	// returned string should be "fnord\n" and the rest filled with 0 bytes
   assert(!bs_err(&bs));
 
-  bs_init_membuf(&bs, "fnord\n\0x", 8);
+  bs_init_membuf(&bs, (const unsigned char*)"fnord\n\0x", 8);
   assert(prs_asciiz_fixedlen(&bs, buf, 5) == 4);	// no 0 terminator in first 4 bytes
   assert(!memcmp(buf,"fnor",5));	// expect 4 bytes + 0 terminator in dest buf
   assert(bs_get(&bs) == 'd');		// 0 terminator in buf was artificial, 'd' was not consumed

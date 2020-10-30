@@ -59,7 +59,7 @@ int main() {
   assert(!memcmp(buf,"fnord\n",7));	// returned string should be "fnord\n" with 0 terminator
   assert(bs_get(&bs) == 'x');		// should have consumed the 0 terminator from bytestream
 
-  bs_init_membuf(&bs, "fnord\n\0x", 8);
+  bs_init_membuf(&bs, (const unsigned char*)"fnord\n\0x", 8);
   assert(prs_asciiz(&bs, buf, 5) == -1);	// no 0 terminator in first 5 bytes, expect error
   assert(!memcmp(buf,"fnor",5));		// expect 4 bytes + 0 terminator in dest buf
   assert(bs_err(&bs));			// bytestream should be in error state now
