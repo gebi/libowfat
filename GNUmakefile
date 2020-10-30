@@ -381,7 +381,7 @@ windoze:
 	$(MAKE) DIET= CROSS=i686-mingw32-
 
 windoze64:
-	$(MAKE) DIET= CROSS=x86_64-mingw32-
+	$(MAKE) DIET= CROSS=x86_64-w64-mingw32-
 
 update:
 	dl -n http://www.w3.org/TR/html5/entities.json
@@ -398,3 +398,8 @@ sa1:
 sa2:
 	$(MAKE) clean
 	$(MAKE) DIET= CC="gcc -fanalyzer" -j8
+
+UNITTESTS=$(shell grep -l UNITTEST */*.c)
+
+check: haveuint128.h haveinline.h entities.h
+	for i in $(UNITTESTS); do $(DIET) $(CCC) -g -o t -DUNITTEST $$i -I. $(LDFLAGS) && ./t || echo FAIL $$i ; done

@@ -93,6 +93,13 @@ noneed:
 #include <assert.h>
 #include <string.h>
 
+#undef UNITTEST
+#include "fmt/fmt_tohex.c"
+#include "case/case_diffb.c"
+#include "fmt/fmt_utf8.c"
+#include "scan/scan_utf8_sem.c"
+#include "scan/scan_utf8.c"
+
 int main() {
   char buf[100];
   /* test utf-8 pass-through and correct encoding of \t */

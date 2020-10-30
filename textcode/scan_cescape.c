@@ -77,6 +77,7 @@ error:
 
 #ifdef UNITTEST
 #include <assert.h>
+#include <string.h>
 #undef UNITTEST
 #include <scan/scan_fromhex.c>
 #include <fmt/fmt_utf8.c>
