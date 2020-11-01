@@ -83,6 +83,9 @@ unsigned char bs_peek(struct bytestream* bs);
 /* was there a read error or did we attempt to read more than maxlen bytes? */
 int bs_err(struct bytestream* bs);
 
+/* mark bytestream as erroneous */
+void bs_seterrorstate(struct bytestream* b);
+
 /* Can we read this much more bytes from the bytestream? */
 /* returns 1 for yes, 0 for no */
 int bs_capacitycheck(struct bytestream* bs,size_t capacity);
