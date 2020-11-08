@@ -5,6 +5,8 @@
 #include <inttypes.h>
 #include <stddef.h>
 
+#include <libowfat/compiler.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -105,16 +107,20 @@ __static inline __gnuinline int range_bufinbuf(const void* buf1,size_t len1,cons
 
 /* does an array of "elements" members of size "membersize" starting at
  * "arraystart" lie inside buf1[0..len-1]? */
+att_const
 int range_arrayinbuf(const void* buf,size_t len,
 		     const void* arraystart,size_t elements,size_t membersize);
 
 /* does an ASCIIZ string starting at "ptr" lie in buf[0..len-1]? */
+att_const
 int range_strinbuf(const void* buf,size_t len,const void* stringstart);
 
 /* does an UTF-16 string starting at "ptr" lie in buf[0..len-1]? */
+att_const
 int range_str2inbuf(const void* buf,size_t len,const void* stringstart);
 
 /* does an UTF-32 string starting at "ptr" lie in buf[0..len-1]? */
+att_const
 int range_str4inbuf(const void* buf,size_t len,const void* stringstart);
 
 

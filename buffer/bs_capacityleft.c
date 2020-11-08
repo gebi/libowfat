@@ -1,6 +1,6 @@
 #include "parse.h"
 
-size_t bs_capacityleft(struct bytestream* bs) {
+size_t bs_capacityleft(const struct bytestream* bs) {
   if (bs->cur>=bs->max) 	// if EOF or error, return 0
     return 0;
   return bs->max - bs->cur;

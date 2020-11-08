@@ -13,8 +13,9 @@
  * frames as possible.  On Linux it will also use the TCP_CORK socket
  * option. */
 
-#include "libowfat/io.h"
-#include "libowfat/array.h"
+#include <libowfat/io.h>
+#include <libowfat/array.h>
+#include <libowfat/compiler.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,10 +28,20 @@ typedef struct io_batch {
 } io_batch;
 
 io_batch* iob_new(int hint_entries);
+
+att_readn(2,3)
 int iob_addbuf(io_batch* b,const void* buf,uint64 n);
+
+att_readn(2,3)
 int iob_addbuf_free(io_batch* b,const void* buf,uint64 n);
+
+att_readn(2,3)
 int iob_addbuf_munmap(io_batch* b,const void* buf,uint64 n);
+
+att_read(2)
 int iob_adds(io_batch* b,const char* s);
+
+att_read(2)
 int iob_adds_free(io_batch* b,const char* s);
 int iob_addfile(io_batch* b,int64 fd,uint64 off,uint64 n);
 int iob_addfile_close(io_batch* b,int64 fd,uint64 off,uint64 n);

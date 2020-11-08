@@ -37,6 +37,8 @@
 
 // #define atomic_add(mem,val) asm volatile ("lock; add%z0 %1, %0": "+m" (mem): "ir" (val))
 
+// compiletimeassert(sizeof(long) == 2);
+
 int64 writecb(int64 fd,const void* buf,uint64 n) {
   (void)fd;
   (void)buf;

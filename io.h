@@ -4,8 +4,9 @@
 
 /* http://cr.yp.to/lib/io.html */
 
-#include "uint64.h"
-#include "taia.h"
+#include <libowfat/uint64.h>
+#include <libowfat/taia.h>
+#include <libowfat/compiler.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,33 +14,52 @@ extern "C" {
 
 /* like open(s,O_RDONLY) */
 /* return 1 if ok, 0 on error */
-int io_readfile(int64* d,const char* s);
+att_read(2)
+att_write(1)
+int io_readfile(int64* d,const char* filename);
+
 /* like open(s,O_WRONLY|O_CREAT|O_TRUNC,0600) */
 /* return 1 if ok, 0 on error */
-int io_createfile(int64* d,const char* s);
+att_read(2)
+att_write(1)
+int io_createfile(int64* d,const char* filename);
+
 /* like open(s,O_RDWR) */
 /* return 1 if ok, 0 on error */
-int io_readwritefile(int64* d,const char* s);
+att_read(2)
+att_write(1)
+int io_readwritefile(int64* d,const char* filename);
+
 /* like open(s,O_WRONLY|O_APPEND|O_CREAT,0600) */
 /* return 1 if ok, 0 on error */
-int io_appendfile(int64* d,const char* s);
+att_read(2)
+att_write(1)
+int io_appendfile(int64* d,const char* filename);
+
 /* like pipe(d) */
 /* return 1 if ok, 0 on error */
+att_write(1)
 int io_pipe(int64* d);
+
 /* like socketpair() */
 /* return 1 if ok, 0 on error */
+att_write(1)
 int io_socketpair(int64* d);
 
 /* non-blocking read(), -1 for EAGAIN and -3+errno for other errors */
+att_writen(2, 3)
 int64 io_tryread(int64 d,char* buf,int64 len);
 
 /* blocking read(), with -3 instead of -1 for errors */
+att_writen(2, 3)
 int64 io_waitread(int64 d,char* buf,int64 len);
 
 /* non-blocking write(), -1 for EAGAIN and -3+errno for other errors */
+att_readn(2, 3)
 int64 io_trywrite(int64 d,const char* buf,int64 len);
 
 /* blocking write(), with -3 instead of -1 for errors */
+att_readn(2, 3)
 int64 io_waitwrite(int64 d,const char* buf,int64 len);
 
 /* modify timeout attribute of file descriptor */
@@ -47,10 +67,12 @@ void io_timeout(int64 d,tai6464 t);
 
 /* like io_tryread but will return -2,errno=ETIMEDOUT if d has a timeout
  * associated and it is passed without input being there */
+att_writen(2, 3)
 int64 io_tryreadtimeout(int64 d,char* buf,int64 len);
 
 /* like io_trywrite but will return -2,errno=ETIMEDOUT if d has a timeout
  * associated and it is passed without being able to write */
+att_readn(2, 3)
 int64 io_trywritetimeout(int64 d,const char* buf,int64 len);
 
 void io_wantread(int64 d);
@@ -95,7 +117,9 @@ int io_fd(int64 d);		/* use this for sockets before you called connect() or acce
 int io_fd_canwrite(int64 d);	/* use this for connected sockets (assumes socket is writable) */
 int io_fd_flags(int64 d,int flags);	/* can be used to tell io_fd to skip one syscall */
 
+att_write(2)
 void io_setcookie(int64 d,void* cookie);
+
 void* io_getcookie(int64 d);
 
 /* put descriptor in non-blocking mode */
@@ -128,9 +152,11 @@ int64 io_receivefd(int64 sock);
 int io_starteventloopthread(unsigned int threads);
 
 #define HAVE_IO_QUEUEFORREAD
+
 /* Artificially queue a file descriptor as readable.
  * The next call to io_canread will return this descriptor. */
 int io_queueforread(int64 d);
+
 /* Artificially queue a file descriptor as writable.
  * The next call to io_canread will return this descriptor. */
 int io_queueforwrite(int64 d);

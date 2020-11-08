@@ -1,11 +1,17 @@
 
-#if __STDC_VERSION__ >= 201710L
+#ifdef __clang__
 
-#define compiletimeassert(cond) _Static_assert(cond)
+// clang already includes the condition in the error message and emits
+// an additional warning here if we use the variant without message
+#define compiletimeassert(cond) _Static_assert(cond,"")
+
+#elif __STDC_VERSION__ >= 201710L
+
+#define compiletimeassert(cond) _Static_assert(cond,#cond)
 
 #elif __STDC_VERSION__ >= 201112L
 
-#define compiletimeassert(cond) _Static_assert(cond,"")
+#define compiletimeassert(cond) _Static_assert(cond,#cond)
 
 #else
 

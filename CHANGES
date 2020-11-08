@@ -5,6 +5,7 @@
   add automated way to run unit test: make check
   add parse.h
   add bytestream abstraction for parsing data from a buffer or a file
+  add compiler.h to abstract gcc attributes
 
 0.32:
   remove OpenBSD #warning (obsd maintainer says no longer needed)
