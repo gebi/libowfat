@@ -25,6 +25,7 @@ ssize_t buffer_seek(buffer* b,size_t len) {
     while (len > 0) {
       ssize_t r = buffer_feed(b);
       if (r < 0) return -1;
+      if (r == 0) break;
       if ((size_t)r > len) r = len;	// can't happen
       len -= r;
       b->p = b->n = 0;
