@@ -17,8 +17,9 @@ ssize_t buffer_seek(buffer* b,size_t len) {
     len -= leftinbuf;
     b->p = 0;	// clear buffer
     b->n = 0;
+
     /* change position in underlying file */
-    if (b->fd != -1 &&
+    if (b->fd != -1 && len > b->a &&
         lseek(b->fd, len, SEEK_CUR) != -1) return len;
     // either we have no fd or input is not seekable
     // call read repeatedly
