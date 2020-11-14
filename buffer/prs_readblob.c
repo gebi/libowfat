@@ -29,7 +29,6 @@ ssize_t prs_readblob(struct bytestream* bs,unsigned char* dest,size_t destlen) {
     break;
 
   case BSTREAM:
-    bs->cur += destlen;
     r=prs_readblob(bs->u.bs, dest, destlen);
     if (r != (ssize_t)destlen) {
       bs->cur = 1;	// set bytestream to error state
