@@ -19,9 +19,11 @@ size_t bs_skip(struct bytestream* bs, size_t len) {
     break;
 
   case IOBUF:
+    bs->cur += len;
     return buffer_seek(bs->u.b, len);
 
   case BSTREAM:
+    bs->cur += len;
     return bs_skip(bs->u.bs, len);
 
   }
