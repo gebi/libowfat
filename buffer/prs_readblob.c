@@ -19,7 +19,13 @@ ssize_t prs_readblob(struct bytestream* bs,unsigned char* dest,size_t destlen) {
     break;
 
   case IOBUF:
-    buffer_get(bs->u.b, (char*)dest, destlen);
+    r=buffer_get(bs->u.b, (char*)dest, destlen);
+    if (r != (ssize_t)destlen) {
+      bs->cur = 1;	// set bytestream to error state
+      bs->max = 0;
+      return -1;
+    }
+    bs->cur += r;
     break;
 
   case BSTREAM:
@@ -30,6 +36,7 @@ ssize_t prs_readblob(struct bytestream* bs,unsigned char* dest,size_t destlen) {
       bs->max = 0;
       return -1;
     }
+    bs->cur += r;
     break;
 
   }
