@@ -31,7 +31,7 @@ static int posplus(struct cdb_make *c,uint32 len) {
   return 0;
 }
 
-int cdb_make_addend(struct cdb_make *c,unsigned long int keylen,unsigned long int datalen,uint32 h) {
+int cdb_make_addend(struct cdb_make *c,size_t keylen,size_t datalen,uint32 h) {
   struct cdb_hplist *head;
 
   head = c->head;
