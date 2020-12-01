@@ -24,6 +24,8 @@ picx32 piex32:
 CROSS=
 #CROSS=i686-mingw-
 CC?=gcc
+AR?=ar
+RANLIB?=ranlib
 CCC=$(CROSS)$(CC)
 WERROR=
 WARN=-W -Wall -Wextra $(WERROR)
@@ -172,8 +174,8 @@ $(TAIA_OBJS) $(TAI_OBJS) $(CASE_OBJS) $(ARRAY_OBJS) $(MULT_OBJS) \
 $(IO_OBJS) $(CDB_OBJS) $(CRITBIT_OBJS)
 
 libowfat.a: $(ALL_OBJS)
-	$(CROSS)ar cru $@ $(ALL_OBJS)
-	-$(CROSS)ranlib $@
+	$(CROSS)$(AR) cru $@ $(ALL_OBJS)
+	-$(CROSS)$(RANLIB) $@
 
 CFLAGS+=-I.
 CFLAGS_OPT+=-I.
@@ -185,8 +187,8 @@ CFLAGS_OPT+=-I.
 	$(DIET) $(CCC) -c $< $(CFLAGS)
 
 %.a:
-	$(CROSS)ar cru $@ $^
-	-$(CROSS)ranlib $@
+	$(CROSS)$(AR) cru $@ $^
+	-$(CROSS)$(RANLIB) $@
 
 t.o: t.c fmt.h scan.h str.h uint16.h uint32.h stralloc.h socket.h \
   buffer.h ip4.h ip6.h byte.h mmap.h open.h textcode.h dns.h iopause.h \
