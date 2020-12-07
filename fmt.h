@@ -291,6 +291,8 @@ size_t fmt_strm_internal(char* dest,...) noexcept;
 #endif
 #define fmt_strm_alloca(a,...) ({ size_t len=fmt_strm((char*)0,a,__VA_ARGS__)+1; char* c=(len<MAX_ALLOCA?alloca(len):0); if (c) c[fmt_strm(c,a,__VA_ARGS__)]=0; c;})
 
+#define fmt_strm_malloc(a,...) ({ size_t len=fmt_strm((char*)0,a,__VA_ARGS__)+1; char* c=(len<MAX_ALLOCA?malloc(len):0); if (c) c[fmt_strm(c,a,__VA_ARGS__)]=0; c;})
+
 #ifdef __cplusplus
 }
 #endif
