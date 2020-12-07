@@ -6,6 +6,9 @@
   add parse.h
   add bytestream abstraction for parsing data from a buffer or a file
   add compiler.h to abstract gcc attributes
+  add fmt_strm_malloc
+  add cross references to open_* and mmap_* man pages
+  add fmt_strm_alloca and fmt_strm_malloc man pages
 
 0.32:
   remove OpenBSD #warning (obsd maintainer says no longer needed)
