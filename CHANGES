@@ -9,6 +9,7 @@
   add fmt_strm_malloc
   add cross references to open_* and mmap_* man pages
   add fmt_strm_alloca and fmt_strm_malloc man pages
+  add buffer_init_allocbuf, buffer_init_read, buffer_init_write, buffer_init_read_allocbuf, buffer_init_write_allocbuf
 
 0.32:
   remove OpenBSD #warning (obsd maintainer says no longer needed)

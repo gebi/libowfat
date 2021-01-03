@@ -44,14 +44,38 @@ typedef struct buffer {
 #define BUFFER_OUTSIZE 8192
 
 /* Initialize a buffer with an existing memory area, which the buffer
- * will NOT take ownership of (i.e. won't free the memory when it's done */
+ * will NOT take ownership of (i.e. won't free the memory when it's done) */
 att_writen(4,5)
-void buffer_init(buffer* b,ssize_t (*op)(),int fd,char* y,size_t ylen);
+void buffer_init(buffer* b, ssize_t (*op)(), int fd, char* y, size_t ylen);
 
 /* Initialize a buffer with an existing memory area, which the buffer
  * WILL take ownership of (it will call free() on it when it's done) */
 att_writen(4,5)
 void buffer_init_free(buffer* b,ssize_t (*op)(),int fd,char* y,size_t ylen);
+
+/* Call buffer_init with op=read(), return 0.
+ * If fd==-1, return -1 instead, leaving b untouched. */
+att_writen(3,4)
+int buffer_init_read(buffer* b, int fd, char* y, size_t ylen);
+
+/* Call buffer_init with op=write(), return 0.
+ * If fd==-1, return -1 instead, leaving b untouched. */
+att_writen(3,4)
+int buffer_init_write(buffer* b, int fd, char* y, size_t ylen);
+
+/* Will allocate a buffer of size ylen and then call
+ * buffer_init_free(b, op, fd, thebuffer, ylen) on it.
+ * Returns 0 on success, -1 on error (setting errno).
+ * Passing fd==-1 is treated as error (so you can pass open*() for fd). */
+int buffer_init_allocbuf(buffer* b, ssize_t (*op)(), int fd, size_t ylen);
+
+/* Call buffer_init_allocbuf with op=read */
+int buffer_init_read_allocbuf(buffer* b, int fd, size_t ylen);
+
+/* Call buffer_init_allocbuf with op=read */
+int buffer_init_write_allocbuf(buffer* b, int fd, size_t ylen);
+
+
 
 /* Initialize a buffer without actual I/O.
  * You give it a pre-existing memory area.
