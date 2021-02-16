@@ -51,9 +51,7 @@ int64 io_canread() {
     if (e->closed) {
       /* The fd was previously closed, but there were still open events on it.
        * To prevent race conditions, we did not actually close the fd
-       * but only marked it as closed, so we can skip this event here
-       * and really closed it now. */
-      io_close(r);
+       * but only marked it as closed, so we can skip this event here */
       continue;
     }
 
