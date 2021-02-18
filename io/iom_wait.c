@@ -45,7 +45,7 @@ int iom_wait(iomux_t* c,int64* s,unsigned int* revents,unsigned long timeout) {
       if (c->h != c->l) {
 	/* set working back to 0 unless someone set it to -2 in the mean time (iom_abort) */
 	if (__sync_val_compare_and_swap(&c->working,1,0)==-2) return -2;
-	continue;
+	continue;	// this is why we have an outer for loop, so we don't need goto here
       }
 
       /* we have the job to fill the struct. */
