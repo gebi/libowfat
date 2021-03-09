@@ -80,6 +80,7 @@ static io_entry* io_fd_internal(int64 d,int flags) {
   if (e->inuse) return e;
   byte_zero(e,sizeof(io_entry));
   e->inuse=1;
+  e->next_defer=-1;
 #ifdef __MINGW32__
   e->mh=0;
 #else
