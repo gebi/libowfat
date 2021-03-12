@@ -120,24 +120,29 @@ int64 io_waituntil2(int64 milliseconds) {
   struct pollfd* p;
 #endif
   long i,j,r;
-  if (first_deferred!=-1) {
-    while (first_deferred!=-1) {
-      io_entry* e=iarray_get(&io_fds,first_deferred);
-      if (e && e->closed) {
-	e->closed=0;
-	close(first_deferred);
-	first_deferred=e->next_defer;
-	e->next_defer=-1;
-      } else
-	first_deferred=-1;	// can't happen
-    }
-  }
+
   /* if no interest in events has been registered, then return
    * immediately */
   if (!io_wanted_fds) return 0;
 
   /* only actually wait if all previous events have been dequeued */
   if (first_readable!=-1 || first_writeable!=-1) return 0;
+
+  /* There is a race if we get events on a socket, and someone calls
+   * io_close on the fd before they are handled. Those events are in a
+   * queue. So we try to detect if there are still queued events in
+   * io_close and then not actually close the descriptor but set
+   * e->closed so we can clean up the descriptor here. */
+  while (first_deferred!=-1) {
+    io_entry* e=iarray_get(&io_fds,first_deferred);
+    if (e && e->closed) {
+      e->closed=0;
+      close(first_deferred);
+      first_deferred=e->next_defer;
+      e->next_defer=-1;
+    } else
+      first_deferred=-1;	// can't happen
+  }
 
 #ifdef HAVE_EPOLL
   if (io_waitmode==EPOLL) {
