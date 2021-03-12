@@ -39,6 +39,17 @@ int socket_bind6_reuse(int s,const char* ip,uint16 port,uint32 scope_id);
 int socket_listen(int s,unsigned int backlog);
 int socket_accept4(int s,char* ip,uint16* port);
 int socket_accept6(int s,char* ip,uint16* port,uint32* scope_id);
+int socket_accept4_makenonblocking(int s,char* ip,uint16* port);
+int socket_accept6_makenonblocking(int s,char* ip,uint16* port,uint32* scope_id);
+int socket_accept4_setcloseonexec(int s,char* ip,uint16* port);
+int socket_accept6_setcloseonexec(int s,char* ip,uint16* port,uint32* scope_id);
+int socket_accept4_makenonblocking_setcloseonexec(int s,char* ip,uint16* port);
+int socket_accept6_makenonblocking_setcloseonexec(int s,char* ip,uint16* port,uint32* scope_id);
+
+/* These are internal wrappers around accept4, not meant for external use.
+ * flags can be SOCK_NONBLOCK or SOCK_CLOEXEC or both (defined in sys/socket.h) */
+int socket_accept4_flags(int s,char* ip,uint16* port, int flags);
+int socket_accept6_flags(int s,char* ip,uint16* port,uint32* scope_id, int flags);
 
 att_writen(2,3) att_nonnull(2)
 ssize_t socket_recv4(int s,char* buf,size_t len,char* ip,uint16* port);

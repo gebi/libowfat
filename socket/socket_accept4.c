@@ -42,7 +42,7 @@ incoming:
       fd=e->next_accept;
       e->next_accept=0;
       if (e->nonblock) {
-	if (io_fd(fd)) {
+	if (io_fd_canwrite(fd)) {
 	  io_entry* f=array_get(&io_fds,sizeof(io_entry),fd);
 	  if (f) {
 	    f->nonblock=1;
