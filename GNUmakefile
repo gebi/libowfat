@@ -353,13 +353,13 @@ socket_recv6.o socket_remote6.o socket_sctp6b.o socket_send6.o \
 socket_tcp6b.o socket_tcp6.o socket_udp6.o socket_accept6_flags.o: haveip6.h
 
 socket_accept6.o socket_connect6.o socket_local6.o socket_recv6.o \
-socket_remote6.o socket_send6.o: havescope.h
+socket_remote6.o socket_send6.o socket_accept6_flags.o: havescope.h
 
 socket_getifidx.o socket_getifname.o: haven2i.h
 
 socket_accept4.o socket_accept6.o socket_connected.o socket_local4.o \
 socket_local6.o socket_recv4.o socket_recv6.o socket_remote4.o \
-socket_remote6.o: havesl.h
+socket_remote6.o socket_accept6_flags.o: havesl.h
 
 dns_nd6.o fmt_xlong.o scan_xlong.o fmt_ip6_flat.o $(TEXTCODE_OBJS): haveinline.h
 
