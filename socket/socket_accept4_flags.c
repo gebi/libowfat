@@ -4,7 +4,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <errno.h>
-#include <sys/fcntl.h>
+#include <fcntl.h>
 #include <unistd.h>
 #endif
 #include <string.h>

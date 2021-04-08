@@ -4,7 +4,7 @@
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
-#include <sys/fcntl.h>
+#include <fcntl.h>
 #ifndef __MINGW32__
 #include <sys/socket.h>
 #include <netinet/in.h>
