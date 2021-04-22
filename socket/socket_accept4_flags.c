@@ -20,6 +20,8 @@
 #include "io_internal.h"
 #endif
 
+#include "haveaccept4.h"
+
 int socket_accept4_flags(int s, char *ip, uint16 *port, int flags) {
   struct sockaddr_in si;
   socklen_t len = sizeof si;
@@ -75,11 +77,15 @@ incoming:
   } else {
 #endif
 
+#ifdef HAVE_ACCEPT4
     static int noaccept4;	// auto initialized to 0
     if (noaccept4)
       fd=-1;
     else {
-      if ((fd=accept4(s,(void*) &si, &len, flags))==-1) {
+      int flg=0;
+      if (flags & SOCKET_NONBLOCK) flg += SOCK_NONBLOCK;
+      if (flags & SOCKET_CLOEXEC) flg += SOCK_CLOEXEC;
+      if ((fd=accept4(s,(void*) &si, &len, flg))==-1) {
 	if (errno != ENOSYS)
 	  return -1;
 	// if we get here, fd==-1 && errno==ENOSYS
@@ -87,12 +93,13 @@ incoming:
       }
     }
     if (fd==-1) {
+#endif
       int fl = 0;
       /* if we get here, the kernel did not support accept4. */
       if ((fd=accept(s,(void*) &si,&len))==-1)
 	return -1;
-      if (flags & SOCK_NONBLOCK) fl |= O_NDELAY;
-      if (flags & SOCK_CLOEXEC) fl |= O_CLOEXEC;
+      if (flags & SOCKET_NONBLOCK) fl |= O_NDELAY;
+      if (flags & SOCKET_CLOEXEC) fl |= O_CLOEXEC;
       /* On BSD the accepted socket inherits O_NDELAY and O_CLOEXEC, on
        * Linux it doesn't. accept4 makes this explicit. So for the
        * fallback, make it explicit as well */
@@ -107,7 +114,9 @@ incoming:
 #ifdef __linux__
       }
 #endif
+#ifdef HAVE_ACCEPT4
     }
+#endif
 
 #ifdef __MINGW32__
   }

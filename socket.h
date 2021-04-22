@@ -47,7 +47,11 @@ int socket_accept4_makenonblocking_setcloseonexec(int s,char* ip,uint16* port);
 int socket_accept6_makenonblocking_setcloseonexec(int s,char* ip,uint16* port,uint32* scope_id);
 
 /* These are internal wrappers around accept4, not meant for external use.
- * flags can be SOCK_NONBLOCK or SOCK_CLOEXEC or both (defined in sys/socket.h) */
+ * flags can be SOCKET_NONBLOCK or SOCKET_CLOEXEC or both */
+enum {
+  SOCKET_NONBLOCK=1,
+  SOCKET_CLOEXEC=2,
+};
 int socket_accept4_flags(int s,char* ip,uint16* port, int flags);
 int socket_accept6_flags(int s,char* ip,uint16* port,uint32* scope_id, int flags);
 

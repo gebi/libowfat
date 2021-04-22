@@ -25,6 +25,8 @@
 #include "io_internal.h"
 #endif
 
+#include "haveaccept4.h"
+
 int socket_accept6_flags(int s, char* ip, uint16* port, uint32* scope_id, int flags)
 {
 #ifdef LIBC_HAS_IP6
@@ -86,17 +88,22 @@ incoming:
   } else {
 #endif
 
+#ifdef HAVE_ACCEPT4
     static int noaccept4;	// auto initialized to 0
     if (noaccept4)
       fd=-1;
     else {
-      if ((fd=accept4(s,(void*) &sa, &dummy, flags))==-1) {
+      int flg=0;
+      if (flags & SOCKET_NONBLOCK) flg += SOCK_NONBLOCK;
+      if (flags & SOCKET_CLOEXEC) flg += SOCK_CLOEXEC;
+      if ((fd=accept4(s,(void*) &sa, &dummy, flg))==-1) {
 	if (errno != ENOSYS)
 	  return -1;
 	noaccept4=1;
       }
     }
     if (fd==-1) {
+#endif
       int fl = 0;
       fd = accept(s, (struct sockaddr *) &sa, &dummy);
       if (fd == -1)
@@ -117,7 +124,9 @@ incoming:
 #ifdef __linux__
       }
 #endif
+#ifdef HAVE_ACCEPT4
     }
+#endif
 #ifdef __MINGW32__
   }
 #endif

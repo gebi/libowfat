@@ -204,7 +204,7 @@ clean:
 	rm -f *.o *.obj *.a *.lib *.da *.bbg *.bb core t haveip6.h haven2i.h \
 havesl.h haveinline.h iopause.h select.h havekqueue.h haveepoll.h \
 libepoll havesigio.h havebsdsf.h havesendfile.h havescope.h havedevpoll.h \
-dep libsocket havealloca.h haveuint128.h entities.h ent havepread.h \
+dep libsocket havealloca.h haveuint128.h entities.h ent havepread.h haveaccept4.h \
 *.gcda *.gcno
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
@@ -337,6 +337,11 @@ select.h: select.h1 select.h2 trysysel.c
 	if $(DIET) $(CCC) $(CFLAGS) -c trysysel.c >/dev/null 2>&1; then cp select.h2 select.h; else cp select.h1 select.h; fi
 	-rm -f trysysel.o
 
+haveaccept4.h: tryaccept4.c
+	-rm -f $@
+	if $(DIET) $(CCC) $(CFLAGS) -c tryaccept4.c >/dev/null 2>&1; then echo "#define HAVE_ACCEPT4"; fi > $@
+	-rm -f tryaccept4.o
+
 libsocket: trysocket.c
 	if $(DIET) $(CCC) $(CFLAGS) -o trysocket trysocket.c >/dev/null 2>&1; then echo ""; else \
 	if $(DIET) $(CCC) $(CFLAGS) -o trysocket trysocket.c -lsocket >/dev/null 2>&1; then echo "-lsocket"; else \
@@ -351,6 +356,8 @@ socket_accept6.o socket_bind6.o socket_connect6.o socket_local6.o \
 socket_mchopcount6.o socket_mcjoin6.o socket_mcleave6.o socket_mcloop6.o \
 socket_recv6.o socket_remote6.o socket_sctp6b.o socket_send6.o \
 socket_tcp6b.o socket_tcp6.o socket_udp6.o socket_accept6_flags.o: haveip6.h
+
+socket_accept4_flags.o socket_accept6_flags.o: haveaccept4.h
 
 socket_accept6.o socket_connect6.o socket_local6.o socket_recv6.o \
 socket_remote6.o socket_send6.o socket_accept6_flags.o: havescope.h
