@@ -108,8 +108,8 @@ incoming:
       fd = accept(s, (struct sockaddr *) &sa, &dummy);
       if (fd == -1)
 	return -1;
-      if (flags & SOCK_NONBLOCK) fl |= O_NDELAY;
-      if (flags & SOCK_CLOEXEC) fl |= O_CLOEXEC;
+      if (flags & SOCKET_NONBLOCK) fl |= O_NDELAY;
+      if (flags & SOCKET_CLOEXEC) fl |= O_CLOEXEC;
       /* On BSD the accepted socket inherits O_NDELAY and O_CLOEXEC, on
        * Linux it doesn't. accept4 makes this explicit. So for the
        * fallback, make it explicit as well */
