@@ -8,6 +8,11 @@
 #include <sys/time.h>
 #endif
 #include <errno.h>
+#ifdef __dietlibc__
+#include <threads.h>
+#else
+#include <semaphore.h>
+#endif
 
 // return the next event, waiting of none are queued
 // wait at most timeout milliseconds
