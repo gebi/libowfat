@@ -128,8 +128,8 @@ int64 iob_send(int64 s,io_batch* b) {
   struct iovec* v;
   uint64 total;
   int64 sent;
-  long i;
-  long headers;
+  size_t i;
+  size_t headers;
 #ifdef MSG_MORE
   int docork;
 #endif
@@ -255,7 +255,42 @@ eagain:
 	  memset(&msg,0,sizeof(msg));
 	  msg.msg_iov=v;
 	  msg.msg_iovlen=headers;
-	  sent=sendmsg(s,&msg,MSG_MORE|ZEROCOPY);
+	  /* Difficulty: sendmsg has a built-in limit on the cmsgdata on
+	   * Linux, net.core.optmem_max with a 20k default size. So we
+	   * need to do a little song and dance here to not trigger it */
+	  if (headers > 50) {
+	    size_t skip=0, totalsent=0;
+	    for (skip=0; skip<headers; skip+=50) {
+	      size_t i,n;
+	      int64 l=0;
+	      n = headers-skip; if (n > 50) n=50;
+	      for (i=0; i<n; ++i) l += v[skip+i].iov_len;
+//	      printf("writing %d records from offset %d, %d bytes\n", skip, n, l);
+	      msg.msg_iov=v + skip;
+	      msg.msg_iovlen=n;
+	      sent=sendmsg(s,&msg,MSG_MORE|ZEROCOPY);
+	      if (sent > 0) totalsent += sent;
+	      if (sent == l) continue;	// we sent as much as we wanted, go for next batch
+	      if (sent >= 0) {	// we wrote something but not the whole batch
+		sent = totalsent;
+		break;
+	      }
+	      // we got an error, maybe EAGAIN
+	      if (errno==EAGAIN) {
+		if (totalsent == 0) {
+		  io_eagain_write(s);
+		  return -1;
+		}
+		sent = totalsent;
+		// fall through
+	      }
+	      // actual error
+	      break;
+	    }
+	    // if we get here, we wrote it all
+	    sent = totalsent;
+	  } else
+	    sent=sendmsg(s,&msg,MSG_MORE|ZEROCOPY);
 	}
       }
       if (sent==-1) {
