@@ -30,6 +30,8 @@
 
 #include "CAS.h"
 
+#include <threads.h>
+
 #include "io_internal.h"
 
 #define rdtscl(low) \
@@ -71,11 +73,85 @@ int ret1(const char* s,void* foo) {
   return 1;
 }
 
+int readerfunc(void* arg) {
+  int fd=*(int64*)arg;
+  char buf[1024];
+  while (read(fd,buf,sizeof buf) == sizeof buf) {
+    write(1,".",1);
+  }
+  return 0;
+}
+
 int main(int argc,char* argv[]) {
   (void)argc;
   (void)argv;
+
+  int64 pfd[2];
+  size_t i;
+  io_socketpair(pfd);
+  io_fd(pfd[0]);
+  io_fd(pfd[1]);
+  io_batch* b = iob_new(1024);
+  // first write 1024 blocks (to activate the splitting code path)
+  for (i=0; i<1024; ++i) {
+    if ((i%50) == 0) {
+      static char c = 0;
+      char* s = alloca(1);
+      *s = c;
+      iob_addbuf(b, s, 1);
+      ++c;
+    } else
+      iob_addbuf(b, "a", 1);
+  }
+  assert(iob_send(pfd[0], b) == 1024);
+  {
+    char buf[1024];
+    assert(read(pfd[1], buf, 1024) == 1024);
+    // drain the pipe
+  }
+
+  char boilerplate[]="Call me Ishmael. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world. It is a way I have of driving off the spleen and regulating the circulation. Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly November in my soul; whenever I find myself involuntarily pausing before coffin warehouses, and bringing up the rear of every funeral I meet; and especially whenever my hypos get such an upper hand of me, that it requires a strong moral principle to prevent me from deliberately stepping into the street, and methodically knocking people’s hats off—then, I account it high time tozz get to sea as soon as I can. This is my substitute for pistol and ball. With a philosophical flourish Cato throws himself upon his sword; I quietly take to the ship. There is nothing surprising in this. If they but knew it, almost all men in their degree, some time or other, cherish very nearly the same feelings towards the ocean with me.";
+  thrd_t rt;
+  // now try setting the socket to non-blocking and write more than
+  // fits, to check proper return value
+  io_nonblock(pfd[0]);
+  thrd_create(&rt, readerfunc, pfd+1);
+  size_t total=0;
+  for (i=0; i<1024; ++i) {
+    if ((i%50) == 0) {
+      static char c = 0;
+      char* s = alloca(1);
+      *s = c;
+      iob_addbuf(b, s, 1);
+      total += 1;
+      ++c;
+    } else {
+      iob_addbuf(b, boilerplate, strlen(boilerplate));
+      total += strlen(boilerplate);
+    }
+  }
+  io_wantwrite(pfd[0]);
+  for (; iob_bytesleft(b) ;) {
+    io_wait();
+    int fd;
+    while ((fd = io_canwrite()) != -1) {
+      printf("write event on fd %d\n", fd);
+      long r = iob_send(pfd[0], b);
+      printf("r = %d (total was %d)\n",r, total);
+    }
+  }
+
+  thrd_join(rt, NULL);
+
+#if 0
+  char buf[10];
+  buf[fmt_cescape(buf,"\003foo\xc0",5)]=0;
+  puts(buf);
+#endif
+#if 0
   struct bytestream bs1 = BS_FROM_MEMBUF("fnord", 5);
   struct bytestream bs2 = BS_FROM_BUFFER(buffer_0);
+#endif
 #if 0
   compiletimeassert(sizeof(char) < sizeof(int));
   io_wait();
