@@ -167,7 +167,9 @@ int64 iob_send(int64 s,io_batch* b) {
     }
     headers=i;
 #ifdef HAVE_BSDSENDFILE
-    if (e[i].type==FROMFILE) {
+    if (e+i<last && e[i].type==FROMFILE) {
+
+#ifdef DEBUGONLINUX
       off_t sbytes;
       struct sf_hdtr hdr;
       int r;
@@ -189,6 +191,9 @@ int64 iob_send(int64 s,io_batch* b) {
 	}
       } else
 	sent=-3;
+
+#endif // DEBUGONLINUX
+
     } else {
       if (headers==1)	/* cosmetics for strace */
 	sent=write(s,v[0].iov_base,v[0].iov_len);
