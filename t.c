@@ -130,13 +130,13 @@ int main(int argc,char* argv[]) {
       if (r > 0) totalwrite += r;
       if (r == 0)
 	io_dontwantwrite(pfd[0]);
-      printf("r = %d (sum written %zu, total back size %zu)\n", r, totalwrite, total);
+      printf("r = %ld (sum written %zu, total back size %zu)\n", r, totalwrite, total);
     }
     while ((fd = io_canread()) != -1) {
       char buf[1024];
       ssize_t r = read(fd, buf, sizeof buf);
       if (r > 0) totalread += r;
-      if (r < sizeof buf) io_eagain(fd);
+      if (r < (ssize_t)sizeof buf) io_eagain(fd);
       if (r == 0 || totalread == total) {
 	printf("read %zu bytes total\n", totalread);
 	return totalread == total;
