@@ -30,8 +30,6 @@
 
 #include "CAS.h"
 
-#include <threads.h>
-
 #include "io_internal.h"
 
 #define rdtscl(low) \
@@ -73,15 +71,6 @@ int ret1(const char* s,void* foo) {
   return 1;
 }
 
-int readerfunc(void* arg) {
-  int fd=*(int64*)arg;
-  char buf[1024];
-  while (read(fd,buf,sizeof buf) == sizeof buf) {
-    write(1,".",1);
-  }
-  return 0;
-}
-
 int main(int argc,char* argv[]) {
   (void)argc;
   (void)argv;
@@ -111,11 +100,9 @@ int main(int argc,char* argv[]) {
   }
 
   char boilerplate[]="Call me Ishmael. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world. It is a way I have of driving off the spleen and regulating the circulation. Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly November in my soul; whenever I find myself involuntarily pausing before coffin warehouses, and bringing up the rear of every funeral I meet; and especially whenever my hypos get such an upper hand of me, that it requires a strong moral principle to prevent me from deliberately stepping into the street, and methodically knocking people’s hats off—then, I account it high time tozz get to sea as soon as I can. This is my substitute for pistol and ball. With a philosophical flourish Cato throws himself upon his sword; I quietly take to the ship. There is nothing surprising in this. If they but knew it, almost all men in their degree, some time or other, cherish very nearly the same feelings towards the ocean with me.";
-  thrd_t rt;
   // now try setting the socket to non-blocking and write more than
   // fits, to check proper return value
   io_nonblock(pfd[0]);
-  thrd_create(&rt, readerfunc, pfd+1);
   size_t total=0;
   for (i=0; i<1024; ++i) {
     if ((i%50) == 0) {
@@ -131,17 +118,25 @@ int main(int argc,char* argv[]) {
     }
   }
   io_wantwrite(pfd[0]);
+  io_wantread(pfd[1]);
+  size_t totalread = 0;
+  size_t totalwrite = 0;
   for (; iob_bytesleft(b) ;) {
     io_wait();
     int fd;
     while ((fd = io_canwrite()) != -1) {
-      printf("write event on fd %d\n", fd);
+//      printf("write event on fd %d\n", fd);
       long r = iob_send(pfd[0], b);
-      printf("r = %d (total was %d)\n",r, total);
+      if (r > 0) totalwrite += r;
+      printf("r = %d (sum written %zu, total back size %zu)\n", r, totalwrite, total);
+    }
+    while ((fd = io_canread()) != -1) {
+      char buf[1024];
+      ssize_t r = read(fd, buf, sizeof buf);
+      if (r > 0) totalread += r;
+      if (r < sizeof buf) io_eagain(fd);
     }
   }
-
-  thrd_join(rt, NULL);
 
 #if 0
   char buf[10];
