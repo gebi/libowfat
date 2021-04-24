@@ -1,5 +1,7 @@
 #include "io_internal.h"
 
+void io_wantwrite_really(int64 d, io_entry* e);
+
 void io_eagain_write(int64 d) {
   io_entry* e=iarray_get(&io_fds,d);
   if (e) {
