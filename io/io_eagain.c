@@ -6,7 +6,7 @@ void io_eagain(int64 d) {
     if (e->wantread) e->canread=0;
     if (e->wantwrite) e->canwrite=0;
     if (e->wantwrite && !e->kernelwantwrite)
-      io_wantwrite(d);
+      io_wantwrite_really(d,e);
 #if defined(HAVE_SIGIO)
     if (d==alt_curread) {
 #if 0
