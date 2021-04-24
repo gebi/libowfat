@@ -121,13 +121,15 @@ int main(int argc,char* argv[]) {
   io_wantread(pfd[1]);
   size_t totalread = 0;
   size_t totalwrite = 0;
-  for (; iob_bytesleft(b) ;) {
+  for (;;) {
     io_wait();
     int fd;
     while ((fd = io_canwrite()) != -1) {
 //      printf("write event on fd %d\n", fd);
       long r = iob_send(pfd[0], b);
       if (r > 0) totalwrite += r;
+      if (r == 0)
+	io_dontwantwrite(pfd[0]);
       printf("r = %d (sum written %zu, total back size %zu)\n", r, totalwrite, total);
     }
     while ((fd = io_canread()) != -1) {
@@ -135,6 +137,10 @@ int main(int argc,char* argv[]) {
       ssize_t r = read(fd, buf, sizeof buf);
       if (r > 0) totalread += r;
       if (r < sizeof buf) io_eagain(fd);
+      if (r == 0 || totalread == total) {
+	printf("read %zu bytes total\n", totalread);
+	return totalread == total;
+      }
     }
   }
 
