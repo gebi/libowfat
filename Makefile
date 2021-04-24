@@ -1305,13 +1305,13 @@ socket_getifidx.o socket_getifname.o: haven2i.h
 
 socket_accept4.o socket_accept6.o socket_connected.o socket_local4.o \
 socket_local6.o socket_recv4.o socket_recv6.o socket_remote4.o \
-socket_remote6.o socket_accept6_flags.o: havesl.h
+socket_remote6.o socket_accept4_flags.o socket_accept6_flags.o: havesl.h
 
 dns_nd6.o fmt_xlong.o scan_xlong.o fmt_ip6_flat.o $(TEXTCODE_OBJS): haveinline.h
 
 iob_send.o scan_ip6if.o: havealloca.h
 
-dep: haveip6.h haven2i.h havesl.h haveinline.h iopause.h select.h haveepoll.h havekqueue.h havedevpoll.h havescope.h havesigio.h havebsdsf.h havesendfile.h havealloca.h haveuint128.h entities.h havepread.h
+dep: haveip6.h haven2i.h havesl.h haveinline.h iopause.h select.h haveepoll.h havekqueue.h havedevpoll.h havescope.h havesigio.h havebsdsf.h havesendfile.h havealloca.h haveuint128.h entities.h havepread.h haveaccept4.h
 	$(CC) -I. -MM `ls */*.c | grep -v test` t.c | sed -e 's@ \./@ @g' > dep
 
 libdep:
