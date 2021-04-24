@@ -4,6 +4,8 @@ void io_eagain_write(int64 d) {
   io_entry* e=iarray_get(&io_fds,d);
   if (e) {
     e->canwrite=0;
+    if (e->wantwrite && !e->kernelwantwrite)
+      io_wantwrite(d);
 #if defined(HAVE_SIGIO)
     if (d==alt_curwrite) {
 #if 0

@@ -286,13 +286,13 @@ eagain:
 		  io_eagain_write(s);
 		  return -1;
 		}
-		sent = totalsent;
 		// fall through
 	      }
 	      // actual error
 	      break;
 	    }
-	    // if we get here, we wrote it all
+	    // if we get here, we wrote it all or we got an EAGAIN after
+	    // writing something. Treat as regular partial write.
 	    sent = totalsent;
 	  } else
 	    sent=sendmsg(s,&msg,MSG_MORE|ZEROCOPY);
@@ -354,6 +354,7 @@ eagain:
 	}
       }
       io_eagain_write(s);
+      return total;
     } else break;
   }
 abort:
