@@ -265,19 +265,22 @@ int64 io_waituntil2(int64 milliseconds) {
     for (i=n-1; i>=0; --i) {
       io_entry* e=iarray_get(&io_fds,y[--n].ident);
       if (e) {
-	/* copies from epoll above */
-	int curevents=0,newevents;
-	if (e->kernelwantread) curevents |= EVFILT_READ;
-	if (e->kernelwantwrite) curevents |= EVFILT_WRITE;
+	struct kevent kev[4];
+	int nkev=0;
 
-	newevents=0;
+	int curevents=0,newevents=0;
+	if (e->kernelwantread) curevents |= POLLIN;
+	if (e->kernelwantwrite) curevents |= POLLOUT;
+
 	if (!e->canread || e->wantread) {
-	  newevents |= EVFILT_READ;
+	  newevents |= POLLIN;
+	  EV_SET(kev, n, EVFILT_READ, EV_ADD|EV_ENABLE, 0, 0, 0); ++n;
 	  e->kernelwantread=1;
 	} else
 	  e->kernelwantread=0;
 	if (!e->canwrite || e->wantwrite) {
-	  newevents |= EVFILT_WRITE;
+	  newevents |= POLLOUT;
+	  EV_SET(kev+nkev, n, EVFILT_WRITE, EV_ADD|EV_ENABLE, 0, 0, 0); ++nkev;
 	  e->kernelwantwrite=1;
 	} else
 	  e->kernelwantwrite=0;
@@ -292,7 +295,8 @@ int64 io_waituntil2(int64 milliseconds) {
 	 * can, put this fd in the relevant data structures */
 	if (!e->canread && (y[n].filter&EVFILT_WRITE)) {
 	  if (e->canread) {
-	    newevents &= ~EVFILT_READ;
+	    newevents &= ~POLLIN;
+	    EV_SET(kev+nkev, n, EVFILT_READ, EV_DELETE, 0, 0, 0); ++nkev;
 	  } else {
 	    e->canread=1;
 	    if (e->wantread) {
@@ -316,7 +320,8 @@ int64 io_waituntil2(int64 milliseconds) {
 	   * some kind of throttling and we can tell the kernel to leave
 	   * us alone for now. */
 	  if (e->canwrite) {
-	    newevents &= ~EVFILT_WRITE;
+	    newevents &= ~POLLOUT;
+	    EV_SET(kev+nkev, n, EVFILT_WRITE, EV_DELETE, 0, 0, 0); ++nkev;
 	    e->kernelwantwrite=0;
 	  } else {
 	    /* If !e->wantwrite: The laziness optimization in
@@ -333,17 +338,9 @@ int64 io_waituntil2(int64 milliseconds) {
 	}
 
 	if (newevents != curevents) {
-	  struct kevent kev;
 	  struct timespec ts;
 	  ts.tv_sec=0; ts.tv_nsec=0;
-	  if (curevents &~ newevents) {
-	    EV_SET(&kev, n, curevents &~ newevents, EV_DELETE, 0, 0, 0);
-	    kevent(io_master,&kev,1,0,0,&ts);
-	  }
-	  if (newevents &~ curevents) {
-	    EV_SET(&kev, n, newevents, EV_ADD|EV_ENABLE, 0, 0, 0);
-	    kevent(io_master,&kev,1,0,0,&ts);
-	  }
+	  kevent(io_master, kev, nkev, 0, 0, &ts);
 	  if (!newevents)
 	    --io_wanted_fds;
 	}
