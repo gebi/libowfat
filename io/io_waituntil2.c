@@ -274,13 +274,13 @@ int64 io_waituntil2(int64 milliseconds) {
 
 	if (!e->canread || e->wantread) {
 	  newevents |= POLLIN;
-	  EV_SET(kev, n, EVFILT_READ, EV_ADD|EV_ENABLE, 0, 0, 0); ++n;
+	  EV_SET(kev, y[n].ident, EVFILT_READ, EV_ADD|EV_ENABLE, 0, 0, 0); ++nkev;
 	  e->kernelwantread=1;
 	} else
 	  e->kernelwantread=0;
 	if (!e->canwrite || e->wantwrite) {
 	  newevents |= POLLOUT;
-	  EV_SET(kev+nkev, n, EVFILT_WRITE, EV_ADD|EV_ENABLE, 0, 0, 0); ++nkev;
+	  EV_SET(kev+nkev, y[n].ident, EVFILT_WRITE, EV_ADD|EV_ENABLE, 0, 0, 0); ++nkev;
 	  e->kernelwantwrite=1;
 	} else
 	  e->kernelwantwrite=0;
@@ -296,7 +296,7 @@ int64 io_waituntil2(int64 milliseconds) {
 	if (!e->canread && (y[n].filter&EVFILT_WRITE)) {
 	  if (e->canread) {
 	    newevents &= ~POLLIN;
-	    EV_SET(kev+nkev, n, EVFILT_READ, EV_DELETE, 0, 0, 0); ++nkev;
+	    EV_SET(kev+nkev, y[n].ident, EVFILT_READ, EV_DELETE, 0, 0, 0); ++nkev;
 	  } else {
 	    e->canread=1;
 	    if (e->wantread) {
@@ -321,7 +321,7 @@ int64 io_waituntil2(int64 milliseconds) {
 	   * us alone for now. */
 	  if (e->canwrite) {
 	    newevents &= ~POLLOUT;
-	    EV_SET(kev+nkev, n, EVFILT_WRITE, EV_DELETE, 0, 0, 0); ++nkev;
+	    EV_SET(kev+nkev, y[n].ident, EVFILT_WRITE, EV_DELETE, 0, 0, 0); ++nkev;
 	    e->kernelwantwrite=0;
 	  } else {
 	    /* If !e->wantwrite: The laziness optimization in
