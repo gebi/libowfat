@@ -7,6 +7,6 @@
 #include "windoze.h"
 #include "socket.h"
 
-int socket_accept4_makenonblocking(int s,char *ip,uint16 *port) {
+int socket_accept4_makenonblocking(int s,char ip[4],uint16 *port) {
   return socket_accept4_flags(s,ip,port,SOCKET_CLOEXEC);
 }

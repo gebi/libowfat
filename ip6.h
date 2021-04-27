@@ -9,16 +9,16 @@
 extern "C" {
 #endif
 
-size_t scan_ip6(const char* src,char* ip);
-size_t fmt_ip6(char* dest,const char* ip);
-size_t fmt_ip6c(char* dest,const char* ip);
+size_t scan_ip6(const char* src,char ip[16]);
+size_t fmt_ip6(char* dest,const char ip[16]);
+size_t fmt_ip6c(char* dest,const char ip[16]);
 
-size_t scan_ip6if(const char* src,char* ip,uint32* scope_id);
-size_t fmt_ip6if(char* dest,const char* ip,uint32 scope_id);
-size_t fmt_ip6ifc(char* dest,const char* ip,uint32 scope_id);
+size_t scan_ip6if(const char* src,char ip[16],uint32* scope_id);
+size_t fmt_ip6if(char* dest,const char ip[16],uint32 scope_id);
+size_t fmt_ip6ifc(char* dest,const char ip[16],uint32 scope_id);
 
-size_t scan_ip6_flat(const char *src,char *);
-size_t fmt_ip6_flat(char *dest,const char *);
+size_t scan_ip6_flat(const char *src,char ip[16]);
+size_t fmt_ip6_flat(char *dest,const char ip[16]);
 
 /*
  ip6 address syntax: (h = hex digit), no leading '0' required

@@ -1,4 +1,7 @@
 #define _GNU_SOURCE
+#ifdef __MINGW32__
+#include <winsock2.h>
+#endif
 #include <sys/param.h>
 #include <sys/types.h>
 #include <string.h>
@@ -9,6 +12,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #endif
+#include "iarray.h"
 #include "windoze.h"
 #include "byte.h"
 #include "socket.h"
@@ -27,7 +31,7 @@
 
 #include "haveaccept4.h"
 
-int socket_accept6_flags(int s, char* ip, uint16* port, uint32* scope_id, int flags)
+int socket_accept6_flags(int s, char ip[16], uint16* port, uint32* scope_id, int flags)
 {
 #ifdef LIBC_HAS_IP6
   struct sockaddr_in6 sa;
@@ -39,7 +43,7 @@ int socket_accept6_flags(int s, char* ip, uint16* port, uint32* scope_id, int fl
 
 #ifdef __MINGW32__
   // Windows uses overlapped I/O instead of non-blocking I/O
-  io_entry* e=array_get(&io_fds,sizeof(io_entry),s);
+  io_entry* e=iarray_get(&io_fds,s);
   if (e && e->inuse) {
     int sa2len;
     fd=-1;
@@ -53,14 +57,14 @@ incoming:
       {
 	struct sockaddr* x,* y;
 	GetAcceptExSockaddrs(e->inbuf,0,200,200,&x,&sa2len,&y,&dummy);
-	if (dummy>sizeof(sa)) dummy=sizeof(sa);
+	if ((size_t)dummy>sizeof(sa)) dummy=sizeof(sa);
 	memcpy(&sa,y,dummy);
       }
       fd=e->next_accept;
       e->next_accept=0;
       if (e->nonblock) {
 	if (io_fd(fd)) {
-	  io_entry* f=array_get(&io_fds,sizeof(io_entry),fd);
+	  io_entry* f=iarray_get(&io_fds,fd);
 	  if (f) {
 	    f->nonblock=1;
 //	    printf("setting fd %lu to non-blocking\n",(int)fd);
@@ -72,7 +76,7 @@ incoming:
     /* no accept queued, queue one now. */
     if (e->next_accept==0) {
       e->next_accept=socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);
-      if (e==-1)
+      if (e->next_accept==(SOCKET)-1)
 	return winsock2errno(-1);
     }
     if (AcceptEx(s,e->next_accept,e->inbuf,0,200,200,&e->errorcode,&e->or))
@@ -108,6 +112,7 @@ incoming:
       fd = accept(s, (struct sockaddr *) &sa, &dummy);
       if (fd == -1)
 	return -1;
+#ifndef __MINGW32__
       if (flags & SOCKET_NONBLOCK) fl |= O_NDELAY;
       if (flags & SOCKET_CLOEXEC) fl |= O_CLOEXEC;
       /* On BSD the accepted socket inherits O_NDELAY and O_CLOEXEC, on
@@ -123,6 +128,7 @@ incoming:
 	}
 #ifdef __linux__
       }
+#endif
 #endif
 #ifdef HAVE_ACCEPT4
     }

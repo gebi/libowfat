@@ -7,6 +7,6 @@
 #include "windoze.h"
 #include "socket.h"
 
-int socket_accept6_makenonblocking(int s,char *ip,uint16 *port,uint32* scope_id) {
+int socket_accept6_makenonblocking(int s,char ip[16],uint16 *port,uint32* scope_id) {
   return socket_accept6_flags(s,ip,port,scope_id,SOCKET_NONBLOCK);
 }

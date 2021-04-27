@@ -10,6 +10,7 @@
 #include <string.h>
 #include "windoze.h"
 #include "socket.h"
+#include "iarray.h"
 #include "havesl.h"
 
 #ifdef __MINGW32__
@@ -22,13 +23,13 @@
 
 #include "haveaccept4.h"
 
-int socket_accept4_flags(int s, char *ip, uint16 *port, int flags) {
+int socket_accept4_flags(int s, char ip[4], uint16 *port, int flags) {
   struct sockaddr_in si;
   socklen_t len = sizeof si;
   int fd;
 
 #ifdef __MINGW32__
-  io_entry* e=array_get(&io_fds,sizeof(io_entry),s);
+  io_entry* e=iarray_get(&io_fds,s);
   if (e && e->inuse) {
     int sa2len;
     fd=-1;
@@ -42,14 +43,14 @@ incoming:
       {
 	struct sockaddr* x,* y;
 	GetAcceptExSockaddrs(e->inbuf,0,200,200,&x,&sa2len,&y,&len);
-	if (len>sizeof(si)) len=sizeof(si);
+	if ((size_t)len>sizeof(si)) len=sizeof(si);
 	memcpy(&si,y,len);
       }
       fd=e->next_accept;
       e->next_accept=0;
       if (e->nonblock) {
 	if (io_fd_canwrite(fd)) {
-	  io_entry* f=array_get(&io_fds,sizeof(io_entry),fd);
+	  io_entry* f=iarray_get(&io_fds,fd);
 	  if (f) {
 	    f->nonblock=1;
 //	    printf("setting fd %lu to non-blocking\n",(int)fd);
@@ -61,7 +62,7 @@ incoming:
     /* no accept queued, queue one now. */
     if (e->next_accept==0) {
       e->next_accept=socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);
-      if (e==-1)
+      if (e->next_accept==(SOCKET)-1)
 	return winsock2errno(-1);
     }
     if (AcceptEx(s,e->next_accept,e->inbuf,0,200,200,&e->errorcode,&e->or))
@@ -98,6 +99,7 @@ incoming:
       /* if we get here, the kernel did not support accept4. */
       if ((fd=accept(s,(void*) &si,&len))==-1)
 	return -1;
+#ifndef __MINGW32__
       if (flags & SOCKET_NONBLOCK) fl |= O_NDELAY;
       if (flags & SOCKET_CLOEXEC) fl |= O_CLOEXEC;
       /* On BSD the accepted socket inherits O_NDELAY and O_CLOEXEC, on
@@ -113,6 +115,7 @@ incoming:
 	}
 #ifdef __linux__
       }
+#endif
 #endif
 #ifdef HAVE_ACCEPT4
     }

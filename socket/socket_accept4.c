@@ -16,7 +16,7 @@
 #include "io_internal.h"
 #endif
 
-int socket_accept4(int s,char *ip,uint16 *port) {
+int socket_accept4(int s,char ip[4],uint16 *port) {
   struct sockaddr_in si;
   socklen_t len = sizeof si;
   int fd;

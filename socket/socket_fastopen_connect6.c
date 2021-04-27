@@ -8,7 +8,7 @@
 #endif
 #include <errno.h>
 
-ssize_t socket_fastopen_connect6(int s,const char* ip,uint16 port,uint32_t scope_id,const char* buf,size_t len) {
+ssize_t socket_fastopen_connect6(int s,const char ip[16],uint16 port,uint32_t scope_id,const char* buf,size_t len) {
 #ifndef MSG_FASTOPEN
   int r;
   {
