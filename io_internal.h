@@ -6,6 +6,7 @@
 #include "libowfat/array.h"
 #include "libowfat/iarray.h"
 #ifdef __MINGW32__
+#include <winsock2.h>
 #include "socket.h"
 my_extern HANDLE io_comport;
 #else

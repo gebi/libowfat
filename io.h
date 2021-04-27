@@ -2,6 +2,10 @@
 #ifndef IO_H
 #define IO_H
 
+#ifdef __MINGW32__
+#include_next <io.h>
+#endif
+
 /* http://cr.yp.to/lib/io.html */
 
 #include <libowfat/uint64.h>
