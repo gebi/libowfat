@@ -92,7 +92,7 @@
 #if GCC_VERSION_ATLEAST(3, 3)
 #define att_nonnull(params) __attribute__((__nonnull__(params)))
 #else
-#define att_nonnull(params)l
+#define att_nonnull(params)
 #endif
 
 #if GCC_VERSION_ATLEAST(4, 3)
