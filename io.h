@@ -186,8 +186,8 @@ unsigned int io_debugstring(int64 s,char* buf,unsigned int bufsize);
 enum { SLOTS=128 };
 typedef struct iomux {
   int ctx;
-  int working;	/* used to synchronize who is filling the queue */
-  unsigned int h,l; /* high, low */
+  volatile int working;		/* used to synchronize who is filling the queue */
+  volatile unsigned int h,l;	/* high, low */
   struct {
     int fd, events;
   } q[SLOTS];
