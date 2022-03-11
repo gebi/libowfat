@@ -167,6 +167,7 @@ int64 io_waituntil2(int64 milliseconds) {
 	  /* error; signal whatever app is looking for */
 	  if (e->wantread) y[i].events|=POLLIN;
 	  if (e->wantwrite) y[i].events|=POLLOUT;
+	  e->goterror=1;	// prevent busy loop if the kernel return EAGAIN on read
 	}
 
 	newevents=0;

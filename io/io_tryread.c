@@ -105,8 +105,10 @@ int64 io_tryread(int64 d,char* buf,int64 len) {
   if (!e->nonblock) {
     setitimer(ITIMER_REAL,&old,0);
   }
-  if (r==-1 && errno==EAGAIN)
+  if (r==-1 && errno==EAGAIN) {
+    if (e->goterror) r=-3;
     io_eagain_read(d);
+  }
   if (r==-1) {
     if (errno==EINTR) errno=EAGAIN;
     if (errno!=EAGAIN)

@@ -49,6 +49,7 @@ typedef struct {
   unsigned int epolladded:1;
   unsigned int closed:1;	/* io_close called, but close deferred because of outstanding events */
   unsigned int zerocopy:1;	/* linux: setsockopt SO_ZEROCOPY done */
+  unsigned int goterror:1;	/* got POLLERR|POLLHUP */
 #ifdef __MINGW32__
   unsigned int readqueued:2;
   unsigned int writequeued:2;
