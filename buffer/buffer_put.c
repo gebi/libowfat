@@ -31,8 +31,8 @@ int buffer_put(buffer* b,const char* buf,size_t len) {
 	b->p=0;
 	buf+=r;
 	len-=r;
-	if (len) goto do_memcpy;
-	return 0;
+	if (!len) return 0; // wrote everything
+	// fall through
       } /* else fall through */
     }
 #endif
