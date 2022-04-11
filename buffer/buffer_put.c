@@ -42,7 +42,6 @@ int buffer_put(buffer* b,const char* buf,size_t len) {
       return 0;
     }
   }
-do_memcpy:
   memcpy(b->x+b->p, buf, len);
   b->p+=len;
   return 0;
