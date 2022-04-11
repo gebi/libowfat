@@ -28,6 +28,13 @@ int main() {
     assert(scan_long("9223372036854775807",&i)==19 && i==0x7fffffffffffffffull);	// LONG_MAX
     assert(scan_long("-9223372036854775808",&i)==20 && i==(long long)0x8000000000000000ull);	// LONG_MIN
   }
+  i=42;
+  assert(scan_longn("7",0,&i)==0 && i==42);
+  assert(scan_longn("-7",1,&i)==0 && i==42);
+  assert(scan_longn("+7",1,&i)==0 && i==42);
+  assert(scan_longn("7",1,&i)==1 && i==7);
+  assert(scan_longn("-7",2,&i)==2 && i==-7);
+  assert(scan_longn("+7",2,&i)==2 && i==7);
   return 0;
 }
 #endif
