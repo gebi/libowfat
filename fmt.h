@@ -2,6 +2,8 @@
 #ifndef FMT_H
 #define FMT_H
 
+/* sandboxing note: None of these functions call any syscalls */
+
 /* for size_t: */
 #include <stddef.h>
 /* for uint32_t */
