@@ -2,6 +2,8 @@
 #ifndef BYTE_H
 #define BYTE_H
 
+/* sandboxing note: None of these functions call any syscalls */
+
 /* for size_t: */
 #include <stddef.h>
 
