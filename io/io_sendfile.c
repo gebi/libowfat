@@ -99,7 +99,6 @@ _syscall4(int,sendfile,int,out,int,in,long *,offset,unsigned long,count)
 
 int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
   off_t o=off;
-  io_entry* e=iarray_get(&io_fds,s);
   off_t i;
   uint64 done=0;
   /* What a spectacularly broken design for sendfile64.
