@@ -11,6 +11,7 @@
   add fmt_strm_alloca and fmt_strm_malloc man pages
   add buffer_init_allocbuf, buffer_init_read, buffer_init_write, buffer_init_read_allocbuf, buffer_init_write_allocbuf
   fix buffer overread for len=0 in scan_longn (Martin Castillo)
+  add iob_write2 with sendfile callback so caller can use OpenSSL's SSL_sendfile
 
 0.32:
   remove OpenBSD #warning (obsd maintainer says no longer needed)
