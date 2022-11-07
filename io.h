@@ -197,6 +197,7 @@ int io_queueforread(int64 d);
 int io_queueforwrite(int64 d);
 
 typedef int64 (*io_write_callback)(int64 s,const void* buf,uint64 n);
+typedef int64 (*io_sendfile_callback)(int64 out,int64 in,uint64 off,uint64 bytes,io_write_callback writecb);
 
 /* used internally, but hey, who knows */
 /* sandboxing: write(2), mmap(2), munmap(2), lseek(2), pread(2), read(2), linux: epoll_ctl(2), bsd: kevent(2), solaris: write(2), oldlinux: poll(2) */
