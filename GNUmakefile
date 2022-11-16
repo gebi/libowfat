@@ -46,7 +46,7 @@ CFLAGS_OPT=-pipe $(WARN) $(DEFINE) $(OPT_PLUS)
 
 #CFLAGS=-pipe -Os -march=pentiumpro -mcpu=pentiumpro -fomit-frame-pointer -fschedule-insns2 -Wall
 
-ent: ent.c haveuint128.h
+ent: ent.c haveuint128.h headers
 	$(CC) -g -o ent ent.c -I.
 
 # CFLAGS += -fstrict-aliasing -Wstrict-aliasing=2
@@ -110,25 +110,25 @@ IO_OBJS=$(patsubst io/%.c,%.o,$(wildcard io/*.c))
 CDB_OBJS=$(patsubst cdb/%.c,%.o,$(wildcard cdb/*.c))
 CRITBIT_OBJS=$(patsubst critbit/%.c,%.o,$(wildcard critbit/*.c))
 
-$(BYTE_OBJS): byte.h
-$(FMT_OBJS): fmt.h
-$(SCAN_OBJS): scan.h haveuint128.h
-$(STR_OBJS): str.h
+$(BYTE_OBJS): byte.h headers
+$(FMT_OBJS): fmt.h headers
+$(SCAN_OBJS): scan.h haveuint128.h headers
+$(STR_OBJS): str.h headers
 $(UINT_OBJS): uint16.h uint32.h
-$(STRALLOC_OBJS): stralloc.h
-$(SOCKET_OBJS): socket.h
-$(BUFFER_OBJS): buffer.h
-$(MMAP_OBJS): mmap.h open.h
-$(TEXTCODE_OBJS): textcode.h
-$(TAI_OBJS): tai.h uint64.h
-$(TAIA_OBJS): taia.h tai.h uint64.h
-$(DNS_OBJS): dns.h stralloc.h taia.h tai.h uint64.h iopause.h
-$(CASE_OBJS): case.h
-$(ARRAY_OBJS): uint64.h array.h
-$(MULT_OBJS): uint64.h uint32.h uint16.h safemult.h
-$(IO_OBJS): uint64.h array.h io.h io_internal.h taia.h tai.h haveepoll.h havekqueue.h havesigio.h havebsdsf.h havedevpoll.h havesendfile.h
-$(CDB_OBJS): cdb.h uint32.h
-$(CRITBIT_OBJS): critbit.h
+$(STRALLOC_OBJS): stralloc.h headers
+$(SOCKET_OBJS): socket.h headers
+$(BUFFER_OBJS): buffer.h headers
+$(MMAP_OBJS): mmap.h open.h headers
+$(TEXTCODE_OBJS): textcode.h headers
+$(TAI_OBJS): tai.h uint64.h headers
+$(TAIA_OBJS): taia.h tai.h uint64.h headers
+$(DNS_OBJS): dns.h stralloc.h taia.h tai.h uint64.h iopause.h headers
+$(CASE_OBJS): case.h headers
+$(ARRAY_OBJS): uint64.h array.h headers
+$(MULT_OBJS): uint64.h uint32.h uint16.h safemult.h headers
+$(IO_OBJS): uint64.h array.h io.h io_internal.h taia.h tai.h haveepoll.h havekqueue.h havesigio.h havebsdsf.h havedevpoll.h havesendfile.h headers
+$(CDB_OBJS): cdb.h uint32.h headers
+$(CRITBIT_OBJS): critbit.h headers
 
 mult64.o: haveuint128.h
 
@@ -206,6 +206,7 @@ havesl.h haveinline.h iopause.h select.h havekqueue.h haveepoll.h \
 libepoll havesigio.h havebsdsf.h havesendfile.h havescope.h havedevpoll.h \
 dep libsocket havealloca.h haveuint128.h entities.h ent havepread.h haveaccept4.h \
 *.gcda *.gcno
+	rm -rf libowfat
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
 uint16.h uint32.h uint64.h open.h textcode.h tai.h taia.h dns.h iopause.h case.h \
@@ -394,7 +395,8 @@ windoze64:
 	$(MAKE) DIET= CROSS=x86_64-w64-mingw32-
 
 update:
-	dl -n http://www.w3.org/TR/html5/entities.json
+#	dl -n https://www.w3.org/TR/html5/entities.json
+	dl -n https://html.spec.whatwg.org/entities.json
 
 entities.h: entities.json ent
 	./ent
