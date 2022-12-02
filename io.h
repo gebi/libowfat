@@ -209,7 +209,7 @@ int64 io_mmapwritefile(int64 out,int64 in,uint64 off,uint64 bytes,io_write_callb
 unsigned int io_debugstring(int64 s,char* buf,unsigned int bufsize);
 
 #ifdef __MINGW32__
-#include <mcfgthread/c11thread.h>
+#include <mcfgthread/c11.h>
 #elif defined(__dietlibc__)
 #include <threads.h>
 #else
