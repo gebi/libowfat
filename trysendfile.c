@@ -62,9 +62,8 @@ int main() {
 #define _FILE_OFFSET_BITS 64
 #include <sys/types.h>
 #include <unistd.h>
-#if defined(__GLIBC__)
-#include <sys/sendfile.h>
-#elif defined(__dietlibc__)
+#include <fcntl.h>
+#if defined(__GLIBC__) || defined(__dietlibc__)
 #include <sys/sendfile.h>
 #else
 #include <linux/unistd.h>
@@ -77,7 +76,7 @@ int main() {
   off_t o=0;
   off_t r=sendfile(1,fd,&o,23);
   if (r!=-1)
-    printf("sent %llu bytes.\n",r);
+    printf("sent %lld bytes.\n",(long long int)r);
   return 0;
 }
 

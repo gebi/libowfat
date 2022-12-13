@@ -1,4 +1,5 @@
 0.34:
+  be more C99 compliant (Florian Weimer)
 
 0.33:
   add byte_start, byte_starts
