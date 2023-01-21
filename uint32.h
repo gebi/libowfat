@@ -2,8 +2,8 @@
 #ifndef UINT32_H
 #define UINT32_H
 
-#include <inttypes.h>	// uint32_t, int32_t
-#include <stddef.h>	// size_t
+#include <inttypes.h>	/* uint32_t, int32_t */
+#include <stddef.h>	/* size_t */
 
 #ifdef __cplusplus
 extern "C" {

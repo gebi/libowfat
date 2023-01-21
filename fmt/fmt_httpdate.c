@@ -14,7 +14,7 @@ size_t fmt_httpdate(char* dest,time_t t) {
 #ifdef _WIN32
   struct tm tmp;
   struct tm* x=&tmp;
-  gmtime_s(&tmp,&t);	// can't recover from when this fails
+  gmtime_s(&tmp,&t);	/* can't recover from when this fails */
 #else
   struct tm* x=gmtime(&t);
 #endif

@@ -1,3 +1,4 @@
+#define _BSD_SOURCE
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
@@ -26,7 +27,7 @@ struct entity {
 struct letter {
   unsigned char c;
   struct letters* weiter;
-  uint32_t marshaled;	// lower 8 bits: char. rest: ofs from start of marshaled blob
+  uint32_t marshaled;	/* lower 8 bits: char. rest: ofs from start of marshaled blob */
 };
 
 struct letters {
@@ -98,19 +99,19 @@ void marshalhelper(struct letters* s) {
   if (!s) return;
   used+=s->n;
   assert(used<nodes+2);
-  for (i=1; i!=0; ++i) {	// start at 1, go to 256, then access modulo 256; effect: sort but put 0 last
+  for (i=1; i!=0; ++i) {	/* start at 1, go to 256, then access modulo 256; effect: sort but put 0 last */
     uint32_t x;
     i&=0xff;
-//    printf("%c ",i);
+/*    printf("%c ",i); */
     if (s->liste[i].c!=i) {
       if (i==0) return;
       continue;
     }
-//    printf("marshalhelper: %c\n",i);
+/*    printf("marshalhelper: %c\n",i); */
     x=(unsigned char)s->liste[i].c;
     if (!x) {
       size_t l=strlen((char*)s->liste[i].weiter)+1;
-//      puts((char*)s->liste[i].weiter);
+/*      puts((char*)s->liste[i].weiter); */
       x|=useddata<<8;
       assert(useddata+l<=datasize);
       memcpy(data+useddata,s->liste[i].weiter,l);
@@ -123,7 +124,7 @@ void marshalhelper(struct letters* s) {
     }
     marshaled[++myindex]=x;
   }
-//  printf("return\n");
+/*  printf("return\n"); */
 }
 
 void marshal(struct letters* s) {
@@ -169,13 +170,13 @@ int main() {
     char* s,* entity;
     size_t ul;
     if (!isspace(buf[0])) continue;
-    for (s=buf; *s && *s!='"'; ++s) ;	// skip whitespace
+    for (s=buf; *s && *s!='"'; ++s) ;	/* skip whitespace */
     if (!(*s=='"')) continue;
     ++s;
     entity=s;
     if (*entity!='&') continue;
     ++entity; ++s;
-    for (; *s && *s!='"'; ++s) ;	// skip to end of entity
+    for (; *s && *s!='"'; ++s) ;	/* skip to end of entity */
     if (!(*s=='"')) continue;
     if (s[-1]!=';') continue;
     s[-1]=0; ++s;
@@ -217,7 +218,7 @@ int main() {
     addword(&d,(*cur)->entity,(*cur)->utf8);
   }
   fclose(f);
-//  dump(d,0);
+/*  dump(d,0); */
   marshal(d);
   {
     FILE* f=fopen("entities.h","w");
@@ -235,7 +236,7 @@ int main() {
     fprintf(f,"\n  }\n};");
     fclose(f);
   }
-//  puts(lookup(heap,1,"zwnj"));
+/*  puts(lookup(heap,1,"zwnj")); */
 #if 0
   puts("};");
 #endif

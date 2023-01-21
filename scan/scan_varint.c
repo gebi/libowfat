@@ -5,11 +5,11 @@ size_t scan_varint(const char* in,size_t len, unsigned long long* n) {
   unsigned long long l;
   if (len==0) return 0;
   for (l=0, i=0; i<len; ++i) {
-    if (i*7+7>sizeof(l)*8)	// value too large to fit in destination integer!
+    if (i*7+7>sizeof(l)*8)	/* value too large to fit in destination integer! */
       return 0;
     l+=(unsigned long long)(in[i]&0x7f) << (i*7);
     if (!(in[i]&0x80)) {
-      if (in[i]==0) return 0;	// libowfat extension: reject non-minimal encoding
+      if (in[i]==0) return 0;	/* libowfat extension: reject non-minimal encoding */
       *n=l;
       return i+1;
     }

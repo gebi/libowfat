@@ -33,7 +33,7 @@ simple:
     return 2;
   }
   if (ch>0xffff) {
-    if (ch>0x10ffff) return 0;	// highest representable unicode codepoint
+    if (ch>0x10ffff) return 0;	/* highest representable unicode codepoint */
     if (dest) {
       dest[0]='\\';
       dest[1]='u';

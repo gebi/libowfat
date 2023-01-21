@@ -1,8 +1,13 @@
 #ifndef LIBOWFAT_ATTRIBUTES_H
 #define LIBOWFAT_ATTRIBUTES_H
 
+	
+#if __GNUC__ && (__STDC_VERSION__ < 199901L)
+#define inline __inline__
+#endif
+
 #ifndef __GNUC__
-// macro attribute declarations away if we don't have gcc or clang
+/* macro attribute declarations away if we don't have gcc or clang */
 #define __attribute__(x)
 #define __extension__
 #endif

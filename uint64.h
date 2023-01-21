@@ -2,8 +2,8 @@
 #ifndef UINT64_H
 #define UINT64_H
 
-#include <inttypes.h>	// uint64_t, int64_t
-#include <stddef.h>	// size_t
+#include <inttypes.h>	/* uint64_t, int64_t */
+#include <stddef.h>	/* size_t */
 
 #ifdef __cplusplus
 extern "C" {
