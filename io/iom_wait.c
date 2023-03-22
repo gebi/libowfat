@@ -1,3 +1,4 @@
+#define _POSIX_C_SOURCE 200809L
 #include "io_internal.h"
 #ifdef HAVE_EPOLL
 #include <sys/epoll.h>
