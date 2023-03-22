@@ -1139,7 +1139,7 @@ clean:
 havesl.h haveinline.h iopause.h select.h havekqueue.h haveepoll.h \
 libepoll havesigio.h havebsdsf.h havesendfile.h havescope.h havedevpoll.h \
 dep libsocket havealloca.h haveuint128.h entities.h ent havepread.h haveaccept4.h \
-*.gcda *.gcno compile_commands.json
+*.gcda *.gcno compile_commands.json json
 	rm -rf libowfat
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
