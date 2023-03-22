@@ -28,3 +28,5 @@ entities.h
 havepread.h
 libowfat
 haveaccept4.h
+compile_commands.json
+json

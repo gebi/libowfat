@@ -13,7 +13,7 @@ LIBS=byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a \
 buffer.a mmap.a taia.a tai.a dns.a case.a mult.a array.a io.a \
 textcode.a cdb.a critbit.a
 
-all: ent $(LIBS) libowfat.a libsocket t
+all: ent $(LIBS) libowfat.a libsocket t compile_commands.json
 
 pic pie:
 	$(MAKE) CC="gcc -fPIC" LDFLAGS="-fpie"
@@ -1184,7 +1184,7 @@ clean:
 havesl.h haveinline.h iopause.h select.h havekqueue.h haveepoll.h \
 libepoll havesigio.h havebsdsf.h havesendfile.h havescope.h havedevpoll.h \
 dep libsocket havealloca.h haveuint128.h entities.h ent havepread.h haveaccept4.h \
-*.gcda *.gcno
+*.gcda *.gcno compile_commands.json
 	rm -rf libowfat
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
@@ -1227,7 +1227,7 @@ uninstall:
 VERSION=libowfat-$(shell head -n 1 CHANGES|sed 's/://')
 CURNAME=$(notdir $(shell pwd))
 
-tar: Makefile clean rename
+tar: Makefile clean rename compile_commands.json
 	rm -f dep libdep
 	cd ..; tar cvvf $(VERSION).tar.xz --use=xz --exclude CVS $(VERSION)
 
@@ -1355,6 +1355,7 @@ dns_nd6.o fmt_xlong.o scan_xlong.o fmt_ip6_flat.o $(TEXTCODE_OBJS): haveinline.h
 
 iob_send.o scan_ip6if.o: havealloca.h
 
+#cutstart
 dep: haveip6.h haven2i.h havesl.h haveinline.h iopause.h select.h haveepoll.h havekqueue.h havedevpoll.h havescope.h havesigio.h havebsdsf.h havesendfile.h havealloca.h haveuint128.h entities.h havepread.h haveaccept4.h
 	$(CC) -I. -MM `ls */*.c | grep -v test` t.c | sed -e 's@ \./@ @g' > dep
 
@@ -1366,9 +1367,11 @@ Makefile: GNUmakefile dep libdep
 	sed '/startrip/,$$d' < GNUmakefile >> $@
 	cat dep libdep >> $@
 	sed -e '1,/stoprip/d' -e 's/ %.c$$//' \
+	    -e '/^#cutstart/,/^#cutend/d' \
 	    -e 's/^VERSION=.*/'VERSION=$(VERSION)/ \
 	    -e 's/^CURNAME=.*/'CURNAME=$(CURNAME)/ \
 	    -e 's/ Makefile//' < GNUmakefile >> $@
+#cutend
 
 windoze:
 	$(MAKE) DIET= CROSS=i686-mingw32-
@@ -1407,3 +1410,14 @@ check2: haveuint128.h haveinline.h entities.h
 	for i in $(UNITTESTS); do $(CC) -Wall -fprofile-arcs -ftest-coverage -g -o t -DUNITTEST $$i -I. $(LDFLAGS) && ./t || echo FAIL $$i ; done
 
 check: haveuint128.h haveinline.h $(TESTS)
+
+srcdirs=$(subst :, ,$(VPATH))
+srcfiles=$(foreach dir,$(srcdirs),$(wildcard $(dir)/*.c))
+
+compile_commands.json.tmpl: json
+	./json $(srcfiles) > $@
+#	for i in $(ALL_OBJS); do foo="{ \"directory\": \".\", \"file\": \"
+#	echo "[ > $@
+
+compile_commands.json: compile_commands.json.tmpl
+	sed -e 's#"@"#"$(PWD)"#' < $< > $@
