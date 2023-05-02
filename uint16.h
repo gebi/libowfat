@@ -32,11 +32,11 @@ static inline void uint16_pack_big(char* out,uint16 in) {
   *(uint16*)out=__builtin_bswap16(in);
 }
 
-static inline void uint16_unpack_big(const char *in,uint16* out) {
+static inline void uint16_unpack_big(const char in[2],uint16* out) {
   *out=__builtin_bswap16(*(const uint16*)in);
 }
 
-static inline uint16 uint16_read_big(const char* in) {
+static inline uint16 uint16_read_big(const char in[2]) {
   return __builtin_bswap16(*(const uint16*)in);
 }
 
