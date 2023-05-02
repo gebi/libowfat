@@ -120,7 +120,7 @@ different_byte_found:
   }
 
   newnode->child[newdirection]= *wherep;
-  *wherep= (void*)(1+(char*)newnode);
+  *wherep= (void*)(1+(char*)newnode);	// gcc -fanalyze false positive
 
   return 2;
 }

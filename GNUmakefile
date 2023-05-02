@@ -1416,8 +1416,6 @@ srcfiles=$(foreach dir,$(srcdirs),$(wildcard $(dir)/*.c))
 
 compile_commands.json.tmpl: json
 	./json $(srcfiles) > $@
-#	for i in $(ALL_OBJS); do foo="{ \"directory\": \".\", \"file\": \"
-#	echo "[ > $@
 
 compile_commands.json: compile_commands.json.tmpl
 	sed -e 's#"@"#"$(PWD)"#' < $< > $@

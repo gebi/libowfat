@@ -15,7 +15,7 @@ void iob_prefetch(io_batch* b,uint64 bytes) {
 #include <sys/mman.h>
 
 void iob_prefetch(io_batch* b,uint64 bytes) {
-  volatile char x;
+  volatile char x=0;
   iob_entry* e,* last;
   if (b->bytesleft==0) return;
   last=(iob_entry*)(((char*)array_start(&b->b))+array_bytes(&b->b));

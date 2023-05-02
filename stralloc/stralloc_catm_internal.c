@@ -9,9 +9,12 @@ int stralloc_catm_internal(stralloc* sa, ...) {
   va_start(a,sa);
   while ((s=va_arg(a,const char*))) {
     size_t tmp = strlen(s);
-    if (n + tmp < n) return 0;	// integer overflow
-    // integer overflow should not be possible, but someone could pass
-    // the same string twice to provoke it. Better check than sorry.
+    if (n + tmp < n) {
+      va_end(a);
+      return 0;	// integer overflow
+      // integer overflow should not be possible, but someone could pass
+      // the same string twice to provoke it. Better check than sorry.
+    }
     n += tmp;
   }
   va_end(a);
