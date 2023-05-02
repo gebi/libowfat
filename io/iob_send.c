@@ -276,10 +276,8 @@ eagain:
 	      sent=sendmsg(s,&msg,MSG_MORE|ZEROCOPY);
 	      if (sent > 0) totalsent += sent;
 	      if (sent == l) continue;	// we sent as much as we wanted, go for next batch
-	      if (sent >= 0) {	// we wrote something but not the whole batch
-		sent = totalsent;
+	      if (sent >= 0)	// we wrote something but not the whole batch
 		break;
-	      }
 	      // we got an error, maybe EAGAIN
 	      if (errno==EAGAIN) {
 		if (totalsent == 0) {

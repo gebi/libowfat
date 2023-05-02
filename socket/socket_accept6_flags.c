@@ -34,9 +34,9 @@
 int socket_accept6_flags(int s, char ip[16], uint16* port, uint32* scope_id, int flags)
 {
 #ifdef LIBC_HAS_IP6
-  struct sockaddr_in6 sa;
+  struct sockaddr_in6 sa = { 0 };
 #else
-  struct sockaddr_in sa;
+  struct sockaddr_in sa = { 0 };
 #endif
   socklen_t dummy = sizeof sa;
   int fd;

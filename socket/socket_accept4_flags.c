@@ -24,7 +24,7 @@
 #include "haveaccept4.h"
 
 int socket_accept4_flags(int s, char ip[4], uint16 *port, int flags) {
-  struct sockaddr_in si;
+  struct sockaddr_in si = {0};
   socklen_t len = sizeof si;
   int fd;
 
