@@ -83,6 +83,62 @@ static inline size_t scan_uint32_big(const char* in, size_t len, uint32_t* b) {
 
 #ifdef __cplusplus
 }
+
+inline void uint32_pack(unsigned char* out,uint32 in) {
+  uint32_pack(reinterpret_cast<char*>(out), in);
+}
+
+inline void uint32_pack_big(unsigned char* out,uint32 in) {
+  uint32_pack_big(reinterpret_cast<char*>(out), in);
+}
+
+inline void uint32_unpack(const unsigned char *in,uint32* out) {
+  uint32_unpack(reinterpret_cast<const char*>(in), out);
+}
+
+inline void uint32_unpack_big(const unsigned char *in,uint32* out) {
+  uint32_unpack_big(reinterpret_cast<const char*>(in), out);
+}
+
+inline void uint32_pack(uint32* out,uint32 in) {
+  uint32_pack(reinterpret_cast<char*>(out), in);
+}
+
+inline void uint32_pack_big(uint32* out,uint32 in) {
+  uint32_pack_big(reinterpret_cast<char*>(out), in);
+}
+
+inline void uint32_unpack(uint32* *in,uint32* out) {
+  uint32_unpack(reinterpret_cast<const char*>(in), out);
+}
+
+inline void uint32_unpack_big(uint32* *in,uint32* out) {
+  uint32_unpack_big(reinterpret_cast<const char*>(in), out);
+}
+
+inline uint32 uint32_read(const unsigned char *in) {
+  return uint32_read(reinterpret_cast<const char*>(in));
+}
+
+inline uint32 uint32_read_big(const unsigned char *in) {
+  return uint32_read_big(reinterpret_cast<const char*>(in));
+}
+
+inline uint32 uint32_read(const uint32 *in) {
+  return uint32_read(reinterpret_cast<const char*>(in));
+}
+
+inline uint32 uint32_read_big(const uint32 *in) {
+  return uint32_read_big(reinterpret_cast<const char*>(in));
+}
+
+inline uint32 uint_read(const uint32* in) {
+  return uint32_read(reinterpret_cast<const char*>(in));
+}
+
+inline uint32 uint_read_big(const uint32* in) {
+  return uint32_read_big(reinterpret_cast<const char*>(in));
+}
 #endif
 
 #endif

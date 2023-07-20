@@ -83,6 +83,64 @@ static inline size_t scan_uint16_big(const char* in, size_t len, uint16_t* b) {
 
 #ifdef __cplusplus
 }
+
+inline void uint16_pack(unsigned char* out,uint16 in) {
+  uint16_pack(reinterpret_cast<char*>(out), in);
+}
+
+inline void uint16_pack_big(unsigned char* out,uint16 in) {
+  uint16_pack_big(reinterpret_cast<char*>(out), in);
+}
+
+inline void uint16_unpack(const unsigned char *in,uint16* out) {
+  uint16_unpack(reinterpret_cast<const char*>(in), out);
+}
+
+inline void uint16_unpack_big(const unsigned char *in,uint16* out) {
+  uint16_unpack_big(reinterpret_cast<const char*>(in), out);
+}
+
+inline void uint16_pack(uint16* out,uint16 in) {
+  uint16_pack(reinterpret_cast<char*>(out), in);
+}
+
+inline void uint16_pack_big(uint16* out,uint16 in) {
+  uint16_pack_big(reinterpret_cast<char*>(out), in);
+}
+
+inline void uint16_unpack(uint16* *in,uint16* out) {
+  uint16_unpack(reinterpret_cast<const char*>(in), out);
+}
+
+inline void uint16_unpack_big(uint16* *in,uint16* out) {
+  uint16_unpack_big(reinterpret_cast<const char*>(in), out);
+}
+
+inline uint16 uint16_read(const unsigned char *in) {
+  return uint16_read(reinterpret_cast<const char*>(in));
+}
+
+inline uint16 uint16_read_big(const unsigned char *in) {
+  return uint16_read_big(reinterpret_cast<const char*>(in));
+}
+
+inline uint16 uint16_read(const uint16 *in) {
+  return uint16_read(reinterpret_cast<const char*>(in));
+}
+
+inline uint16 uint16_read_big(const uint16 *in) {
+  return uint16_read_big(reinterpret_cast<const char*>(in));
+}
+
+inline uint16 uint_read(const uint16* in) {
+  return uint16_read(reinterpret_cast<const char*>(in));
+}
+
+inline uint16 uint_read_big(const uint16* in) {
+  return uint16_read_big(reinterpret_cast<const char*>(in));
+}
+
 #endif
+
 
 #endif

@@ -1,5 +1,6 @@
 0.34:
   be more C99 compliant (Florian Weimer)
+  add C++ convenience overloads to uint*.h
 
 0.33:
   add byte_start, byte_starts

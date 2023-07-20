@@ -54,6 +54,65 @@ static inline size_t scan_uint64_big(const char* in, size_t len, uint64_t* b) {
 
 #ifdef __cplusplus
 }
+
+#ifndef uint64_pack
+inline void uint64_pack(unsigned char* out,uint64 in) {
+  uint64_pack(reinterpret_cast<char*>(out), in);
+}
+
+inline void uint64_unpack(const unsigned char *in,uint64* out) {
+  uint64_unpack(reinterpret_cast<const char*>(in), out);
+}
+
+inline void uint64_pack(uint64* out,uint64 in) {
+  uint64_pack(reinterpret_cast<char*>(out), in);
+}
+
+inline void uint64_unpack(uint64* *in,uint64* out) {
+  uint64_unpack(reinterpret_cast<const char*>(in), out);
+}
+
+inline uint64 uint64_read(const unsigned char *in) {
+  return uint64_read(reinterpret_cast<const char*>(in));
+}
+
+inline uint64 uint64_read(const uint64 *in) {
+  return uint64_read(reinterpret_cast<const char*>(in));
+}
+
+#endif
+
+inline uint64 uint64_read_big(const unsigned char *in) {
+  return uint64_read_big(reinterpret_cast<const char*>(in));
+}
+
+inline uint64 uint64_read_big(const uint64 *in) {
+  return uint64_read_big(reinterpret_cast<const char*>(in));
+}
+
+inline void uint64_pack_big(unsigned char* out,uint64 in) {
+  uint64_pack_big(reinterpret_cast<char*>(out), in);
+}
+
+inline void uint64_unpack_big(const unsigned char *in,uint64* out) {
+  uint64_unpack_big(reinterpret_cast<const char*>(in), out);
+}
+
+inline void uint64_pack_big(uint64* out,uint64 in) {
+  uint64_pack_big(reinterpret_cast<char*>(out), in);
+}
+
+inline void uint64_unpack_big(uint64* *in,uint64* out) {
+  uint64_unpack_big(reinterpret_cast<const char*>(in), out);
+}
+
+inline uint64 uint_read(const uint64* in) {
+  return uint64_read(reinterpret_cast<const char*>(in));
+}
+
+inline uint64 uint_read_big(const uint64* in) {
+  return uint64_read_big(reinterpret_cast<const char*>(in));
+}
 #endif
 
 #endif
