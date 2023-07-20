@@ -108,11 +108,13 @@ int64 io_tryread(int64 d,char* buf,int64 len) {
   if (r==-1 && errno==EAGAIN) {
     if (e->goterror) r=-3;
     io_eagain_read(d);
+    return r;
   }
   if (r==-1) {
     if (errno==EINTR) errno=EAGAIN;
     if (errno!=EAGAIN)
       r=-3;
+    return r;
   }
   if (r!=len) {
     e->canread=0;
