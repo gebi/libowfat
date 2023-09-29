@@ -39,6 +39,6 @@ size_t scan_longn(const char *src,size_t len,long *dest) {
     ok=1;
   }
   if (!ok) return 0;
-  *dest=(neg?-l:l);
+  *dest=(neg?-(unsigned long int)l:l);
   return (size_t)(tmp-src);
 }

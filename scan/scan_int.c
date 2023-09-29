@@ -38,7 +38,7 @@ size_t scan_int(const char* src,int* dest) {
     ok=1;
   }
   if (!ok) return 0;
-  *dest=(neg?-l:l);
+  *dest=(neg?-(unsigned int)l:l);
   return (size_t)(tmp-src);
 }
 
