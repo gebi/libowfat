@@ -1,7 +1,8 @@
 #include "parse.h"
 
 uint16_t prs_u16(struct bytestream* bs) {
-  return bs_get(bs) | (bs_get(bs) << 8);
+  unsigned char c = bs_get(bs);
+  return c | (bs_get(bs) << 8);
 }
 
 #ifdef UNITTEST

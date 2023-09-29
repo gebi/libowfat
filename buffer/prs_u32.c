@@ -1,7 +1,10 @@
 #include "parse.h"
 
 uint32_t prs_u32(struct bytestream* bs) {
-  return bs_get(bs) | (bs_get(bs) << 8) | (bs_get(bs) << 16) | (bs_get(bs) << 24);
+  uint32_t x = bs_get(bs);
+  x |= bs_get(bs) << 8;
+  x |= bs_get(bs) << 16;
+  return x | (bs_get(bs) << 24);
 }
 
 #ifdef UNITTEST
