@@ -32,7 +32,7 @@ int main() {
   if (sizeof(i)==4)
     assert(scan_xlongn("fefec0debaad",14,&i)==8 && i==0xfefec0de);	// test truncation
   else if (sizeof(i)==8)
-    assert(scan_xlongn("fefec0debaadc0debl06",40,&i)==16 && i==0xfefec0debaadc0de);	// test truncation
+    assert(scan_xlongn("fefec0debaadc0debl06",21,&i)==16 && i==0xfefec0debaadc0de);	// test truncation
   return 0;
 }
 #endif

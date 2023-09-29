@@ -73,7 +73,7 @@ int main() {
   // now try to provoke integer overflow
   bs_init_membuf(&bs, (const unsigned char*)"\x34\x12", 2);
   assert(bs_get(&bs) == 0x34);
-  assert(prs_readblob(&bs, buf, (size_t)-1) == -1);
+  assert(prs_readblob(&bs, buf, (size_t)-1) == -1);	// ignore compiler warning pls
   // a bad implementation would add 0xffffffff to the 1 we already read and wrap to 0
   // our code makes sure not to wrap and also limits the length of the
   // blob to max_ssize_t (0x7fffffff).
