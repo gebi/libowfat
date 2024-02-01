@@ -1,6 +1,7 @@
 0.34:
   be more C99 compliant (Florian Weimer)
   add C++ convenience overloads to uint*.h
+  remove unaligned memory access behind #ifdef i386 from uint*.h (compilers are now smart enough so they are no longer needed and they were technically undefined behavior so the sanitizer complained)
 
 0.33:
   add byte_start, byte_starts
