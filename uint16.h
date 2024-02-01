@@ -14,39 +14,39 @@ typedef int16_t int16;
 
 #if (defined(__i386__) || defined(__x86_64__)) && !defined(NO_UINT16_MACROS)
 
+/* On x86 and x64 unaligned access are OK and the compiler knows it and
+ * will collapse this long-looking code into a single load or store
+ * instruction, so turn it into inline functions */
+
 static inline void uint16_pack(char* out,uint16 in) {
-  *(uint16*)out=in;
+  out[0]=in;
+  out[1]=in>>8;
 }
 
 static inline void uint16_unpack(const char *in,uint16* out) {
-  *out=*(const uint16*)in;
+  const unsigned char* i = (const unsigned char*)in;
+  *out=i[0] | (i[1]<<8);
 }
 
 static inline uint16 uint16_read(const char* in) {
-  return *(const uint16*)in;
+  const unsigned char* i = (const unsigned char*)in;
+  return i[0] | (i[1]<<8);
 }
-
-#if defined(__x86_64__) && defined(__GNUC__)
 
 static inline void uint16_pack_big(char* out,uint16 in) {
-  *(uint16*)out=__builtin_bswap16(in);
+  out[0]=in>>8;
+  out[1]=in;
 }
 
-static inline void uint16_unpack_big(const char in[2],uint16* out) {
-  *out=__builtin_bswap16(*(const uint16*)in);
+static inline void uint16_unpack_big(const char *in,uint16* out) {
+  const unsigned char* i = (const unsigned char*)in;
+  *out=(i[0]<<8) | i[1];
 }
 
-static inline uint16 uint16_read_big(const char in[2]) {
-  return __builtin_bswap16(*(const uint16*)in);
+static inline uint16 uint16_read_big(const char* in) {
+  const unsigned char* i = (const unsigned char*)in;
+  return (i[0]<<8) | i[1];
 }
-
-#else
-
-void uint16_pack_big(char *out,uint16 in);
-void uint16_unpack_big(const char *in,uint16* out);
-uint16 uint16_read_big(const char *in);
-
-#endif
 
 #else
 

@@ -13,12 +13,61 @@ typedef uint64_t uint64;
 typedef int64_t int64;
 
 #if (defined(__i386__) || defined(__x86_64__)) && !defined(NO_UINT64_MACROS)
-#define uint64_pack(out,in) (*(uint64*)(out)=(in))
-#define uint64_unpack(in,out) (*(out)=*(uint64*)(in))
-#define uint64_read(in) (*(uint64*)(in))
-void uint64_pack_big(char *out,uint64 in);
-void uint64_unpack_big(const char *in,uint64* out);
-uint64 uint64_read_big(const char *in);
+
+/* On x86 and x64 unaligned access are OK and the compiler knows it and
+ * will collapse this long-looking code into a single load or store
+ * instruction, so turn it into inline functions */
+
+static inline void uint64_pack(char* out,uint64 in) {
+  out[0]=in;
+  out[1]=in>>8;
+  out[2]=in>>16;
+  out[3]=in>>24;
+  out[4]=in>>32;
+  out[5]=in>>40;
+  out[6]=in>>48;
+  out[7]=in>>56;
+}
+
+static inline void uint64_unpack(const char *in,uint64* out) {
+  const unsigned char* i = (const unsigned char*)in;
+  *out=i[0] | (i[1]<<8) | (i[2]<<16) | ((uint64)i[3]<<24) |
+    ((uint64)i[4]<<32) | ((uint64)i[5]<<40) |
+    ((uint64)i[6]<<48) | ((uint64)i[7]<<56);
+}
+
+static inline uint64 uint64_read(const char *in) {
+  const unsigned char* i = (const unsigned char*)in;
+  return i[0] | (i[1]<<8) | (i[2]<<16) | ((uint64)i[3]<<24) |
+    ((uint64)i[4]<<32) | ((uint64)i[5]<<40) |
+    ((uint64)i[6]<<48) | ((uint64)i[7]<<56);
+}
+
+static inline void uint64_pack_big(char *out,uint64 in) {
+  out[0]=in>>56;
+  out[1]=in>>48;
+  out[2]=in>>40;
+  out[3]=in>>32;
+  out[4]=in>>24;
+  out[5]=in>>16;
+  out[6]=in>>8;
+  out[7]=in;
+}
+
+static inline void uint64_unpack_big(const char *in,uint64* out) {
+  const unsigned char* i = (const unsigned char*)in;
+  *out=(i[7] | (i[6]<<8) | (i[5]<<16) | ((uint64)(i[4])<<24)) |
+    ((uint64)(i[3])<<32) | ((uint64)(i[2])<<40) |
+    ((uint64)(i[1])<<48) | ((uint64)(i[0])<<56);
+}
+
+static inline uint64 uint64_read_big(const char *in) {
+  const unsigned char* i = (const unsigned char*)in;
+  return (i[7] | (i[6]<<8) | (i[5]<<16) | ((uint64)(i[4])<<24)) |
+    ((uint64)(i[3])<<32) | ((uint64)(i[2])<<40) |
+    ((uint64)(i[1])<<48) | ((uint64)(i[0])<<56);
+}
+
 #else
 
 void uint64_pack(char *out,uint64 in);
