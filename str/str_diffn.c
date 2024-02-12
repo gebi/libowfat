@@ -23,3 +23,16 @@ int str_diffn(const char* a, const char* b, size_t limit) {
   }
   return j;
 }
+
+#ifdef UNITTEST
+#include <assert.h>
+#include <string.h>
+
+int main() {
+  assert(str_diffn("foo","foo",3)==0);
+  assert(str_diffn("foo","fob",3)==('o'-'b'));
+  assert(str_diffn("foo","foox",4)==(-'x'));
+  assert(str_diffn("foox","foo",4)=='x');
+  assert(str_diffn("foo","fob",2)==0);
+}
+#endif
