@@ -1,6 +1,5 @@
 #include <sys/param.h>
 #include <sys/types.h>
-#include <string.h>
 #ifndef __MINGW32__
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -14,6 +13,7 @@
 #include "havescope.h"
 
 #ifdef __MINGW32__
+#include <string.h>
 #include <windows.h>
 #include <mswsock.h>
 #include <errno.h>
