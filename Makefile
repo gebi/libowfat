@@ -1338,7 +1338,7 @@ UNITTESTS=$(shell grep -l UNITTEST */*.c)
 TESTS=$(patsubst %.c,test_%,$(notdir $(UNITTESTS)))
 
 test_%:
-	$(CC) -g -o $@ $< -DUNITTEST -I. -fprofile-arcs -ftest-coverage $(LDFLAGS)
+	$(CC) -g -o $@ $< -DUNITTEST -I. -fprofile-arcs -ftest-coverage -fsanitize=undefined -fsanitize=address $(LDFLAGS)
 	./$@
 	rm -f $@
 
@@ -1354,8 +1354,6 @@ srcfiles=$(foreach dir,$(srcdirs),$(wildcard $(dir)/*.c))
 
 compile_commands.json.tmpl: json
 	./json $(srcfiles) > $@
-#	for i in $(ALL_OBJS); do foo="{ \"directory\": \".\", \"file\": \"
-#	echo "[ > $@
 
 compile_commands.json: compile_commands.json.tmpl
 	sed -e 's#"@"#"$(PWD)"#' < $< > $@

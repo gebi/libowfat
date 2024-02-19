@@ -1400,7 +1400,7 @@ UNITTESTS=$(shell grep -l UNITTEST */*.c)
 TESTS=$(patsubst %.c,test_%,$(notdir $(UNITTESTS)))
 
 test_%: %.c
-	$(CC) -g -o $@ $< -DUNITTEST -I. -fprofile-arcs -ftest-coverage $(LDFLAGS)
+	$(CC) -g -o $@ $< -DUNITTEST -I. -fprofile-arcs -ftest-coverage -fsanitize=undefined -fsanitize=address $(LDFLAGS)
 	./$@
 	rm -f $@
 
