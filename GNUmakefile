@@ -13,7 +13,7 @@ LIBS=byte.a fmt.a scan.a str.a uint.a open.a stralloc.a unix.a socket.a \
 buffer.a mmap.a taia.a tai.a dns.a case.a mult.a array.a io.a \
 textcode.a cdb.a critbit.a
 
-all: ent $(LIBS) libowfat.a libsocket t compile_commands.json
+all: ent $(LIBS) libowfat.a libsocket t
 
 pic pie:
 	$(MAKE) CC="gcc -fPIC" LDFLAGS="-fpie"
@@ -1371,6 +1371,17 @@ Makefile: GNUmakefile dep libdep
 	    -e 's/^VERSION=.*/'VERSION=$(VERSION)/ \
 	    -e 's/^CURNAME=.*/'CURNAME=$(CURNAME)/ \
 	    -e 's/ Makefile//' < GNUmakefile >> $@
+
+srcdirs=$(subst :, ,$(VPATH))
+srcfiles=$(foreach dir,$(srcdirs),$(wildcard $(dir)/*.c))
+
+compile_commands.json.tmpl: json
+	./json $(srcfiles) > $@
+
+compile_commands.json: compile_commands.json.tmpl
+	sed -e 's#"@"#"$(PWD)"#' < $< > $@
+
+all: compile_commands.json
 #cutend
 
 windoze:
@@ -1411,11 +1422,3 @@ check2: haveuint128.h haveinline.h entities.h
 
 check: haveuint128.h haveinline.h $(TESTS)
 
-srcdirs=$(subst :, ,$(VPATH))
-srcfiles=$(foreach dir,$(srcdirs),$(wildcard $(dir)/*.c))
-
-compile_commands.json.tmpl: json
-	./json $(srcfiles) > $@
-
-compile_commands.json: compile_commands.json.tmpl
-	sed -e 's#"@"#"$(PWD)"#' < $< > $@
