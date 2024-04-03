@@ -13,7 +13,8 @@
 
 int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
   off_t sbytes;
-  int r=sendfile(fd,s,off,n,0,&sbytes,0);
+  size_t ct=n>0x7fffffffull ? 0x7fffffff : (size_t)n;
+  int r=sendfile(fd,s,off,ct,0,&sbytes,0);
   if (r==-1) {
     io_eagain_write(s);
     return (errno==EAGAIN?(sbytes?sbytes:-1):-3);
