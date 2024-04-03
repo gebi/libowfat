@@ -8,6 +8,7 @@
 #include "haveip6.h"
 #include "socket.h"
 #include "ndelay.h"
+#include "windoze.h"
 
 #ifndef EAFNOSUPPORT
 #define EAFNOSUPPORT EINVAL
@@ -23,7 +24,12 @@ int socket_tcp6(void) {
   int s;
 #if defined(LIBC_HAS_IP6) && defined(SOCK_NONBLOCK)
   if ((s=socket(noipv6?PF_INET:PF_INET6,SOCK_STREAM|SOCK_NONBLOCK,IPPROTO_TCP))>-1 ||
-      (errno!=EINVAL && errno!=EAFNOSUPPORT && errno!=EPFNOSUPPORT && errno!=EPROTONOSUPPORT)) return s;
+      (errno!=EINVAL && errno!=EAFNOSUPPORT && errno!=EPFNOSUPPORT && errno!=EPROTONOSUPPORT)) {
+#ifdef IPV6_V6ONLY
+    winsock2errno(setsockopt(s,IPPROTO_TCP,TCP_CORK,(int[]){ 0 },sizeof(int)));
+#endif
+    return s;
+  }
 #endif
   s=socket_tcp6b();
   if (s==-1) return -1;
