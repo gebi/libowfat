@@ -127,7 +127,7 @@ int64 iob_send(int64 s,io_batch* b) {
   io_entry* E;
   struct iovec* v;
   uint64 total;
-  int64 sent;
+  int64 sent=0;
   size_t i;
   size_t headers;
 #ifdef MSG_MORE
@@ -203,7 +203,9 @@ int64 iob_send(int64 s,io_batch* b) {
 	if (errno!=EAGAIN)
 	  sent=-3;
 	else {
+#ifdef DEBUGONLINUX
 eagain:
+#endif
 	  io_eagain_write(s);
 	  return -1;
 	}
