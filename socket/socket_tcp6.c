@@ -26,7 +26,7 @@ int socket_tcp6(void) {
   if ((s=socket(noipv6?PF_INET:PF_INET6,SOCK_STREAM|SOCK_NONBLOCK,IPPROTO_TCP))>-1 ||
       (errno!=EINVAL && errno!=EAFNOSUPPORT && errno!=EPFNOSUPPORT && errno!=EPROTONOSUPPORT)) {
 #ifdef IPV6_V6ONLY
-    winsock2errno(setsockopt(s,IPPROTO_TCP,TCP_CORK,(int[]){ 0 },sizeof(int)));
+    winsock2errno(setsockopt(s,IPPROTO_IPV6,TCP_V6ONLY,(int[]){ 0 },sizeof(int)));
 #endif
     return s;
   }
