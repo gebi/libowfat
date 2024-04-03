@@ -19,7 +19,7 @@ int64 io_sendfile(int64 s,int64 fd,uint64 off,uint64 n) {
     io_eagain_write(s);
     return (errno==EAGAIN?(sbytes?sbytes:-1):-3);
   }
-  if (sbytes<n)
+  if (sbytes<ct)
     io_eagain_write(s);
   return n;
 }
