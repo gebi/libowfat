@@ -5,6 +5,5 @@
 
 #include <sys/types.h>
 #include <sys/time.h>
-extern int select();
 
 #endif

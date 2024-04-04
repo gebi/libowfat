@@ -10,6 +10,4 @@
 /* braindead BSD uses bzero in FD_ZERO but doesn't #include string.h */
 #include <string.h>
 
-extern int select();
-
 #endif
