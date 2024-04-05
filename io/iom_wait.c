@@ -175,23 +175,36 @@ int iom_wait(iomux_t* c,int64* s,unsigned int* revents,unsigned long timeout) {
       gettimeofday(&tv, NULL);
       tv.tv_sec += timeout/1000;
       tv.tv_usec += timeout%1000;
-      if (tv.tv_usec>1000) {
-	tv.tv_usec-=1000;
+      if (tv.tv_usec>1000000) {
+	tv.tv_usec-=1000000;
 	++tv.tv_sec;
       }
       ts.tv_sec = tv.tv_sec;
       ts.tv_nsec = tv.tv_usec * 1000;
 #ifdef __dietlibc__
       r=cnd_timedwait(&c->sem,&c->mtx,&ts);
+      switch (r) {
+      case thrd_success:
+	continue;
+      case thrd_timedout:
+	return 0;
+      case thrd_error:
+	return -1;
+      }
 #elif defined(__APPLE__)
       r=pthread_cond_timedwait(&c->sem,&c->mtx,&ts);
+      switch (r) {
+      case 0: continue;
+      case ETIMEDOUT: return 0;
+      default: return -1;
+      }
 #else
       r=sem_timedwait(&c->sem,&ts);
-#endif
       if (r==-1) {
 	if (errno==ETIMEDOUT) return 0;
 	return -1;
       }
+#endif
       /* fall through into next loop iteration */
     }
   }

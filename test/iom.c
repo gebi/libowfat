@@ -14,7 +14,7 @@ int worker(void* arg) {
   uintptr_t i=(uintptr_t)arg;
   char buf[100];
   int64 s;
-  int events;
+  unsigned int events;
 
   write(1,buf,sprintf(buf,"starting thread %ld\n",i));
 
@@ -73,7 +73,10 @@ int main() {
     if (thrd_join(x[i],&r)==-1)
 #else
     void* tmp;
-    if (pthread_join(x[i],&tmp)==-1, r=(int)(uintptr_t)tmp)
+    
+    if (pthread_join(x[i],&tmp)!=-1)
+      r=(int)(uintptr_t)tmp;
+    else
 #endif
     {
       perror("thrd_join");
@@ -81,6 +84,8 @@ int main() {
     }
     printf("thread %d returned %d\n",i,r);
   }
+
+  fflush(stdout);
 
   return 0;
 }
