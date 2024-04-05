@@ -209,12 +209,15 @@ int64 io_mmapwritefile(int64 out,int64 in,uint64 off,uint64 bytes,io_write_callb
 unsigned int io_debugstring(int64 s,char* buf,unsigned int bufsize);
 
 #ifdef __MINGW32__
+// https://github.com/lhmouse/mcfgthread
 #include <mcfgthread/c11.h>
 #elif defined(__dietlibc__)
 #include <threads.h>
 #else
 #include <pthread.h>
+#ifndef __APPLE__
 #include <semaphore.h>
+#endif
 #endif
 
 enum { SLOTS=128 };
@@ -228,6 +231,9 @@ typedef struct iomux {
 #if defined(__MINGW32__) || defined(__dietlibc__)
   mtx_t mtx;
   cnd_t sem;
+#elif defined(__APPLE__)
+  pthread_mutex_t mtx;
+  pthread_cond_t sem;
 #else
   sem_t sem;
 #endif
@@ -253,6 +259,7 @@ int iom_add(iomux_t* c,int64 s,unsigned int events);
 int iom_wait(iomux_t* c,int64* s,unsigned int* revents,unsigned long timeout);
 
 /* Call this to terminate all threads waiting in iom_wait */
+/* Returns 0 on success, -1 on failure */
 int iom_abort(iomux_t* c);
 
 #ifdef __cplusplus

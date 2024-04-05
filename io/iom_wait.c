@@ -79,6 +79,8 @@ int iom_wait(iomux_t* c,int64* s,unsigned int* revents,unsigned long timeout) {
 	// not transient, then they will also get an error and wake the
 	// next up
 	cnd_signal(&c->sem);
+#elif defined(__APPLE__)
+	pthread_cond_signal(&c->sem);
 #else
 	sem_post(&c->sem);
 #endif
@@ -117,6 +119,8 @@ int iom_wait(iomux_t* c,int64* s,unsigned int* revents,unsigned long timeout) {
 #ifdef __dietlibc__
 	// no dietlibc for kqueue based systems yet
 	cnd_broadcast(&c->sem);
+#elif defined(__APPLE__)
+	pthread_cond_broadcast(&c->sem);
 #else
 	sem_post(&c->sem);
 #endif
@@ -155,6 +159,11 @@ int iom_wait(iomux_t* c,int64* s,unsigned int* revents,unsigned long timeout) {
 	cnd_signal(&c->sem);
       else
 	cnd_broadcast(&c->sem);
+#elif defined(__APPLE__)
+      if (c->h == (c->l + 1) % SLOTS)
+	pthread_cond_signal(&c->sem);
+      else
+	pthread_cond_broadcast(&c->sem);
 #else
       sem_post(&c->sem);
 #endif
@@ -166,6 +175,8 @@ int iom_wait(iomux_t* c,int64* s,unsigned int* revents,unsigned long timeout) {
       ts.tv_nsec = (timeout % 1000) * 1000000;
 #ifdef __dietlibc__
       r=cnd_timedwait(&c->sem,&c->mtx,&ts);
+#elif defined(__APPLE__)
+      r=pthread_cond_timedwait(&c->sem,&c->mtx,&ts);
 #else
       r=sem_timedwait(&c->sem,&ts);
 #endif

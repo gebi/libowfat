@@ -33,6 +33,9 @@ int iom_init(iomux_t* c) {
 #ifdef __dietlibc__
   mtx_init(&c->mtx, mtx_timed);
   cnd_init(&c->sem);
+#elif defined(__APPLE__)
+  pthread_mutex_init(&c->mtx, 0);
+  pthread_cond_init(&c->sem, 0);
 #else
   sem_init(&c->sem, 0, 1);
 #endif
