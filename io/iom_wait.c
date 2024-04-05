@@ -3,10 +3,10 @@
 #ifdef HAVE_EPOLL
 #include <sys/epoll.h>
 #endif
+#include <sys/time.h>
 #ifdef HAVE_KQUEUE
 #include <sys/types.h>
 #include <sys/event.h>
-#include <sys/time.h>
 #endif
 #include <errno.h>
 #ifdef __dietlibc__
@@ -171,8 +171,16 @@ int iom_wait(iomux_t* c,int64* s,unsigned int* revents,unsigned long timeout) {
     } else {
       /* somebody else has the job to fill the queue */
       struct timespec ts;
-      ts.tv_sec = timeout / 1000;
-      ts.tv_nsec = (timeout % 1000) * 1000000;
+      struct timeval tv;
+      gettimeofday(&tv, NULL);
+      tv.tv_sec += timeout/1000;
+      tv.tv_usec += timeout%1000;
+      if (tv.tv_usec>1000) {
+	tv.tv_usec-=1000;
+	++tv.tv_sec;
+      }
+      ts.tv_sec = tv.tv_sec;
+      ts.tv_nsec = tv.tv_usec * 1000;
 #ifdef __dietlibc__
       r=cnd_timedwait(&c->sem,&c->mtx,&ts);
 #elif defined(__APPLE__)
