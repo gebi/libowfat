@@ -1,6 +1,11 @@
 #include "io.h"
 #include <stdio.h>
+#if defined(__dietlibc__) || defined(__linux__)
+#define THRD
 #include <threads.h>
+#else
+#include <pthread.h>
+#endif
 #include <unistd.h>
 
 iomux_t c;
@@ -34,11 +39,20 @@ int main() {
     perror("iom_add");
     return 1;
   }
+#ifdef THRD
   thrd_t x[4];
+#else
+  pthread_t x[4];
+#endif
   int i;
   puts("launching threads");
   for (i=0; i<4; ++i)
-    if (thrd_create(&x[i],worker,(void*)(uintptr_t)i)==-1) {
+#ifdef THRD
+    if (thrd_create(&x[i],worker,(void*)(uintptr_t)i)==-1)
+#else
+    if (pthread_create(&x[i],0,worker,(void*)(uintptr_t)i)==-1)
+#endif
+    {
       perror("thrd_create");
       return 111;
     }
@@ -49,7 +63,12 @@ int main() {
   puts("joining threads");
   int r;
   for (i=0; i<4; ++i) {
-    if (thrd_join(x[i],&r)==-1) {
+#ifdef THRD
+    if (thrd_join(x[i],&r)==-1)
+#else
+    if (pthread_join(x[i],&r)==-1)
+#endif
+    {
       perror("thrd_join");
       return 111;
     }
