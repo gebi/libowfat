@@ -15,7 +15,7 @@
 #include <semaphore.h>
 #endif
 
-// return the next event, waiting of none are queued
+// return the next event, waiting if none are queued
 // wait at most timeout milliseconds
 // on success, return 1 and return the fd in *s and the events on it in *revents
 // if we waited but ran into a timeout, return 0
