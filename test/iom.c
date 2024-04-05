@@ -1,6 +1,6 @@
 #include "io.h"
 #include <stdio.h>
-#if defined(__dietlibc__) || defined(__linux__)
+#if !defined(PTHREAD) && (defined(__dietlibc__) || defined(__linux__))
 #define THRD
 #include <threads.h>
 #else
@@ -33,6 +33,12 @@ int worker(void* arg) {
   return 0;
 }
 
+#ifndef THRD
+void* workerwrapper(void* arg) {
+  return (void*)(uintptr_t)worker(arg);
+}
+#endif
+
 int main() {
   iom_init(&c);
   if (iom_add(&c,0,IOM_READ)==-1) {
@@ -50,7 +56,7 @@ int main() {
 #ifdef THRD
     if (thrd_create(&x[i],worker,(void*)(uintptr_t)i)==-1)
 #else
-    if (pthread_create(&x[i],0,worker,(void*)(uintptr_t)i)==-1)
+    if (pthread_create(&x[i],0,workerwrapper,(void*)(uintptr_t)i)==-1)
 #endif
     {
       perror("thrd_create");
@@ -66,7 +72,8 @@ int main() {
 #ifdef THRD
     if (thrd_join(x[i],&r)==-1)
 #else
-    if (pthread_join(x[i],&r)==-1)
+    void* tmp;
+    if (pthread_join(x[i],&tmp)==-1, r=(int)(uintptr_t)tmp)
 #endif
     {
       perror("thrd_join");
