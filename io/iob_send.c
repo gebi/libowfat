@@ -7,6 +7,14 @@
 #include "iob_internal.h"
 #include <stdio.h>
 
+/*
+__        ___           _
+\ \      / (_)_ __   __| | _____      _____
+ \ \ /\ / /| | '_ \ / _` |/ _ \ \ /\ / / __|
+  \ V  V / | | | | | (_| | (_) \ V  V /\__ \
+   \_/\_/  |_|_| |_|\__,_|\___/ \_/\_/ |___/
+ */
+
 int64 iob_send(int64 s,io_batch* b) {
   /* Windows has a sendfile called TransmitFile, which can send one
    * header and one trailer buffer. */
@@ -108,6 +116,14 @@ int64 iob_send(int64 s,io_batch* b) {
 
 #else
 
+/*
+ _   _       _
+| | | |_ __ (_)_  __
+| | | | '_ \| \ \/ /
+| |_| | | | | |>  <
+ \___/|_| |_|_/_/\_\
+ */
+
 #include "havebsdsf.h"
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -145,7 +161,7 @@ int64 iob_send(int64 s,io_batch* b) {
 
   if (b->bytesleft==0) return 0;
   E=iarray_get(&io_fds,s);
-  if (!E) { errno=EBADF; return -3; }
+//  if (!E) { errno=EBADF; return -3; }
   last=(iob_entry*)(((char*)array_start(&b->b))+array_bytes(&b->b));
   v=alloca(b->bufs*sizeof(struct iovec));
   total=0;
@@ -167,6 +183,14 @@ int64 iob_send(int64 s,io_batch* b) {
     }
     headers=i;
 #ifdef HAVE_BSDSENDFILE
+
+/*
+ ____ ____  ____
+| __ ) ___||  _ \
+|  _ \___ \| | | |
+| |_) |__) | |_| |
+|____/____/|____/
+ */
     if (e+i<last && e[i].type==FROMFILE) {
 
 #ifdef DEBUGONLINUX
@@ -212,6 +236,14 @@ eagain:
       }
     }
 #else
+
+/*
+ _     _
+| |   (_)_ __  _   ___  __
+| |   | | '_ \| | | \ \/ /
+| |___| | | | | |_| |>  <
+|_____|_|_| |_|\__,_/_/\_\
+ */
     /* Linux has two ways to coalesce sent data; either setsockopt
      * TCP_CORK or sendto/sendmsg with MSG_MORE. MSG_MORE saves syscalls
      * in one scenario: when there is n buffers and then possibly one
@@ -245,7 +277,7 @@ eagain:
 	  if (!nozerocopy && sum>=8*1024) {
 	    /* MSG_ZEROCOPY has page table management overhead,
 	     * it only pays off after 8k or so */
-	    if (E->zerocopy==0) {
+	    if (E && E->zerocopy==0) {
 	      if (setsockopt(s, SOL_SOCKET, SO_ZEROCOPY, (int[]){ 1 },sizeof(int)) == 0) {
 		E->zerocopy=1;
 		ZEROCOPY=MSG_ZEROCOPY;
@@ -273,9 +305,18 @@ eagain:
 	      n = headers-skip; if (n > 50) n=50;
 	      for (i=0; i<n; ++i) l += v[skip+i].iov_len;
 //	      printf("writing %d records from offset %d, %d bytes\n", skip, n, l);
-	      msg.msg_iov=v + skip;
-	      msg.msg_iovlen=n;
-	      sent=sendmsg(s,&msg,MSG_MORE|ZEROCOPY);
+	      if (E && E->notsock)
+notsockwritev:
+		sent=writev(s,v+skip,n);
+	      else {
+		msg.msg_iov=v + skip;
+		msg.msg_iovlen=n;
+		sent=sendmsg(s,&msg,MSG_MORE|ZEROCOPY);
+		if (sent==-1 && errno==ENOTSOCK) {
+		  if (E) E->notsock=1;
+		  goto notsockwritev;
+		}
+	      }
 	      if (sent > 0) totalsent += sent;
 	      if (sent == l) continue;	// we sent as much as we wanted, go for next batch
 	      if (sent >= 0)	// we wrote something but not the whole batch
@@ -294,8 +335,20 @@ eagain:
 	    // if we get here, we wrote it all or we got an EAGAIN after
 	    // writing something. Treat as regular partial write.
 	    sent = totalsent;
-	  } else
-	    sent=sendmsg(s,&msg,MSG_MORE|ZEROCOPY);
+	  } else {
+	    if (E && E->notsock)
+notsockwritev2:
+	      sent=writev(s,v,headers);
+	    else {
+	      msg.msg_iov=v;
+	      msg.msg_iovlen=headers;
+	      sent=sendmsg(s,&msg,MSG_MORE|ZEROCOPY);
+	      if (sent==-1 && errno==ENOTSOCK) {
+		if (E) E->notsock=1;
+		goto notsockwritev2;
+	      }
+	    }
+	  }
 	}
       }
       if (sent==-1) {
@@ -345,6 +398,11 @@ eagain:
       for (i=0; e+i<last; ++i) {
 	if (e[i].n<=rest) {
 	  rest-=e[i].n;
+	  if (b->autofree) {
+	    if (e[i].cleanup)
+	      e[i].cleanup(e+i);
+	    e[i].cleanup=0;
+	  }
 	  ++b->next;
 	  if (!rest) break;
 	} else {
@@ -353,8 +411,10 @@ eagain:
 	  goto abort;
 	}
       }
-      io_eagain_write(s);
-      return total;
+      if (b->bytesleft==0) {
+	io_eagain_write(s);
+	return total;
+      }
     } else break;
   }
 abort:

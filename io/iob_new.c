@@ -2,7 +2,7 @@
 #include "byte.h"
 #include "iob_internal.h"
 
-io_batch* iob_new(int hint_entries) {
+io_batch* iob_new(size_t hint_entries) {
   io_batch* b=(io_batch*)malloc(sizeof(io_batch));
   if (!b) return 0;
   byte_zero(b,sizeof(io_batch));

@@ -4,7 +4,7 @@ iob_new \- create new I/O batch
 .SH SYNTAX
 .B #include <libowfat/iob.h>
 
-io_batch* \fBiob_new\fP(int hint_entries);
+io_batch* \fBiob_new\fP(size_t hint_entries);
 .SH DESCRIPTION
 iob_new creates a new I/O batch with enough space allocated for
 \fIhint_entries\fR entries (buffers or files).  This is purely a

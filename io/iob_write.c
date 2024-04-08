@@ -11,7 +11,7 @@ int64 iob_write2(int64 s,io_batch* b,io_write_callback cb,io_sendfile_callback s
   total=0;
   if (!(e=array_get(&b->b,sizeof(iob_entry),b->next)))
     return -3;		/* can't happen error */
-  for (i=0; e+i<last; ++i) {
+  for (i=b->next; e+i<last; ++i) {
     int thatsit;
     if (!e[i].n) continue;
     if (e[i].type==FROMFILE)
@@ -27,6 +27,13 @@ int64 iob_write2(int64 s,io_batch* b,io_write_callback cb,io_sendfile_callback s
     total+=sent;
     b->bytesleft-=sent;
     if (thatsit) break;
+    // we have sent one full entry
+    if (b->autofree) {
+      if (e[i].cleanup)
+	e[i].cleanup(e+i);
+      e[i].cleanup=0;
+    }
+    ++b->next;
   }
   if (total == b->bytesleft)
     iob_reset(b);
