@@ -249,12 +249,16 @@ enum {
   IOM_WRITE=2,
   IOM_ERROR=4
 };
+/* signal interest in events from a socket */
 /* return -1 if error, events can be IOM_READ or IOM_WRITE */
 int iom_add(iomux_t* c,int64 s,unsigned int events);
 
+/* signal interest in more events from a socket */
+int iom_requeue(iomux_t* c,int64 s,unsigned int events);
+
 /* Blocking wait for single event, timeout in milliseconds */
 /* return -1 if error, 0 if ok; s set to fd, revents set to known events on that fd */
-/* when done with the fd, call iom_add on it again! */
+/* when done with the fd, call iom_requeue on it to receive more events! */
 /* This can be called by multiple threads in parallel */
 int iom_wait(iomux_t* c,int64* s,unsigned int* revents,unsigned long timeout);
 
