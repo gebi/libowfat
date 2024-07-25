@@ -677,21 +677,30 @@ iob_addfile.o: io/iob_addfile.c iob_internal.h iob.h libowfat/io.h \
 iob_addfile_close.o: io/iob_addfile_close.c iob_internal.h iob.h \
  libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h \
  libowfat/uint32.h libowfat/compiler.h libowfat/array.h array.h
-iob_adds.o: io/iob_adds.c str.h libowfat/compiler.h iob.h libowfat/io.h \
+iob_adds.o: io/iob_adds.c iob_internal.h iob.h libowfat/io.h \
  libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h \
- libowfat/array.h
-iob_adds_free.o: io/iob_adds_free.c str.h libowfat/compiler.h iob.h \
- libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h \
- libowfat/uint32.h libowfat/array.h
-iob_bytesleft.o: io/iob_bytesleft.c iob.h libowfat/io.h libowfat/uint64.h \
- libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h \
- libowfat/array.h
+ libowfat/compiler.h libowfat/array.h array.h
+iob_adds_free.o: io/iob_adds_free.c iob_internal.h iob.h libowfat/io.h \
+ libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h \
+ libowfat/compiler.h libowfat/array.h array.h
+iob_bytesleft.o: io/iob_bytesleft.c iob_internal.h iob.h libowfat/io.h \
+ libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h \
+ libowfat/compiler.h libowfat/array.h array.h
 iob_free.o: io/iob_free.c iob_internal.h iob.h libowfat/io.h \
  libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h \
  libowfat/compiler.h libowfat/array.h array.h
+iob_init.o: io/iob_init.c byte.h libowfat/compiler.h iob_internal.h iob.h \
+ libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h \
+ libowfat/uint32.h libowfat/array.h array.h
+iob_init_autofree.o: io/iob_init_autofree.c iob_internal.h iob.h \
+ libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h \
+ libowfat/uint32.h libowfat/compiler.h libowfat/array.h array.h
 iob_new.o: io/iob_new.c byte.h libowfat/compiler.h iob_internal.h iob.h \
  libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h \
  libowfat/uint32.h libowfat/array.h array.h
+iob_new_autofree.o: io/iob_new_autofree.c iob_internal.h iob.h \
+ libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h \
+ libowfat/uint32.h libowfat/compiler.h libowfat/array.h array.h
 iob_prefetch.o: io/iob_prefetch.c iob_internal.h iob.h libowfat/io.h \
  libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h \
  libowfat/compiler.h libowfat/array.h array.h
@@ -718,6 +727,10 @@ iom_init.o: io/iom_init.c io_internal.h libowfat/io.h libowfat/uint64.h \
  libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h \
  libowfat/array.h libowfat/iarray.h haveepoll.h havekqueue.h \
  havedevpoll.h havesigio.h
+iom_requeue.o: io/iom_requeue.c io_internal.h libowfat/io.h \
+ libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h \
+ libowfat/compiler.h libowfat/array.h libowfat/iarray.h haveepoll.h \
+ havekqueue.h havedevpoll.h havesigio.h
 iom_wait.o: io/iom_wait.c io_internal.h libowfat/io.h libowfat/uint64.h \
  libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h \
  libowfat/array.h libowfat/iarray.h haveepoll.h havekqueue.h \
@@ -946,7 +959,8 @@ socket_tcp4.o: socket/socket_tcp4.c socket.h libowfat/compiler.h \
 socket_tcp4b.o: socket/socket_tcp4b.c windoze.h socket.h \
  libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h ndelay.h
 socket_tcp6.o: socket/socket_tcp6.c haveip6.h socket.h \
- libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h ndelay.h
+ libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h ndelay.h \
+ windoze.h
 socket_tcp6b.o: socket/socket_tcp6b.c windoze.h haveip6.h socket.h \
  libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h ndelay.h
 socket_tryreservein.o: socket/socket_tryreservein.c windoze.h socket.h \
