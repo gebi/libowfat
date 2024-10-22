@@ -745,7 +745,7 @@ scan_ulonglong.o: scan/scan_ulonglong.c scan.h libowfat/compiler.h
 scan_ulongn.o: scan/scan_ulongn.c scan.h libowfat/compiler.h \
  haveuint128.h
 scan_ushort.o: scan/scan_ushort.c scan.h libowfat/compiler.h
-scan_utf8.o: scan/scan_utf8.c fmt.h libowfat/byte.h libowfat/compiler.h
+scan_utf8.o: scan/scan_utf8.c scan.h libowfat/compiler.h
 scan_utf8_sem.o: scan/scan_utf8_sem.c scan.h libowfat/compiler.h
 scan_varint.o: scan/scan_varint.c scan.h libowfat/compiler.h
 scan_whitenskip.o: scan/scan_whitenskip.c scan.h libowfat/compiler.h
@@ -1149,11 +1149,12 @@ t: t.o libowfat.a libsocket
 
 .PHONY: all clean tar install rename
 clean:
-	rm -f *.o *.obj *.a *.lib *.da *.bbg *.bb core t haveip6.h haven2i.h \
-havesl.h haveinline.h iopause.h select.h havekqueue.h haveepoll.h \
-libepoll havesigio.h havebsdsf.h havesendfile.h havescope.h havedevpoll.h \
-dep libsocket havealloca.h haveuint128.h entities.h ent havepread.h haveaccept4.h \
-*.gcda *.gcno compile_commands.json json
+	rm -f *.o *.obj *.a *.lib *.da *.bbg *.bb *.plist core t \
+haveip6.h haven2i.h \ havesl.h haveinline.h iopause.h select.h \
+havekqueue.h haveepoll.h libepoll havesigio.h havebsdsf.h havesendfile.h \
+havescope.h havedevpoll.h dep libsocket havealloca.h haveuint128.h \
+entities.h ent havepread.h haveaccept4.h *.gcda *.gcno \
+compile_commands.json json
 	rm -rf libowfat
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
