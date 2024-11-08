@@ -220,6 +220,9 @@ unsigned int io_debugstring(int64 s,char* buf,unsigned int bufsize);
 #endif
 #endif
 
+/* Do not use this yet. The API does not support timeout handling yet.
+ * When we add it, the API will probably change in an incompatible way. */
+
 enum { SLOTS=128 };
 typedef struct iomux {
   int ctx;
