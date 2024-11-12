@@ -10,6 +10,9 @@
 /* Idea from Stefan Reuther, fe5vsq.17c.1@stefan.msgid.phost.de */
 #define PP_NARG(...) (sizeof((_Bool[]){__VA_ARGS__})/sizeof(_Bool))
 
+// add n size_t values, return sum (but return SIZE_MAX on numeric overflow)
+// we do this horrendous macro trickery so the compiler can optimize out
+// the case where we add a bunch of constants and no overflow happens
 #define clamp_add(...) clamp_addn(PP_NARG(__VA_ARGS__),__VA_ARGS__)
 
 #define clamp_addn(a, ...) \
@@ -38,6 +41,9 @@ static inline size_t __clamp_addn(size_t n, ...) {
   return ret;
 }
 
+// multiply n size_t values, return product (but return SIZE_MAX on numeric overflow)
+// we do this horrendous macro trickery so the compiler can optimize out
+// the case where we add a bunch of constants and no overflow happens
 #define clamp_mul(...) clamp_muln(PP_NARG(__VA_ARGS__),__VA_ARGS__)
 
 #define clamp_muln(a, ...) \
@@ -66,6 +72,10 @@ static inline size_t __clamp_muln(size_t n, ...) {
   return ret;
 }
 
+// calculate size for allocating a header followed by an array of nelems
+// of size elemsize each. Returns SIZE_MAX on numeric overflow, which
+// will make malloc fail, so you don't have to check for overflow, only
+// for malloc failure, which you hopefully already do.
 static inline size_t clamp_hdrarray(size_t hdrsize,size_t nelems,size_t elemsize) {
   return clamp_add(hdrsize,clamp_mul(nelems,elemsize));
 }
