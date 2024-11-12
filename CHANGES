@@ -1,3 +1,6 @@
+0.35:
+  add clamp.h (for easy integer overflow prevention)
+
 0.34:
   be more C99 compliant (Florian Weimer)
   add C++ convenience overloads to uint*.h
