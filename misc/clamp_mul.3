@@ -1,0 +1,28 @@
+.TH clamp_mul 3
+.SH NAME
+clamp_mul \- multiply n size_t values (return SIZE_MAX on overflow)
+.SH SYNTAX
+.B #include <libowfat/clamp.h>
+
+size_t n = clamp_mul(...)
+
+.SH EXAMPLE
+return malloc(clamp_add(sizeof(header),clamp_mul(n,sizeof(element))))
+
+.SH DESCRIPTION
+clamp_mul takes a variable number of arguments it expects to be of type
+\fIsize_t\fR. It will return the product of all arguments or SIZE_MAX on
+numeric overflow.
+
+You should prefer \fIcalloc\fR over \fImalloc(clamp_mul(a,b))\fR.
+This API exists so you can construct more complex cases like a+b*c.
+Note that \fIclamp_hdrarray\fR is a convenience shortcut for the a+b*c
+case.
+
+The rationale is that you can use this to calculate the size argument
+for malloc. If there is an overflow, the size argument will be too
+large, malloc will return failure, and you implicitly catch the integer
+overflow by checking for malloc failure.
+
+.SH "SEE ALSO"
+clamp_add(3), clamp_hdrarray(3)

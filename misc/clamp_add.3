@@ -1,0 +1,23 @@
+.TH clamp_add 3
+.SH NAME
+clamp_add \- add n size_t values (return SIZE_MAX on overflow)
+.SH SYNTAX
+.B #include <libowfat/clamp.h>
+
+size_t n = clamp_add(...)
+
+.SH EXAMPLE
+return malloc(clamp_add(sizeof(header), strlen(string), 1)
+
+.SH DESCRIPTION
+clamp_add takes a variable number of arguments it expects to be of type
+\fIsize_t\fR. It will return the sum of all arguments or SIZE_MAX on
+numeric overflow.
+
+The rationale is that you can use this to calculate the size argument
+for malloc. If there is an overflow, the size argument will be too
+large, malloc will return failure, and you implicitly catch the integer
+overflow by checking for malloc failure.
+
+.SH "SEE ALSO"
+clamp_mul(3), clamp_hdrarray(3)
