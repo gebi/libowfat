@@ -24,7 +24,7 @@
 #define clamp_add4(a,b,c,d,...) clamp_add2(clamp_add2(a,b),clamp_add2(c,d))
 #define clamp_add2plus(a,b,...) ({size_t ret; ckd_add(&ret,a,b)?(size_t)-1:__clamp_addn(a-2,ret,__VA_ARGS__);})
 
-extern inline size_t __clamp_addn(size_t n, ...) {
+static inline size_t __clamp_addn(size_t n, ...) {
   va_list l;
   size_t ret;
   va_start(l,n);
@@ -52,7 +52,7 @@ extern inline size_t __clamp_addn(size_t n, ...) {
 #define clamp_mul4(a,b,c,d,...) clamp_mul2(clamp_mul2(a,b),clamp_mul2(c,d))
 #define clamp_mul2plus(a,b,...) ({size_t ret; ckd_mul(&ret,a,b)?(size_t)-1:__clamp_muln(a-2,ret,__VA_ARGS__);})
 
-extern inline size_t __clamp_muln(size_t n, ...) {
+static inline size_t __clamp_muln(size_t n, ...) {
   va_list l;
   size_t ret;
   va_start(l,n);
@@ -66,7 +66,7 @@ extern inline size_t __clamp_muln(size_t n, ...) {
   return ret;
 }
 
-extern inline size_t clamp_hdrarray(size_t hdrsize,size_t nelems,size_t elemsize) {
+static inline size_t clamp_hdrarray(size_t hdrsize,size_t nelems,size_t elemsize) {
   return clamp_add(hdrsize,clamp_mul(nelems,elemsize));
 }
 
