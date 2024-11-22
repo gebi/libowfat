@@ -15,17 +15,6 @@
 extern "C" {
 #endif
 
-/* dietlibc defines these in sys/cdefs.h, which is included from stddef.h */
-#ifndef __writememsz__
-#define __writememsz__(a,b)
-#endif
-#ifndef __readmemsz__
-#define __readmemsz__(a,b)
-#endif
-#ifndef __readmem__
-#define __readmem__(a)
-#endif
-
 typedef struct buffer {
   char *x;		/* actual buffer space */
   size_t p;		/* current position */
@@ -45,22 +34,22 @@ typedef struct buffer {
 
 /* Initialize a buffer with an existing memory area, which the buffer
  * will NOT take ownership of (i.e. won't free the memory when it's done) */
-att_writen(4,5)
+__bufout(4,5)
 void buffer_init(buffer* b, ssize_t (*op)(), int fd, char* y, size_t ylen);
 
 /* Initialize a buffer with an existing memory area, which the buffer
  * WILL take ownership of (it will call free() on it when it's done) */
-att_writen(4,5)
+__bufout(4,5)
 void buffer_init_free(buffer* b,ssize_t (*op)(),int fd,char* y,size_t ylen);
 
 /* Call buffer_init with op=read(), return 0.
  * If fd==-1, return -1 instead, leaving b untouched. */
-att_writen(3,4)
+__bufout(3,4)
 int buffer_init_read(buffer* b, int fd, char* y, size_t ylen);
 
 /* Call buffer_init with op=write(), return 0.
  * If fd==-1, return -1 instead, leaving b untouched. */
-att_writen(3,4)
+__bufout(3,4)
 int buffer_init_write(buffer* b, int fd, char* y, size_t ylen);
 
 /* Will allocate a buffer of size ylen and then call
@@ -83,12 +72,12 @@ int buffer_init_write_allocbuf(buffer* b, int fd, size_t ylen);
  * that memory area. If it reaches the end, it will signal EOF and never
  * actually attempt to read from any actual file.
  * Does not take ownership. Useful for testing. */
-att_readn(2,3)
+__bufin(2,3)
 void buffer_init_staticcontents(buffer* b,char* y,size_t ylen);
 
 /* Same but the buffer takes ownership of the static buffer and frees it
  * in buffer_close. */
-att_readn(2,3)
+__bufin(2,3)
 void buffer_init_staticcontents_free(buffer* b,char* y,size_t ylen);
 
 
@@ -102,7 +91,7 @@ void buffer_munmap(void* buf);
 
 /* Initialize a buffer so it will read from this file by memory mapping
  * the whole thing. */
-att_read(2)
+__strin(2)
 int buffer_mmapread(buffer* b,const char* filename);
 
 /* Indicate you are done with a buffer.
@@ -115,22 +104,22 @@ void buffer_close(buffer* b);
  * the data in the buffer. */
 int buffer_flush(buffer* b);
 
-att_readn(2,3)
+__bufin(2,3)
 int buffer_put(buffer* b,const char* x,size_t len);
 
-att_readn(2,3)
+__bufin(2,3)
 int buffer_putalign(buffer* b,const char* x,size_t len);
 
-att_readn(2,3)
+__bufin(2,3)
 int buffer_putflush(buffer* b,const char* x,size_t len);
 
-att_read(2)
+__strin(2)
 int buffer_puts(buffer* b,const char* x);
 
-att_read(2)
+__strin(2)
 int buffer_putsalign(buffer* b,const char* x);
 
-att_read(2)
+__strin(2)
 int buffer_putsflush(buffer* b,const char* x);
 
 #if defined(__GNUC__) && !defined(__LIBOWFAT_INTERNAL)
@@ -155,22 +144,24 @@ int buffer_putnlflush(buffer* b); /* put \n and flush */
     : buffer_put((s),&(c),1) \
   )
 
-att_writen(2,3)
+__bufout(2,3)
 ssize_t buffer_get(buffer* b,char* x,size_t len);
 ssize_t buffer_feed(buffer* b);
+att_write(2) att_nonnull(2)
 ssize_t buffer_getc(buffer* b,char* x);
+att_write(2) att_nonnull(2)
 ssize_t buffer_peekc(buffer* b,char* x);
-att_writen(2,3)
+__bufout(2,3)
 ssize_t buffer_getn(buffer* b,char* x,size_t len);
 
 /* read bytes until the destination buffer is full (len bytes), end of
  * file is reached or the read char is in charset (setlen bytes).  An
  * empty line when looking for \n will write '\n' to x and return 0.  If
  * EOF is reached, \0 is written to the buffer */
-att_writen(2,3)
-att_readn(4,5)
+__bufout(2,3)
+__bufin(4,5)
 ssize_t buffer_get_token(buffer* b,char* x,size_t len,const char* charset,size_t setlen);
-att_writen(2,3)
+__bufout(2,3)
 ssize_t buffer_getline(buffer* b,char* x,size_t len);
 
 /* this predicate is given the string as currently read from the buffer
@@ -178,7 +169,7 @@ ssize_t buffer_getline(buffer* b,char* x,size_t len);
 typedef int (*string_predicate)(const char* x,size_t len);
 
 /* like buffer_get_token but the token ends when your predicate says so */
-att_writen(2,3)
+__bufout(2,3)
 ssize_t buffer_get_token_pred(buffer* b,char* x,size_t len,string_predicate p);
 
 char *buffer_peek(buffer* b);
@@ -228,13 +219,13 @@ int buffer_putsaflush(buffer* b,const stralloc* sa);
  * data is available. */
 
 /* read token from buffer to stralloc */
-att_readn(3,4)
+__bufin(3,4)
 int buffer_get_token_sa(buffer* b,stralloc* sa,const char* charset,size_t setlen);
 /* read line from buffer to stralloc */
 int buffer_getline_sa(buffer* b,stralloc* sa);
 
 /* same as buffer_get_token_sa but empty sa first */
-att_readn(3,4)
+__bufin(3,4)
 int buffer_get_new_token_sa(buffer* b,stralloc* sa,const char* charset,size_t setlen);
 /* same as buffer_getline_sa but empty sa first */
 int buffer_getnewline_sa(buffer* b,stralloc* sa);
@@ -252,7 +243,7 @@ void buffer_fromsa(buffer* b,const stralloc* sa);	/* read from sa */
 int buffer_tosa(buffer*b,stralloc* sa);		/* write to sa, auto-growing it */
 #endif
 
-att_readn(2,3)
+__bufin(2,3)
 void buffer_frombuf(buffer* b,const char* x,size_t l);	/* buffer reads from static buffer */
 
 #ifdef ARRAY_H
