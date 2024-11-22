@@ -34,11 +34,12 @@ struct cdb_make {
   int64 fd;
 } ;
 
-extern int cdb_make_start(struct cdb_make *,int64);
-extern int cdb_make_addbegin(struct cdb_make *, size_t, size_t);
-extern int cdb_make_addend(struct cdb_make *, size_t, size_t, uint32);
-extern int cdb_make_add(struct cdb_make *, const unsigned char *, size_t, const unsigned char *, size_t);
-extern int cdb_make_finish(struct cdb_make *);
+int cdb_make_start(struct cdb_make *,int64);
+int cdb_make_addbegin(struct cdb_make *, size_t, size_t);
+int cdb_make_addend(struct cdb_make *, size_t, size_t, uint32);
+__bufin(2,3) __bufin(4,5)
+int cdb_make_add(struct cdb_make * restrict, const unsigned char * restrict, size_t, const unsigned char * restrict, size_t);
+int cdb_make_finish(struct cdb_make * restrict);
 
 #ifdef __cplusplus
 }

@@ -15,8 +15,7 @@ extern "C" {
 att_const
 uint32 cdb_hashadd(uint32 h, unsigned char c);
 
-att_pure
-att_read(1)
+att_pure __bufin(1,2)
 uint32 cdb_hash(const unsigned char *buf, size_t len);
 
 struct cdb {
@@ -32,19 +31,24 @@ struct cdb {
   uint32 dlen; /* initialized if cdb_findnext() returns 1 */
 } ;
 
-void cdb_free(struct cdb *);
-void cdb_init(struct cdb *, int64 fd);
+void cdb_free(struct cdb *c);
+void cdb_init(struct cdb *c, int64 fd);
 
-int cdb_read(struct cdb * restrict, unsigned char * restrict, size_t, uint32);
+int cdb_read(struct cdb * restrict c, unsigned char * restrict buf, size_t len, uint32 pos);
 
-extern void cdb_findstart(struct cdb *);
-extern int cdb_findnext(struct cdb *, const unsigned char *, size_t);
-extern int cdb_find(struct cdb *, const unsigned char *, size_t);
+void cdb_findstart(struct cdb *);
+__bufin(2,3)
+int cdb_findnext(struct cdb * restrict c, const unsigned char * restrict buf, size_t len);
+__bufin(2,3)
+int cdb_find(struct cdb * restrict c, const unsigned char * restrict buf, size_t len);
 
-extern int cdb_firstkey(struct cdb *c,uint32 *kpos);
-extern int cdb_nextkey(struct cdb *c,uint32 *kpos);
+att_write(1)
+int cdb_firstkey(struct cdb * restrict c,uint32 * restrict kpos);
+att_write(1)
+int cdb_nextkey(struct cdb * restrict c,uint32 * restrict kpos);
 
-extern int cdb_successor(struct cdb *c, const unsigned char *, size_t);
+__bufin(2,3)
+int cdb_successor(struct cdb * restrict c, const unsigned char * restrict buf, size_t len);
 
 #define cdb_datapos(c) ((c)->dpos)
 #define cdb_datalen(c) ((c)->dlen)
