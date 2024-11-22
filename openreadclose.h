@@ -9,7 +9,7 @@
 extern "C" {
 #endif
 
-att_read(1)
+__strin(1)
 int openreadclose(const char *filename,stralloc *buf,size_t initiallength);
 
 #ifdef __cplusplus
