@@ -21,6 +21,7 @@
 
 #if GCC_VERSION_ATLEAST(2,95) && !defined(__STRICT_ANSI__)
 #undef restrict
+#define restrict __restrict
 #else
 #define restrict
 #endif
