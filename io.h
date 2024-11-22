@@ -19,28 +19,28 @@ extern "C" {
 /* like open(s,O_RDONLY) */
 /* return 1 if ok, 0 on error */
 /* sandboxing: open(2) (glibc: openat(2)) */
-att_read(2)
+__strin(2)
 att_write(1)
 int io_readfile(int64* d,const char* filename);
 
 /* like open(s,O_WRONLY|O_CREAT|O_TRUNC,0600) */
 /* return 1 if ok, 0 on error */
 /* sandboxing: open(2) (glibc: openat(2)) */
-att_read(2)
+__strin(2)
 att_write(1)
 int io_createfile(int64* d,const char* filename);
 
 /* like open(s,O_RDWR) */
 /* return 1 if ok, 0 on error */
 /* sandboxing: open(2) (glibc: openat(2)) */
-att_read(2)
+__strin(2)
 att_write(1)
 int io_readwritefile(int64* d,const char* filename);
 
 /* like open(s,O_WRONLY|O_APPEND|O_CREAT,0600) */
 /* return 1 if ok, 0 on error */
 /* sandboxing: open(2) (glibc: openat(2)) */
-att_read(2)
+__strin(2)
 att_write(1)
 int io_appendfile(int64* d,const char* filename);
 
@@ -58,22 +58,22 @@ int io_socketpair(int64* d);
 
 /* non-blocking read(), -1 for EAGAIN and -3+errno for other errors */
 /* sandboxing: poll(2), setitimer(2), read(2) */
-att_writen(2, 3)
+__bufout(2, 3)
 int64 io_tryread(int64 d,char* buf,int64 len);
 
 /* blocking read(), with -3 instead of -1 for errors */
 /* sandboxing: poll(2), read(2) */
-att_writen(2, 3)
+__bufout(2, 3)
 int64 io_waitread(int64 d,char* buf,int64 len);
 
 /* non-blocking write(), -1 for EAGAIN and -3+errno for other errors */
 /* sandboxing: poll(2), setitimer(2), write(2) */
-att_readn(2, 3)
+__bufin(2, 3)
 int64 io_trywrite(int64 d,const char* buf,int64 len);
 
 /* blocking write(), with -3 instead of -1 for errors */
 /* sandboxing: poll(2), write(2) */
-att_readn(2, 3)
+__bufin(2, 3)
 int64 io_waitwrite(int64 d,const char* buf,int64 len);
 
 /* modify timeout attribute of file descriptor */
@@ -83,13 +83,13 @@ void io_timeout(int64 d,tai6464 t);
 /* like io_tryread but will return -2,errno=ETIMEDOUT if d has a timeout
  * associated and it is passed without input being there */
 /* sandboxing: poll(2), setitimer(2), gettimeofday(2), read(2) */
-att_writen(2, 3)
+__bufout(2, 3)
 int64 io_tryreadtimeout(int64 d,char* buf,int64 len);
 
 /* like io_trywrite but will return -2,errno=ETIMEDOUT if d has a timeout
  * associated and it is passed without being able to write */
 /* sandboxing: poll(2), setitimer(2), gettimeofday(2), write(2) */
-att_readn(2, 3)
+__bufin(2, 3)
 int64 io_trywritetimeout(int64 d,const char* buf,int64 len);
 
 /* sandboxing: linux: epoll_ctl(2), bsd: kevent(2), solaris: write(2), oldlinux: poll(2) */
@@ -244,6 +244,7 @@ typedef struct iomux {
 
 
 /* Init master context */
+att_nonnull(1) att_write(1)
 int iom_init(iomux_t* c);
 
 /* Add socket to iomux */
@@ -254,19 +255,23 @@ enum {
 };
 /* signal interest in events from a socket */
 /* return -1 if error, events can be IOM_READ or IOM_WRITE */
+att_nonnull(1) att_mangle(1)
 int iom_add(iomux_t* c,int64 s,unsigned int events);
 
 /* signal interest in more events from a socket */
+att_nonnull(1) att_mangle(1)
 int iom_requeue(iomux_t* c,int64 s,unsigned int events);
 
 /* Blocking wait for single event, timeout in milliseconds */
 /* return -1 if error, 0 if ok; s set to fd, revents set to known events on that fd */
 /* when done with the fd, call iom_requeue on it to receive more events! */
 /* This can be called by multiple threads in parallel */
+att_write(2) att_write(3) att_mangle(1) att_nonnull(1) att_nonnull(2) att_nonnull(3)
 int iom_wait(iomux_t* c,int64* s,unsigned int* revents,unsigned long timeout);
 
 /* Call this to terminate all threads waiting in iom_wait */
 /* Returns 0 on success, -1 on failure */
+att_nonnull(1)
 int iom_abort(iomux_t* c);
 
 #ifdef __cplusplus
