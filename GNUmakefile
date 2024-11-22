@@ -808,7 +808,7 @@ scan_ulonglong.o: scan/scan_ulonglong.c scan.h libowfat/compiler.h
 scan_ulongn.o: scan/scan_ulongn.c scan.h libowfat/compiler.h \
  haveuint128.h
 scan_ushort.o: scan/scan_ushort.c scan.h libowfat/compiler.h
-scan_utf8.o: scan/scan_utf8.c fmt.h libowfat/byte.h libowfat/compiler.h
+scan_utf8.o: scan/scan_utf8.c scan.h libowfat/compiler.h
 scan_utf8_sem.o: scan/scan_utf8_sem.c scan.h libowfat/compiler.h
 scan_varint.o: scan/scan_varint.c scan.h libowfat/compiler.h
 scan_whitenskip.o: scan/scan_whitenskip.c scan.h libowfat/compiler.h
@@ -1137,7 +1137,7 @@ t.o: t.c fmt.h libowfat/byte.h libowfat/compiler.h scan.h str.h uint16.h \
  libowfat/stralloc.h libowfat/iopause.h libowfat/taia.h libowfat/tai.h \
  libowfat/uint64.h libowfat/taia.h case.h errmsg.h iob.h libowfat/io.h \
  libowfat/array.h safemult.h iarray.h critbit.h compiletimeassert.h \
- parse.h libowfat/buffer.h CAS.h io_internal.h libowfat/io.h \
+ parse.h libowfat/buffer.h clamp.h CAS.h io_internal.h libowfat/io.h \
  libowfat/array.h libowfat/iarray.h haveepoll.h havekqueue.h \
  havedevpoll.h havesigio.h
 # stopdep
