@@ -294,7 +294,7 @@ int64 io_waituntil2(int64 milliseconds) {
 
 	/* if we think we can not read, but the kernel tells us that we
 	 * can, put this fd in the relevant data structures */
-	if (!e->canread && (y[n].filter&EVFILT_WRITE)) {
+	if (!e->canread && (y[n].filter&EVFILT_READ)) {
 	  if (e->canread) {
 	    newevents &= ~POLLIN;
 	    EV_SET(kev+nkev, y[n].ident, EVFILT_READ, EV_DELETE, 0, 0, 0); ++nkev;
