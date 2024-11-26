@@ -294,11 +294,21 @@ int64 io_waituntil2(int64 milliseconds) {
 
 	/* if we think we can not read, but the kernel tells us that we
 	 * can, put this fd in the relevant data structures */
-	if (!e->canread && (y[n].filter&EVFILT_READ)) {
+	if (y[n].filter == EVFILT_READ) {
 	  if (e->canread) {
+	    /* We had asked for readability, assuming the caller will
+	     * want to read, and they did not, in fact, want to read.
+	     * So we remove the event from the kernel (so we don't get
+	     * an infinite loop here from the kernel telling us the fd
+	     * is readable). */
 	    newevents &= ~POLLIN;
 	    EV_SET(kev+nkev, y[n].ident, EVFILT_READ, EV_DELETE, 0, 0, 0); ++nkev;
 	  } else {
+	    /* We had asked for readability, now we know the fd is
+	     * readable. Write that down.
+	     * We have asked assuming the caller will want to read. Give
+	     * them a chance to tell us that they want to read before
+	     * telling the kqueue */
 	    e->canread=1;
 	    if (e->wantread) {
 	      e->next_read=first_readable;
@@ -308,7 +318,7 @@ int64 io_waituntil2(int64 milliseconds) {
 	}
 
 	/* if the kernel says the fd is writable, ... */
-	if (y[i].filter&EVFILT_WRITE) {
+	if (y[i].filter == EVFILT_WRITE) {
 	  /* Usually, if the kernel says a descriptor is writable, we
 	   * note it and do not tell the kernel not to tell us again.
 	   * The idea is that once we notify the caller that the fd is
