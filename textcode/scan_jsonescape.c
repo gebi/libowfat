@@ -29,7 +29,7 @@ size_t scan_jsonescape(const char *src,char *dest,size_t *destlen) {
 	  size_t j;
 	  unsigned int cur;
 	  for (cur=j=0; j<4; ++j) {
-	    char x=scan_fromhex(s[i+2+j]);
+	    signed char x=scan_fromhex(s[i+2+j]);
 	    if (x<0) goto abort;	// not hex -> invalid input
 	    cur=(cur<<4) | x;
 	  }

@@ -1,3 +1,5 @@
+#include <stddef.h>
+#include "compiler.h"
 #undef __dietlibc__
 #include "str.h"
 

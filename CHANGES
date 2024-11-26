@@ -1,5 +1,7 @@
 0.35:
   add clamp.h (for easy integer overflow prevention)
+  sprinkle compiler attributes over code base
+  some arm fixes (char is unsigned on arm)
 
 0.34:
   be more C99 compliant (Florian Weimer)
