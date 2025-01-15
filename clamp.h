@@ -2,6 +2,7 @@
 #ifndef _CLAMP_H
 #define _CLAMP_H
 
+// since stdckdint.h is introduced in C23, we'll be using unsequenced as well
 #include <stdckdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -27,7 +28,7 @@
 #define clamp_add4(a,b,c,d,...) clamp_add2(clamp_add2(a,b),clamp_add2(c,d))
 #define clamp_add2plus(a,b,...) ({size_t ret; ckd_add(&ret,a,b)?(size_t)-1:__clamp_addn(a-2,ret,__VA_ARGS__);})
 
-static inline size_t __clamp_addn(size_t n, ...) {
+[[unsequenced]] static inline size_t __clamp_addn(size_t n, ...) {
   va_list l;
   size_t ret;
   va_start(l,n);
@@ -58,7 +59,7 @@ static inline size_t __clamp_addn(size_t n, ...) {
 #define clamp_mul4(a,b,c,d,...) clamp_mul2(clamp_mul2(a,b),clamp_mul2(c,d))
 #define clamp_mul2plus(a,b,...) ({size_t ret; ckd_mul(&ret,a,b)?(size_t)-1:__clamp_muln(a-2,ret,__VA_ARGS__);})
 
-static inline size_t __clamp_muln(size_t n, ...) {
+[[unsequenced]] static inline size_t __clamp_muln(size_t n, ...) {
   va_list l;
   size_t ret;
   va_start(l,n);
