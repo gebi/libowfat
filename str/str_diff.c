@@ -1,4 +1,4 @@
-#include "byte.h"
+#include "str.h"
 
 /* str_diff returns negative, 0, or positive, depending on whether the
  * string a[0], a[1], ..., a[n]=='\0' is lexicographically smaller than,
