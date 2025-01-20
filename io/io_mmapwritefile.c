@@ -1,5 +1,5 @@
-#include <io_internal.h>
-#include <iob.h>
+#include "io_internal.h"
+#include <libowfat/iob.h>
 #include <unistd.h>
 #include <sys/types.h>
 #ifdef __MINGW32__
