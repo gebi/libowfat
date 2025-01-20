@@ -196,6 +196,8 @@ size_t fmt_asn1derlength_scratch(char* dest,unsigned long long l) noexcept;	/* s
 att_write(1)
 size_t fmt_asn1dertag(char* dest,unsigned long long l) noexcept;	/* 1 byte for each 7 bits; upper bit = more bytes coming */
 
+// This function is only available on x86 and x86_64 (because unaligned
+// word write is allowed and does not cost performance):
 att_write(1)
 size_t fmt_asn1dertag_scratch(char* dest,unsigned long long l) noexcept;/* same, but is allowed to overwrite up to 7 additional bytes */
 
