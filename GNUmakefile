@@ -1199,7 +1199,7 @@ haveip6.h haven2i.h havesl.h haveinline.h iopause.h select.h \
 havekqueue.h haveepoll.h libepoll havesigio.h havebsdsf.h havesendfile.h \
 havescope.h havedevpoll.h dep libsocket havealloca.h haveuint128.h \
 entities.h ent havepread.h haveaccept4.h *.gcda *.gcno \
-compile_commands.json json
+compile_commands.json json n undep
 	rm -rf libowfat
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
@@ -1372,7 +1372,7 @@ iob_send.o scan_ip6if.o: havealloca.h
 
 #cutstart
 dep: haveip6.h haven2i.h havesl.h haveinline.h iopause.h select.h haveepoll.h havekqueue.h havedevpoll.h havescope.h havesigio.h havebsdsf.h havesendfile.h havealloca.h haveuint128.h entities.h havepread.h haveaccept4.h
-	$(CC) -I. -MM `ls */*.c | grep -v test` t.c | sed -e 's@ \./@ @g' > dep
+	$(CC) -I. -MM `ls */*.c | grep -v test/ | grep -v examples/` t.c | sed -e 's@ \./@ @g' > dep
 
 libdep:
 	for i in $(LIBS); do (echo -n $$i|tr a-z A-Z|sed 's/.A$$/_OBJS=/'; echo $${i%.a}/*.c|sed -e 's@[^/]*/\([^.]*\)\.c@\1.o @g'); done > libdep
@@ -1437,3 +1437,9 @@ check2: haveuint128.h haveinline.h entities.h
 
 check: haveuint128.h haveinline.h $(TESTS)
 
+.PHONY: dep2
+dep2: n
+	./n | sort > dep2
+
+dep3: undep dep
+	./undep < dep | sort > dep3

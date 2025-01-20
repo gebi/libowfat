@@ -27,6 +27,7 @@
 #include <assert.h>
 #include "compiletimeassert.h"
 #include "parse.h"
+#include "clamp.h"
 
 #include "CAS.h"
 
@@ -75,6 +76,8 @@ int main(int argc,char* argv[]) {
   (void)argc;
   (void)argv;
 
+  printf("%zu\n",clamp_hdrarray(10,10,10));	// expect 110
+#if 0
   int64 pfd[2];
   size_t i;
   io_socketpair(pfd);
@@ -143,7 +146,7 @@ int main(int argc,char* argv[]) {
       }
     }
   }
-
+#endif
 #if 0
   char buf[10];
   buf[fmt_cescape(buf,"\003foo\xc0",5)]=0;
