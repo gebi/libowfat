@@ -50,8 +50,6 @@ static inline uint16 uint16_read_big(const char* in) {
 
 #else
 
-#include <libowfat/compiler.h>
-
 void uint16_pack(char out[2],uint16 in);
 void uint16_pack_big(char out[2],uint16 in);
 void uint16_unpack(const char in[2],uint16* out);
