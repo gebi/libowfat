@@ -1,10 +1,10 @@
 #include <unistd.h>
 #include <stdlib.h>
-#include "taia.h"
-#include "byte.h"
-#include "str.h"
-#include "openreadclose.h"
-#include "dns.h"
+#include <libowfat/taia.h>
+#include <libowfat/byte.h>
+#include <libowfat/str.h>
+#include <libowfat/openreadclose.h>
+#include <libowfat/dns.h>
 #ifdef __MINGW32__
 #include <winsock2.h>
 #include <windows.h>

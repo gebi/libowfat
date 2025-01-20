@@ -1,7 +1,7 @@
-#include "stralloc.h"
-#include "byte.h"
-#include "uint16.h"
-#include "dns.h"
+#include <libowfat/stralloc.h>
+#include <libowfat/byte.h>
+#include <libowfat/uint16.h>
+#include <libowfat/dns.h>
 
 static char *q = 0;
 

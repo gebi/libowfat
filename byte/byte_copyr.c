@@ -1,4 +1,4 @@
-#include "byte.h"
+#include <libowfat/byte.h>
 
 /* byte_copyr copies in[len-1] to out[len-1], in[len-2] to out[len-2],
  * ... and in[0] to out[0] */

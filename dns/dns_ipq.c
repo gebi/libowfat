@@ -1,8 +1,8 @@
-#include "stralloc.h"
-#include "case.h"
-#include "byte.h"
-#include "str.h"
-#include "dns.h"
+#include <libowfat/stralloc.h>
+#include <libowfat/case.h>
+#include <libowfat/byte.h>
+#include <libowfat/str.h>
+#include <libowfat/dns.h>
 
 static int doit(stralloc *work,const char *rule)
 {

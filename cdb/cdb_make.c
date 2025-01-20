@@ -6,7 +6,7 @@
 #include "cdb.h"
 #include "cdb_make.h"
 #ifdef __MINGW32__
-#include "windows.h"
+#include <windows.h>
 #endif
 
 int cdb_make_start(struct cdb_make *c,int64 fd) {

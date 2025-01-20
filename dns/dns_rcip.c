@@ -1,10 +1,9 @@
 #include <stdlib.h>
-#include "taia.h"
-#include "openreadclose.h"
-#include "byte.h"
-#include "ip4.h"
-#include "ip6.h"
-#include "dns.h"
+#include <libowfat/taia.h>
+#include <libowfat/openreadclose.h>
+#include <libowfat/byte.h>
+#include <libowfat/ip6.h>
+#include <libowfat/dns.h>
 
 static stralloc data;
 

@@ -1,4 +1,4 @@
-#include "byte.h"
+#include <libowfat/byte.h>
 #include <string.h>
 
 /* byte_zero sets the bytes out[0], out[1], ..., out[len-1] to 0 */

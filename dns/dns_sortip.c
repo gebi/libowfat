@@ -1,5 +1,5 @@
-#include "byte.h"
-#include "dns.h"
+#include <libowfat/byte.h>
+#include <libowfat/dns.h>
 
 /* XXX: sort servers by configurable notion of closeness? */
 /* XXX: pay attention to competence of each server? */

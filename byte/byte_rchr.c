@@ -1,4 +1,4 @@
-#include "byte.h"
+#include <libowfat/byte.h>
 
 /* byte_rchr returns the largest integer i between 0 and len-1 inclusive
  * such that one[i] equals needle, or len if not found. */

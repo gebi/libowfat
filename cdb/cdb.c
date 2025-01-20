@@ -8,7 +8,7 @@
 #include "cdb.h"
 #include "havepread.h"
 #ifdef __MINGW32__
-#include "windows.h"
+#include <windows.h>
 #else
 #include <sys/mman.h>
 #endif

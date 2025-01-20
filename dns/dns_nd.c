@@ -1,6 +1,6 @@
-#include "byte.h"
-#include "fmt.h"
-#include "dns.h"
+#include <libowfat/byte.h>
+#include <libowfat/fmt.h>
+#include <libowfat/dns.h>
 
 void dns_name4_domain(char name[DNS_NAME4_DOMAIN],const char ip[4])
 {

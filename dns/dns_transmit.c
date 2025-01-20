@@ -7,12 +7,12 @@
 #endif
 #include <unistd.h>
 #include <stdlib.h>
-#include "socket.h"
 #include <errno.h>
-#include "byte.h"
-#include "uint16.h"
-#include "dns.h"
-#include "ip6.h"
+#include <libowfat/socket.h>
+#include <libowfat/byte.h>
+#include <libowfat/uint16.h>
+#include <libowfat/dns.h>
+#include <libowfat/ip6.h>
 
 static int serverwantstcp(const char *buf,unsigned int len)
 {

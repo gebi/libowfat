@@ -1,9 +1,8 @@
-#include "stralloc.h"
-#include "uint16.h"
-#include "byte.h"
-#include "dns.h"
-#include "ip4.h"
-#include "ip6.h"
+#include <libowfat/stralloc.h>
+#include <libowfat/uint16.h>
+#include <libowfat/byte.h>
+#include <libowfat/dns.h>
+#include <libowfat/ip6.h>
 
 static int dns_ip6_packet_add(stralloc *out,const char *buf,unsigned int len)
 {

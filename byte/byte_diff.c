@@ -1,4 +1,4 @@
-#include "byte.h"
+#include <libowfat/byte.h>
 
 /* byte_diff returns negative, 0, or positive, depending on whether the
  * string one[0], one[1], ..., one[len-1] is lexicographically smaller
