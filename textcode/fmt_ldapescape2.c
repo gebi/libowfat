@@ -1,5 +1,5 @@
-#include "fmt.h"
-#include "textcode.h"
+#include <libowfat/fmt.h>
+#include <libowfat/textcode.h>
 #include "haveinline.h"
 #include <string.h>
 

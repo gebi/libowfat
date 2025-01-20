@@ -1,6 +1,5 @@
-#include "fmt.h"
-#include "textcode.h"
-#include "str.h"
+#include <libowfat/fmt.h>
+#include <libowfat/textcode.h>
 #include "haveinline.h"
 
 size_t fmt_html(char* dest,const char* src,size_t len) {

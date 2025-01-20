@@ -1,5 +1,5 @@
 #define NO_UINT32_MACROS
-#include "uint32.h"
+#include <libowfat/uint32.h>
 
 void uint32_pack_big(char out[4],uint32 in) {
   out[3]=(char)in; in>>=8;

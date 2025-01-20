@@ -5,8 +5,8 @@
 #include <netinet/in.h>
 #endif
 #include "windoze.h"
-#include "byte.h"
-#include "socket.h"
+#include <libowfat/byte.h>
+#include <libowfat/socket.h>
 
 ssize_t socket_send4_flag(int s,const char *buf,size_t len,const char ip[4],uint16 port,int flag) {
   struct sockaddr_in si;

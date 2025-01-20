@@ -1,5 +1,5 @@
-#include "fmt.h"
-#include "ip4.h"
+#include <libowfat/fmt.h>
+#include <libowfat/ip4.h>
 
 size_t fmt_ip4(char *s,const char ip[4])
 {

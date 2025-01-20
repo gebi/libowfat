@@ -1,6 +1,6 @@
-#include "str.h"
-#include "array.h"
-#include "textcode.h"
+#include <libowfat/str.h>
+#include <libowfat/array.h>
+#include <libowfat/textcode.h>
 
 size_t scan_to_array(size_t (*func)(const char*,char*,size_t*),
 			    const char* src,array* dest) {

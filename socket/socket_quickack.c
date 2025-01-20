@@ -1,10 +1,12 @@
-#include "socket.h"
+#include <libowfat/socket.h>
 #ifndef __MINGW32__
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/tcp.h>
 #endif
+#ifndef TCP_QUICKACK
 #include <errno.h>
+#endif
 
 int socket_quickack(int s,int value) {
 #ifdef TCP_QUICKACK

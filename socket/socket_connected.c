@@ -3,7 +3,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #endif
-#include "socket.h"
+#include <libowfat/socket.h>
 #include "havesl.h"
 
 int socket_connected(int s) {

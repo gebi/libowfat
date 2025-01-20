@@ -4,10 +4,10 @@
 #include <netinet/in.h>
 #endif
 #include "windoze.h"
-#include "byte.h"
-#include "uint16.h"
-#include "uint32.h"
-#include "socket.h"
+#include <libowfat/byte.h>
+#include <libowfat/uint16.h>
+#include <libowfat/uint32.h>
+#include <libowfat/socket.h>
 
 int socket_bind4(int s,const char ip[4],uint16 port) {
   struct sockaddr_in si;

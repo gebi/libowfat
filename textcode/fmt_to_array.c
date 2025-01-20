@@ -1,5 +1,5 @@
-#include "array.h"
-#include "textcode.h"
+#include <libowfat/array.h>
+#include <libowfat/textcode.h>
 
 void fmt_to_array(size_t (*func)(char*,const char*,size_t),
 		  array* a,const char* src,size_t len) {

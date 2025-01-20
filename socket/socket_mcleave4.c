@@ -5,8 +5,8 @@
 #include <netinet/in.h>
 #endif
 #include "windoze.h"
-#include "socket.h"
-#include "byte.h"
+#include <libowfat/socket.h>
+#include <libowfat/byte.h>
 
 int socket_mcleave4(int s,const char ip[4])
 {

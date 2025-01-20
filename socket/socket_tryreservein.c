@@ -3,7 +3,7 @@
 #include <sys/socket.h>
 #endif
 #include "windoze.h"
-#include "socket.h"
+#include <libowfat/socket.h>
 
 void socket_tryreservein(int s,int size)
 {

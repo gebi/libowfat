@@ -1,6 +1,6 @@
-#include "scan.h"
-#include "ip4.h"
-#include "ip6.h"
+#include <libowfat/scan.h>
+#include <libowfat/ip6.h>
+#include <libowfat/ip4.h>
 
 /*
  * IPv6 addresses are really ugly to parse.

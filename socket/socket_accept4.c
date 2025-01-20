@@ -5,7 +5,7 @@
 #endif
 #include <string.h>
 #include "windoze.h"
-#include "socket.h"
+#include <libowfat/socket.h>
 #include "havesl.h"
 
 #ifdef __MINGW32__

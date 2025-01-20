@@ -1,5 +1,5 @@
 #define NO_UINT32_MACROS
-#include "uint32.h"
+#include <libowfat/uint32.h>
 
 void uint32_unpack_big(const char in[4],uint32 *out) {
   *out = (((uint32)(unsigned char)in[0])<<24) |

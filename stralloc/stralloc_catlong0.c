@@ -1,5 +1,5 @@
-#include "stralloc.h"
-#include "fmt.h"
+#include <libowfat/stralloc.h>
+#include <libowfat/fmt.h>
 
 int stralloc_catlong0(stralloc *sa,signed long int in,size_t n) {
   int neg=-(in<0);

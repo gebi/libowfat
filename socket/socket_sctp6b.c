@@ -7,8 +7,7 @@
 #include "windoze.h"
 #include <errno.h>
 #include "haveip6.h"
-#include "socket.h"
-#include "ndelay.h"
+#include <libowfat/socket.h>
 
 #ifndef EAFNOSUPPORT
 #define EAFNOSUPPORT EINVAL

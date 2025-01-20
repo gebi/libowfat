@@ -1,4 +1,4 @@
-#include "scan.h"
+#include <libowfat/scan.h>
 
 size_t scan_ip6_flat(const char *s,char ip[16])
 {

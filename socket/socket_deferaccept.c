@@ -1,15 +1,15 @@
-#include "socket.h"
+#include <libowfat/socket.h>
 
 #include <sys/types.h>
-#include <string.h>
 #ifndef __MINGW32__
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #endif
 #include "windoze.h"
-#include "socket.h"
+#ifdef SO_ACCEPTFILTER
 #include <string.h>
+#endif
 
 void socket_deferaccept(int s,enum defermode mode) {
 #ifdef TCP_DEFER_ACCEPT

@@ -2,7 +2,7 @@
 #ifndef __MINGW32__
 #include <sys/socket.h>
 #endif
-#include "socket.h"
+#include <libowfat/socket.h>
 #include "windoze.h"
 
 int socket_bind4_reuse(int s,const char ip[4],uint16 port) {

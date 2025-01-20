@@ -1,11 +1,13 @@
-#include "socket.h"
+#include <libowfat/socket.h>
 #ifndef __MINGW32__
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #endif
+#if !defined(SOL_TCP) || !defined(TCP_FASTOPEN)
 #include <errno.h>
+#endif
 
 #if defined(TCP_FASTOPEN) && !defined(SOL_TCP) && defined(IPPROTO_TCP)
 #define SOL_TCP IPPROTO_TCP

@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <errno.h>
 #include <stdio.h>
-#include "socket.h"
+#include <libowfat/socket.h>
 
 int winsock2errno(long l) {
   long x;

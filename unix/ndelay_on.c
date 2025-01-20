@@ -1,7 +1,7 @@
 #include <sys/types.h>
 #include <fcntl.h>
 
-#include "ndelay.h"
+#include <libowfat/ndelay.h>
 
 #ifdef __MINGW32__
 #include <winsock2.h>

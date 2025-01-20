@@ -5,8 +5,7 @@
 #include <netinet/in.h>
 #endif
 #include "windoze.h"
-#include "socket.h"
-#include "ndelay.h"
+#include <libowfat/socket.h>
 #include <errno.h>
 
 #ifndef EPROTONOSUPPORT

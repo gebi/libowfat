@@ -6,8 +6,8 @@
 #endif
 #include <errno.h>
 #include "haveip6.h"
-#include "socket.h"
-#include "ndelay.h"
+#include <libowfat/socket.h>
+#include <libowfat/ndelay.h>
 #include "windoze.h"
 
 #ifndef EAFNOSUPPORT

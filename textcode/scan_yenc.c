@@ -1,5 +1,5 @@
-#include "fmt.h"
-#include "textcode.h"
+#include <libowfat/fmt.h>
+#include <libowfat/textcode.h>
 
 size_t scan_yenc(const char *src,char *dest,size_t *destlen) {
   register const unsigned char* s=(const unsigned char*) src;

@@ -7,9 +7,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 #endif
-#include <string.h>
 #include "windoze.h"
-#include "socket.h"
+#include <libowfat/socket.h>
 #include "iarray.h"
 #include "havesl.h"
 

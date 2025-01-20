@@ -1,5 +1,5 @@
-#include "stralloc.h"
-#include "textcode.h"
+#include <libowfat/stralloc.h>
+#include <libowfat/textcode.h>
 
 int fmt_to_sa(size_t (*func)(char*,const char*,size_t),
 	      stralloc* sa,const char* src,size_t len) {

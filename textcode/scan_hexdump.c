@@ -1,6 +1,5 @@
-#include "fmt.h"
-#include "textcode.h"
-#include "scan.h"
+#include <libowfat/textcode.h>
+#include <libowfat/scan.h>
 
 size_t scan_hexdump(const char *src,char *dest,size_t *destlen) {
   register const unsigned char* s=(const unsigned char*) src;

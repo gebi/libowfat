@@ -1,7 +1,6 @@
-#include "ip6.h"
-#include "str.h"
-#include "fmt.h"
-#include "socket.h"
+#include <libowfat/ip6.h>
+#include <libowfat/fmt.h>
+#include <libowfat/socket.h>
 
 size_t fmt_ip6if(char* dest,const char ip[16],uint32 scope_id) {
   size_t i=fmt_ip6(dest,ip);

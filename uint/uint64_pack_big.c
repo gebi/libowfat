@@ -1,6 +1,6 @@
 #define NO_UINT64_MACROS
-#include "uint64.h"
-#include "uint32.h"
+#include <libowfat/uint64.h>
+#include <libowfat/uint32.h>
 
 void uint64_pack_big(char out[8],uint64 in) {
   uint32_pack_big(out,(uint32)(in>>32));

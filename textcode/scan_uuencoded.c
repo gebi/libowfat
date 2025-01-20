@@ -1,4 +1,4 @@
-#include "textcode.h"
+#include <libowfat/textcode.h>
 
 size_t scan_uuencoded(const char *src,char *dest,size_t *destlen) {
   size_t len;

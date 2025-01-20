@@ -1,5 +1,5 @@
-#include "fmt.h"
-#include "textcode.h"
+#include <libowfat/fmt.h>
+#include <libowfat/textcode.h>
 
 size_t fmt_yenc(char* dest,const char* src,size_t len) {
   register const unsigned char* s=(const unsigned char*) src;

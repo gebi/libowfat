@@ -5,11 +5,13 @@
 #include <netinet/in.h>
 #endif
 #include "windoze.h"
-#include "socket.h"
-#include "byte.h"
+#include <libowfat/socket.h>
+#include <libowfat/byte.h>
+#include <libowfat/ip6.h>
 #include "haveip6.h"
-#include "errno.h"
-#include "ip6.h"
+#ifndef LIBC_HAS_IP6
+#include <errno.h>
+#endif
 
 #ifndef IPV6_DROP_MEMBERSHIP
 #ifdef IPV6_LEAVE_GROUP

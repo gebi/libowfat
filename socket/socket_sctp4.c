@@ -1,6 +1,6 @@
 #include <unistd.h>
-#include "socket.h"
-#include "ndelay.h"
+#include <libowfat/socket.h>
+#include <libowfat/ndelay.h>
 
 int socket_sctp4(void) {
   int s=socket_sctp4b();

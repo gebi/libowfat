@@ -1,7 +1,7 @@
-#include "ip6.h"
-#include "byte.h"
+#include <libowfat/ip6.h>
+#include <libowfat/byte.h>
 #include <ctype.h>
-#include "socket.h"
+#include <libowfat/socket.h>
 #include "havealloca.h"
 
 size_t scan_ip6if(const char* src,char ip[16],uint32* scope_id) {

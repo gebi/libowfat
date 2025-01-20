@@ -6,8 +6,8 @@
 #endif
 #include "windoze.h"
 
-#include "socket.h"
-#include "ndelay.h"
+#include <libowfat/socket.h>
+#include <libowfat/ndelay.h>
 
 int socket_udp4b(void) {
   int s;

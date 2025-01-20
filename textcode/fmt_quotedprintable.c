@@ -1,7 +1,7 @@
-#include "fmt.h"
-#include "textcode.h"
+#include <libowfat/fmt.h>
+#include <libowfat/textcode.h>
+#include <libowfat/str.h>
 #include "haveinline.h"
-#include "str.h"
 
 size_t fmt_quotedprintable2(char* dest,const char* src,size_t len,const char* escapeme) {
   register const unsigned char* s=(const unsigned char*) src;

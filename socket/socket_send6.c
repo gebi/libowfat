@@ -6,11 +6,11 @@
 #endif
 #include "windoze.h"
 #include <errno.h>
-#include "byte.h"
-#include "socket.h"
-#include "ip6.h"
+#include <libowfat/byte.h>
+#include <libowfat/socket.h>
+#include <libowfat/ip6.h>
+#include <libowfat/ip4.h>
 #include "haveip6.h"
-#include "ip4.h"
 #include "havescope.h"
 
 ssize_t socket_send6_flag(int s,const char *buf,size_t len,const char ip[16],uint16 port,uint32 scope_id,int flag)

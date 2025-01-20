@@ -1,4 +1,4 @@
-#include "textcode.h"
+#include <libowfat/textcode.h>
 #include "haveinline.h"
 
 static inline int dec(unsigned char x) {

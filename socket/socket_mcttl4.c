@@ -5,7 +5,7 @@
 #include <netinet/in.h>
 #endif
 #include "windoze.h"
-#include "socket.h"
+#include <libowfat/socket.h>
 
 int socket_mcttl4(int s,char TTL)
 {

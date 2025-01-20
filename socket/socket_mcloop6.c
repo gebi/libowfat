@@ -5,7 +5,7 @@
 #include <netinet/in.h>
 #endif
 #include "windoze.h"
-#include "socket.h"
+#include <libowfat/socket.h>
 #include "haveip6.h"
 
 int socket_mcloop6(int s,char loop)

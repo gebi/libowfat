@@ -1,6 +1,6 @@
-#include "str.h"
-#include "stralloc.h"
-#include "textcode.h"
+#include <libowfat/str.h>
+#include <libowfat/stralloc.h>
+#include <libowfat/textcode.h>
 
 size_t scan_to_sa(size_t (*func)(const char*,char*,size_t*),
 			 const char* src,stralloc* sa) {

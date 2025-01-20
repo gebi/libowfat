@@ -3,7 +3,7 @@
 #include <sys/socket.h>
 #include <net/if.h>
 #endif
-#include "socket.h"
+#include <libowfat/socket.h>
 #include "haven2i.h"
 
 #ifdef HAVE_N2I

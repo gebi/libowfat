@@ -5,11 +5,11 @@
 #include <netinet/in.h>
 #endif
 #include "windoze.h"
-#include "byte.h"
-#include "socket.h"
-#include "ip6.h"
+#include <libowfat/byte.h>
+#include <libowfat/socket.h>
+#include <libowfat/ip6.h>
+#include <libowfat/uint32.h>
 #include "haveip6.h"
-#include "uint32.h"
 #include "havesl.h"
 #include "havescope.h"
 

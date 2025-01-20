@@ -1,4 +1,4 @@
-#include "socket.h"
+#include <libowfat/socket.h>
 #ifdef __MINGW32__
 #include <windows.h>
 #else

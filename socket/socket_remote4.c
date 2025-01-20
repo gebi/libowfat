@@ -5,8 +5,7 @@
 #include <netinet/in.h>
 #endif
 #include "windoze.h"
-#include "byte.h"
-#include "socket.h"
+#include <libowfat/socket.h>
 #include "havesl.h"
 
 int socket_remote4(int s,char ip[4],uint16 *port)

@@ -5,14 +5,16 @@
 #include <netinet/in.h>
 #endif
 #include "windoze.h"
-#include <errno.h>
-#include "byte.h"
-#include "socket.h"
-#include "ip6.h"
+#include <libowfat/byte.h>
+#include <libowfat/socket.h>
+#include <libowfat/ip6.h>
+#include <libowfat/uint32.h>
+#include <libowfat/ip4.h>
 #include "haveip6.h"
-#include "uint32.h"
-#include "ip4.h"
 #include "havescope.h"
+#ifndef LIBC_HAS_IP6
+#include <errno.h>
+#endif
 
 int socket_connect6(int s,const char ip[16],uint16 port,uint32 scope_id)
 {

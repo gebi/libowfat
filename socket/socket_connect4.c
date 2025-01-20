@@ -5,10 +5,10 @@
 #endif
 #include "windoze.h"
 
-#include "byte.h"
-#include "socket.h"
-#include "uint16.h"
-#include "uint32.h"
+#include <libowfat/byte.h>
+#include <libowfat/socket.h>
+#include <libowfat/uint16.h>
+#include <libowfat/uint32.h>
 
 int socket_connect4(int s,const char ip[4],uint16 port) {
   struct sockaddr_in si;

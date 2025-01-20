@@ -1,10 +1,13 @@
-#include "taia.h"
-#include "iopause.h"
+#include <libowfat/taia.h>
+#include <libowfat/array.h>
+#include <libowfat/iopause.h>
 #ifdef __MINGW32__
 #include <winsock2.h>
 #include <windows.h>
 #else
+#ifndef IOPAUSE_POLL
 #include "select.h"
+#endif
 #endif
 
 void iopause(iopause_fd *x,unsigned int len,struct taia *deadline,struct taia *stamp)

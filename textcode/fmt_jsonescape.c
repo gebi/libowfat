@@ -1,9 +1,9 @@
 #include <string.h>
-#include "fmt.h"
-#include "textcode.h"
-#include "str.h"
-#include "scan.h"
-#include "case.h"
+#include <libowfat/fmt.h>
+#include <libowfat/textcode.h>
+#include <libowfat/str.h>
+#include <libowfat/scan.h>
+#include <libowfat/case.h>
 #include "haveinline.h"
 
 /* src is UTF-8 encoded */

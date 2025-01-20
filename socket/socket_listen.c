@@ -5,7 +5,7 @@
 #else
 #include <sys/socket.h>
 #endif
-#include "socket.h"
+#include <libowfat/socket.h>
 #include "windoze.h"
 
 int socket_listen(int s,unsigned int backlog) {
