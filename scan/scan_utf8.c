@@ -1,4 +1,4 @@
-#include "scan.h"
+#include <libowfat/scan.h>
 
 size_t scan_utf8(const char* in,size_t len,uint32_t* num) {
   uint32_t i,k,m;
