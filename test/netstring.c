@@ -1,7 +1,8 @@
-#include "fmt.h"
-#include "scan.h"
+#include <libowfat/fmt.h>
+#include <libowfat/scan.h>
 #include <assert.h>
 #include <stdio.h>
+#include <string.h>
 
 int main() {
   char buf[100];

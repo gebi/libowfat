@@ -1,7 +1,7 @@
 #include <time.h>
-#include "scan.h"
-#include "buffer.h"
-#include "fmt.h"
+#include <libowfat/scan.h>
+#include <libowfat/buffer.h>
+#include <libowfat/fmt.h>
 
 int main() {
   char buf[100];

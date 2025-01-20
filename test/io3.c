@@ -1,6 +1,6 @@
 #include <unistd.h>
-#include "buffer.h"
-#include "io.h"
+#include <libowfat/buffer.h>
+#include <libowfat/io.h>
 
 int main() {
   int64 pfd[2];

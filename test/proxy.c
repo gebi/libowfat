@@ -1,12 +1,12 @@
-#include "socket.h"
-#include "io.h"
-#include "buffer.h"
-#include "ip6.h"
-#include "str.h"
-#include "dns.h"
+#include <libowfat/socket.h>
+#include <libowfat/io.h>
+#include <libowfat/buffer.h>
+#include <libowfat/ip6.h>
+#include <libowfat/str.h>
+#include <libowfat/dns.h>
 #include <errno.h>
 #include <getopt.h>
-#include "scan.h"
+#include <libowfat/scan.h>
 #include <stdlib.h>
 
 struct state {

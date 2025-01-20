@@ -1,12 +1,12 @@
-#include "socket.h"
-#include "io.h"
-#include "buffer.h"
-#include "ip6.h"
-#include "array.h"
-#include "case.h"
-#include "fmt.h"
-#include "iob.h"
-#include "str.h"
+#include <libowfat/socket.h>
+#include <libowfat/io.h>
+#include <libowfat/buffer.h>
+#include <libowfat/ip6.h>
+#include <libowfat/array.h>
+#include <libowfat/case.h>
+#include <libowfat/fmt.h>
+#include <libowfat/iob.h>
+#include <libowfat/str.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -276,7 +276,7 @@ emerge:
 	  } else if (array_bytes(&h->r)>8192) {
 	    httperror(h,"500 request too long","You sent too much headers");
 	    goto emerge;
-	  } else if ((l=header_complete(h)))
+	  } else if (header_complete(h))
 	    httpresponse(h,i);
 	}
       }

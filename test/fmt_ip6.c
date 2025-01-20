@@ -1,4 +1,4 @@
-#include "ip6.h"
+#include <libowfat/ip6.h>
 #include <assert.h>
 #include <string.h>
 

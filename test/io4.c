@@ -1,5 +1,5 @@
-#include "io.h"
-#include "buffer.h"
+#include <libowfat/buffer.h>
+#include <libowfat/io.h>
 #include <unistd.h>
 
 int main() {

@@ -1,6 +1,6 @@
 #include <assert.h>
-#include "scan.h"
-#include "fmt.h"
+#include <libowfat/scan.h>
+#include <libowfat/fmt.h>
 
 /* http://www.cl.cam.ac.uk/~mgk25/ucs/examples/UTF-8-test.txt */
 

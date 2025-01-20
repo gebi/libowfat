@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include <string.h>
-#include "buffer.h"
-#include "textcode.h"
+#include <libowfat/buffer.h>
+#include <libowfat/textcode.h>
 #include "havealloca.h"
 
 void b64encode(const char* c,long len) {

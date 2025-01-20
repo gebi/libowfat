@@ -1,9 +1,9 @@
-#include <cdb.h>
-#include "buffer.h"
+#include <libowfat/cdb.h>
+#include <libowfat/buffer.h>
+#include <libowfat/errmsg.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
-#include "errmsg.h"
 
 #ifndef O_BINARY
 #define O_BINARY 0

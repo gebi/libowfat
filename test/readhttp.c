@@ -1,6 +1,6 @@
-#include "stralloc.h"
-#include "buffer.h"
-#include "byte.h"
+#include <libowfat/stralloc.h>
+#include <libowfat/buffer.h>
+#include <libowfat/byte.h>
 
 /* this demonstrates the buffer_get_token_sa_pred interface;
  * ishttp is the predicate that determines when buffer_get_token_sa_pred

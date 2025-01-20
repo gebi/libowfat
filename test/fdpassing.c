@@ -1,6 +1,6 @@
 #include <unistd.h>
-#include "io.h"
-#include "buffer.h"
+#include <libowfat/io.h>
+#include <libowfat/buffer.h>
 #include <stdlib.h>
 
 void child(int64 fd) {

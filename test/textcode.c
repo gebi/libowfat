@@ -1,10 +1,9 @@
-#include "array.h"
-#include "textcode.h"
+#include <libowfat/array.h>
+#include <libowfat/textcode.h>
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
 #include <unistd.h>
-#include <write12.h>
 
 array a;
 

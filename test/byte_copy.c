@@ -1,6 +1,6 @@
-#include "byte.h"
+#include <libowfat/byte.h>
+#include <libowfat/errmsg.h>
 #include <assert.h>
-#include "errmsg.h"
 #include <string.h>
 
 char buf[4096];

@@ -1,5 +1,5 @@
-#include "fmt.h"
-#include "str.h"
+#include <libowfat/fmt.h>
+#include <libowfat/str.h>
 #include <assert.h>
 
 int main() {

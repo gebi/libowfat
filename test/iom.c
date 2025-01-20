@@ -1,4 +1,4 @@
-#include "libowfat/io.h"
+#include <libowfat/io.h>
 #include <stdio.h>
 #if !defined(PTHREAD) && (defined(__dietlibc__) || defined(__linux__))
 #define THRD

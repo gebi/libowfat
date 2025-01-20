@@ -1,7 +1,7 @@
-#include "socket.h"
-#include "io.h"
-#include "buffer.h"
-#include "ip6.h"
+#include <libowfat/socket.h>
+#include <libowfat/io.h>
+#include <libowfat/buffer.h>
+#include <libowfat/ip6.h>
 #include <errno.h>
 
 int main() {

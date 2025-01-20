@@ -1,5 +1,5 @@
-#include "fmt.h"
-#include "buffer.h"
+#include <libowfat/fmt.h>
+#include <libowfat/buffer.h>
 
 int main() {
   char buf[1024];

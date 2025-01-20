@@ -1,4 +1,4 @@
-#include "buffer.h"
+#include <libowfat/buffer.h>
 
 int main() {
   buffer_puts(buffer_1,"ulong: ");

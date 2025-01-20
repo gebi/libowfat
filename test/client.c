@@ -1,13 +1,13 @@
-#include "scan.h"
-#include "ip6.h"
-#include "str.h"
+#include <libowfat/scan.h>
+#include <libowfat/ip6.h>
+#include <libowfat/str.h>
 #include <errno.h>
 #include <string.h>
 #include <sys/poll.h>
 #include <unistd.h>
-#include "socket.h"
+#include <libowfat/socket.h>
 #include <sys/socket.h>
-#include "ndelay.h"
+#include <libowfat/ndelay.h>
 #ifdef __dietlibc__
 #include <write12.h>
 #else

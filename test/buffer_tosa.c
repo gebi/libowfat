@@ -1,6 +1,6 @@
-#include "byte.h"
-#include "stralloc.h"
-#include "buffer.h"
+#include <libowfat/byte.h>
+#include <libowfat/stralloc.h>
+#include <libowfat/buffer.h>
 #include <assert.h>
 
 int main() {

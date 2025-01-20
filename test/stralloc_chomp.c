@@ -1,6 +1,6 @@
 #include <assert.h>
-#include "stralloc.h"
-#include "buffer.h"
+#include <libowfat/stralloc.h>
+#include <libowfat/buffer.h>
 
 int main() {
   static stralloc sa;

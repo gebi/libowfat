@@ -1,6 +1,6 @@
-#include "scan.h"
-#include "fmt.h"
-#include "buffer.h"
+#include <libowfat/scan.h>
+#include <libowfat/fmt.h>
+#include <libowfat/buffer.h>
 #include <assert.h>
 
 int main() {

@@ -1,6 +1,6 @@
 #include <assert.h>
 #include <string.h>
-#include <textcode.h>
+#include <libowfat/textcode.h>
 
 int main() {
   char buf[100];

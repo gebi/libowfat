@@ -1,5 +1,5 @@
-#include "fmt.h"
-#include "scan.h"
+#include <libowfat/fmt.h>
+#include <libowfat/scan.h>
 #include <assert.h>
 #include <unistd.h>
 

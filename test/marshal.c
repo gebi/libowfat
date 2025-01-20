@@ -3,18 +3,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "fmt.h"
-#include "stralloc.h"
-#include "buffer.h"
-#include "scan.h"
-#include <textcode.h>
-#include <byte.h>
-#include <uint16.h>
-#include <uint32.h>
-#include <uint64.h>
-#include <openreadclose.h>
-#include <mmap.h>
-#include "str.h"
+#include <libowfat/fmt.h>
+#include <libowfat/stralloc.h>
+#include <libowfat/buffer.h>
+#include <libowfat/scan.h>
+#include <libowfat/textcode.h>
+#include <libowfat/byte.h>
+#include <libowfat/uint16.h>
+#include <libowfat/uint32.h>
+#include <libowfat/uint64.h>
+#include <libowfat/openreadclose.h>
+#include <libowfat/mmap.h>
+#include <libowfat/str.h>
 
 char buf[100];
 stralloc sa;

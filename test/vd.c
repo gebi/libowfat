@@ -1,9 +1,8 @@
-#include "socket.h"
-#include "buffer.h"
+#include <libowfat/socket.h>
+#include <libowfat/buffer.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/uio.h>
-#include "ndelay.h"
 
 int main(int argc,char* argv[]) {
   int s=socket_tcp4b();

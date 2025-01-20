@@ -1,6 +1,6 @@
-#include <stdlib.h>
-#include "fmt.h"
-#include "byte.h"
+#include "havealloca.h"
+#include <libowfat/fmt.h>
+#include <libowfat/byte.h>
 #include <assert.h>
 
 int main() {

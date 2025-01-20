@@ -1,5 +1,5 @@
 #include <assert.h>
-#include "safemult.h"
+#include <libowfat/safemult.h>
 
 int main() {
   int16 a;
