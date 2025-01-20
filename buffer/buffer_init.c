@@ -1,4 +1,4 @@
-#include "buffer.h"
+#include <libowfat/buffer.h>
 
 void buffer_init(buffer* b,ssize_t (*op)(),int fd,
 		 char* y,size_t ylen) {

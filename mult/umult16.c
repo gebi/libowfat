@@ -1,12 +1,12 @@
 #if defined(__GNUC__) && (__GNUC__ >= 5)
 
-#include "uint16.h"
+#include <libowfat/uint16.h>
 
 int umult16(uint16 a,uint16 b,uint16* c) { return !__builtin_mul_overflow(a,b,c); }
 
 #else
 
-#include "safemult.h"
+#include <libowfat/safemult.h>
 
 int umult16(uint16 a,uint16 b,uint16* c) {
   unsigned long x=(unsigned long)a*b;

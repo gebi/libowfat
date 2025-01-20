@@ -1,5 +1,5 @@
 #ifdef __MINGW32__
-#include "socket.h"
+#include <libowfat/socket.h>
 #include "windoze.h"
 
 void __winsock_init(void) {

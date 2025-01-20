@@ -1,4 +1,4 @@
-#include <rangecheck.h>
+#include <libowfat/rangecheck.h>
 #include <inttypes.h>
 
 /* does an UTF-32 string starting at "ptr" lie in buf[0..len-1]? */

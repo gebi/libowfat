@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <unistd.h>
-#include "buffer.h"
+#include <libowfat/buffer.h>
 
 int buffer_init_allocbuf(buffer* b, ssize_t (*op)(), int fd, size_t ylen) {
   if (fd==-1) return -1;

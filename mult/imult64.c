@@ -1,12 +1,12 @@
 #if defined(__GNUC__) && (__GNUC__ >= 5)
 
-#include "uint64.h"
+#include <libowfat/uint64.h>
 
 int imult64( int64 a, int64 b, int64* c) { return !__builtin_mul_overflow(a,b,c); }
 
 #else
 
-#include "safemult.h"
+#include <libowfat/safemult.h>
 
 #if defined(__GNUC__) && (defined(__x86_64__) || defined(__ia64__) || defined(__powerpc64__) || defined(__alpha__) || defined(__mips64__) || defined(__sparc64__))
 

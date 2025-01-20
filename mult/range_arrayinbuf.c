@@ -1,5 +1,5 @@
-#include <rangecheck.h>
-#include <safemult.h>
+#include <libowfat/rangecheck.h>
+#include <libowfat/safemult.h>
 
 /* does an array of "elements" members of size "membersize" starting at
  * "arraystart" lie inside buf1[0..len-1]? */

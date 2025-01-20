@@ -1,5 +1,5 @@
 #include <time.h>
-#include "tai.h"
+#include <libowfat/tai.h>
 
 void tai_now(struct tai *t)
 {

@@ -1,12 +1,12 @@
 #if defined(__GNUC__) && (__GNUC__ >= 5)
 
-#include "uint32.h"
+#include <libowfat/uint32.h>
 
 int imult32( int32 a, int32 b, int32* c) { return !__builtin_mul_overflow(a,b,c); }
 
 #else
 
-#include "safemult.h"
+#include <libowfat/safemult.h>
 
 int imult32(int32 a,int32 b,int32* c) {
   int64 x=(int64)a*b;
