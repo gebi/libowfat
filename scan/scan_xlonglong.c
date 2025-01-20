@@ -1,4 +1,4 @@
-#include "scan.h"
+#include <libowfat/scan.h>
 
 size_t scan_xlonglong(const char* src,unsigned long long* dest) {
   register const char *tmp=src;

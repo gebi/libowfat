@@ -260,6 +260,11 @@ size_t fmt_netstring(char* dest,const char* src,size_t len) noexcept;
 att_write(1)
 size_t fmt_escapecharxml(char* dest,uint32_t ch) noexcept;
 
+/* XML escaping but only for necessary codepoints.
+ * Others emitted as UTF-8 */
+att_write(1)
+size_t fmt_xmlescape(char* dest,uint32_t ch) noexcept;
+
 /* HTML escaping is the same as XML escaping. */
 att_write(1)
 size_t fmt_escapecharhtml(char* dest,uint32_t ch) noexcept;

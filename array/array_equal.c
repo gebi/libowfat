@@ -1,5 +1,5 @@
-#include "byte.h"
-#include "array.h"
+#include <libowfat/array.h>
+#include <libowfat/byte.h>
 
 int array_equal(const array* const x,const array* const y) {
   if (x->initialized!=y->initialized) return 0;

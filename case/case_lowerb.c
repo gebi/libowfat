@@ -1,4 +1,4 @@
-#include "case.h"
+#include <libowfat/case.h>
 
 void case_lowerb(void *S,size_t len) {
   char* s=(char*)S;

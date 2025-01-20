@@ -1,4 +1,4 @@
-#include "scan.h"
+#include <libowfat/scan.h>
 
 #ifdef UNITTEST
 #undef UNITTEST

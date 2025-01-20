@@ -1,5 +1,5 @@
-#include "scan.h"
-#include "compiletimeassert.h"
+#include <libowfat/scan.h>
+#include <libowfat/compiletimeassert.h>
 
 size_t scan_pb_type1_double(const char* in,size_t len,double* d) {
   union {

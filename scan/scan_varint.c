@@ -1,4 +1,4 @@
-#include "scan.h"
+#include <libowfat/scan.h>
 
 size_t scan_varint(const char* in,size_t len, unsigned long long* n) {
   size_t i;

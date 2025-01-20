@@ -6,6 +6,8 @@
 extern "C" {
 #endif
 
+#include <stddef.h>
+
 size_t scan_ip4(const char *src,char ip[4]);
 size_t fmt_ip4(char *dest,const char ip[4]);
 

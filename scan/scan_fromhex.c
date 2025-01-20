@@ -1,4 +1,4 @@
-#include "scan.h"
+#include <libowfat/scan.h>
 
 int scan_fromhex(unsigned char c) {
   c=(unsigned char)(c-'0');

@@ -1,5 +1,4 @@
-#include "scan.h"
-#include <ctype.h>
+#include <libowfat/scan.h>
 
 size_t scan_noncharsetnskip(const char *s,const char *charset,size_t limit) {
   register const char *t=s;

@@ -1,5 +1,5 @@
-#include "fmt.h"
-#include "rangecheck.h"
+#include <libowfat/fmt.h>
+#include <libowfat/rangecheck.h>
 #include <string.h>
 
 size_t fmt_pb_type2_string(char* dest,const char* s,size_t l) {

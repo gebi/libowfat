@@ -1,4 +1,4 @@
-#include "scan.h"
+#include <libowfat/scan.h>
 
 #ifdef __GNUC__
 static inline int isdigit(int c) { return (c>='0' && c<='9'); }

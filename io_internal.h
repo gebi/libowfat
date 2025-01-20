@@ -2,12 +2,12 @@
 #define my_extern extern
 #endif
 
-#include "libowfat/io.h"
-#include "libowfat/array.h"
-#include "libowfat/iarray.h"
+#include <libowfat/io.h>
+#include <libowfat/array.h>
+#include <libowfat/iarray.h>
 #ifdef __MINGW32__
 #include <winsock2.h>
-#include "socket.h"
+#include <libowfat/socket.h>
 my_extern HANDLE io_comport;
 #else
 #include "haveepoll.h"

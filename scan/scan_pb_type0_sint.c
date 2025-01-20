@@ -1,4 +1,4 @@
-#include "scan.h"
+#include <libowfat/scan.h>
 
 size_t scan_pb_type0_sint(const char* in,size_t len,signed long long* l) {
   unsigned long long m;

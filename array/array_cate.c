@@ -1,4 +1,4 @@
-#include "array.h"
+#include <libowfat/array.h>
 
 void array_cate(array* to,const array* const from,int64 pos,int64 stop) {
   if (pos<0 || stop<pos) {

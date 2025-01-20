@@ -1,4 +1,4 @@
-#include "case.h"
+#include <libowfat/case.h>
 
 int case_diffb(register const void* S,register size_t len,register const void* T)
 {

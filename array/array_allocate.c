@@ -1,9 +1,9 @@
-#include "likely.h"
+#include <libowfat/compiler.h>
 #include <sys/types.h>
 #include <stdlib.h>
-#include "safemult.h"
-#include "array.h"
-#include "byte.h"
+#include <libowfat/safemult.h>
+#include <libowfat/array.h>
+#include <libowfat/byte.h>
 
 #if 0
       static array x;
@@ -46,26 +46,26 @@
 
 void* array_allocate(array* x,uint64 membersize,int64 pos) {
   uint64 wanted;
-  if (__unlikely(x->allocated<0)) return 0; /* array is failed */
-  if (__unlikely(pos+1<1)) return 0;
+  if (unlikely(x->allocated<0)) return 0; /* array is failed */
+  if (unlikely(pos+1<1)) return 0;
   /* second case of overflow: pos*membersize too large */
-  if (__unlikely(!umult64(membersize,pos+1,&wanted))) return 0;
+  if (unlikely(!umult64(membersize,pos+1,&wanted))) return 0;
 
   if (wanted > (uint64)x->initialized) {
-    if (__unlikely(wanted >= (uint64)x->allocated)) {
+    if (unlikely(wanted >= (uint64)x->allocated)) {
       /* round up a little */
       if (membersize<8)
 	wanted=(wanted+127)&(-128ll);	/* round up to multiple of 128 */
       else
 	wanted=(wanted+4095)&(-4096ll);	/* round up to 4k pages */
 
-      if (__unlikely(wanted<128)) return 0;	/* overflow during rounding */
+      if (unlikely(wanted<128)) return 0;	/* overflow during rounding */
 
-      if (sizeof(size_t) != sizeof(int64) && __unlikely((size_t)(wanted) != wanted))
+      if (sizeof(size_t) != sizeof(int64) && unlikely((size_t)(wanted) != wanted))
 	return 0;
       {
 	char* tmp=realloc(x->p,wanted);
-	if (__unlikely(!tmp)) return 0;
+	if (unlikely(!tmp)) return 0;
 	x->p=tmp;
       }
       x->allocated=wanted;

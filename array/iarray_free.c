@@ -4,7 +4,7 @@
 #else
 #include <unistd.h>
 #endif
-#include "iarray.h"
+#include <libowfat/iarray.h>
 
 static void freechain(iarray_page* p,size_t pagesize) {
   while (p) {

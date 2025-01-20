@@ -1,4 +1,4 @@
-#include "case.h"
+#include <libowfat/case.h>
 
 /* str_start returns 1 if the b is a prefix of a, 0 otherwise */
 int case_starts(const char* a, const char* b) {

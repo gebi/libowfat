@@ -1,4 +1,4 @@
-#include "array.h"
+#include <libowfat/array.h>
 
 void array_cat0(array* to) {
   static char zero;

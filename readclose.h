@@ -4,7 +4,7 @@
 /* for ssize_t */
 #include <sys/types.h>
 
-#include "stralloc.h"
+#include <libowfat/stralloc.h>
 
 #ifdef __cplusplus
 extern "C" {

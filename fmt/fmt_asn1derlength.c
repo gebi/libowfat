@@ -1,15 +1,21 @@
-#include "fmt.h"
+#include <libowfat/fmt.h>
+
+static size_t asn1derlengthbytesneeded(unsigned long long l) {
+  size_t needed;
+  for (needed=1; (l>>=8)>0; ++needed) ;
+  return needed;
+}
 
 /* write int in least amount of bytes, return number of bytes */
 /* as used in ASN.1 length */
 size_t fmt_asn1derlength(char* dest,unsigned long long l) {
   /* encoding is either l%128 or (0x80+number of bytes,bytes) */
-  size_t needed=(sizeof l),i;
+  size_t i;
   if (l<128) {
     if (dest) *dest=l&0x7f;
     return 1;
   }
-  for (i=1; i<needed; ++i)
+  for (i=1; i<sizeof l; ++i)
     if (!(l>>(i*8)))
       break;
   if (dest) {

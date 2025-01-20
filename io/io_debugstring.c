@@ -1,7 +1,7 @@
 #include "io_internal.h"
-#include <iarray.h>
+#include <libowfat/iarray.h>
 #include <time.h>
-#include "fmt.h"
+#include <libowfat/fmt.h>
 #include <sys/time.h>
 
 unsigned int io_debugstring(int64 s,char* buf,unsigned int bufsize) {

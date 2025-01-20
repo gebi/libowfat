@@ -1,4 +1,4 @@
-#include "scan.h"
+#include <libowfat/scan.h>
 
 /* this is cut and paste from scan_ulong instead of calling scan_ulong
  * because this way scan_uint can abort scanning when the number would

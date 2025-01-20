@@ -1,5 +1,5 @@
-#include "iob.h"
-#include "array.h"
+#include <libowfat/iob.h>
+#include <libowfat/array.h>
 
 typedef struct iob_entry {
   enum { FROMBUF, FROMFILE } type;

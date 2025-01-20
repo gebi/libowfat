@@ -1,5 +1,5 @@
-#include "buffer.h"
-#include "fmt.h"
+#include <libowfat/buffer.h>
+#include <libowfat/fmt.h>
 
 int buffer_putulonglong(buffer *b,unsigned long long l) {
   char buf[FMT_ULONG];

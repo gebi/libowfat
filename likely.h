@@ -1,3 +1,5 @@
+// no longer needed. Use likely and unlikely from libowfat/compiler.h
+
 #ifdef __dietlibc__
 #include <sys/cdefs.h>
 #else

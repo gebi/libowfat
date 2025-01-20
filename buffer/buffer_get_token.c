@@ -1,6 +1,5 @@
-#include "byte.h"
-#include "buffer.h"
-#include "scan.h"
+#include <libowfat/byte.h>
+#include <libowfat/buffer.h>
 
 #include <string.h>	/* for memccpy */
 

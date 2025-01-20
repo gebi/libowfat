@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "array.h"
+#include <libowfat/array.h>
 
 void array_fail(array* x) {
   if (x->p) free(x->p);

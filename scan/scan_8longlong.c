@@ -1,4 +1,4 @@
-#include "scan.h"
+#include <libowfat/scan.h>
 
 size_t scan_8longlong(const char *src,unsigned long long *dest) {
   /* make a copy of src so we can return the number of bytes we progressed */

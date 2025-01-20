@@ -1,6 +1,6 @@
-#include "likely.h"
-#include "safemult.h"
-#include "array.h"
+#include <libowfat/compiler.h>
+#include <libowfat/safemult.h>
+#include <libowfat/array.h>
 
 #if 0
       static array x;
@@ -17,9 +17,9 @@
 
 void* array_get(const array* const x,uint64 membersize,int64 pos) {
   uint64 wanted;
-  if (__unlikely(pos+1<1)) return 0;
-  if (__unlikely(!umult64(membersize,pos,&wanted))) return 0;
+  if (unlikely(pos+1<1)) return 0;
+  if (unlikely(!umult64(membersize,pos,&wanted))) return 0;
 
-  if (__unlikely((int64)wanted >= x->allocated || wanted>=x->initialized)) return 0;
+  if (unlikely((int64)wanted >= x->allocated || wanted>=x->initialized)) return 0;
   return (void*)(x->p+pos*membersize);
 }

@@ -2,9 +2,7 @@
 #ifdef __dietlibc__
 #define __deprecated__
 #endif
-#include "scan.h"
-#include "byte.h"
-#include "case.h"
+#include <libowfat/scan.h>
 #include <time.h>
 #include <stdlib.h>
 

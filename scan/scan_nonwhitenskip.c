@@ -1,4 +1,4 @@
-#include "scan.h"
+#include <libowfat/scan.h>
 #include <ctype.h>
 
 size_t scan_nonwhitenskip(const char *s,size_t limit) {

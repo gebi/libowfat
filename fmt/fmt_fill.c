@@ -1,4 +1,4 @@
-#include "fmt.h"
+#include <libowfat/fmt.h>
 
 /* "foo" -> "foo  "
  * append padlen-srclen spaces after dest, if that is >= 0.  Truncate

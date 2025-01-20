@@ -1,4 +1,4 @@
-#include "scan.h"
+#include <libowfat/scan.h>
 
 size_t scan_pb_tag(const char* in,size_t len, size_t* fieldno,unsigned char* type) {
   unsigned long long l;

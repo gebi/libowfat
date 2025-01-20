@@ -1,4 +1,4 @@
-#include "iarray.h"
+#include <libowfat/iarray.h>
 
 void* iarray_get(iarray* ia,size_t pos) {
   size_t index;

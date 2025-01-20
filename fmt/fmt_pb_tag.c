@@ -1,4 +1,4 @@
-#include "fmt.h"
+#include <libowfat/fmt.h>
 
 size_t fmt_pb_tag(char* dest,size_t fieldno,unsigned char type) {
   if (type>5 || (fieldno >> (sizeof(fieldno)*8-3))) return 0;

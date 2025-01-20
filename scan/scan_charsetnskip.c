@@ -1,5 +1,4 @@
-#include "scan.h"
-#include <ctype.h>
+#include <libowfat/scan.h>
 
 /* Return the number of leading chars in s that are in charset, but no
  * more than limit */

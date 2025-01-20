@@ -1,6 +1,6 @@
-#include "fmt.h"
+#include <libowfat/fmt.h>
 
-/* This is NOT fmt_escapexml, which will escape everything, whether it
+/* This is NOT fmt_escapecharxml, which will escape everything, whether it
  * needs escaping or not. This will only escape what needs escaping, and
  * reject invalid inputs */
 size_t fmt_xmlescape(char* dest,uint32_t ch) {

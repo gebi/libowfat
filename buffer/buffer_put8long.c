@@ -1,5 +1,5 @@
-#include "buffer.h"
-#include "fmt.h"
+#include <libowfat/buffer.h>
+#include <libowfat/fmt.h>
 
 int buffer_put8long(buffer *b,unsigned long l) {
   char buf[FMT_8LONG];

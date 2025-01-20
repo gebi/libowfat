@@ -1,11 +1,10 @@
-#include "likely.h"
 #include <stdlib.h>
 #ifndef _WIN32
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <unistd.h>
 #endif
-#include "iarray.h"
+#include <libowfat/iarray.h>
 #ifdef __dietlibc__
 #include <sys/atomic.h>
 #else

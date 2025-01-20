@@ -1,4 +1,4 @@
-#include "scan.h"
+#include <libowfat/scan.h>
 #ifndef INTERNAL
 #include "haveuint128.h"
 #endif

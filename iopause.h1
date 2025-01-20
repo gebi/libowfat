@@ -13,7 +13,7 @@ typedef struct {
 #define IOPAUSE_READ 1
 #define IOPAUSE_WRITE 4
 
-#include "taia.h"
+#include <libowfat/taia.h>
 
 extern void iopause(iopause_fd *,unsigned int,struct taia *,struct taia *);
 

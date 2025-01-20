@@ -1,4 +1,4 @@
-#include "fmt.h"
+#include <libowfat/fmt.h>
 
 size_t fmt_ulong(char *dest,unsigned long i) {
   register unsigned long len,tmp,len2;

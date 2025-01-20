@@ -1,4 +1,4 @@
-#include "scan.h"
+#include <libowfat/scan.h>
 
 static const unsigned int maxint = ((unsigned int)-1)>>1;
 

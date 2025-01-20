@@ -1,5 +1,5 @@
-#include "fmt.h"
-#include "rangecheck.h"
+#include <libowfat/fmt.h>
+#include <libowfat/rangecheck.h>
 
 size_t fmt_pb_string(char* dest,size_t fieldno,const char* s,size_t l) {
   size_t n=fmt_pb_tag(dest,fieldno,2);

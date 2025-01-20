@@ -1,4 +1,4 @@
-#include "scan.h"
+#include <libowfat/scan.h>
 
 /* parse a netstring, input buffer is in (len bytes).
  * if parsing is successful:

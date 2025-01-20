@@ -1,4 +1,4 @@
-#include "iarray.h"
+#include <libowfat/iarray.h>
 
 void iarray_init(iarray* ia,size_t elemsize) {
   size_t i;
