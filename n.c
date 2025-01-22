@@ -260,7 +260,7 @@ static void followdep(struct stringbag* sb, const char* s) {
 
 }
 
-static void dumpdep(FILE* out,const char* s) {
+static void dumpdep(FILE* out,const char* s,int ninja) {
   static struct stringbag sb;
   if (!sb.base) init_stringbag(&sb);
 
@@ -268,9 +268,11 @@ static void dumpdep(FILE* out,const char* s) {
 
   size_t i;
   i=str_chr(s,' ');
-  fprintf(out,"%.*s",(int)i,s);
+  if (!ninja)
+    fprintf(out,"%.*s",(int)i,s);
   for (i=0; i<sb.l; i+=sb.base[i]+1) {
-    fprintf(out," %.*s",sb.base[i],sb.base+i+1);
+    if (!ninja || i)
+      fprintf(out," %.*s",sb.base[i],sb.base+i+1);
   }
   fputc('\n',out);
 
@@ -281,7 +283,7 @@ static void dumpdep(FILE* out,const char* s) {
 static void dumpdeps(FILE* out) {
   size_t i;
   for (i=0; i<mapuse; ++i) {
-    dumpdep(out,map[i]);
+    dumpdep(out,map[i],0);
 //    puts(map[i]);
   }
 }
@@ -389,6 +391,7 @@ static void addlibdep(const char* p,size_t plen,const char* f) {
 }
 
 int main() {
+  int sawselect=0,sawiopause=0;
   DIR* D=opendir(".");
   assert(D);
   struct dirent* d;
@@ -397,6 +400,8 @@ int main() {
     if (d->d_type==DT_REG) {	// *.h
       const char* dot=strrchr(d->d_name,'.');
       if (dot && !strcmp(dot,".h")) {
+	if (!strcmp(d->d_name,"iopause.h")) sawiopause=1; else
+	if (!strcmp(d->d_name,"select.h")) sawselect=1;
 	adddeps(d->d_name,d->d_name);
       }
     } else if (d->d_name[0]!='.' && d->d_type==DT_DIR &&
@@ -418,6 +423,10 @@ int main() {
     }
   }
   closedir(D);
+  if (!sawiopause)
+    adddepstolist("iopause.h: libowfat/taia.h");
+  if (!sawselect)
+    adddepstolist("select.h:");
   flushlibdep(NULL);
 
   // libs now as a list of lines for the file
@@ -478,15 +487,18 @@ int main() {
   }
 
   if (ninja) {
-    // write build rules for all the headers
-    fputs("",ninja);
+    // write build rules for all the headers except have*.h
+    fputc('\n',ninja);
     size_t i;
     for (i=0; i<headermapuse; ++i) {
       const char* s=headermap[i];
       const char* colon=strchr(s,':');
-      if (colon)
+      if (strstr("pause",s))
+	puts(s);
+      if (colon && strncmp(s,"have",4))
 	fprintf(ninja,"build libowfat/%.*s: cphdr %.*s\n",(int)(colon-s),s,(int)(colon-s),s);
     }
+    fprintf(ninja,"\n");
 
     // write build rules for all the object files
     for (i=0; i<mapuse; ++i) {
@@ -498,13 +510,24 @@ int main() {
 	const char* inend=strchr(in,' ');
 	if (!inend) inend=in+strlen(in);
 	if (in!=inend) {
-	  if (*inend)
-	    fprintf(ninja,"build %.*s.o: cc %.*s |%s\n",(int)(dot-s),s,(int)(inend-in),in,inend);
-	  else
+	  if (*inend) {
+	    fprintf(ninja,"build %.*s.o: cc %.*s |",(int)(dot-s),s,(int)(inend-in),in);
+	    dumpdep(ninja,s,1);
+	  } else
 	    fprintf(ninja,"build %.*s.o: cc %s\n",(int)(dot-s),s,in);
 	}
       }
     }
+
+    // write build rule to make the library
+    fprintf(ninja,"\nbuild libowfat.a: ar");
+    for (i=0; i<mapuse; ++i) {
+      const char* s=map[i];
+      const char* colon=strchr(s,':');
+      if (colon)
+	fprintf(ninja," %.*s",(int)(colon-s),s);
+    }
+    fprintf(ninja,"\n\ndefault libowfat.a\n");
     fclose(ninja);
   }
 
