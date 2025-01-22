@@ -1,4 +1,6 @@
+#ifndef INTERNAL
 #include <libowfat/fmt.h>
+#endif
 
 #ifdef UNITTEST
 #include "fmt_tohex.c"

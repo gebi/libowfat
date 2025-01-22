@@ -1,4 +1,6 @@
+#ifndef INTERNAL
 #include <libowfat/fmt.h>
+#endif
 
 size_t fmt_str(char *out,const char *in) {
   register char* s=out;

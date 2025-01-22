@@ -4,12 +4,13 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
-#include "scan.h"
 #include <assert.h>
+#include <stddef.h>
+#include <stdint.h>
 
 #define INTERNAL
-#include "scan/scan_ulong.c"
 #include "scan/scan_ulongn.c"
+#include "scan/scan_ulong.c"
 #include "fmt/fmt_utf8.c"
 #include "fmt/fmt_tohex.c"
 #include "fmt/fmt_escapecharc.c"

@@ -1,4 +1,6 @@
+#ifndef INTERNAL
 #include <libowfat/fmt.h>
+#endif
 
 size_t fmt_utf8(char *dest,uint32_t n) {
   size_t i,j;

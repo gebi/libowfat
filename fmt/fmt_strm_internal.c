@@ -1,5 +1,7 @@
 #include <stdarg.h>
+#ifndef INTERNAL
 #include <libowfat/fmt.h>
+#endif
 
 size_t fmt_strm_internal(char* dest, ...) {
   size_t n;

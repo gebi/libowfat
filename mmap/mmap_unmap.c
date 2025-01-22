@@ -4,9 +4,13 @@
 #else
 #include <unistd.h>
 #include <sys/mman.h>
-#include "open.h"
+#ifndef INTERNAL
+#include <libowfat/open.h>
 #endif
-#include "mmap.h"
+#endif
+#ifndef INTERNAL
+#include <libowfat/mmap.h>
+#endif
 
 int mmap_unmap(const char* mapped,size_t maplen) {
 #ifdef _WIN32

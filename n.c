@@ -5,14 +5,22 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <stddef.h>
+#include <stdint.h>
 
-#include "fmt.h"
-#include "fmt/fmt_strm_internal.c"
+#define fmt_strm(b,...) fmt_strm_internal(b,__VA_ARGS__,(char*)0)
+#ifndef MAX_ALLOCA
+#define MAX_ALLOCA 100000
+#endif
+#define fmt_strm_alloca(a,...) ({ size_t len=fmt_strm((char*)0,a,__VA_ARGS__)+1; char* c=(len<MAX_ALLOCA?alloca(len):0); if (c) c[fmt_strm(c,a,__VA_ARGS__)]=0; c;})
+
+#define INTERNAL
 #include "fmt/fmt_str.c"
-#include "mmap/mmap_read.c"
-#include "mmap/mmap_unmap.c"
+#include "fmt/fmt_strm_internal.c"
 #include "open/open_read.c"
 #include "open/open_trunc.c"
+#include "mmap/mmap_read.c"
+#include "mmap/mmap_unmap.c"
 
 // this program is a dependency generator
 // we have two kinds of dependencies, libdep and dep
@@ -252,7 +260,7 @@ static void followdep(struct stringbag* sb, const char* s) {
 
 }
 
-static void dumpdep(const char* s) {
+static void dumpdep(FILE* out,const char* s) {
   static struct stringbag sb;
   if (!sb.base) init_stringbag(&sb);
 
@@ -260,20 +268,20 @@ static void dumpdep(const char* s) {
 
   size_t i;
   i=str_chr(s,' ');
-  printf("%.*s",(int)i,s);
+  fprintf(out,"%.*s",(int)i,s);
   for (i=0; i<sb.l; i+=sb.base[i]+1) {
-    printf(" %.*s",sb.base[i],sb.base+i+1);
+    fprintf(out," %.*s",sb.base[i],sb.base+i+1);
   }
-  putchar('\n');
+  fputc('\n',out);
 
   resetbag(&sb);
 }
 
 // dump all dependencies
-static void dumpdeps() {
+static void dumpdeps(FILE* out) {
   size_t i;
   for (i=0; i<mapuse; ++i) {
-    dumpdep(map[i]);
+    dumpdep(out,map[i]);
 //    puts(map[i]);
   }
 }
@@ -447,12 +455,58 @@ int main() {
     fprintf(stderr,"libdep is unchanged\n");
   free(x); y=0;
 
-#if 0
-  const char* z;
-  if (finddep("libowfat/buffer.h",17,&z))
-    dumpdep(z);
-#endif
-  dumpdeps();
+  FILE* deps=fopen("dep","w");
+  FILE* ninja=fopen("build.ninja.new","w");
+  if (ninja) {	// copy header of build.ninja until first build rule
+    FILE* f=fopen("build.ninja","r");
+    if (f) {
+      char line[1024];
+      while (fgets(line,sizeof line,f)) {
+	if (!strncmp(line,"build libowfat",14))
+	  break;
+	fputs(line,ninja);
+      }
+      fclose(f);
+    }
+  }
+  if (deps) {
+    dumpdeps(deps);
+    fclose(deps);
+  } else {
+    perror("fopen dep");
+    exit(111);
+  }
+
+  if (ninja) {
+    // write build rules for all the headers
+    fputs("",ninja);
+    size_t i;
+    for (i=0; i<headermapuse; ++i) {
+      const char* s=headermap[i];
+      const char* colon=strchr(s,':');
+      if (colon)
+	fprintf(ninja,"build libowfat/%.*s: cphdr %.*s\n",(int)(colon-s),s,(int)(colon-s),s);
+    }
+
+    // write build rules for all the object files
+    for (i=0; i<mapuse; ++i) {
+      const char* s=map[i];
+      const char* colon=strchr(s,':');
+      const char* dot=strchr(s,'.');
+      if (dot && colon && dot<colon && colon[1]==' ') {
+	const char* in=colon+2;
+	const char* inend=strchr(in,' ');
+	if (!inend) inend=in+strlen(in);
+	if (in!=inend) {
+	  if (*inend)
+	    fprintf(ninja,"build %.*s.o: cc %.*s |%s\n",(int)(dot-s),s,(int)(inend-in),in,inend);
+	  else
+	    fprintf(ninja,"build %.*s.o: cc %s\n",(int)(dot-s),s,in);
+	}
+      }
+    }
+    fclose(ninja);
+  }
 
 //  write(1,libdep.s,libdep.len);
 }
