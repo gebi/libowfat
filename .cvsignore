@@ -30,3 +30,8 @@ libowfat
 haveaccept4.h
 compile_commands.json
 json
+.cache
+.ninja_deps
+.ninja_log
+compdb_file
+libsocket-lsocket
