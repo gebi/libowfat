@@ -8,6 +8,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
+// copy in some code from libowfat but in a way that does not require
+// the headers to be in the compiler search path
 #define fmt_strm(b,...) fmt_strm_internal(b,__VA_ARGS__,(char*)0)
 #ifndef MAX_ALLOCA
 #define MAX_ALLOCA 100000
@@ -22,11 +24,13 @@
 #include "mmap/mmap_read.c"
 #include "mmap/mmap_unmap.c"
 
-// this program is a dependency generator
-// we have two kinds of dependencies, libdep and dep
+// This program is a dependency generator
+// We have two kinds of dependencies, libdep and dep
 // libdep: "TAI_OBJS=tai_add.o tai_now.o tai_pack.o tai_sub.o tai_uint.o tai_unpack.o"
 // dep: "tai_add.o: tai/tai_add.c tai.h libowfat/uint64.h"
-// we will open *.h and */*.c, looking for #include directives
+// We will open *.h and */*.c, looking for #include directives
+// At dependency output time, we will also add included files from included headers
+// Finally we will also write the dependencies as build.ninja file
 
 // a holds pointers to filenames in a line for libdep
 size_t al;	// allocated and length for a
@@ -100,8 +104,8 @@ static void flushlibdep(const char* libname) {
 const char* objext="o";
 static size_t extlen;
 
-// add filename to dependency list for current library (for libdep)
-// called with foo.c from readdir, will add foo.o to dependencies string
+// Add filename to dependency list for current library (for libdep)
+// Called with foo.c from readdir, will add foo.o to dependencies string
 static char* objdup(const char* s,size_t len) {
   char* r;
   r=memchr(s,'.',len);	// we get called with *.c from a subdir
@@ -117,9 +121,11 @@ static char* objdup(const char* s,size_t len) {
   return r;
 }
 
+// map is a list of "foo.o: foo.c bar.h"
 enum { MAPLEN=1000 };
 const char* map[MAPLEN];
 size_t mapuse;
+// headermap is a list of "taia.h: libowfat/tai.h libowfat/uint32.h"
 const char* headermap[256];
 size_t headermapuse;
 
@@ -185,13 +191,12 @@ static const char* finddep(const char* s,size_t l,const char** ret) {
   return 0;
 }
 
-// a self-growing bag of strings with deduplication
+// A self-growing bag of strings with deduplication
 struct stringbag {
   char* base;
   size_t l,a;
 };
 
-// init
 void init_stringbag(struct stringbag* sb) {
   sb->base=malloc(4096);
   if (sb->base==0) {
@@ -240,6 +245,9 @@ size_t str_chr(const char *in, char needle) {
   return i;
 }
 
+// Only call this after all files have been visited!
+// Recursively go through dependencies in s
+// Output is the stringbag which contains one entry for each header file visited
 static void followdep(struct stringbag* sb, const char* s) {
   // "uint64_pack.o: uint/uint64_pack.c uint64.h uint32.h"
 
@@ -260,6 +268,7 @@ static void followdep(struct stringbag* sb, const char* s) {
 
 }
 
+// Output depencency list as text, either in make or in ninja format
 static void dumpdep(FILE* out,const char* s,int ninja) {
   static struct stringbag sb;
   if (!sb.base) init_stringbag(&sb);
@@ -279,15 +288,15 @@ static void dumpdep(FILE* out,const char* s,int ninja) {
   resetbag(&sb);
 }
 
-// dump all dependencies
+// dump all dependencies in make format
 static void dumpdeps(FILE* out) {
   size_t i;
-  for (i=0; i<mapuse; ++i) {
+  for (i=0; i<mapuse; ++i)
     dumpdep(out,map[i],0);
-//    puts(map[i]);
-  }
 }
 
+// Look for #include directives in mmapped C source file
+// Findings added as a "foo.o: foo.c bar.h" line to either map or headermap
 // pn == "byte/byte_copy.c"
 // fn == "byte_copy.c"
 // s == pointer to memory mapped file contents
@@ -359,10 +368,9 @@ static void find_deps(const char* pn,const char* fn,const char* s,size_t l) {
   }
   *c=0;
   adddepstolist(d);
-//  *c='\n';
-//  write(1,d,c-d+1);
 }
 
+// mmap file contents and call find_deps on it
 // fn is byte/byte_copy.c, f is byte_copy.c (both can be the same)
 static void adddeps(const char* fn, const char* f) {
   size_t l;
@@ -373,6 +381,10 @@ static void adddeps(const char* fn, const char* f) {
   }
 }
 
+// Called for each C source file found via readdir
+// p is "byte", plen is strlen("byte"), f is "byte_copy.c"
+// Flush current library dependency list if we are in a different subdir now
+// Call objdup to add "byte_copy.o" to the dependency list
 static void addlibdep(const char* p,size_t plen,const char* f) {
   // if p is "byte", libdep_cur should start with BYTE_OBJS
   // if it does, append f to libdep_cur
@@ -386,7 +398,6 @@ static void addlibdep(const char* p,size_t plen,const char* f) {
     a[0]=objdup(f,flen);
     al=1;
   }
-
   adddeps(fmt_strm_alloca(p,"/",f),f);
 }
 
@@ -415,7 +426,6 @@ int main() {
 	  const char* dot=strrchr(ds->d_name,'.');
 	  if (dot && !strcmp(dot,".c")) {
 	    addlibdep(d->d_name,n,ds->d_name);
-//	    printf("%s/%s\n",d->d_name,ds->d_name);
 	  }
 	}
 	closedir(DS);
@@ -530,6 +540,4 @@ int main() {
     fprintf(ninja,"\n\ndefault libowfat.a\n");
     fclose(ninja);
   }
-
-//  write(1,libdep.s,libdep.len);
 }
