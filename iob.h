@@ -39,25 +39,44 @@ typedef struct io_batch {
 
 /* Initialize an io_batch. Return 0 on success, -1 on malloc failure for
  * embedded array */
+att_nonnull((1))
+att_warn_unused_result
 int iob_init(io_batch* b,size_t hint_entries);
+
+/* iob_reset closes files and frees buffer in the io_batch, and the
+ * array with the buffer, but not the batch itself (in case it's a local
+ * variable and not malloced) */
+void iob_reset(io_batch* b);
+
+/* iob_free does iob_reset but also frees the batch itself */
+void iob_free(io_batch* b);
+
 /* initialize an io_batch that auto-frees entries as soon as
  * iob_send/iob_write have written them. Return 0 on success, -1 on
  * malloc failure for embedded array */
+att_nonnull((1))
+att_warn_unused_result
 int iob_init_autofree(io_batch* b,size_t hint_entries);
 
 /* malloc and initialize an io_batch */
+att_free_with(iob_free,1)
+att_new
 io_batch* iob_new(size_t hint_entries);
+
 /* malloc and initialize an io_batch that auto-frees entries as soon as
  * iob_send/iob_write have written them */
+att_free_with(iob_free,1)
 io_batch* iob_new_autofree(size_t hint_entries);
 
 /* queue buffer in io_batch */
 att_readn(2,3)
+att_holds(1)
 int iob_addbuf(io_batch* b,const void* buf,uint64 n);
 
 /* queue buffer in io_batch, and give ownership to batch. */
 /* the io_batch functions will take care of freeing it. */
 att_readn(2,3)
+att_free(1)
 int iob_addbuf_free(io_batch* b,const void* buf,uint64 n);
 
 /* queue mmapped memory reagion in io_batch, and give ownership to batch. */
@@ -67,11 +86,13 @@ int iob_addbuf_munmap(io_batch* b,const void* buf,uint64 n);
 
 /* queue asciiz string in io_batch. */
 att_read(2)
+att_holds(2)
 int iob_adds(io_batch* b,const char* s);
 
 /* queue asciiz string in io_batch, and give ownership to batch. */
 /* the io_batch functions will take care of freeing it. */
 att_read(2)
+att_free(2)
 int iob_adds_free(io_batch* b,const char* s);
 
 /* queue file contents in io_batch. */
@@ -93,13 +114,9 @@ int64 iob_write(int64 s,io_batch* b,io_write_callback cb);
 /* same as iob_write if the TLS library also has a sendfile function */
 int64 iob_write2(int64 s,io_batch* b,io_write_callback cb,io_sendfile_callback sfcb);
 
-/* iob_reset closes files and frees buffer in the io_batch, and the
- * array with the buffer, but not the batch itself (in case it's a local
- * variable and not malloced) */
-void iob_reset(io_batch* b);
-/* iob_free does iob_reset but also frees the batch itself */
-void iob_free(io_batch* b);
 void iob_prefetch(io_batch* b,uint64 bytes);
+
+att_pure
 uint64 iob_bytesleft(const io_batch* b);
 
 #ifdef __cplusplus

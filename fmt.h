@@ -242,11 +242,11 @@ size_t fmt_pb_double(char* dest,size_t fieldno,double d) noexcept;
 att_write(1)
 size_t fmt_pb_float(char* dest,size_t fieldno,float f) noexcept;
 
-att_writen(1,4)
+att_write(1) att_readn(3,4)
 size_t fmt_pb_string(char* dest,size_t fieldno,const char* s,size_t l) noexcept;
 
 /* fmt_netstring can return 0 if (src,len) is clearly invalid */
-att_writen(1,3)
+att_write(1) att_readn(2,3)
 size_t fmt_netstring(char* dest,const char* src,size_t len) noexcept;
 
 /* Marshaling helper functions.

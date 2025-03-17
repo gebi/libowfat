@@ -47,7 +47,7 @@ int cdb_firstkey(struct cdb * restrict c,uint32 * restrict kpos);
 att_write(1)
 int cdb_nextkey(struct cdb * restrict c,uint32 * restrict kpos);
 
-__bufin(2,3)
+__bufin_ornull(2,3)
 int cdb_successor(struct cdb * restrict c, const unsigned char * restrict buf, size_t len);
 
 #define cdb_datapos(c) ((c)->dpos)

@@ -1,5 +1,5 @@
-#ifndef LIBOWFAT_ATTRIBUTES_H
-#define LIBOWFAT_ATTRIBUTES_H
+#ifndef LIBOWFAT_COMPILER_H
+#define LIBOWFAT_COMPILER_H
 
 // This is here so you can use inline with older gcc versions
 #if __GNUC__ && (__STDC_VERSION__ < 199901L)
@@ -160,55 +160,68 @@
 
 #ifndef __dietlibc__
 #if defined(__GNUC__)
-#if __has_attribute(null_terminated_string_arg)
+
+#if !__has_attribute(null_terminated_string_arg)
+#define null_terminated_string_arg(a)
+#endif
+
+#if !__has_attribute(nonnull_if_nonzero)
+#define nonnull_if_nonzero(idx,szidx)
+#endif
+
+#if __has_attribute(access)
+#define __access(a,b) access(a,b)
+#define __access3(a,b,c) access(a,b,c)
+#else
+#define __access(a,b)
+#define __access3(a,b,c)
+#endif
+
 // Function arguments.
 // __strin: Argument idx (counted left to right from 1) is a non-NULL string the function reads
-#define __strin(idx) __attribute__((nonnull(idx),access(read_only,idx),null_terminated_string_arg(idx)))
+#define __strin(idx) __attribute__((nonnull(idx),__access(read_only,idx),null_terminated_string_arg(idx)))
 // __strnin: Argument idx (counted left to right from 1) is a non-NULL string the function reads, length limit in array elements given in the szidx'th argument
-#define __strnin(idx,szidx) __attribute__((nonnull(idx),access(read_only,idx,szidx),null_terminated_string_arg(idx)))
+#define __strnin(idx,szidx) __attribute__((nonnull(idx),__access3(read_only,idx,szidx)))
+// __strnin_ornull: like _strnin but if length is 0, ptr can be NULL
+#define __strnin_ornull(idx,szidx) __attribute__((nonnull_if_nonzero(idx,szidx),__access3(read_only,idx,szidx)))
 // __bufin: Argument idx (counted left to right from 1) is a non-NULL buffer the function reads from, length limit in array elements given in the szidx'th argument
-#define __bufin(bufidx,szidx) __attribute__((nonnull(bufidx),access(read_only,bufidx,szidx)))
+#define __bufin(bufidx,szidx) __attribute__((nonnull(bufidx),__access3(read_only,bufidx,szidx)))
+// __bufin_ornull: like __bufin but if length is 0, ptr can be NULL
+#define __bufin_ornull(bufidx,szidx) __attribute__((nonnull_if_nonzero(bufidx,szidx),__access3(read_only,bufidx,szidx)))
 // __strout: Argument idx (counted left to right from 1) is a non-NULL string the function writes
 // Currently we can't tell the compiler that the output will be 0-terminated.
-#define __strout(idx) __attribute__((nonnull(idx),access(write_only,idx)))
+#define __strout(idx) __attribute__((nonnull(idx),__access(write_only,idx)))
 // __strnout: Argument idx (counted left to right from 1) is a non-NULL string the function writes, buffer size given in szidx'th function argument (in array elements, not necessarily bytes)
 // Currently we can't tell the compiler that the output will be 0-terminated.
-#define __strnout(idx,szidx) __attribute__((nonnull(idx),access(write_only,idx,szidx)))
+#define __strnout(idx,szidx) __attribute__((nonnull(idx),__access3(write_only,idx,szidx)))
 // __bufout: Argument idx (counted left to right from 1) is a non-NULL buffer the function writes, buffer size given in szidx'th function argument (in array elements, not necessarily bytes)
-#define __bufout(bufidx,szidx) __attribute__((nonnull(bufidx),access(write_only,bufidx,szidx)))
+#define __bufout(bufidx,szidx) __attribute__((nonnull(bufidx),__access3(write_only,bufidx,szidx)))
 // __strinout: Argument idx (counted left to right from 1) is a non-NULL string the function reads and writes
 // Currently we can't tell the compiler that the output will be 0-terminated.
-#define __strinout(idx) __attribute__((nonnull(idx),access(read_write,idx),null_terminated_string_arg(idx)))
+#define __strinout(idx) __attribute__((nonnull(idx),__access(read_write,idx),null_terminated_string_arg(idx)))
 // __strninout: Argument idx (counted left to right from 1) is a non-NULL string the function reads and writes, buffer size in szidx'th function argument (in array elements, not necessarily bytes)
 // Currently we can't tell the compiler that the output will be 0-terminated.
-#define __strninout(idx,szidx) __attribute__((nonnull(idx),access(read_write,idx,szidx),null_terminated_string_arg(idx)))
+#define __strninout(idx,szidx) __attribute__((nonnull(idx),__access3(read_write,idx,szidx)))
 // __bufinout: Argument idx (counted left to right from 1) is a non-NULL buffer the function reads and writes, buffer size in szidx'th function argument (in array elements, not necessarily bytes)
-#define __bufinout(bufidx,szidx) __attribute__((nonnull(bufidx),access(read_write,bufidx,szidx)))
-#elif GCC_VERSION_ATLEAST(10, 0)
-#define __strin(idx) __attribute__((nonnull(idx),access(read_only,idx)))
-#define __strnin(idx,szidx) __attribute__((nonnull(idx),access(read_only,idx,szidx)))
-#define __bufin(bufidx,szidx) __attribute__((nonnull(bufidx),access(read_only,bufidx,szidx)))
-#define __strout(idx) __attribute__((nonnull(idx),access(write_only,idx)))
-#define __strnout(idx,szidx) __attribute__((nonnull(idx),access(write_only,idx,szidx)))
-#define __bufout(bufidx,szidx) __attribute__((nonnull(bufidx),access(write_only,bufidx,szidx)))
-#define __strinout(idx) __attribute__((nonnull(idx),access(read_write,idx)))
-#define __strninout(idx,szidx) __attribute__((nonnull(idx),access(read_write,idx,szidx)))
-#define __bufinout(bufidx,szidx) __attribute__((nonnull(bufidx),access(read_write,bufidx,szidx)))
+#define __bufinout(bufidx,szidx) __attribute__((nonnull(bufidx),__access3(read_write,bufidx,szidx)))
 
-#elif GCC_VERSION_ATLEAST(3, 3)
-
-#define __strin(idx) __attribute__((nonnull(idx)))
-#define __strnin(idx,szidx) __attribute__((nonnull(idx)))
-#define __bufin(bufidx,szidx) __attribute__((nonnull(bufidx)))
-#define __strout(idx) __attribute__((nonnull(idx)))
-#define __strnout(idx,szidx) __attribute__((nonnull(idx)))
-#define __bufout(bufidx,szidx) __attribute__((nonnull(bufidx)))
-#define __strinout(idx) __attribute__((nonnull(idx)))
-#define __strninout(idx,szidx) __attribute__((nonnull(idx)))
-#define __bufinout(bufidx,szidx) __attribute__((nonnull(bufidx)))
-
-#endif
 #endif	// !defined(__GNUC__)
 #endif	// !defined(__dietlibc__
+
+#if __has_attribute(ownership_takes)
+#define att_new __attribute__((ownership_returns(malloc)))
+#define att_free(idx) __attribute__((ownership_takes(malloc, idx)))
+#define att_holds(idx) __attribute__((ownership_holds(malloc, idx)))
+#else
+#define att_new
+#define att_free(idx)
+#define att_holds(idx)
+#endif
+
+#if __GNUC__ >= 11
+#define att_free_with(func,argpos) __attribute__((malloc(func,argpos)))
+#else
+#define att_free_with(func,argpos) __attribute__((malloc))
+#endif
 
 #endif
