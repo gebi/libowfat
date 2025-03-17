@@ -35,21 +35,25 @@ typedef struct buffer {
 /* Initialize a buffer with an existing memory area, which the buffer
  * will NOT take ownership of (i.e. won't free the memory when it's done) */
 __bufout(4,5)
+att_holds(4)
 void buffer_init(buffer* b, ssize_t (*op)(), int fd, char* y, size_t ylen);
 
 /* Initialize a buffer with an existing memory area, which the buffer
  * WILL take ownership of (it will call free() on it when it's done) */
 __bufout(4,5)
+att_free(4)
 void buffer_init_free(buffer* b,ssize_t (*op)(),int fd,char* y,size_t ylen);
 
 /* Call buffer_init with op=read(), return 0.
  * If fd==-1, return -1 instead, leaving b untouched. */
 __bufout(3,4)
+att_holds(3)
 int buffer_init_read(buffer* b, int fd, char* y, size_t ylen);
 
 /* Call buffer_init with op=write(), return 0.
  * If fd==-1, return -1 instead, leaving b untouched. */
 __bufout(3,4)
+att_holds(3)
 int buffer_init_write(buffer* b, int fd, char* y, size_t ylen);
 
 /* Will allocate a buffer of size ylen and then call
@@ -73,16 +77,19 @@ int buffer_init_write_allocbuf(buffer* b, int fd, size_t ylen);
  * actually attempt to read from any actual file.
  * Does not take ownership. Useful for testing. */
 __bufin(2,3)
+att_holds(2)
 void buffer_init_staticcontents(buffer* b,char* y,size_t ylen);
 
 /* Same but the buffer takes ownership of the static buffer and frees it
  * in buffer_close. */
 __bufin(2,3)
+att_free(2)
 void buffer_init_staticcontents_free(buffer* b,char* y,size_t ylen);
 
 
 /* Set buffer->deinit to this if you want buffer_close() to call free() on
  * the associated memory buffer */
+att_free(1)
 void buffer_free(void* buf);
 
 /* Set buffer->deinit to this if you want buffer_close() to call munmap() on
