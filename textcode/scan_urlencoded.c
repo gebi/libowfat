@@ -12,17 +12,17 @@ static size_t inner_scan_urlencoded(const char *src,char *dest,size_t *destlen,i
       c=j<<4;
       j=scan_fromhex(s[i+2]);
       if (j<0) break;
-      dest[written]=c|j;
+      if (dest) dest[written]=c|j;
       i+=2;
-    } else if (s[i]=='+' && plus)
-      dest[written]=' ';
-    else if (s[i]<=' ' || s[i]=='?' || s[i]=='&')
+    } else if (s[i]=='+' && plus) {
+      if (dest) dest[written]=' ';
+    } else if (s[i]<=' ' || s[i]=='?' || s[i]=='&')
       break;	/* invalid input */
     else
-      dest[written]=s[i];
+      if (dest) dest[written]=s[i];
     ++written;
   }
-  *destlen=written;
+  if (destlen) *destlen=written;
   return i;
 }
 

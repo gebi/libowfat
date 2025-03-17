@@ -8,16 +8,16 @@ size_t scan_quotedprintable(const char *src,char *dest,size_t *destlen) {
     if (s[i]=='=') {
       int j=scan_fromhex(s[i+1]);
       if (j<0) break;
-      dest[written]=j<<4;
+      if (dest) dest[written]=j<<4;
       j=scan_fromhex(s[i+2]);
       if (j<0) break;
-      dest[written]|=j;
+      if (dest) dest[written]|=j;
       i+=2;
     } else {
-      dest[written]=s[i];
+      if (dest) dest[written]=s[i];
     }
     ++written;
   }
-  *destlen=written;
+  if (destlen) *destlen=written;
   return i;
 }

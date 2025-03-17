@@ -63,11 +63,11 @@ size_t scan_jsonescape(const char *src,char *dest,size_t *destlen) {
     ++written;
   }
 done:
-  *destlen=written;
+  if (destlen) *destlen=written;
   return i;
 abort:
   if (prev!=(unsigned int)-1) i-=6; // if we abort and there still was an open surrogate pair, cancel it
-  *destlen=written;
+  if (destlen) *destlen=written;
   return i;
 }
 

@@ -191,11 +191,18 @@
 // __strout: Argument idx (counted left to right from 1) is a non-NULL string the function writes
 // Currently we can't tell the compiler that the output will be 0-terminated.
 #define __strout(idx) __attribute__((nonnull(idx),__access(write_only,idx)))
+// __strout_ornull: Argument idx (counted left to right from 1) is a string the function writes (may be NULL)
+// Currently we can't tell the compiler that the output will be 0-terminated.
+#define __strout_ornull(idx) __attribute__((__access(write_only,idx)))
 // __strnout: Argument idx (counted left to right from 1) is a non-NULL string the function writes, buffer size given in szidx'th function argument (in array elements, not necessarily bytes)
 // Currently we can't tell the compiler that the output will be 0-terminated.
 #define __strnout(idx,szidx) __attribute__((nonnull(idx),__access3(write_only,idx,szidx)))
 // __bufout: Argument idx (counted left to right from 1) is a non-NULL buffer the function writes, buffer size given in szidx'th function argument (in array elements, not necessarily bytes)
 #define __bufout(bufidx,szidx) __attribute__((nonnull(bufidx),__access3(write_only,bufidx,szidx)))
+// __retarg: Returns value in argument idx (counted left to right from 1) which must be non-NULL
+#define __retarg(bufidx) __attribute__((nonnull(bufidx),__access(write_only,bufidx)))
+// __retarg_ornull: Returns value in argument idx (counted left to right from 1) which can be NULL
+#define __retarg_ornull(bufidx) __attribute__((__access(write_only,bufidx)))
 // __strinout: Argument idx (counted left to right from 1) is a non-NULL string the function reads and writes
 // Currently we can't tell the compiler that the output will be 0-terminated.
 #define __strinout(idx) __attribute__((nonnull(idx),__access(read_write,idx),null_terminated_string_arg(idx)))
