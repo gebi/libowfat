@@ -99,8 +99,8 @@
 #define att_alloc(x) __attribute__((alloc_size(x)))
 #define att_calloc(x,y) __attribute__((alloc_size(x,y)))
 #else
-#define att_alloc
-#define att_calloc
+#define att_alloc(x)
+#define att_calloc(x,y)
 #endif
 
 // Function attributes.
@@ -146,7 +146,7 @@
 // abort compilation on error.
 #if GCC_VERSION_ATLEAST(4, 3)
 #define att_warn(message) __attribute__((__warning__(message)))
-#define att_error(message) __attribute__((__warning__(message)))
+#define att_error(message) __attribute__((__error__(message)))
 #else
 #define att_warn(message)
 #define att_error(message)
@@ -215,14 +215,28 @@
 #endif	// !defined(__GNUC__)
 #endif	// !defined(__dietlibc__
 
+// in order to cover both clang and gcc, we'll need a convention
+//   att_new(myfree,1) void* mymalloc(size_t n);
+// here myfree is the name of the free function, and 1 means you pass
+// the pointer you want to free as first argument to myfree.
+//   att_free(myfree,1) void myfree(void* freeme);
+// same meaning of id and idx here
+//   att_holds(myfree,2) int add_to_list_and_give_ownership(list* l,void* ptr);
+// myfree is the name of the free function so that clang can link them
+// and 2 is the index of the pointer whose ownership is transferred
+// use "malloc" as id to indicate regular malloc'ed pointers
 #if __has_attribute(ownership_takes)
-#define att_new __attribute__((ownership_returns(malloc)))
-#define att_free(idx) __attribute__((ownership_takes(malloc, idx)))
-#define att_holds(idx) __attribute__((ownership_holds(malloc, idx)))
+#define att_new(id,idx) __attribute__((ownership_returns(id)))
+#define att_free(id,idx) __attribute__((ownership_takes(id, idx)))
+#define att_holds(id,idx) __attribute__((ownership_holds(id, idx)))
+#elif __GNUC__ >= 11
+#define att_new(id,idx) __attribute__((malloc(id,idx)))
+#define att_free(id,idx)
+#define att_holds(id,idx)
 #else
-#define att_new
-#define att_free(idx)
-#define att_holds(idx)
+#define att_new(id,idx)
+#define att_free(id,idx)
+#define att_holds(id,idx)
 #endif
 
 #if __GNUC__ >= 11

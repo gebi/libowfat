@@ -59,24 +59,23 @@ att_warn_unused_result
 int iob_init_autofree(io_batch* b,size_t hint_entries);
 
 /* malloc and initialize an io_batch */
-att_free_with(iob_free,1)
-att_new
+att_new(iob_free,1)
 io_batch* iob_new(size_t hint_entries);
 
 /* malloc and initialize an io_batch that auto-frees entries as soon as
  * iob_send/iob_write have written them */
-att_free_with(iob_free,1)
+att_new(iob_free,1)
 io_batch* iob_new_autofree(size_t hint_entries);
 
 /* queue buffer in io_batch */
 att_readn(2,3)
-att_holds(1)
+att_holds(malloc,2)
 int iob_addbuf(io_batch* b,const void* buf,uint64 n);
 
 /* queue buffer in io_batch, and give ownership to batch. */
 /* the io_batch functions will take care of freeing it. */
 att_readn(2,3)
-att_free(1)
+att_free(malloc,2)
 int iob_addbuf_free(io_batch* b,const void* buf,uint64 n);
 
 /* queue mmapped memory reagion in io_batch, and give ownership to batch. */
@@ -86,13 +85,13 @@ int iob_addbuf_munmap(io_batch* b,const void* buf,uint64 n);
 
 /* queue asciiz string in io_batch. */
 att_read(2)
-att_holds(2)
+att_holds(malloc,2)
 int iob_adds(io_batch* b,const char* s);
 
 /* queue asciiz string in io_batch, and give ownership to batch. */
 /* the io_batch functions will take care of freeing it. */
 att_read(2)
-att_free(2)
+att_free(malloc,2)
 int iob_adds_free(io_batch* b,const char* s);
 
 /* queue file contents in io_batch. */
