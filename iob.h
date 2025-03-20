@@ -69,7 +69,6 @@ io_batch* iob_new_autofree(size_t hint_entries);
 
 /* queue buffer in io_batch */
 att_readn(2,3)
-att_holds(malloc,2)
 int iob_addbuf(io_batch* b,const void* buf,uint64 n);
 
 /* queue buffer in io_batch, and give ownership to batch. */
@@ -85,7 +84,6 @@ int iob_addbuf_munmap(io_batch* b,const void* buf,uint64 n);
 
 /* queue asciiz string in io_batch. */
 att_read(2)
-att_holds(malloc,2)
 int iob_adds(io_batch* b,const char* s);
 
 /* queue asciiz string in io_batch, and give ownership to batch. */

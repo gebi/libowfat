@@ -35,7 +35,6 @@ typedef struct buffer {
 /* Initialize a buffer with an existing memory area, which the buffer
  * will NOT take ownership of (i.e. won't free the memory when it's done) */
 __bufout(4,5)
-att_holds(malloc,4)
 void buffer_init(buffer* b, ssize_t (*op)(), int fd, char* y, size_t ylen);
 
 /* Initialize a buffer with an existing memory area, which the buffer
@@ -47,13 +46,11 @@ void buffer_init_free(buffer* b,ssize_t (*op)(),int fd,char* y,size_t ylen);
 /* Call buffer_init with op=read(), return 0.
  * If fd==-1, return -1 instead, leaving b untouched. */
 __bufout(3,4)
-att_holds(malloc,3)
 int buffer_init_read(buffer* b, int fd, char* y, size_t ylen);
 
 /* Call buffer_init with op=write(), return 0.
  * If fd==-1, return -1 instead, leaving b untouched. */
 __bufout(3,4)
-att_holds(malloc,3)
 int buffer_init_write(buffer* b, int fd, char* y, size_t ylen);
 
 /* Will allocate a buffer of size ylen and then call
