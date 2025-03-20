@@ -506,7 +506,7 @@ int main() {
       if (strstr("pause",s))
 	puts(s);
       if (colon && strncmp(s,"have",4))
-	fprintf(ninja,"build libowfat/%.*s: cphdr %.*s\n",(int)(colon-s),s,(int)(colon-s),s);
+	fprintf(ninja,"build libowfat/%.*s: cphdr %.*s | lnifnewer\n",(int)(colon-s),s,(int)(colon-s),s);
     }
     fprintf(ninja,"\n");
 

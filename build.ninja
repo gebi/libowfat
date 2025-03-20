@@ -20,7 +20,7 @@ rule ar
   command = $CROSS$AR cru $out $in
 
 rule cphdr
-  command = test $in -nt $out && ln -f $in $out
+  command = ./lnifnewer $in
 
 rule try
   command = if $CCC $CFLAGS -c -o $in.o $in >/dev/null 2>&1; then echo "$id" ; fi > $out ; rm -f $in.o
@@ -113,6 +113,8 @@ rule buildlocal
 
 build ent: buildlocal ent.c
 
+build lnifnewer: buildlocal lnifnewer.c
+
 build entities.h: entities | ent entities.json
 
 build n: buildlocal n.c
@@ -120,53 +122,57 @@ build n: buildlocal n.c
 build json: buildlocal json.c
 
 
-build libowfat/CAS.h: cphdr CAS.h
-build libowfat/array.h: cphdr array.h
-build libowfat/byte.h: cphdr byte.h
-build libowfat/compiletimeassert.h: cphdr compiletimeassert.h
-build libowfat/critbit.h: cphdr critbit.h
-build libowfat/dns.h: cphdr dns.h
-build libowfat/errmsg.h: cphdr errmsg.h
-build libowfat/errmsg_int.h: cphdr errmsg_int.h
-build libowfat/iarray.h: cphdr iarray.h
-build libowfat/ip6.h: cphdr ip6.h
-build libowfat/isset.h: cphdr isset.h
-build libowfat/mmap.h: cphdr mmap.h
-build libowfat/ndelay.h: cphdr ndelay.h
-build libowfat/parse.h: cphdr parse.h
-build libowfat/rangecheck.h: cphdr rangecheck.h
-build libowfat/safemult.h: cphdr safemult.h
-build libowfat/scan.h: cphdr scan.h
-build libowfat/socket.h: cphdr socket.h
-build libowfat/str.h: cphdr str.h
-build libowfat/stralloc.h: cphdr stralloc.h
-build libowfat/tai.h: cphdr tai.h
-build libowfat/taia.h: cphdr taia.h
-build libowfat/textcode.h: cphdr textcode.h
-build libowfat/va_narg.h: cphdr va_narg.h
-build libowfat/vector.h: cphdr vector.h
-build libowfat/windoze.h: cphdr windoze.h
-build libowfat/uint32.h: cphdr uint32.h
-build libowfat/uint64.h: cphdr uint64.h
-build libowfat/iob.h: cphdr iob.h
-build libowfat/io.h: cphdr io.h
-build libowfat/open.h: cphdr open.h
-build libowfat/openreadclose.h: cphdr openreadclose.h
-build libowfat/case.h: cphdr case.h
-build libowfat/buffer.h: cphdr buffer.h
-build libowfat/compiler.h: cphdr compiler.h
-build libowfat/cdb.h: cphdr cdb.h
-build libowfat/cdb_make.h: cphdr cdb_make.h
-build libowfat/clamp.h: cphdr clamp.h
-build libowfat/fmt.h: cphdr fmt.h
-build libowfat/io_internal.h: cphdr io_internal.h
-build libowfat/iob_internal.h: cphdr iob_internal.h
-build libowfat/ip4.h: cphdr ip4.h
-build libowfat/likely.h: cphdr likely.h
-build libowfat/readclose.h: cphdr readclose.h
-build libowfat/uint16.h: cphdr uint16.h
-build libowfat/iopause.h: cphdr iopause.h
-build libowfat/select.h: cphdr select.h
+
+
+
+build libowfat/CAS.h: cphdr CAS.h | lnifnewer
+build libowfat/errmsg.h: cphdr errmsg.h | lnifnewer
+build libowfat/errmsg_int.h: cphdr errmsg_int.h | lnifnewer
+build libowfat/isset.h: cphdr isset.h | lnifnewer
+build libowfat/ndelay.h: cphdr ndelay.h | lnifnewer
+build libowfat/readclose.h: cphdr readclose.h | lnifnewer
+build libowfat/va_narg.h: cphdr va_narg.h | lnifnewer
+build libowfat/vector.h: cphdr vector.h | lnifnewer
+build libowfat/windoze.h: cphdr windoze.h | lnifnewer
+build libowfat/array.h: cphdr array.h | lnifnewer
+build libowfat/compiletimeassert.h: cphdr compiletimeassert.h | lnifnewer
+build libowfat/critbit.h: cphdr critbit.h | lnifnewer
+build libowfat/iarray.h: cphdr iarray.h | lnifnewer
+build libowfat/parse.h: cphdr parse.h | lnifnewer
+build libowfat/rangecheck.h: cphdr rangecheck.h | lnifnewer
+build libowfat/safemult.h: cphdr safemult.h | lnifnewer
+build libowfat/stralloc.h: cphdr stralloc.h | lnifnewer
+build libowfat/tai.h: cphdr tai.h | lnifnewer
+build libowfat/taia.h: cphdr taia.h | lnifnewer
+build libowfat/dns.h: cphdr dns.h | lnifnewer
+build libowfat/ip4.h: cphdr ip4.h | lnifnewer
+build libowfat/ip6.h: cphdr ip6.h | lnifnewer
+build libowfat/socket.h: cphdr socket.h | lnifnewer
+build libowfat/clamp.h: cphdr clamp.h | lnifnewer
+build libowfat/byte.h: cphdr byte.h | lnifnewer
+build libowfat/case.h: cphdr case.h | lnifnewer
+build libowfat/cdb_make.h: cphdr cdb_make.h | lnifnewer
+build libowfat/io.h: cphdr io.h | lnifnewer
+build libowfat/open.h: cphdr open.h | lnifnewer
+build libowfat/openreadclose.h: cphdr openreadclose.h | lnifnewer
+build libowfat/str.h: cphdr str.h | lnifnewer
+build libowfat/uint16.h: cphdr uint16.h | lnifnewer
+build libowfat/uint32.h: cphdr uint32.h | lnifnewer
+build libowfat/uint64.h: cphdr uint64.h | lnifnewer
+build libowfat/scan.h: cphdr scan.h | lnifnewer
+build libowfat/io_internal.h: cphdr io_internal.h | lnifnewer
+build libowfat/iob_internal.h: cphdr iob_internal.h | lnifnewer
+build libowfat/likely.h: cphdr likely.h | lnifnewer
+build libowfat/mmap.h: cphdr mmap.h | lnifnewer
+build libowfat/select.h: cphdr select.h | lnifnewer
+build libowfat/entities.h: cphdr entities.h | lnifnewer
+build libowfat/iopause.h: cphdr iopause.h | lnifnewer
+build libowfat/buffer.h: cphdr buffer.h | lnifnewer
+build libowfat/cdb.h: cphdr cdb.h | lnifnewer
+build libowfat/compiler.h: cphdr compiler.h | lnifnewer
+build libowfat/fmt.h: cphdr fmt.h | lnifnewer
+build libowfat/iob.h: cphdr iob.h | lnifnewer
+build libowfat/textcode.h: cphdr textcode.h | lnifnewer
 
 build array_allocate.o: cc array/array_allocate.c | libowfat/compiler.h libowfat/safemult.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h libowfat/array.h libowfat/byte.h
 build array_bytes.o: cc array/array_bytes.c | libowfat/array.h libowfat/compiler.h libowfat/uint64.h
@@ -189,20 +195,6 @@ build iarray_free.o: cc array/iarray_free.c | libowfat/iarray.h libowfat/uint64.
 build iarray_get.o: cc array/iarray_get.c | libowfat/iarray.h libowfat/uint64.h
 build iarray_init.o: cc array/iarray_init.c | libowfat/iarray.h libowfat/uint64.h
 build iarray_length.o: cc array/iarray_length.c | libowfat/iarray.h libowfat/uint64.h
-build bs_capacityassert.o: cc buffer/bs_capacityassert.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
-build bs_capacitycheck.o: cc buffer/bs_capacitycheck.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
-build bs_capacityleft.o: cc buffer/bs_capacityleft.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
-build bs_consumeleftovers.o: cc buffer/bs_consumeleftovers.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
-build bs_err.o: cc buffer/bs_err.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
-build bs_get.o: cc buffer/bs_get.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
-build bs_init_bstream_size.o: cc buffer/bs_init_bstream_size.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
-build bs_init_iobuf.o: cc buffer/bs_init_iobuf.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
-build bs_init_iobuf_size.o: cc buffer/bs_init_iobuf_size.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
-build bs_init_membuf.o: cc buffer/bs_init_membuf.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
-build bs_nomoredataassert.o: cc buffer/bs_nomoredataassert.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
-build bs_peek.o: cc buffer/bs_peek.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
-build bs_seterrorstate.o: cc buffer/bs_seterrorstate.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
-build bs_skip.o: cc buffer/bs_skip.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
 build buffer_1.o: cc buffer/buffer_1.c | buffer.h libowfat/compiler.h
 build buffer_1small.o: cc buffer/buffer_1small.c | buffer.h libowfat/compiler.h
 build buffer_2.o: cc buffer/buffer_2.c | buffer.h libowfat/compiler.h
@@ -224,12 +216,9 @@ build buffer_getn.o: cc buffer/buffer_getn.c | byte.h libowfat/compiler.h buffer
 build buffer_getnewline_sa.o: cc buffer/buffer_getnewline_sa.c | stralloc.h libowfat/compiler.h buffer.h
 build buffer_munmap.o: cc buffer/buffer_munmap.c | buffer.h libowfat/compiler.h
 build buffer_peek.o: cc buffer/buffer_peek.c | buffer.h libowfat/compiler.h
-build buffer_peekc.o: cc buffer/buffer_peekc.c | byte.h libowfat/compiler.h buffer.h
-build buffer_put.o: cc buffer/buffer_put.c | buffer.h libowfat/compiler.h
 build buffer_putalign.o: cc buffer/buffer_putalign.c | byte.h libowfat/compiler.h buffer.h
 build buffer_puterror.o: cc buffer/buffer_puterror.c | buffer.h libowfat/compiler.h
 build buffer_puterror2.o: cc buffer/buffer_puterror2.c | buffer.h libowfat/compiler.h
-build buffer_putflush.o: cc buffer/buffer_putflush.c | buffer.h libowfat/compiler.h
 build buffer_putm_internal.o: cc buffer/buffer_putm_internal.c | buffer.h libowfat/compiler.h
 build buffer_putm_internal_flush.o: cc buffer/buffer_putm_internal_flush.c | buffer.h libowfat/compiler.h
 build buffer_putnlflush.o: cc buffer/buffer_putnlflush.c | str.h libowfat/compiler.h buffer.h
@@ -239,7 +228,6 @@ build buffer_putsaflush.o: cc buffer/buffer_putsaflush.c | stralloc.h libowfat/c
 build buffer_putsalign.o: cc buffer/buffer_putsalign.c | str.h libowfat/compiler.h buffer.h
 build buffer_putsflush.o: cc buffer/buffer_putsflush.c | str.h libowfat/compiler.h buffer.h
 build buffer_putspace.o: cc buffer/buffer_putspace.c | str.h libowfat/compiler.h buffer.h
-build buffer_seek.o: cc buffer/buffer_seek.c | buffer.h libowfat/compiler.h
 build buffer_tosa.o: cc buffer/buffer_tosa.c | stralloc.h libowfat/compiler.h buffer.h
 build errmsg_iam.o: cc buffer/errmsg_iam.c | errmsg.h
 build errmsg_info.o: cc buffer/errmsg_info.c | errmsg.h errmsg_int.h str.h libowfat/compiler.h
@@ -248,22 +236,38 @@ build errmsg_puts.o: cc buffer/errmsg_puts.c | errmsg.h errmsg_int.h str.h libow
 build errmsg_warn.o: cc buffer/errmsg_warn.c | errmsg.h errmsg_int.h str.h libowfat/compiler.h
 build errmsg_warnsys.o: cc buffer/errmsg_warnsys.c | errmsg.h errmsg_int.h str.h libowfat/compiler.h
 build errmsg_write.o: cc buffer/errmsg_write.c | errmsg.h errmsg_int.h
+build bs_capacityassert.o: cc buffer/bs_capacityassert.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+build bs_capacitycheck.o: cc buffer/bs_capacitycheck.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+build bs_consumeleftovers.o: cc buffer/bs_consumeleftovers.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+build bs_get.o: cc buffer/bs_get.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+build bs_init_bstream_size.o: cc buffer/bs_init_bstream_size.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+build bs_init_iobuf.o: cc buffer/bs_init_iobuf.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+build bs_init_iobuf_size.o: cc buffer/bs_init_iobuf_size.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+build bs_init_membuf.o: cc buffer/bs_init_membuf.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+build bs_nomoredataassert.o: cc buffer/bs_nomoredataassert.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+build bs_peek.o: cc buffer/bs_peek.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+build bs_seterrorstate.o: cc buffer/bs_seterrorstate.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+build buffer_peekc.o: cc buffer/buffer_peekc.c | byte.h libowfat/compiler.h buffer.h
 build prs_asciiz.o: cc buffer/prs_asciiz.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
 build prs_asciiz_fixedlen.o: cc buffer/prs_asciiz_fixedlen.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
 build prs_u64.o: cc buffer/prs_u64.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
 build prs_u64_big.o: cc buffer/prs_u64_big.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+build bs_capacityleft.o: cc buffer/bs_capacityleft.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+build bs_err.o: cc buffer/bs_err.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+build bs_skip.o: cc buffer/bs_skip.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+build buffer_putflush.o: cc buffer/buffer_putflush.c | buffer.h libowfat/compiler.h
+build buffer_seek.o: cc buffer/buffer_seek.c | buffer.h libowfat/compiler.h
+build buffer_put.o: cc buffer/buffer_put.c | buffer.h libowfat/compiler.h
 build prs_readblob.o: cc buffer/prs_readblob.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
 build prs_u16.o: cc buffer/prs_u16.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
-build prs_u32.o: cc buffer/prs_u32.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
 build prs_u16_big.o: cc buffer/prs_u16_big.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
+build prs_u32.o: cc buffer/prs_u32.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
 build prs_u32_big.o: cc buffer/prs_u32_big.c | parse.h libowfat/compiler.h libowfat/buffer.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
 build buffer_stubborn.o: cc buffer/buffer_stubborn.c | buffer.h libowfat/compiler.h
 build buffer_stubborn2.o: cc buffer/buffer_stubborn2.c | buffer.h libowfat/compiler.h
-build buffer_0small.o: cc buffer/buffer_0small.c | buffer.h libowfat/compiler.h
 build buffer_0.o: cc buffer/buffer_0.c | buffer.h libowfat/compiler.h
+build buffer_0small.o: cc buffer/buffer_0small.c | buffer.h libowfat/compiler.h
 build buffer_fromarray.o: cc buffer/buffer_fromarray.c | array.h libowfat/compiler.h libowfat/uint64.h buffer.h
-build buffer_get_token.o: cc buffer/buffer_get_token.c | libowfat/byte.h libowfat/compiler.h libowfat/buffer.h
-build buffer_get_token_pred.o: cc buffer/buffer_get_token_pred.c | libowfat/byte.h libowfat/compiler.h libowfat/buffer.h
 build buffer_init.o: cc buffer/buffer_init.c | libowfat/buffer.h libowfat/compiler.h
 build buffer_init_allocbuf.o: cc buffer/buffer_init_allocbuf.c | libowfat/buffer.h libowfat/compiler.h
 build buffer_init_free.o: cc buffer/buffer_init_free.c | libowfat/buffer.h libowfat/compiler.h
@@ -274,6 +278,8 @@ build buffer_init_staticcontents_free.o: cc buffer/buffer_init_staticcontents_fr
 build buffer_init_write.o: cc buffer/buffer_init_write.c | libowfat/buffer.h libowfat/compiler.h
 build buffer_init_write_allocbuf.o: cc buffer/buffer_init_write_allocbuf.c | libowfat/buffer.h libowfat/compiler.h
 build buffer_mmapread.o: cc buffer/buffer_mmapread.c | libowfat/buffer.h libowfat/compiler.h libowfat/mmap.h
+build buffer_get_token.o: cc buffer/buffer_get_token.c | libowfat/byte.h libowfat/compiler.h libowfat/buffer.h
+build buffer_get_token_pred.o: cc buffer/buffer_get_token_pred.c | libowfat/byte.h libowfat/compiler.h libowfat/buffer.h
 build buffer_put8long.o: cc buffer/buffer_put8long.c | libowfat/buffer.h libowfat/compiler.h libowfat/fmt.h libowfat/byte.h
 build buffer_putlong.o: cc buffer/buffer_putlong.c | libowfat/buffer.h libowfat/compiler.h libowfat/fmt.h libowfat/byte.h
 build buffer_putlonglong.o: cc buffer/buffer_putlonglong.c | libowfat/buffer.h libowfat/compiler.h libowfat/fmt.h libowfat/byte.h
@@ -319,13 +325,15 @@ build dns_sortip.o: cc dns/dns_sortip.c | libowfat/byte.h libowfat/compiler.h li
 build dns_sortip6.o: cc dns/dns_sortip6.c | libowfat/byte.h libowfat/compiler.h libowfat/dns.h libowfat/stralloc.h libowfat/iopause.h libowfat/taia.h libowfat/tai.h libowfat/uint64.h libowfat/uint32.h
 build dns_transmit.o: cc dns/dns_transmit.c | libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h libowfat/byte.h libowfat/dns.h libowfat/stralloc.h libowfat/iopause.h libowfat/taia.h libowfat/tai.h libowfat/uint64.h libowfat/ip6.h
 build dns_txt.o: cc dns/dns_txt.c | libowfat/stralloc.h libowfat/compiler.h libowfat/uint16.h libowfat/byte.h libowfat/dns.h libowfat/iopause.h libowfat/taia.h libowfat/tai.h libowfat/uint64.h libowfat/uint32.h
+build fmt_escapecharhtml.o: cc fmt/fmt_escapecharhtml.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
+build fmt_escapecharjson.o: cc fmt/fmt_escapecharjson.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
+build fmt_pb_type5_fixed32.o: cc fmt/fmt_pb_type5_fixed32.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/uint32.h
+build fmt_pb_type1_fixed64.o: cc fmt/fmt_pb_type1_fixed64.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/uint64.h
 build fmt_8long.o: cc fmt/fmt_8long.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
 build fmt_8longlong.o: cc fmt/fmt_8longlong.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
 build fmt_asn1derlength.o: cc fmt/fmt_asn1derlength.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
 build fmt_asn1dertag.o: cc fmt/fmt_asn1dertag.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
 build fmt_double.o: cc fmt/fmt_double.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
-build fmt_escapecharhtml.o: cc fmt/fmt_escapecharhtml.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
-build fmt_escapecharjson.o: cc fmt/fmt_escapecharjson.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
 build fmt_escapecharquotedprintable.o: cc fmt/fmt_escapecharquotedprintable.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
 build fmt_escapecharquotedprintableutf8.o: cc fmt/fmt_escapecharquotedprintableutf8.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
 build fmt_escapecharxml.o: cc fmt/fmt_escapecharxml.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
@@ -347,9 +355,7 @@ build fmt_pb_string.o: cc fmt/fmt_pb_string.c | libowfat/fmt.h libowfat/byte.h l
 build fmt_pb_tag.o: cc fmt/fmt_pb_tag.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
 build fmt_pb_type0_sint.o: cc fmt/fmt_pb_type0_sint.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
 build fmt_pb_type1_double.o: cc fmt/fmt_pb_type1_double.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/compiletimeassert.h
-build fmt_pb_type1_fixed64.o: cc fmt/fmt_pb_type1_fixed64.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/uint64.h
 build fmt_pb_type2_string.o: cc fmt/fmt_pb_type2_string.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/rangecheck.h
-build fmt_pb_type5_fixed32.o: cc fmt/fmt_pb_type5_fixed32.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/uint32.h
 build fmt_pb_type5_float.o: cc fmt/fmt_pb_type5_float.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/compiletimeassert.h
 build fmt_plusminus.o: cc fmt/fmt_plusminus.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
 build fmt_strn.o: cc fmt/fmt_strn.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
@@ -360,36 +366,27 @@ build fmt_varint.o: cc fmt/fmt_varint.c | libowfat/fmt.h libowfat/byte.h libowfa
 build fmt_xlong.o: cc fmt/fmt_xlong.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h haveinline.h
 build fmt_xlonglong.o: cc fmt/fmt_xlonglong.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
 build fmt_xmlescape.o: cc fmt/fmt_xmlescape.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
-build fmt_utf8.o: cc fmt/fmt_utf8.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
-build fmt_tohex.o: cc fmt/fmt_tohex.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
 build fmt_escapecharc.o: cc fmt/fmt_escapecharc.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
-build fmt_strm_internal.o: cc fmt/fmt_strm_internal.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
 build fmt_str.o: cc fmt/fmt_str.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
+build fmt_strm_internal.o: cc fmt/fmt_strm_internal.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
+build fmt_tohex.o: cc fmt/fmt_tohex.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
+build fmt_utf8.o: cc fmt/fmt_utf8.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h
 build io_appendfile.o: cc io/io_appendfile.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 build io_block.o: cc io/io_block.c | windoze.h io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
-build io_canread.o: cc io/io_canread.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
-build io_canwrite.o: cc io/io_canwrite.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 build io_check.o: cc io/io_check.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 build io_close.o: cc io/io_close.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 build io_closeonexec.o: cc io/io_closeonexec.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 build io_createfile.o: cc io/io_createfile.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 build io_dontwantread.o: cc io/io_dontwantread.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 build io_dontwantwrite.o: cc io/io_dontwantwrite.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
-build io_eagain.o: cc io/io_eagain.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 build io_eagain_read.o: cc io/io_eagain_read.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
-build io_eagain_write.o: cc io/io_eagain_write.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
-build io_fd.o: cc io/io_fd.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h byte.h
 build io_finishandshutdown.o: cc io/io_finishandshutdown.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 build io_getcookie.o: cc io/io_getcookie.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 build io_nonblock.o: cc io/io_nonblock.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h windoze.h
 build io_passfd.o: cc io/io_passfd.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
-build io_pipe.o: cc io/io_pipe.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
-build io_readfile.o: cc io/io_readfile.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
-build io_readwritefile.o: cc io/io_readwritefile.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 build io_receivefd.o: cc io/io_receivefd.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 build io_setcookie.o: cc io/io_setcookie.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 build io_sigpipe.o: cc io/io_sigpipe.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
-build io_socketpair.o: cc io/io_socketpair.c | windoze.h io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 build io_timedout.o: cc io/io_timedout.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 build io_timeout.o: cc io/io_timeout.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 build io_timeouted.o: cc io/io_timeouted.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
@@ -409,40 +406,49 @@ build iob_addbuf_munmap.o: cc io/iob_addbuf_munmap.c | mmap.h libowfat/compiler.
 build iob_addfile.o: cc io/iob_addfile.c | iob_internal.h libowfat/iob.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h
 build iob_addfile_close.o: cc io/iob_addfile_close.c | iob_internal.h libowfat/iob.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h
 build iob_free.o: cc io/iob_free.c | iob_internal.h libowfat/iob.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h
-build iob_prefetch.o: cc io/iob_prefetch.c | iob_internal.h libowfat/iob.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h
 build iob_reset.o: cc io/iob_reset.c | byte.h libowfat/compiler.h iob_internal.h libowfat/iob.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/array.h
 build iom_add.o: cc io/iom_add.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+build io_canread.o: cc io/io_canread.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+build io_canwrite.o: cc io/io_canwrite.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+build io_fd.o: cc io/io_fd.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h byte.h
+build io_pipe.o: cc io/io_pipe.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+build io_socketpair.o: cc io/io_socketpair.c | windoze.h io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+build io_eagain.o: cc io/io_eagain.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+build io_eagain_write.o: cc io/io_eagain_write.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+build io_readfile.o: cc io/io_readfile.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+build io_readwritefile.o: cc io/io_readwritefile.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+build iob_prefetch.o: cc io/iob_prefetch.c | iob_internal.h libowfat/iob.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h
 build io_tryread.o: cc io/io_tryread.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h byte.h
 build io_sendfile.o: cc io/io_sendfile.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h havebsdsf.h havesendfile.h
 build iom_abort.o: cc io/iom_abort.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 build iom_init.o: cc io/iom_init.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
+build iom_requeue.o: cc io/iom_requeue.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 build iom_wait.o: cc io/iom_wait.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
-build iob_init.o: cc io/iob_init.c | byte.h libowfat/compiler.h iob_internal.h libowfat/iob.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/array.h
-build iob_new.o: cc io/iob_new.c | byte.h libowfat/compiler.h iob_internal.h libowfat/iob.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/array.h
-build iob_new_autofree.o: cc io/iob_new_autofree.c | iob_internal.h libowfat/iob.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h
 build iob_adds.o: cc io/iob_adds.c | iob_internal.h libowfat/iob.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h
 build iob_adds_free.o: cc io/iob_adds_free.c | iob_internal.h libowfat/iob.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h
 build iob_bytesleft.o: cc io/iob_bytesleft.c | iob_internal.h libowfat/iob.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h
+build iob_init.o: cc io/iob_init.c | byte.h libowfat/compiler.h iob_internal.h libowfat/iob.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/array.h
 build iob_init_autofree.o: cc io/iob_init_autofree.c | iob_internal.h libowfat/iob.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h
+build iob_new.o: cc io/iob_new.c | byte.h libowfat/compiler.h iob_internal.h libowfat/iob.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/array.h
+build iob_new_autofree.o: cc io/iob_new_autofree.c | iob_internal.h libowfat/iob.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h
 build iob_send.o: cc io/iob_send.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h iob_internal.h libowfat/iob.h havebsdsf.h havealloca.h
-build iom_requeue.o: cc io/iom_requeue.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
-build io_debugstring.o: cc io/io_debugstring.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h libowfat/fmt.h libowfat/byte.h
 build io_mmapwritefile.o: cc io/io_mmapwritefile.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h libowfat/iob.h havepread.h
-build io_waituntil2.o: cc io/io_waituntil2.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h libowfat/fmt.h libowfat/byte.h
 build iob_write.o: cc io/iob_write.c | iob_internal.h libowfat/iob.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h
-build mmap_private.o: cc mmap/mmap_private.c | open.h libowfat/compiler.h mmap.h
+build io_debugstring.o: cc io/io_debugstring.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h libowfat/fmt.h libowfat/byte.h
+build io_waituntil2.o: cc io/io_waituntil2.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h libowfat/fmt.h libowfat/byte.h
 build mmap_readat.o: cc mmap/mmap_readat.c | open.h libowfat/compiler.h mmap.h
 build mmap_shared.o: cc mmap/mmap_shared.c | open.h libowfat/compiler.h mmap.h
+build mmap_private.o: cc mmap/mmap_private.c | open.h libowfat/compiler.h mmap.h
 build mmap_read.o: cc mmap/mmap_read.c | libowfat/open.h libowfat/compiler.h libowfat/mmap.h
 build mmap_unmap.o: cc mmap/mmap_unmap.c | libowfat/open.h libowfat/compiler.h libowfat/mmap.h
 build imult16.o: cc mult/imult16.c | libowfat/uint16.h libowfat/safemult.h libowfat/uint32.h libowfat/uint64.h
+build umult16.o: cc mult/umult16.c | libowfat/uint16.h libowfat/safemult.h libowfat/uint32.h libowfat/uint64.h
 build imult32.o: cc mult/imult32.c | libowfat/uint32.h libowfat/safemult.h libowfat/uint16.h libowfat/uint64.h
 build imult64.o: cc mult/imult64.c | libowfat/uint64.h libowfat/safemult.h libowfat/uint16.h libowfat/uint32.h
 build range_arrayinbuf.o: cc mult/range_arrayinbuf.c | libowfat/rangecheck.h libowfat/compiler.h libowfat/safemult.h libowfat/uint16.h libowfat/uint32.h libowfat/uint64.h
 build range_str2inbuf.o: cc mult/range_str2inbuf.c | libowfat/rangecheck.h libowfat/compiler.h
 build range_str4inbuf.o: cc mult/range_str4inbuf.c | libowfat/rangecheck.h libowfat/compiler.h
 build range_strinbuf.o: cc mult/range_strinbuf.c | libowfat/rangecheck.h libowfat/compiler.h
-build umult16.o: cc mult/umult16.c | libowfat/uint16.h libowfat/safemult.h libowfat/uint32.h libowfat/uint64.h
 build umult32.o: cc mult/umult32.c | libowfat/uint32.h libowfat/safemult.h libowfat/uint16.h libowfat/uint64.h
 build umult64.o: cc mult/umult64.c | libowfat/uint64.h haveuint128.h libowfat/safemult.h libowfat/uint16.h libowfat/uint32.h
 build open_append.o: cc open/open_append.c | open.h libowfat/compiler.h
@@ -453,6 +459,8 @@ build openreadclose.o: cc open/openreadclose.c | open.h libowfat/compiler.h read
 build readclose.o: cc open/readclose.c | readclose.h libowfat/stralloc.h libowfat/compiler.h
 build open_read.o: cc open/open_read.c | libowfat/open.h libowfat/compiler.h
 build open_trunc.o: cc open/open_trunc.c | libowfat/open.h libowfat/compiler.h
+build scan_pb_type5_fixed32.o: cc scan/scan_pb_type5_fixed32.c | libowfat/scan.h libowfat/compiler.h libowfat/uint32.h
+build scan_pb_type1_fixed64.o: cc scan/scan_pb_type1_fixed64.c | libowfat/scan.h libowfat/compiler.h libowfat/uint64.h
 build scan_8int.o: cc scan/scan_8int.c | libowfat/scan.h libowfat/compiler.h
 build scan_8long.o: cc scan/scan_8long.c | libowfat/scan.h libowfat/compiler.h
 build scan_8longlong.o: cc scan/scan_8longlong.c | libowfat/scan.h libowfat/compiler.h
@@ -475,9 +483,7 @@ build scan_nonwhitenskip.o: cc scan/scan_nonwhitenskip.c | libowfat/scan.h libow
 build scan_pb_tag.o: cc scan/scan_pb_tag.c | libowfat/scan.h libowfat/compiler.h
 build scan_pb_type0_sint.o: cc scan/scan_pb_type0_sint.c | libowfat/scan.h libowfat/compiler.h
 build scan_pb_type1_double.o: cc scan/scan_pb_type1_double.c | libowfat/scan.h libowfat/compiler.h libowfat/compiletimeassert.h
-build scan_pb_type1_fixed64.o: cc scan/scan_pb_type1_fixed64.c | libowfat/scan.h libowfat/compiler.h libowfat/uint64.h
 build scan_pb_type2_stringlen.o: cc scan/scan_pb_type2_stringlen.c | libowfat/scan.h libowfat/compiler.h libowfat/rangecheck.h
-build scan_pb_type5_fixed32.o: cc scan/scan_pb_type5_fixed32.c | libowfat/scan.h libowfat/compiler.h libowfat/uint32.h
 build scan_pb_type5_float.o: cc scan/scan_pb_type5_float.c | libowfat/scan.h libowfat/compiler.h libowfat/compiletimeassert.h
 build scan_plusminus.o: cc scan/scan_plusminus.c | libowfat/scan.h libowfat/compiler.h
 build scan_short.o: cc scan/scan_short.c | libowfat/scan.h libowfat/compiler.h
@@ -493,28 +499,19 @@ build scan_xlong.o: cc scan/scan_xlong.c | libowfat/scan.h libowfat/compiler.h
 build scan_xlonglong.o: cc scan/scan_xlonglong.c | libowfat/scan.h libowfat/compiler.h
 build scan_xlongn.o: cc scan/scan_xlongn.c | libowfat/scan.h libowfat/compiler.h
 build scan_xshort.o: cc scan/scan_xshort.c | libowfat/scan.h libowfat/compiler.h
-build scan_ulongn.o: cc scan/scan_ulongn.c | libowfat/scan.h libowfat/compiler.h haveuint128.h
 build scan_ulong.o: cc scan/scan_ulong.c | libowfat/scan.h libowfat/compiler.h
+build scan_ulongn.o: cc scan/scan_ulongn.c | libowfat/scan.h libowfat/compiler.h haveuint128.h
 build socket_ip4loopback.o: cc socket/socket_ip4loopback.c
 build socket_noipv6.o: cc socket/socket_noipv6.c
 build socket_v4mappedprefix.o: cc socket/socket_v4mappedprefix.c
 build socket_v6any.o: cc socket/socket_v6any.c
 build socket_v6loopback.o: cc socket/socket_v6loopback.c
-build fmt_ip4.o: cc socket/fmt_ip4.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/ip4.h
-build fmt_ip6.o: cc socket/fmt_ip6.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/ip4.h libowfat/ip6.h libowfat/uint32.h
-build fmt_ip6_flat.o: cc socket/fmt_ip6_flat.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/ip6.h libowfat/uint32.h haveinline.h
-build fmt_ip6c.o: cc socket/fmt_ip6c.c | libowfat/ip4.h libowfat/ip6.h libowfat/byte.h libowfat/compiler.h libowfat/uint32.h
-build fmt_ip6if.o: cc socket/fmt_ip6if.c | libowfat/ip6.h libowfat/byte.h libowfat/compiler.h libowfat/uint32.h libowfat/fmt.h libowfat/socket.h libowfat/uint16.h
-build fmt_ip6ifc.o: cc socket/fmt_ip6ifc.c | libowfat/ip4.h libowfat/ip6.h libowfat/byte.h libowfat/compiler.h libowfat/uint32.h
 build init.o: cc socket/init.c | libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h windoze.h
-build scan_ip4.o: cc socket/scan_ip4.c | libowfat/scan.h libowfat/compiler.h libowfat/ip4.h
-build scan_ip6.o: cc socket/scan_ip6.c | libowfat/scan.h libowfat/compiler.h libowfat/ip6.h libowfat/byte.h libowfat/uint32.h libowfat/ip4.h
-build scan_ip6_flat.o: cc socket/scan_ip6_flat.c | libowfat/scan.h libowfat/compiler.h
-build scan_ip6if.o: cc socket/scan_ip6if.c | libowfat/ip6.h libowfat/byte.h libowfat/compiler.h libowfat/uint32.h libowfat/socket.h libowfat/uint16.h havealloca.h
+build socket_listen.o: cc socket/socket_listen.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h windoze.h
 build socket_accept4.o: cc socket/socket_accept4.c | windoze.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h havesl.h io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/array.h libowfat/iarray.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
-build socket_accept4_flags.o: cc socket/socket_accept4_flags.c | windoze.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h iarray.h libowfat/uint64.h havesl.h io_internal.h libowfat/io.h libowfat/taia.h libowfat/tai.h libowfat/array.h libowfat/iarray.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h haveaccept4.h
-build socket_accept4_makenonblocking.o: cc socket/socket_accept4_makenonblocking.c | windoze.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h
 build socket_accept4_makenonblocking_setcloseonexec.o: cc socket/socket_accept4_makenonblocking_setcloseonexec.c | windoze.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h
+build socket_accept4_makenonblocking.o: cc socket/socket_accept4_makenonblocking.c | windoze.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h
+build socket_accept4_flags.o: cc socket/socket_accept4_flags.c | windoze.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h iarray.h libowfat/uint64.h havesl.h io_internal.h libowfat/io.h libowfat/taia.h libowfat/tai.h libowfat/array.h libowfat/iarray.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h haveaccept4.h
 build socket_accept4_setcloseonexec.o: cc socket/socket_accept4_setcloseonexec.c | windoze.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h
 build socket_accept6.o: cc socket/socket_accept6.c | windoze.h libowfat/byte.h libowfat/compiler.h libowfat/socket.h libowfat/uint16.h libowfat/uint32.h libowfat/ip6.h haveip6.h havesl.h havescope.h io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/array.h libowfat/iarray.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h
 build socket_accept6_flags.o: cc socket/socket_accept6_flags.c | iarray.h libowfat/uint64.h windoze.h libowfat/byte.h libowfat/compiler.h libowfat/socket.h libowfat/uint16.h libowfat/uint32.h libowfat/ip6.h haveip6.h havesl.h havescope.h io_internal.h libowfat/io.h libowfat/taia.h libowfat/tai.h libowfat/array.h libowfat/iarray.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h haveaccept4.h
@@ -535,14 +532,12 @@ build socket_fastopen_connect4.o: cc socket/socket_fastopen_connect4.c | libowfa
 build socket_fastopen_connect6.o: cc socket/socket_fastopen_connect6.c | libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h
 build socket_getifidx.o: cc socket/socket_getifidx.c | libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h haven2i.h
 build socket_getifname.o: cc socket/socket_getifname.c | libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h haven2i.h
-build socket_listen.o: cc socket/socket_listen.c | io_internal.h libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h libowfat/iarray.h libowfat/socket.h libowfat/uint16.h haveepoll.h havekqueue.h havedevpoll.h havesigio.h windoze.h
 build socket_local4.o: cc socket/socket_local4.c | windoze.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h havesl.h
 build socket_local6.o: cc socket/socket_local6.c | windoze.h libowfat/byte.h libowfat/compiler.h libowfat/socket.h libowfat/uint16.h libowfat/uint32.h libowfat/ip6.h haveip6.h havesl.h havescope.h
 build socket_mchopcount6.o: cc socket/socket_mchopcount6.c | windoze.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h haveip6.h
 build socket_mcjoin4.o: cc socket/socket_mcjoin4.c | windoze.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h libowfat/byte.h
 build socket_mcjoin6.o: cc socket/socket_mcjoin6.c | windoze.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h libowfat/byte.h libowfat/ip6.h haveip6.h
 build socket_mcleave4.o: cc socket/socket_mcleave4.c | windoze.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h libowfat/byte.h
-build socket_mcleave6.o: cc socket/socket_mcleave6.c | windoze.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h libowfat/byte.h libowfat/ip6.h haveip6.h
 build socket_mcloop4.o: cc socket/socket_mcloop4.c | windoze.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h
 build socket_mcloop6.o: cc socket/socket_mcloop6.c | windoze.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h haveip6.h
 build socket_mcttl4.o: cc socket/socket_mcttl4.c | windoze.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h
@@ -551,9 +546,7 @@ build socket_recv4.o: cc socket/socket_recv4.c | windoze.h libowfat/socket.h lib
 build socket_recv6.o: cc socket/socket_recv6.c | windoze.h libowfat/byte.h libowfat/compiler.h libowfat/socket.h libowfat/uint16.h libowfat/uint32.h libowfat/ip6.h haveip6.h havesl.h havescope.h
 build socket_remote4.o: cc socket/socket_remote4.c | windoze.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h havesl.h
 build socket_remote6.o: cc socket/socket_remote6.c | windoze.h libowfat/byte.h libowfat/compiler.h libowfat/socket.h libowfat/uint16.h libowfat/uint32.h libowfat/ip6.h haveip6.h havesl.h havescope.h
-build socket_sctp4.o: cc socket/socket_sctp4.c | libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h libowfat/ndelay.h
 build socket_sctp4b.o: cc socket/socket_sctp4b.c | windoze.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h
-build socket_sctp6.o: cc socket/socket_sctp6.c | libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h libowfat/ndelay.h
 build socket_sctp6b.o: cc socket/socket_sctp6b.c | windoze.h haveip6.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h
 build socket_send4.o: cc socket/socket_send4.c | windoze.h libowfat/byte.h libowfat/compiler.h libowfat/socket.h libowfat/uint16.h libowfat/uint32.h
 build socket_send6.o: cc socket/socket_send6.c | windoze.h libowfat/byte.h libowfat/compiler.h libowfat/socket.h libowfat/uint16.h libowfat/uint32.h libowfat/ip6.h libowfat/ip4.h haveip6.h havescope.h
@@ -564,6 +557,19 @@ build socket_tcp6b.o: cc socket/socket_tcp6b.c | windoze.h haveip6.h libowfat/so
 build socket_tryreservein.o: cc socket/socket_tryreservein.c | windoze.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h
 build socket_udp4.o: cc socket/socket_udp4.c | windoze.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h libowfat/ndelay.h
 build socket_udp6.o: cc socket/socket_udp6.c | windoze.h haveip6.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h libowfat/ndelay.h
+build socket_sctp4.o: cc socket/socket_sctp4.c | libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h libowfat/ndelay.h
+build socket_sctp6.o: cc socket/socket_sctp6.c | libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h libowfat/ndelay.h
+build scan_ip4.o: cc socket/scan_ip4.c | libowfat/scan.h libowfat/compiler.h libowfat/ip4.h
+build scan_ip6.o: cc socket/scan_ip6.c | libowfat/scan.h libowfat/compiler.h libowfat/ip6.h libowfat/byte.h libowfat/uint32.h libowfat/ip4.h
+build scan_ip6_flat.o: cc socket/scan_ip6_flat.c | libowfat/scan.h libowfat/compiler.h
+build fmt_ip4.o: cc socket/fmt_ip4.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/ip4.h
+build fmt_ip6.o: cc socket/fmt_ip6.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/ip4.h libowfat/ip6.h libowfat/uint32.h
+build fmt_ip6_flat.o: cc socket/fmt_ip6_flat.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/ip6.h libowfat/uint32.h haveinline.h
+build fmt_ip6c.o: cc socket/fmt_ip6c.c | libowfat/ip4.h libowfat/ip6.h libowfat/byte.h libowfat/compiler.h libowfat/uint32.h
+build fmt_ip6if.o: cc socket/fmt_ip6if.c | libowfat/ip6.h libowfat/byte.h libowfat/compiler.h libowfat/uint32.h libowfat/fmt.h libowfat/socket.h libowfat/uint16.h
+build fmt_ip6ifc.o: cc socket/fmt_ip6ifc.c | libowfat/ip4.h libowfat/ip6.h libowfat/byte.h libowfat/compiler.h libowfat/uint32.h
+build scan_ip6if.o: cc socket/scan_ip6if.c | libowfat/ip6.h libowfat/byte.h libowfat/compiler.h libowfat/uint32.h libowfat/socket.h libowfat/uint16.h havealloca.h
+build socket_mcleave6.o: cc socket/socket_mcleave6.c | windoze.h libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h libowfat/byte.h libowfat/ip6.h haveip6.h
 build str_copy.o: cc str/str_copy.c | str.h libowfat/compiler.h
 build str_chr.o: cc str/str_chr.c | str.h libowfat/compiler.h
 build str_rchr.o: cc str/str_rchr.c | str.h libowfat/compiler.h
@@ -574,7 +580,6 @@ build str_diffn.o: cc str/str_diffn.c | str.h libowfat/compiler.h
 build stralloc_append.o: cc stralloc/stralloc_append.c | stralloc.h libowfat/compiler.h
 build stralloc_cat.o: cc stralloc/stralloc_cat.c | stralloc.h libowfat/compiler.h str.h
 build stralloc_catb.o: cc stralloc/stralloc_catb.c | byte.h libowfat/compiler.h stralloc.h
-build stralloc_catm_internal.o: cc stralloc/stralloc_catm_internal.c | stralloc.h libowfat/compiler.h
 build stralloc_cats.o: cc stralloc/stralloc_cats.c | stralloc.h libowfat/compiler.h str.h
 build stralloc_chomp.o: cc stralloc/stralloc_chomp.c | stralloc.h libowfat/compiler.h
 build stralloc_chop.o: cc stralloc/stralloc_chop.c | stralloc.h libowfat/compiler.h
@@ -585,10 +590,11 @@ build stralloc_diff.o: cc stralloc/stralloc_diff.c | stralloc.h libowfat/compile
 build stralloc_diffs.o: cc stralloc/stralloc_diffs.c | stralloc.h libowfat/compiler.h byte.h str.h
 build stralloc_free.o: cc stralloc/stralloc_free.c | stralloc.h libowfat/compiler.h
 build stralloc_init.o: cc stralloc/stralloc_init.c | stralloc.h libowfat/compiler.h
-build stralloc_ready.o: cc stralloc/stralloc_ready.c | stralloc.h libowfat/compiler.h
 build stralloc_readyplus.o: cc stralloc/stralloc_readyplus.c | stralloc.h libowfat/compiler.h
 build stralloc_starts.o: cc stralloc/stralloc_starts.c | stralloc.h libowfat/compiler.h byte.h str.h
 build stralloc_zero.o: cc stralloc/stralloc_zero.c | stralloc.h libowfat/compiler.h
+build stralloc_ready.o: cc stralloc/stralloc_ready.c | stralloc.h libowfat/compiler.h
+build stralloc_catm_internal.o: cc stralloc/stralloc_catm_internal.c | stralloc.h libowfat/compiler.h
 build stralloc_catlong0.o: cc stralloc/stralloc_catlong0.c | libowfat/stralloc.h libowfat/compiler.h libowfat/fmt.h libowfat/byte.h
 build stralloc_catulong0.o: cc stralloc/stralloc_catulong0.c | libowfat/stralloc.h libowfat/compiler.h libowfat/fmt.h libowfat/byte.h
 build tai_add.o: cc tai/tai_add.c | libowfat/tai.h libowfat/uint64.h
@@ -611,6 +617,11 @@ build taia_uint.o: cc taia/taia_uint.c | libowfat/taia.h libowfat/tai.h libowfat
 build taia_unpack.o: cc taia/taia_unpack.c | libowfat/taia.h libowfat/tai.h libowfat/uint64.h libowfat/uint32.h
 build base64.o: cc textcode/base64.c
 build base64url.o: cc textcode/base64url.c
+build fmt_jsonescape.o: cc textcode/fmt_jsonescape.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h libowfat/str.h libowfat/scan.h libowfat/case.h haveinline.h
+build scan_cescape.o: cc textcode/scan_cescape.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h libowfat/scan.h
+build scan_hexdump.o: cc textcode/scan_hexdump.c | libowfat/textcode.h libowfat/compiler.h libowfat/scan.h
+build scan_html.o: cc textcode/scan_html.c | entities.h libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h haveinline.h libowfat/scan.h libowfat/str.h
+build scan_ldapescape.o: cc textcode/scan_ldapescape.c | libowfat/textcode.h libowfat/compiler.h libowfat/scan.h
 build fmt_base64.o: cc textcode/fmt_base64.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h haveinline.h
 build fmt_base64url.o: cc textcode/fmt_base64url.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h haveinline.h
 build fmt_cescape.o: cc textcode/fmt_cescape.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h libowfat/str.h haveinline.h
@@ -618,37 +629,26 @@ build fmt_foldwhitespace.o: cc textcode/fmt_foldwhitespace.c | libowfat/fmt.h li
 build fmt_hexdump.o: cc textcode/fmt_hexdump.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h libowfat/str.h haveinline.h
 build fmt_html.o: cc textcode/fmt_html.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h haveinline.h
 build fmt_html_tagarg.o: cc textcode/fmt_html_tagarg.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h haveinline.h
-build fmt_jsonescape.o: cc textcode/fmt_jsonescape.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h libowfat/str.h libowfat/scan.h libowfat/case.h haveinline.h
 build fmt_ldapescape.o: cc textcode/fmt_ldapescape.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h haveinline.h
 build fmt_ldapescape2.o: cc textcode/fmt_ldapescape2.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h haveinline.h
 build fmt_quotedprintable.o: cc textcode/fmt_quotedprintable.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h libowfat/str.h haveinline.h
-build fmt_to_array.o: cc textcode/fmt_to_array.c | libowfat/array.h libowfat/compiler.h libowfat/uint64.h libowfat/textcode.h
-build fmt_to_sa.o: cc textcode/fmt_to_sa.c | libowfat/stralloc.h libowfat/compiler.h libowfat/textcode.h
-build fmt_tofrom_array.o: cc textcode/fmt_tofrom_array.c | libowfat/array.h libowfat/compiler.h libowfat/uint64.h libowfat/textcode.h
 build fmt_urlencoded.o: cc textcode/fmt_urlencoded.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h libowfat/str.h haveinline.h
 build fmt_uuencoded.o: cc textcode/fmt_uuencoded.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h haveinline.h
 build fmt_xml.o: cc textcode/fmt_xml.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h haveinline.h
 build fmt_yenc.o: cc textcode/fmt_yenc.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h
-build scan_base64.o: cc textcode/scan_base64.c | libowfat/textcode.h haveinline.h
-build scan_base64url.o: cc textcode/scan_base64url.c | libowfat/textcode.h haveinline.h
-build scan_cescape.o: cc textcode/scan_cescape.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h libowfat/scan.h
-build scan_hexdump.o: cc textcode/scan_hexdump.c | libowfat/textcode.h libowfat/scan.h libowfat/compiler.h
-build scan_html.o: cc textcode/scan_html.c | entities.h libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h haveinline.h libowfat/scan.h libowfat/str.h
-build scan_jsonescape.o: cc textcode/scan_jsonescape.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h libowfat/scan.h
-build scan_ldapescape.o: cc textcode/scan_ldapescape.c | libowfat/textcode.h libowfat/scan.h libowfat/compiler.h
-build scan_quotedprintable.o: cc textcode/scan_quotedprintable.c | libowfat/textcode.h libowfat/scan.h libowfat/compiler.h
+build fmt_to_array.o: cc textcode/fmt_to_array.c | libowfat/array.h libowfat/compiler.h libowfat/uint64.h libowfat/textcode.h
+build fmt_to_sa.o: cc textcode/fmt_to_sa.c | libowfat/stralloc.h libowfat/compiler.h libowfat/textcode.h
+build fmt_tofrom_array.o: cc textcode/fmt_tofrom_array.c | libowfat/array.h libowfat/compiler.h libowfat/uint64.h libowfat/textcode.h
+build scan_base64.o: cc textcode/scan_base64.c | libowfat/textcode.h libowfat/compiler.h haveinline.h
+build scan_base64url.o: cc textcode/scan_base64url.c | libowfat/textcode.h libowfat/compiler.h haveinline.h
 build scan_to_array.o: cc textcode/scan_to_array.c | libowfat/str.h libowfat/compiler.h libowfat/array.h libowfat/uint64.h libowfat/textcode.h
 build scan_to_sa.o: cc textcode/scan_to_sa.c | libowfat/str.h libowfat/compiler.h libowfat/stralloc.h libowfat/textcode.h
 build scan_tofrom_array.o: cc textcode/scan_tofrom_array.c | libowfat/array.h libowfat/compiler.h libowfat/uint64.h libowfat/textcode.h
-build scan_urlencoded.o: cc textcode/scan_urlencoded.c | libowfat/textcode.h libowfat/scan.h libowfat/compiler.h
-build scan_uuencoded.o: cc textcode/scan_uuencoded.c | libowfat/textcode.h
+build scan_uuencoded.o: cc textcode/scan_uuencoded.c | libowfat/textcode.h libowfat/compiler.h
+build scan_jsonescape.o: cc textcode/scan_jsonescape.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h libowfat/scan.h
+build scan_quotedprintable.o: cc textcode/scan_quotedprintable.c | libowfat/textcode.h libowfat/compiler.h libowfat/scan.h
+build scan_urlencoded.o: cc textcode/scan_urlencoded.c | libowfat/textcode.h libowfat/compiler.h libowfat/scan.h
 build scan_yenc.o: cc textcode/scan_yenc.c | libowfat/fmt.h libowfat/byte.h libowfat/compiler.h libowfat/textcode.h
-build uint16_pack.o: cc uint/uint16_pack.c | libowfat/uint16.h
-build uint16_pack_big.o: cc uint/uint16_pack_big.c | libowfat/uint16.h
-build uint16_read.o: cc uint/uint16_read.c | libowfat/uint16.h
-build uint16_read_big.o: cc uint/uint16_read_big.c | libowfat/uint16.h
-build uint16_unpack.o: cc uint/uint16_unpack.c | libowfat/uint16.h
-build uint16_unpack_big.o: cc uint/uint16_unpack_big.c | libowfat/uint16.h
 build uint32_pack.o: cc uint/uint32_pack.c | libowfat/uint32.h
 build uint32_pack_big.o: cc uint/uint32_pack_big.c | libowfat/uint32.h
 build uint32_read.o: cc uint/uint32_read.c | libowfat/uint32.h
@@ -661,11 +661,17 @@ build uint64_read.o: cc uint/uint64_read.c | libowfat/uint64.h libowfat/uint32.h
 build uint64_read_big.o: cc uint/uint64_read_big.c | libowfat/uint64.h libowfat/uint32.h
 build uint64_unpack.o: cc uint/uint64_unpack.c | libowfat/uint64.h
 build uint64_unpack_big.o: cc uint/uint64_unpack_big.c | libowfat/uint64.h
-build iopause.o: cc unix/iopause.c | libowfat/taia.h libowfat/tai.h libowfat/uint64.h libowfat/uint32.h libowfat/array.h libowfat/compiler.h libowfat/iopause.h select.h
+build uint16_pack.o: cc uint/uint16_pack.c | libowfat/uint16.h
+build uint16_pack_big.o: cc uint/uint16_pack_big.c | libowfat/uint16.h
+build uint16_read.o: cc uint/uint16_read.c | libowfat/uint16.h
+build uint16_read_big.o: cc uint/uint16_read_big.c | libowfat/uint16.h
+build uint16_unpack.o: cc uint/uint16_unpack.c | libowfat/uint16.h
+build uint16_unpack_big.o: cc uint/uint16_unpack_big.c | libowfat/uint16.h
 build ndelay_off.o: cc unix/ndelay_off.c | libowfat/ndelay.h windoze.h
 build ndelay_on.o: cc unix/ndelay_on.c | libowfat/ndelay.h windoze.h
 build winsock2errno.o: cc unix/winsock2errno.c | libowfat/socket.h libowfat/compiler.h libowfat/uint16.h libowfat/uint32.h
+build iopause.o: cc unix/iopause.c | libowfat/taia.h libowfat/tai.h libowfat/uint64.h libowfat/uint32.h libowfat/array.h libowfat/compiler.h libowfat/iopause.h select.h
 
-build libowfat.a: ar array_allocate.o array_bytes.o array_cat.o array_cat0.o array_catb.o array_cate.o array_cats.o array_cats0.o array_equal.o array_fail.o array_get.o array_length.o array_reset.o array_start.o array_trunc.o array_truncate.o iarray_allocate.o iarray_free.o iarray_get.o iarray_init.o iarray_length.o bs_capacityassert.o bs_capacitycheck.o bs_capacityleft.o bs_consumeleftovers.o bs_err.o bs_get.o bs_init_bstream_size.o bs_init_iobuf.o bs_init_iobuf_size.o bs_init_membuf.o bs_nomoredataassert.o bs_peek.o bs_seterrorstate.o bs_skip.o buffer_1.o buffer_1small.o buffer_2.o buffer_close.o buffer_feed.o buffer_flush.o buffer_free.o buffer_frombuf.o buffer_fromsa.o buffer_get.o buffer_get_new_token_sa.o buffer_get_new_token_sa_pred.o buffer_get_token_sa.o buffer_get_token_sa_pred.o buffer_getc.o buffer_getline.o buffer_getline_sa.o buffer_getn.o buffer_getnewline_sa.o buffer_munmap.o buffer_peek.o buffer_peekc.o buffer_put.o buffer_putalign.o buffer_puterror.o buffer_puterror2.o buffer_putflush.o buffer_putm_internal.o buffer_putm_internal_flush.o buffer_putnlflush.o buffer_puts.o buffer_putsa.o buffer_putsaflush.o buffer_putsalign.o buffer_putsflush.o buffer_putspace.o buffer_seek.o buffer_tosa.o errmsg_iam.o errmsg_info.o errmsg_infosys.o errmsg_puts.o errmsg_warn.o errmsg_warnsys.o errmsg_write.o prs_asciiz.o prs_asciiz_fixedlen.o prs_u64.o prs_u64_big.o prs_readblob.o prs_u16.o prs_u32.o prs_u16_big.o prs_u32_big.o buffer_stubborn.o buffer_stubborn2.o buffer_0small.o buffer_0.o buffer_fromarray.o buffer_get_token.o buffer_get_token_pred.o buffer_init.o buffer_init_allocbuf.o buffer_init_free.o buffer_init_read.o buffer_init_read_allocbuf.o buffer_init_staticcontents.o buffer_init_staticcontents_free.o buffer_init_write.o buffer_init_write_allocbuf.o buffer_mmapread.o buffer_put8long.o buffer_putlong.o buffer_putlonglong.o buffer_putulong.o buffer_putulonglong.o buffer_putxlong.o byte_chr.o byte_copy.o byte_copyr.o byte_diff.o byte_equal_notimingattack.o byte_rchr.o byte_start.o byte_starts.o byte_zero.o case_diffb.o case_diffs.o case_lowerb.o case_lowers.o case_starts.o cdb_hash.o cdb_traverse.o cdb.o cdb_make.o critbit.o dns_dfd.o dns_domain.o dns_dtda.o dns_ip.o dns_ip6.o dns_ipq.o dns_ipq6.o dns_mx.o dns_name.o dns_nd.o dns_nd6.o dns_packet.o dns_random.o dns_rcip.o dns_rcrw.o dns_resolve.o dns_sortip.o dns_sortip6.o dns_transmit.o dns_txt.o fmt_8long.o fmt_8longlong.o fmt_asn1derlength.o fmt_asn1dertag.o fmt_double.o fmt_escapecharhtml.o fmt_escapecharjson.o fmt_escapecharquotedprintable.o fmt_escapecharquotedprintableutf8.o fmt_escapecharxml.o fmt_fill.o fmt_httpdate.o fmt_human.o fmt_humank.o fmt_iso8601.o fmt_long.o fmt_longlong.o fmt_minus.o fmt_netstring.o fmt_pad.o fmt_pb_double.o fmt_pb_float.o fmt_pb_int.o fmt_pb_sint.o fmt_pb_string.o fmt_pb_tag.o fmt_pb_type0_sint.o fmt_pb_type1_double.o fmt_pb_type1_fixed64.o fmt_pb_type2_string.o fmt_pb_type5_fixed32.o fmt_pb_type5_float.o fmt_plusminus.o fmt_strn.o fmt_ulong.o fmt_ulong0.o fmt_ulonglong.o fmt_varint.o fmt_xlong.o fmt_xlonglong.o fmt_xmlescape.o fmt_utf8.o fmt_tohex.o fmt_escapecharc.o fmt_strm_internal.o fmt_str.o io_appendfile.o io_block.o io_canread.o io_canwrite.o io_check.o io_close.o io_closeonexec.o io_createfile.o io_dontwantread.o io_dontwantwrite.o io_eagain.o io_eagain_read.o io_eagain_write.o io_fd.o io_finishandshutdown.o io_getcookie.o io_nonblock.o io_passfd.o io_pipe.o io_readfile.o io_readwritefile.o io_receivefd.o io_setcookie.o io_sigpipe.o io_socketpair.o io_timedout.o io_timeout.o io_timeouted.o io_tryreadtimeout.o io_trywrite.o io_trywritetimeout.o io_wait.o io_waitread.o io_waituntil.o io_waitwrite.o io_wantread.o io_wantwrite.o iob_addbuf.o iob_addbuf_free.o iob_addbuf_internal.o iob_addbuf_munmap.o iob_addfile.o iob_addfile_close.o iob_free.o iob_prefetch.o iob_reset.o iom_add.o io_tryread.o io_sendfile.o iom_abort.o iom_init.o iom_wait.o iob_init.o iob_new.o iob_new_autofree.o iob_adds.o iob_adds_free.o iob_bytesleft.o iob_init_autofree.o iob_send.o iom_requeue.o io_debugstring.o io_mmapwritefile.o io_waituntil2.o iob_write.o mmap_private.o mmap_readat.o mmap_shared.o mmap_read.o mmap_unmap.o imult16.o imult32.o imult64.o range_arrayinbuf.o range_str2inbuf.o range_str4inbuf.o range_strinbuf.o umult16.o umult32.o umult64.o open_append.o open_excl.o open_rw.o open_write.o openreadclose.o readclose.o open_read.o open_trunc.o scan_8int.o scan_8long.o scan_8longlong.o scan_8longn.o scan_8short.o scan_asn1derlength.o scan_asn1dertag.o scan_charsetnskip.o scan_double.o scan_fromhex.o scan_httpdate.o scan_int.o scan_iso8601.o scan_long.o scan_longlong.o scan_longn.o scan_netstring.o scan_noncharsetnskip.o scan_nonwhitenskip.o scan_pb_tag.o scan_pb_type0_sint.o scan_pb_type1_double.o scan_pb_type1_fixed64.o scan_pb_type2_stringlen.o scan_pb_type5_fixed32.o scan_pb_type5_float.o scan_plusminus.o scan_short.o scan_uint.o scan_ulonglong.o scan_ushort.o scan_utf8.o scan_utf8_sem.o scan_varint.o scan_whitenskip.o scan_xint.o scan_xlong.o scan_xlonglong.o scan_xlongn.o scan_xshort.o scan_ulongn.o scan_ulong.o socket_ip4loopback.o socket_noipv6.o socket_v4mappedprefix.o socket_v6any.o socket_v6loopback.o fmt_ip4.o fmt_ip6.o fmt_ip6_flat.o fmt_ip6c.o fmt_ip6if.o fmt_ip6ifc.o init.o scan_ip4.o scan_ip6.o scan_ip6_flat.o scan_ip6if.o socket_accept4.o socket_accept4_flags.o socket_accept4_makenonblocking.o socket_accept4_makenonblocking_setcloseonexec.o socket_accept4_setcloseonexec.o socket_accept6.o socket_accept6_flags.o socket_accept6_makenonblocking.o socket_accept6_makenonblocking_setcloseonexec.o socket_accept6_setcloseonexec.o socket_bind4.o socket_bind4_reuse.o socket_bind6.o socket_bind6_reuse.o socket_broadcast.o socket_connect4.o socket_connect6.o socket_connected.o socket_deferaccept.o socket_fastopen.o socket_fastopen_connect4.o socket_fastopen_connect6.o socket_getifidx.o socket_getifname.o socket_listen.o socket_local4.o socket_local6.o socket_mchopcount6.o socket_mcjoin4.o socket_mcjoin6.o socket_mcleave4.o socket_mcleave6.o socket_mcloop4.o socket_mcloop6.o socket_mcttl4.o socket_quickack.o socket_recv4.o socket_recv6.o socket_remote4.o socket_remote6.o socket_sctp4.o socket_sctp4b.o socket_sctp6.o socket_sctp6b.o socket_send4.o socket_send6.o socket_tcp4.o socket_tcp4b.o socket_tcp6.o socket_tcp6b.o socket_tryreservein.o socket_udp4.o socket_udp6.o str_copy.o str_chr.o str_rchr.o str_start.o str_len.o str_diff.o str_diffn.o stralloc_append.o stralloc_cat.o stralloc_catb.o stralloc_catm_internal.o stralloc_cats.o stralloc_chomp.o stralloc_chop.o stralloc_copy.o stralloc_copyb.o stralloc_copys.o stralloc_diff.o stralloc_diffs.o stralloc_free.o stralloc_init.o stralloc_ready.o stralloc_readyplus.o stralloc_starts.o stralloc_zero.o stralloc_catlong0.o stralloc_catulong0.o tai_add.o tai_now.o tai_pack.o tai_sub.o tai_uint.o tai_unpack.o taia_add.o taia_addsec.o taia_approx.o taia_frac.o taia_half.o taia_less.o taia_now.o taia_pack.o taia_sub.o taia_tai.o taia_uint.o taia_unpack.o base64.o base64url.o fmt_base64.o fmt_base64url.o fmt_cescape.o fmt_foldwhitespace.o fmt_hexdump.o fmt_html.o fmt_html_tagarg.o fmt_jsonescape.o fmt_ldapescape.o fmt_ldapescape2.o fmt_quotedprintable.o fmt_to_array.o fmt_to_sa.o fmt_tofrom_array.o fmt_urlencoded.o fmt_uuencoded.o fmt_xml.o fmt_yenc.o scan_base64.o scan_base64url.o scan_cescape.o scan_hexdump.o scan_html.o scan_jsonescape.o scan_ldapescape.o scan_quotedprintable.o scan_to_array.o scan_to_sa.o scan_tofrom_array.o scan_urlencoded.o scan_uuencoded.o scan_yenc.o uint16_pack.o uint16_pack_big.o uint16_read.o uint16_read_big.o uint16_unpack.o uint16_unpack_big.o uint32_pack.o uint32_pack_big.o uint32_read.o uint32_read_big.o uint32_unpack.o uint32_unpack_big.o uint64_pack.o uint64_pack_big.o uint64_read.o uint64_read_big.o uint64_unpack.o uint64_unpack_big.o iopause.o ndelay_off.o ndelay_on.o winsock2errno.o
+build libowfat.a: ar array_allocate.o array_bytes.o array_cat.o array_cat0.o array_catb.o array_cate.o array_cats.o array_cats0.o array_equal.o array_fail.o array_get.o array_length.o array_reset.o array_start.o array_trunc.o array_truncate.o iarray_allocate.o iarray_free.o iarray_get.o iarray_init.o iarray_length.o buffer_1.o buffer_1small.o buffer_2.o buffer_close.o buffer_feed.o buffer_flush.o buffer_free.o buffer_frombuf.o buffer_fromsa.o buffer_get.o buffer_get_new_token_sa.o buffer_get_new_token_sa_pred.o buffer_get_token_sa.o buffer_get_token_sa_pred.o buffer_getc.o buffer_getline.o buffer_getline_sa.o buffer_getn.o buffer_getnewline_sa.o buffer_munmap.o buffer_peek.o buffer_putalign.o buffer_puterror.o buffer_puterror2.o buffer_putm_internal.o buffer_putm_internal_flush.o buffer_putnlflush.o buffer_puts.o buffer_putsa.o buffer_putsaflush.o buffer_putsalign.o buffer_putsflush.o buffer_putspace.o buffer_tosa.o errmsg_iam.o errmsg_info.o errmsg_infosys.o errmsg_puts.o errmsg_warn.o errmsg_warnsys.o errmsg_write.o bs_capacityassert.o bs_capacitycheck.o bs_consumeleftovers.o bs_get.o bs_init_bstream_size.o bs_init_iobuf.o bs_init_iobuf_size.o bs_init_membuf.o bs_nomoredataassert.o bs_peek.o bs_seterrorstate.o buffer_peekc.o prs_asciiz.o prs_asciiz_fixedlen.o prs_u64.o prs_u64_big.o bs_capacityleft.o bs_err.o bs_skip.o buffer_putflush.o buffer_seek.o buffer_put.o prs_readblob.o prs_u16.o prs_u16_big.o prs_u32.o prs_u32_big.o buffer_stubborn.o buffer_stubborn2.o buffer_0.o buffer_0small.o buffer_fromarray.o buffer_init.o buffer_init_allocbuf.o buffer_init_free.o buffer_init_read.o buffer_init_read_allocbuf.o buffer_init_staticcontents.o buffer_init_staticcontents_free.o buffer_init_write.o buffer_init_write_allocbuf.o buffer_mmapread.o buffer_get_token.o buffer_get_token_pred.o buffer_put8long.o buffer_putlong.o buffer_putlonglong.o buffer_putulong.o buffer_putulonglong.o buffer_putxlong.o byte_chr.o byte_copy.o byte_copyr.o byte_diff.o byte_equal_notimingattack.o byte_rchr.o byte_start.o byte_starts.o byte_zero.o case_diffb.o case_diffs.o case_lowerb.o case_lowers.o case_starts.o cdb_hash.o cdb_traverse.o cdb.o cdb_make.o critbit.o dns_dfd.o dns_domain.o dns_dtda.o dns_ip.o dns_ip6.o dns_ipq.o dns_ipq6.o dns_mx.o dns_name.o dns_nd.o dns_nd6.o dns_packet.o dns_random.o dns_rcip.o dns_rcrw.o dns_resolve.o dns_sortip.o dns_sortip6.o dns_transmit.o dns_txt.o fmt_escapecharhtml.o fmt_escapecharjson.o fmt_pb_type5_fixed32.o fmt_pb_type1_fixed64.o fmt_8long.o fmt_8longlong.o fmt_asn1derlength.o fmt_asn1dertag.o fmt_double.o fmt_escapecharquotedprintable.o fmt_escapecharquotedprintableutf8.o fmt_escapecharxml.o fmt_fill.o fmt_httpdate.o fmt_human.o fmt_humank.o fmt_iso8601.o fmt_long.o fmt_longlong.o fmt_minus.o fmt_netstring.o fmt_pad.o fmt_pb_double.o fmt_pb_float.o fmt_pb_int.o fmt_pb_sint.o fmt_pb_string.o fmt_pb_tag.o fmt_pb_type0_sint.o fmt_pb_type1_double.o fmt_pb_type2_string.o fmt_pb_type5_float.o fmt_plusminus.o fmt_strn.o fmt_ulong.o fmt_ulong0.o fmt_ulonglong.o fmt_varint.o fmt_xlong.o fmt_xlonglong.o fmt_xmlescape.o fmt_escapecharc.o fmt_str.o fmt_strm_internal.o fmt_tohex.o fmt_utf8.o io_appendfile.o io_block.o io_check.o io_close.o io_closeonexec.o io_createfile.o io_dontwantread.o io_dontwantwrite.o io_eagain_read.o io_finishandshutdown.o io_getcookie.o io_nonblock.o io_passfd.o io_receivefd.o io_setcookie.o io_sigpipe.o io_timedout.o io_timeout.o io_timeouted.o io_tryreadtimeout.o io_trywrite.o io_trywritetimeout.o io_wait.o io_waitread.o io_waituntil.o io_waitwrite.o io_wantread.o io_wantwrite.o iob_addbuf.o iob_addbuf_free.o iob_addbuf_internal.o iob_addbuf_munmap.o iob_addfile.o iob_addfile_close.o iob_free.o iob_reset.o iom_add.o io_canread.o io_canwrite.o io_fd.o io_pipe.o io_socketpair.o io_eagain.o io_eagain_write.o io_readfile.o io_readwritefile.o iob_prefetch.o io_tryread.o io_sendfile.o iom_abort.o iom_init.o iom_requeue.o iom_wait.o iob_adds.o iob_adds_free.o iob_bytesleft.o iob_init.o iob_init_autofree.o iob_new.o iob_new_autofree.o iob_send.o io_mmapwritefile.o iob_write.o io_debugstring.o io_waituntil2.o mmap_readat.o mmap_shared.o mmap_private.o mmap_read.o mmap_unmap.o imult16.o umult16.o imult32.o imult64.o range_arrayinbuf.o range_str2inbuf.o range_str4inbuf.o range_strinbuf.o umult32.o umult64.o open_append.o open_excl.o open_rw.o open_write.o openreadclose.o readclose.o open_read.o open_trunc.o scan_pb_type5_fixed32.o scan_pb_type1_fixed64.o scan_8int.o scan_8long.o scan_8longlong.o scan_8longn.o scan_8short.o scan_asn1derlength.o scan_asn1dertag.o scan_charsetnskip.o scan_double.o scan_fromhex.o scan_httpdate.o scan_int.o scan_iso8601.o scan_long.o scan_longlong.o scan_longn.o scan_netstring.o scan_noncharsetnskip.o scan_nonwhitenskip.o scan_pb_tag.o scan_pb_type0_sint.o scan_pb_type1_double.o scan_pb_type2_stringlen.o scan_pb_type5_float.o scan_plusminus.o scan_short.o scan_uint.o scan_ulonglong.o scan_ushort.o scan_utf8.o scan_utf8_sem.o scan_varint.o scan_whitenskip.o scan_xint.o scan_xlong.o scan_xlonglong.o scan_xlongn.o scan_xshort.o scan_ulong.o scan_ulongn.o socket_ip4loopback.o socket_noipv6.o socket_v4mappedprefix.o socket_v6any.o socket_v6loopback.o init.o socket_listen.o socket_accept4.o socket_accept4_makenonblocking_setcloseonexec.o socket_accept4_makenonblocking.o socket_accept4_flags.o socket_accept4_setcloseonexec.o socket_accept6.o socket_accept6_flags.o socket_accept6_makenonblocking.o socket_accept6_makenonblocking_setcloseonexec.o socket_accept6_setcloseonexec.o socket_bind4.o socket_bind4_reuse.o socket_bind6.o socket_bind6_reuse.o socket_broadcast.o socket_connect4.o socket_connect6.o socket_connected.o socket_deferaccept.o socket_fastopen.o socket_fastopen_connect4.o socket_fastopen_connect6.o socket_getifidx.o socket_getifname.o socket_local4.o socket_local6.o socket_mchopcount6.o socket_mcjoin4.o socket_mcjoin6.o socket_mcleave4.o socket_mcloop4.o socket_mcloop6.o socket_mcttl4.o socket_quickack.o socket_recv4.o socket_recv6.o socket_remote4.o socket_remote6.o socket_sctp4b.o socket_sctp6b.o socket_send4.o socket_send6.o socket_tcp4.o socket_tcp4b.o socket_tcp6.o socket_tcp6b.o socket_tryreservein.o socket_udp4.o socket_udp6.o socket_sctp4.o socket_sctp6.o scan_ip4.o scan_ip6.o scan_ip6_flat.o fmt_ip4.o fmt_ip6.o fmt_ip6_flat.o fmt_ip6c.o fmt_ip6if.o fmt_ip6ifc.o scan_ip6if.o socket_mcleave6.o str_copy.o str_chr.o str_rchr.o str_start.o str_len.o str_diff.o str_diffn.o stralloc_append.o stralloc_cat.o stralloc_catb.o stralloc_cats.o stralloc_chomp.o stralloc_chop.o stralloc_copy.o stralloc_copyb.o stralloc_copys.o stralloc_diff.o stralloc_diffs.o stralloc_free.o stralloc_init.o stralloc_readyplus.o stralloc_starts.o stralloc_zero.o stralloc_ready.o stralloc_catm_internal.o stralloc_catlong0.o stralloc_catulong0.o tai_add.o tai_now.o tai_pack.o tai_sub.o tai_uint.o tai_unpack.o taia_add.o taia_addsec.o taia_approx.o taia_frac.o taia_half.o taia_less.o taia_now.o taia_pack.o taia_sub.o taia_tai.o taia_uint.o taia_unpack.o base64.o base64url.o fmt_jsonescape.o scan_cescape.o scan_hexdump.o scan_html.o scan_ldapescape.o fmt_base64.o fmt_base64url.o fmt_cescape.o fmt_foldwhitespace.o fmt_hexdump.o fmt_html.o fmt_html_tagarg.o fmt_ldapescape.o fmt_ldapescape2.o fmt_quotedprintable.o fmt_urlencoded.o fmt_uuencoded.o fmt_xml.o fmt_yenc.o fmt_to_array.o fmt_to_sa.o fmt_tofrom_array.o scan_base64.o scan_base64url.o scan_to_array.o scan_to_sa.o scan_tofrom_array.o scan_uuencoded.o scan_jsonescape.o scan_quotedprintable.o scan_urlencoded.o scan_yenc.o uint32_pack.o uint32_pack_big.o uint32_read.o uint32_read_big.o uint32_unpack.o uint32_unpack_big.o uint64_pack.o uint64_pack_big.o uint64_read.o uint64_read_big.o uint64_unpack.o uint64_unpack_big.o uint16_pack.o uint16_pack_big.o uint16_read.o uint16_read_big.o uint16_unpack.o uint16_unpack_big.o ndelay_off.o ndelay_on.o winsock2errno.o iopause.o
 
 default libowfat.a
