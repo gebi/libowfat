@@ -50,6 +50,9 @@ CFLAGS_OPT=-pipe $(WARN) $(DEFINE) $(OPT_PLUS)
 ent: ent.c haveuint128.h headers
 	$(CC) -g -o ent ent.c -I.
 
+lnifnewer: lnifnewer.c
+	$(CC) -o $@ $<
+
 # CFLAGS += -fstrict-aliasing -Wstrict-aliasing=2
 
 array_allocate.o: array/array_allocate.c libowfat/compiler.h \
@@ -617,9 +620,9 @@ iob_addbuf_free.o: io/iob_addbuf_free.c iob_internal.h libowfat/iob.h \
 iob_addbuf_internal.o: io/iob_addbuf_internal.c iob_internal.h \
  libowfat/iob.h libowfat/io.h libowfat/uint64.h libowfat/taia.h \
  libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h
-iob_addbuf_munmap.o: io/iob_addbuf_munmap.c mmap.h iob_internal.h \
- libowfat/iob.h libowfat/io.h libowfat/uint64.h libowfat/taia.h \
- libowfat/tai.h libowfat/uint32.h libowfat/compiler.h libowfat/array.h
+iob_addbuf_munmap.o: io/iob_addbuf_munmap.c mmap.h libowfat/compiler.h \
+ iob_internal.h libowfat/iob.h libowfat/io.h libowfat/uint64.h \
+ libowfat/taia.h libowfat/tai.h libowfat/uint32.h libowfat/array.h
 iob_addfile.o: io/iob_addfile.c iob_internal.h libowfat/iob.h \
  libowfat/io.h libowfat/uint64.h libowfat/taia.h libowfat/tai.h \
  libowfat/uint32.h libowfat/compiler.h libowfat/array.h
@@ -685,10 +688,12 @@ iom_wait.o: io/iom_wait.c io_internal.h libowfat/io.h libowfat/uint64.h \
  libowfat/array.h libowfat/iarray.h haveepoll.h havekqueue.h \
  havedevpoll.h havesigio.h
 mmap_private.o: mmap/mmap_private.c open.h libowfat/compiler.h mmap.h
-mmap_read.o: mmap/mmap_read.c open.h libowfat/compiler.h mmap.h
+mmap_read.o: mmap/mmap_read.c libowfat/open.h libowfat/compiler.h \
+ libowfat/mmap.h
 mmap_readat.o: mmap/mmap_readat.c open.h libowfat/compiler.h mmap.h
 mmap_shared.o: mmap/mmap_shared.c open.h libowfat/compiler.h mmap.h
-mmap_unmap.o: mmap/mmap_unmap.c open.h libowfat/compiler.h mmap.h
+mmap_unmap.o: mmap/mmap_unmap.c libowfat/open.h libowfat/compiler.h \
+ libowfat/mmap.h
 imult16.o: mult/imult16.c libowfat/uint16.h
 imult32.o: mult/imult32.c libowfat/uint32.h
 imult64.o: mult/imult64.c libowfat/uint64.h
@@ -706,9 +711,9 @@ umult32.o: mult/umult32.c libowfat/uint32.h
 umult64.o: mult/umult64.c libowfat/uint64.h
 open_append.o: open/open_append.c open.h libowfat/compiler.h
 open_excl.o: open/open_excl.c open.h libowfat/compiler.h
-open_read.o: open/open_read.c open.h libowfat/compiler.h
+open_read.o: open/open_read.c libowfat/open.h libowfat/compiler.h
 open_rw.o: open/open_rw.c open.h libowfat/compiler.h
-open_trunc.o: open/open_trunc.c open.h libowfat/compiler.h
+open_trunc.o: open/open_trunc.c libowfat/open.h libowfat/compiler.h
 open_write.o: open/open_write.c open.h libowfat/compiler.h
 openreadclose.o: open/openreadclose.c open.h libowfat/compiler.h \
  readclose.h libowfat/stralloc.h openreadclose.h
@@ -1058,22 +1063,23 @@ fmt_xml.o: textcode/fmt_xml.c libowfat/fmt.h libowfat/byte.h \
  libowfat/compiler.h libowfat/textcode.h haveinline.h
 fmt_yenc.o: textcode/fmt_yenc.c libowfat/fmt.h libowfat/byte.h \
  libowfat/compiler.h libowfat/textcode.h
-scan_base64.o: textcode/scan_base64.c libowfat/textcode.h haveinline.h
+scan_base64.o: textcode/scan_base64.c libowfat/textcode.h \
+ libowfat/compiler.h haveinline.h
 scan_base64url.o: textcode/scan_base64url.c libowfat/textcode.h \
- haveinline.h
+ libowfat/compiler.h haveinline.h
 scan_cescape.o: textcode/scan_cescape.c libowfat/fmt.h libowfat/byte.h \
  libowfat/compiler.h libowfat/textcode.h libowfat/scan.h
 scan_hexdump.o: textcode/scan_hexdump.c libowfat/textcode.h \
- libowfat/scan.h libowfat/compiler.h
+ libowfat/compiler.h libowfat/scan.h
 scan_html.o: textcode/scan_html.c entities.h libowfat/fmt.h \
  libowfat/byte.h libowfat/compiler.h libowfat/textcode.h haveinline.h \
  libowfat/scan.h libowfat/str.h
 scan_jsonescape.o: textcode/scan_jsonescape.c libowfat/fmt.h \
  libowfat/byte.h libowfat/compiler.h libowfat/textcode.h libowfat/scan.h
 scan_ldapescape.o: textcode/scan_ldapescape.c libowfat/textcode.h \
- libowfat/scan.h libowfat/compiler.h
+ libowfat/compiler.h libowfat/scan.h
 scan_quotedprintable.o: textcode/scan_quotedprintable.c \
- libowfat/textcode.h libowfat/scan.h libowfat/compiler.h
+ libowfat/textcode.h libowfat/compiler.h libowfat/scan.h
 scan_to_array.o: textcode/scan_to_array.c libowfat/str.h \
  libowfat/compiler.h libowfat/array.h libowfat/uint64.h \
  libowfat/textcode.h
@@ -1082,8 +1088,9 @@ scan_to_sa.o: textcode/scan_to_sa.c libowfat/str.h libowfat/compiler.h \
 scan_tofrom_array.o: textcode/scan_tofrom_array.c libowfat/array.h \
  libowfat/compiler.h libowfat/uint64.h libowfat/textcode.h
 scan_urlencoded.o: textcode/scan_urlencoded.c libowfat/textcode.h \
- libowfat/scan.h libowfat/compiler.h
-scan_uuencoded.o: textcode/scan_uuencoded.c libowfat/textcode.h
+ libowfat/compiler.h libowfat/scan.h
+scan_uuencoded.o: textcode/scan_uuencoded.c libowfat/textcode.h \
+ libowfat/compiler.h
 scan_yenc.o: textcode/scan_yenc.c libowfat/fmt.h libowfat/byte.h \
  libowfat/compiler.h libowfat/textcode.h
 uint16_pack.o: uint/uint16_pack.c libowfat/uint16.h
@@ -1197,7 +1204,7 @@ haveip6.h haven2i.h havesl.h haveinline.h iopause.h select.h \
 havekqueue.h haveepoll.h libepoll havesigio.h havebsdsf.h havesendfile.h \
 havescope.h havedevpoll.h dep libsocket havealloca.h haveuint128.h \
 entities.h ent havepread.h haveaccept4.h *.gcda *.gcno \
-compile_commands.json json n undep
+compile_commands.json json n undep lnifnewer
 	rm -rf libowfat
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
@@ -1209,12 +1216,12 @@ compiletimeassert.h critbit.h parse.h compiler.h
 libowfat:
 	-mkdir libowfat
 
-libowfat/%: % libowfat 
-	ln -f $< libowfat/
+libowfat/%: % lnifnewer
+	./lnifnewer $<
 
 .PHONY: headers
-headers: libowfat $(INCLUDES)
-	ln -f $(INCLUDES) libowfat/
+headers: lnifnewer $(INCLUDES)
+	./lnifnewer $(INCLUDES)
 
 install-inc:
 	install -d $(DESTDIR)$(INCLUDEDIR)/libowfat

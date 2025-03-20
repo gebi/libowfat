@@ -49,6 +49,9 @@ CFLAGS_OPT=-pipe $(WARN) $(DEFINE) $(OPT_PLUS)
 ent: ent.c haveuint128.h headers
 	$(CC) -g -o ent ent.c -I.
 
+lnifnewer: lnifnewer.c
+	$(CC) -o $@ $<
+
 # CFLAGS += -fstrict-aliasing -Wstrict-aliasing=2
 
 # startrip
@@ -671,7 +674,7 @@ haveip6.h haven2i.h havesl.h haveinline.h iopause.h select.h \
 havekqueue.h haveepoll.h libepoll havesigio.h havebsdsf.h havesendfile.h \
 havescope.h havedevpoll.h dep libsocket havealloca.h haveuint128.h \
 entities.h ent havepread.h haveaccept4.h *.gcda *.gcno \
-compile_commands.json json n undep
+compile_commands.json json n undep lnifnewer
 	rm -rf libowfat
 
 INCLUDES=buffer.h byte.h fmt.h ip4.h ip6.h mmap.h scan.h socket.h str.h stralloc.h \
@@ -683,12 +686,12 @@ compiletimeassert.h critbit.h parse.h compiler.h
 libowfat:
 	-mkdir libowfat
 
-libowfat/%: % libowfat 
-	ln -f $< libowfat/
+libowfat/%: % lnifnewer
+	./lnifnewer $<
 
 .PHONY: headers
-headers: libowfat $(INCLUDES)
-	ln -f $(INCLUDES) libowfat/
+headers: lnifnewer $(INCLUDES)
+	./lnifnewer $(INCLUDES)
 
 install-inc:
 	install -d $(DESTDIR)$(INCLUDEDIR)/libowfat
