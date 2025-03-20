@@ -19,6 +19,9 @@ int main(int argc,char* argv[]) {
       puts("name too long");
     }
     stpcpy(stpcpy(buf,"libowfat/"),argv[i]);
+    struct stat a,b;
+    if (stat(argv[i],&a)==0 && stat(buf,&b)==0 && a.st_mtime >= b.st_mtime)
+      continue;
     if (link(argv[i],buf)==-1 && errno!=EEXIST) {
       perror(argv[i]);
       return 111;
