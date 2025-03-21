@@ -158,7 +158,9 @@
 #define __builtin_constant_p(x) 0
 #endif
 
-#ifndef __dietlibc__
+#ifdef __dietlibc__
+#include <sys/cdefs.h>
+#else
 #if defined(__GNUC__)
 
 #if !__has_attribute(null_terminated_string_arg)
