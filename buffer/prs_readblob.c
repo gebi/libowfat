@@ -81,7 +81,7 @@ int main() {
 
   int fd = open_read("Makefile");
   assert(fd!=-1);
-  buffer b = BUFFER_INIT(read, fd, buf+32, 10);
+  buffer b = BUFFER_INIT_READ(read, fd, buf+32, 10);
   bs_init_iobuf_size(&bs, &b, 100);
   assert(prs_readblob(&bs, buf, 20) == 20);	// make sure we can read a 20 byte blob at once even if the iobuf buffer size is smaller
   // strace will show two read calls here

@@ -1,7 +1,7 @@
 #include "stralloc.h"
 #include "buffer.h"
 
-static ssize_t dummyreadwrite(int fd,char* buf,size_t len) {
+static ssize_t dummyreadwrite(int fd,void* buf,size_t len) {
   (void)fd;
   (void)buf;
   (void)len;
@@ -14,6 +14,6 @@ void buffer_frombuf(buffer* b,const char* x,size_t l) {
   b->n=l;
   b->a=l;
   b->fd=0;
-  b->op=dummyreadwrite;
+  b->op.rop=dummyreadwrite;
   b->deinit=0;
 }

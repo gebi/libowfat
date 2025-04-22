@@ -14,15 +14,25 @@
 #endif
 #endif
 
-extern ssize_t buffer_stubborn(ssize_t (*op)(),int fd,const char* buf, size_t len,void* cookie);
+extern ssize_t buffer_stubborn(ssize_t (*op)(int fd,const char* buf,size_t len,void* cookie),int fd,const char* buf, size_t len,void* cookie);
 
 int buffer_putflush(buffer* b,const char* x,size_t len) {
   /* Since we know we are going to flush anyway, let's see if we can
    * optimize a bit */
-  if (!b->p)	/* if the buffer is empty, just call buffer_stubborn directly */
-    return buffer_stubborn(b->op,b->fd,x,len,b);
+  if (!b->p) {	/* if the buffer is empty, just call buffer_stubborn directly */
+    ssize_t r = buffer_stubborn(b->op.wopc,b->fd,x,len,b);
+    if (r == -1 && errno==ENOENT) {
+      // tried to flush on buffer_init_staticcontents, ignore
+    } else {
+      if (r <= 0 || (size_t)r == len) return r;	// common case
+      // partial write
+      x+=r;
+      len-=r;
+      // fall through
+    }
+  }
 #ifndef __MINGW32__
-  if (b->op==write && len>sizeof(struct iovec)*2) {
+  if (b->op.wop==write && len>sizeof(struct iovec)*2) {
     struct iovec v[2];
     ssize_t w;
     size_t cl=b->p+len;
@@ -37,11 +47,11 @@ int buffer_putflush(buffer* b,const char* x,size_t len) {
     if (__unlikely((size_t)w!=cl)) {
       /* partial write. ugh. */
       if ((size_t)w<v[0].iov_len) {
-	if (buffer_stubborn(b->op,b->fd,v[0].iov_base+w,v[0].iov_len-w,b) ||
-	    buffer_stubborn(b->op,b->fd,v[1].iov_base,v[0].iov_len,b)) return -1;
+	if (buffer_stubborn(b->op.wopc,b->fd,v[0].iov_base+w,v[0].iov_len-w,b) ||
+	    buffer_stubborn(b->op.wopc,b->fd,v[1].iov_base,v[0].iov_len,b)) return -1;
       } else {
 	w-=v[0].iov_len;
-	return buffer_stubborn(b->op,b->fd,v[1].iov_base+w,v[1].iov_len-w,b);
+	return buffer_stubborn(b->op.wopc,b->fd,v[1].iov_base+w,v[1].iov_len-w,b);
       }
     }
     b->p=0;

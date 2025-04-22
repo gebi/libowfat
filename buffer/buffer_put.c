@@ -5,7 +5,7 @@
 #endif
 #include "buffer.h"
 
-extern ssize_t buffer_stubborn(ssize_t (*op)(),int fd,const char* buf, size_t len,void* cookie);
+extern ssize_t buffer_stubborn(ssize_t (*op)(int fd,const char* buf,size_t len,void* cookie),int fd,const char* buf, size_t len,void* cookie);
 
 #ifndef __unlikely
 #ifdef __GNUC__
@@ -18,7 +18,7 @@ extern ssize_t buffer_stubborn(ssize_t (*op)(),int fd,const char* buf, size_t le
 int buffer_put(buffer* b,const char* buf,size_t len) {
   if (__unlikely(len>b->a-b->p)) {	/* doesn't fit */
 #ifndef __MINGW32__
-    if (b->op==write) {
+    if (b->op.wop==write) {
       /* if it's write, we can substitute writev */
       struct iovec v[2];
       ssize_t r;
@@ -38,7 +38,7 @@ int buffer_put(buffer* b,const char* buf,size_t len) {
 #endif
     if (buffer_flush(b)==-1) return -1;
     if (len>b->a) {
-      if (buffer_stubborn(b->op,b->fd,buf,len,b)<0) return -1;
+      if (buffer_stubborn(b->op.wopc,b->fd,buf,len,b)<0) return -1;
       return 0;
     }
   }

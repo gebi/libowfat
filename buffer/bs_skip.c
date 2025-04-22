@@ -50,6 +50,7 @@ size_t bs_skip(struct bytestream* bs, size_t len) {
 #include "buffer/bs_capacityassert.c"
 #include "byte/byte_copy.c"
 #include "buffer/buffer_init.c"
+#include "buffer/buffer_init_read.c"
 
 int main() {
   struct bytestream bs;
@@ -71,7 +72,7 @@ int main() {
   int fd = open_read("GNUmakefile");
   assert(fd != -1);
   unsigned char iobuf[42];
-  buffer b = BUFFER_INIT(read, fd, iobuf+32, 10);
+  buffer b = BUFFER_INIT_READ(read, fd, iobuf+32, 10);
   bs_init_iobuf(&bs, &b);
   assert(bs_skip(&bs, 100) == 100);
   assert(prs_readblob(&bs, iobuf, 10) == 10);
@@ -91,7 +92,7 @@ int main() {
       write(pipes[1], iobuf, 32);
     }
   }
-  buffer_init(&b, read, pipes[0], iobuf+32, 10);
+  buffer_init_read(&b, pipes[0], iobuf+32, 10);
 
   bs_init_iobuf(&bs, &b);
   assert(bs_skip(&bs, 20) == 20);

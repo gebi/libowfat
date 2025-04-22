@@ -66,7 +66,7 @@ int main() {
 
   /* second test: iobuf with no limit. Otherwise the same. */
   struct buffer b;
-  buffer_init_staticcontents(&b, "fx", 1);
+  buffer_init_staticcontents_forread(&b, "fx", 1);
   bs_init_iobuf(&bs, &b);
 
   assert(bs_peek(&bs) == 'f');
@@ -78,7 +78,7 @@ int main() {
   assert(bs_err(&bs));
 
   /* third test: iobuf with limit. Otherwise the same. */
-  buffer_init_staticcontents(&b, "fx", 2);
+  buffer_init_staticcontents_forread(&b, "fx", 2);
   bs_init_iobuf_size(&bs, &b, 1);
 
   assert(bs_peek(&bs) == 'f');
@@ -90,7 +90,7 @@ int main() {
   assert(bs_err(&bs));
 
   /* fourth test: iobuf with EOF */
-  buffer_init_staticcontents(&b, "fx", 1);
+  buffer_init_staticcontents_forread(&b, "fx", 1);
   bs_init_iobuf(&bs, &b);	// bytestream has no limit but will hit EOF in backing buffer
 
   assert(bs_peek(&bs) == 'f');

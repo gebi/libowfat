@@ -1,3 +1,6 @@
+// goddamn glibc!
+#define _XOPEN_SOURCE
+
 #include <libowfat/byte.h>
 #include <libowfat/buffer.h>
 

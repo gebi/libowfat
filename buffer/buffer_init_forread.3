@@ -1,0 +1,55 @@
+.TH buffer_init_forread 3
+.SH NAME
+buffer_init_forread \- initialize buffer structure
+.SH SYNTAX
+.B #include <libowfat/buffer.h>
+
+void \fBbuffer_init_forread\fR(buffer &\fIb\fR,
+                ssize_t (*\fIop\fR)(int,void*,size_t),
+                int \fIfd\fR, char* \fIy\fR, size_t \fIylen\fR);
+.SH DESCRIPTION
+buffer_init prepares \fIb\fR to store a string in \fIy\fR[0], \fIy\fR[1], ...,
+\fIy\fR[\fIylen\fR-1].  Initially the string is empty.
+
+buffer_init_forread also prepares \fIb\fR to use the read operation specified by
+\fIop\fR and \fIfd\fR.
+
+You can use
+
+  buffer \fIb\fR = BUFFER_INIT_READ(\fIop\fR,\fIfd\fR,\fIy\fR,\fIylen\fR);
+
+to initialize \fIb\fR statically if \fIop\fR, \fIfd\fR, \fIy\fR, and \fIylen\fR
+are compile-time constants.
+
+You can call buffer_init again at any time. Note that this discards the
+currently buffered string.
+
+The prototype for \fIop\fR matches read(2).
+
+If you want to actually pass read(2) as op, use buffer_init_read() instead.
+
+If you want to hand over ownership of \fIy\fR, so that buffer_close
+also calls free() on the associated memory buffer, use
+buffer_init_free_forread(3).
+
+.SH EXAMPLE
+  #include <libowfat/buffer.h>
+  #include <libowfat/open.h>
+
+  char buf[4096];
+  int fd=open_read("/etc/services");
+  buffer input;
+
+  if (fd>=0) {
+    char x;
+    buffer_init_forread(&input,read,fd,buf,sizeof buf);
+    while (buffer_get(&input,&x,1)==1) {
+      buffer_put(buffer_1,&x,1);
+      if (x=='\\n') break;
+    }
+    buffer_flush(buffer_1);
+  }
+
+.SH "SEE ALSO"
+buffer_flush(3), buffer(3), buffer_init_read(3), buffer_init_write(3),
+buffer_init_free(3)

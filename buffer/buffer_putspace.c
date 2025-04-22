@@ -1,4 +1,3 @@
-#include "str.h"
 #include "buffer.h"
 
 int buffer_putspace(buffer* b) {

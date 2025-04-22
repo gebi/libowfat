@@ -1,4 +1,3 @@
-#include "byte.h"
 #include "buffer.h"
 
 ssize_t buffer_peekc(buffer* b,char* x) {

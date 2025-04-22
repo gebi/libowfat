@@ -2,7 +2,10 @@
 #include "array.h"
 #include "buffer.h"
 
-static ssize_t fail() {
+static ssize_t fail(int fd,void* buf,size_t l) {
+  (void)fd;
+  (void)buf;
+  (void)l;
   errno=EINVAL;
   return -1;
 }
@@ -10,7 +13,7 @@ static ssize_t fail() {
 void buffer_fromarray(buffer* b,array* a) {
   if (array_failed(a)) {
     memset(b,0,sizeof *b);
-    b->op=fail;
+    b->op.rop=fail;
   } else
     buffer_frombuf(b,array_start(a),a->initialized);
 }

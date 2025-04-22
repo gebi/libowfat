@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include "buffer.h"
 
-static ssize_t b0read(int fd,char* buf, size_t len) {
+static ssize_t b0read(int fd,void* buf, size_t len) {
   if (buffer_flush(buffer_1)<0) return -1;
   return read(fd,buf,len);
 }

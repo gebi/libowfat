@@ -15,33 +15,48 @@
 extern "C" {
 #endif
 
+/* NOTE: unlike stdio a buffer can always only be for reading OR for
+ * writing, not both at the same time! Also, there is no linked flushing
+ * logic (reading from buffer_0 won't implicitly flush buffer_1 first */
 typedef struct buffer {
   char *x;		/* actual buffer space */
   size_t p;		/* current position */
   size_t n;		/* current size of string in buffer */
   size_t a;		/* allocated buffer size */
-  ssize_t (*op)();	/* use read(2) or write(2) */
+  union {
+    ssize_t (*wop)(int fd,const void* buf,size_t len);	// for write(2)
+    ssize_t (*rop)(int fd,void* buf,size_t len);	// for read(2)
+    ssize_t (*wopc)(int fd,const char* buf,size_t len, void* cookie);	// write(2) w/ cookie
+    ssize_t (*ropc)(int fd,char* buf,size_t len, void* cookie);	// read(2) w/ cookie
+  } op;
   void* cookie;			/* used internally by the to-stralloc buffers, and for buffer chaining */
   void (*deinit)(void*);	/* called to munmap/free cleanup, with a pointer to the buffer as argument */
   int fd;		/* passed as first argument to op */
 } buffer;
 
-#define BUFFER_INIT(op,fd,buf,len) { (char*)(buf), 0, 0, (len), (op), NULL, NULL, (fd) }
-#define BUFFER_INIT_FREE(op,fd,buf,len) { (buf), 0, 0, (len), (op), NULL, buffer_free, (fd) }
-#define BUFFER_INIT_READ(op,fd,buf,len) BUFFER_INIT(op,fd,buf,len) /*obsolete*/
+#define BUFFER_INIT(func,filedes,buf,len) { .x=(buf), .p=0, .n=0, .a=(len), .op.wop=(func), .cookie=NULL, .deinit=NULL, .fd=(filedes) }
+#define BUFFER_INIT_FREE(func,filedes,buf,len) { .x=(buf), .p=0, .n=0, .a=(len), .op.wop=(func), .cookie=NULL, .deinit=buffer_free, .fd=(filedes) }
+#define BUFFER_INIT_READ(func,filedes,buf,len) { .x=(buf), .p=0, .n=0, .a=(len), .op.rop=(func), .cookie=NULL, .deinit=NULL, .fd=(filedes) }
 #define BUFFER_INSIZE 8192
 #define BUFFER_OUTSIZE 8192
 
 /* Initialize a buffer with an existing memory area, which the buffer
  * will NOT take ownership of (i.e. won't free the memory when it's done) */
 __bufout(4,5)
-void buffer_init(buffer* b, ssize_t (*op)(), int fd, char* y, size_t ylen);
+void buffer_init(buffer* b, ssize_t (*op)(int fd,const void* buf,size_t l), int fd, char* y, size_t ylen);
+
+__bufout(4,5)
+void buffer_init_forread(buffer* b, ssize_t (*op)(int fd,void* buf,size_t l), int fd, char* y, size_t ylen);
 
 /* Initialize a buffer with an existing memory area, which the buffer
  * WILL take ownership of (it will call free() on it when it's done) */
 __bufout(4,5)
 att_free(malloc,4)
-void buffer_init_free(buffer* b,ssize_t (*op)(),int fd,char* y,size_t ylen);
+void buffer_init_free(buffer* b,ssize_t (*op)(int fd,const void* buf,size_t l),int fd,char* y,size_t ylen);
+
+__bufout(4,5)
+att_free(malloc,4)
+void buffer_init_free_forread(buffer* b,ssize_t (*op)(int fd,void* buf,size_t l),int fd,char* y,size_t ylen);
 
 /* Call buffer_init with op=read(), return 0.
  * If fd==-1, return -1 instead, leaving b untouched. */
@@ -57,7 +72,9 @@ int buffer_init_write(buffer* b, int fd, char* y, size_t ylen);
  * buffer_init_free(b, op, fd, thebuffer, ylen) on it.
  * Returns 0 on success, -1 on error (setting errno).
  * Passing fd==-1 is treated as error (so you can pass open*() for fd). */
-int buffer_init_allocbuf(buffer* b, ssize_t (*op)(), int fd, size_t ylen);
+int buffer_init_allocbuf(buffer* b, ssize_t (*op)(int fd,const void* buf,size_t l), int fd, size_t ylen);
+
+int buffer_init_allocbuf_forread(buffer* b, ssize_t (*op)(int fd,void* buf,size_t l), int fd, size_t ylen);
 
 /* Call buffer_init_allocbuf with op=read */
 int buffer_init_read_allocbuf(buffer* b, int fd, size_t ylen);
@@ -74,8 +91,10 @@ int buffer_init_write_allocbuf(buffer* b, int fd, size_t ylen);
  * actually attempt to read from any actual file.
  * Does not take ownership. Useful for testing. */
 __bufin(2,3)
-att_holds(malloc,2)
 void buffer_init_staticcontents(buffer* b,char* y,size_t ylen);
+
+__bufin(2,3)
+void buffer_init_staticcontents_forread(buffer* b,const char* y,size_t ylen);
 
 /* Same but the buffer takes ownership of the static buffer and frees it
  * in buffer_close. */

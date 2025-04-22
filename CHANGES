@@ -4,6 +4,9 @@
   some arm fixes (char is unsigned on arm)
   str_diff* included byte.h instead of str.h (Mathias Gumz)
   ownership warnings for clang (can diagnose double free if you free after iob_addbuf_free)
+  gcc 15 and C23 force some union trickery on buffer.h :-(
+  add a few buffer_init*_forread variants to pretend we have type safety
+  make sure buffer_init_staticcontents handles flushing attempts
 
 0.34:
   be more C99 compliant (Florian Weimer)

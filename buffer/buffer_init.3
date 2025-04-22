@@ -5,7 +5,11 @@ buffer_init \- initialize buffer structure
 .B #include <libowfat/buffer.h>
 
 void \fBbuffer_init\fR(buffer &\fIb\fR,
-                ssize_t (*\fIop\fR)(int,char*,size_t),
+                ssize_t (*\fIop\fR)(int,const void*,size_t),
+                int \fIfd\fR, char* \fIy\fR, size_t \fIylen\fR);
+
+void \fBbuffer_init_forread\fR(buffer &\fIb\fR,
+                ssize_t (*\fIop\fR)(int,void*,size_t),
                 int \fIfd\fR, char* \fIy\fR, size_t \fIylen\fR);
 .SH DESCRIPTION
 buffer_init prepares \fIb\fR to store a string in \fIy\fR[0], \fIy\fR[1], ...,
@@ -18,11 +22,25 @@ You can use
 
   buffer \fIb\fR = BUFFER_INIT(\fIop\fR,\fIfd\fR,\fIy\fR,\fIylen\fR);
 
+or
+
+  buffer \fIb\fR = BUFFER_INIT_READ(\fIop\fR,\fIfd\fR,\fIy\fR,\fIylen\fR);
+
 to initialize \fIb\fR statically if \fIop\fR, \fIfd\fR, \fIy\fR, and \fIylen\fR
 are compile-time constants.
 
 You can call buffer_init again at any time. Note that this discards the
 currently buffered string.
+
+The prototypes for \fIop\fR match write(2) and read(2).
+
+If you want to actually pass write(2), use buffer_init_write() instead,
+and for read(2) use buffer_init_read().
+
+If you want to hand over ownership of \fIy\fR, so that buffer_close
+also calls free() on the associated memory buffer, use
+buffer_init_free(3) or buffer_init_free_forread(3).
+
 .SH EXAMPLE
   #include <libowfat/buffer.h>
   #include <libowfat/open.h>
@@ -42,4 +60,5 @@ currently buffered string.
   }
 
 .SH "SEE ALSO"
-buffer_flush(3), buffer(3)
+buffer_flush(3), buffer(3), buffer_init_read(3), buffer_init_write(3),
+buffer_init_free(3)

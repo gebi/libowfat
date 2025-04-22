@@ -71,7 +71,7 @@ int main() {
   /* second test: iobuf with no limit. Otherwise the same. */
 
   struct buffer b;
-  buffer_init_staticcontents(&b, "fnord\nx", 6);	// this will let us read 6 bytes
+  buffer_init_staticcontents_forread(&b, "fnord\nx", 6);	// this will let us read 6 bytes
   bs_init_iobuf(&bs, &b);
   for (i=0; i<6; ++i) {
     buf[i] = bs_get(&bs);
@@ -85,7 +85,7 @@ int main() {
   assert(bs_err(&bs));
 
   /* third test: iobuf with limit. Otherwise the same. */
-  buffer_init_staticcontents(&b, "fnord\nx", 7);	// this will let us read 7 bytes
+  buffer_init_staticcontents_forread(&b, "fnord\nx", 7);	// this will let us read 7 bytes
 
   bs_init_iobuf_size(&bs, &b, 6);	// but we tell bytestream the limit is 6
   for (i=0; i<6; ++i) {
@@ -100,7 +100,7 @@ int main() {
   assert(bs_err(&bs));
 
   /* fourth test: iobuf with EOF */
-  buffer_init_staticcontents(&b, "fnord\nx", 6);
+  buffer_init_staticcontents_forread(&b, "fnord\nx", 6);
   bs_init_iobuf(&bs, &b);	// bytestream has no limit but will hit EOF in backing buffer
   for (i=0; i<6; ++i) {
     buf[i] = bs_get(&bs);
