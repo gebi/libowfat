@@ -143,7 +143,6 @@ int io_fd_canwrite(int64 d);	/* use this for connected sockets (assumes socket i
 int io_fd_flags(int64 d,int flags);	/* can be used to tell io_fd to skip one syscall */
 
 /* sandboxing: calls no syscalls */
-att_write(2)
 void io_setcookie(int64 d,void* cookie);
 
 /* sandboxing: calls no syscalls */
