@@ -7,7 +7,7 @@ extern int buffer_flush(buffer* b) {
   register ssize_t r;
   if (!(p=b->p)) return 0; /* buffer already empty */
   r=buffer_stubborn(b->op.wopc,b->fd,b->x,p,b);
-  if (r>0) {
+  if (r>=0) {
     r=0;
     b->p=0;
   }
