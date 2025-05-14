@@ -16,10 +16,10 @@ textcode.a cdb.a critbit.a
 all: ent $(LIBS) libowfat.a libsocket t
 
 pic pie:
-	$(MAKE) CC="gcc -fPIC" LDFLAGS="-fpie"
+	$(MAKE) CC="$(CC) -fPIC" LDFLAGS="-fpie"
 
 picx32 piex32:
-	$(MAKE) CC="gcc -mx32 -fPIC" LDFLAGS="-fpie"
+	$(MAKE) CC="$(CC) -mx32 -fPIC" LDFLAGS="-fpie"
 
 CROSS=
 #CROSS=i686-mingw-

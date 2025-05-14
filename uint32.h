@@ -27,12 +27,12 @@ static inline void uint32_pack(char out[4],uint32 in) {
 
 static inline void uint32_unpack(const char in[4],uint32* out) {
   const unsigned char* i = (const unsigned char*)in;
-  *out=i[0] | (i[1]<<8) | (i[2]<<16) | (i[3]<<24);
+  *out=i[0] | (i[1]<<8) | (i[2]<<16) | ((uint32)(i[3])<<24);
 }
 
 static inline uint32 uint32_read(const char in[4]) {
   const unsigned char* i = (const unsigned char*)in;
-  return i[0] | (i[1]<<8) | (i[2]<<16) | (i[3]<<24);
+  return i[0] | (i[1]<<8) | (i[2]<<16) | ((uint32)(i[3])<<24);
 }
 
 static inline void uint32_pack_big(char out[4],uint32 in) {
@@ -44,12 +44,12 @@ static inline void uint32_pack_big(char out[4],uint32 in) {
 
 static inline void uint32_unpack_big(const char in[4],uint32* out) {
   const unsigned char* i = (const unsigned char*)in;
-  *out=(i[0]<<24) | (i[1]<<16) | (i[2]<<8) | i[3];
+  *out=((uint32)(i[0])<<24) | (i[1]<<16) | (i[2]<<8) | i[3];
 }
 
 static inline uint32 uint32_read_big(const char in[4]) {
   const unsigned char* i = (const unsigned char*)in;
-  return (i[0]<<24) | (i[1]<<16) | (i[2]<<8) | i[3];
+  return ((uint32)(i[0])<<24) | (i[1]<<16) | (i[2]<<8) | i[3];
 }
 
 #else
