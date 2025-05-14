@@ -7,6 +7,7 @@
   gcc 15 and C23 force some union trickery on buffer.h :-(
   add a few buffer_init*_forread variants to pretend we have type safety
   make sure buffer_init_staticcontents handles flushing attempts
+  add att_nonstring to compiler.h (for gcc 15)
 
 0.34:
   be more C99 compliant (Florian Weimer)

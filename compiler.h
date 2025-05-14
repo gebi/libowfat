@@ -247,4 +247,10 @@
 #define att_free_with(func,argpos) __attribute__((malloc))
 #endif
 
+#if __has_attribute(nonstring)
+#define att_nonstring __attribute__((__nonstring__))
+#else
+#define att_nonstring
+#endif
+
 #endif
